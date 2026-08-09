@@ -769,7 +769,14 @@
   fabChat.addEventListener('click', function () {
     var open = chatPanel.classList.contains('active');
     closeAllPanels();
-    if (!open) chatPanel.classList.add('active');
+    if (!open) {
+      chatPanel.classList.add('active');
+      // Warm the GPS cache as soon as the concierge opens, so location-aware
+      // answers are possible from the very first message (matches zurich-weekend's
+      // concierge-chat pattern) instead of only ever picking up whatever the
+      // Local Search fab happened to request earlier.
+      if (!lastKnownPosition) getPosition();
+    }
   });
   localClose.addEventListener('click', closeAllPanels);
   chatClose.addEventListener('click', closeAllPanels);
@@ -836,6 +843,7 @@
   var chatInput = document.getElementById('chatInput');
   var chatSend = document.getElementById('chatSend');
   var chatHistory = [];
+  var isFirstChatMessage = true;
 
   function addMsg(role, text) {
     var div = document.createElement('div');
@@ -857,6 +865,19 @@
     addMsg('user', msg);
     chatInput.value = '';
     var botDiv = addMsg('bot', '…');
+
+    if (isFirstChatMessage) {
+      isFirstChatMessage = false;
+      if (!lastKnownPosition) {
+        // Give a permission prompt / fix a brief moment to resolve so the very
+        // first answer can already be location-aware, capped so a denied or
+        // slow GPS request never stalls sending the message.
+        await Promise.race([
+          getPosition(),
+          new Promise(function (resolve) { setTimeout(resolve, 2000); })
+        ]);
+      }
+    }
     var pos = lastKnownPosition;
 
     try {
