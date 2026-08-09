@@ -29,6 +29,20 @@
     return 'https://maps.google.com/?q=' + encodeURIComponent(query);
   }
 
+  // All times in the source data are 24-hour "HH:MM" strings - display
+  // everything as 12-hour with AM/PM. Non-matching input is returned as-is
+  // rather than guessed at.
+  function formatTime12(t) {
+    if (!t || !/^\d{1,2}:\d{2}$/.test(t)) return t || '';
+    var parts = t.split(':');
+    var h = parseInt(parts[0], 10);
+    var m = parts[1];
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12;
+    if (h12 === 0) h12 = 12;
+    return h12 + ':' + m + ' ' + ampm;
+  }
+
   // Three-way directions picker — Google Maps, Apple Maps, Waze. All three
   // are standard, keyless universal-link formats (no API key for any of
   // them): Google opens maps.google.com, Apple Maps opens maps.apple.com
@@ -120,7 +134,7 @@
     return '<div class="item">' +
       '<div class="item-icon">' + icon + '</div>' +
       '<div class="item-body">' +
-      '<div class="item-time">' + esc(item.time || '') + (item.end_time ? '–' + esc(item.end_time) : '') + '</div>' +
+      '<div class="item-time">' + esc(formatTime12(item.time)) + (item.end_time ? '–' + esc(formatTime12(item.end_time)) : '') + '</div>' +
       '<div class="item-text">' + esc(item.text || '') + '</div>' +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
       '<div class="item-links">' +
@@ -164,7 +178,7 @@
       html += '<div class="cond-day"><div class="cond-day-label">' + esc(day.label) + '</div>';
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
-        html += '<div class="cond-row"><span class="cond-time">' + esc(item.time || '') + '</span> ' +
+        html += '<div class="cond-row"><span class="cond-time">' + esc(formatTime12(item.time)) + '</span> ' +
           esc(item.text || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + '</div>';
       });
       html += '</div>';
@@ -198,7 +212,7 @@
       return '<div class="meal-row">' +
         '<div class="meal-top"><span class="meal-name">' + esc(r.name) + '</span>' +
         '<span class="meal-badge">' + esc(label) + '</span></div>' +
-        '<div class="meal-meta">' + esc(row.day) + ' · ' + esc(row.time || '') +
+        '<div class="meal-meta">' + esc(row.day) + ' · ' + esc(formatTime12(row.time)) +
         (contact.address ? ' · ' + esc(contact.address) : '') + '</div>' +
         '<div class="item-links">' +
         directionsLinksHTML(r.name) +
@@ -271,7 +285,7 @@
           (f.duration ? ' · ' + esc(f.duration) : '') + (f.nonstop ? ' · Nonstop' : '') + '</div>';
       }
       return '<div class="ref-card">' +
-        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(item.time || '') + '</div>' +
+        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(formatTime12(item.time)) + '</div>' +
         '<div class="ref-line">' + esc(item.text || '') + '</div>' +
         flightLine +
         '</div>';
@@ -360,7 +374,7 @@
       return '<div class="ref-card">' +
         '<div class="ref-title">' + esc(f.carrier || '') + ' ' + esc(f.flight_number || '') + '</div>' +
         '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
-        (f.depart_time ? ' · Departs ' + esc(f.depart_time) : '') + (f.arrive_time ? ' · Arrives ' + esc(f.arrive_time) : '') + '</div>' +
+        (f.depart_time ? ' · Departs ' + esc(formatTime12(f.depart_time)) : '') + (f.arrive_time ? ' · Arrives ' + esc(formatTime12(f.arrive_time)) : '') + '</div>' +
         (f.duration ? '<div class="ref-line">' + esc(f.duration) + (f.nonstop ? ' · Nonstop' : '') + '</div>' : '') +
         (f.confirmation_note ? '<div class="ref-line ai-note">' + esc(f.confirmation_note) + '</div>' : '') +
         (f.lounge_access && f.lounge_access.length ? f.lounge_access.map(function (l) {
@@ -410,7 +424,7 @@
   function shortTime(iso) {
     if (!iso) return '';
     var t = iso.split('T')[1];
-    return t ? t.slice(0, 5) : '';
+    return t ? formatTime12(t.slice(0, 5)) : '';
   }
 
   Object.keys(PINS.cities || {}).forEach(function (cityName) {
