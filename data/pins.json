@@ -1,0 +1,35 @@
+{
+  "_note": "Best-effort coordinates from general geographic knowledge — this build environment has no live geocoding access. City-center and major-landmark pins are high confidence; Douro Valley winery and some restaurant pins are approximate. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
+  "cities": {
+    "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
+    "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
+    "Nuremberg": { "lat": 49.4521, "lng": 11.0767,  "tz": "Europe/Berlin" },
+    "Porto":     { "lat": 41.1579, "lng": -8.6291,  "tz": "Europe/Lisbon" }
+  },
+  "hotels": {
+    "London Marriott Hotel Park Lane": { "lat": 51.5074, "lng": -0.1499, "city": "London" },
+    "Villa Lara Hôtel":                { "lat": 49.2777, "lng": -0.7042, "city": "Normandy" },
+    "Sheraton Carlton Hotel Nürnberg": { "lat": 49.4457, "lng": 11.0785, "city": "Nuremberg" },
+    "The Yeatman Hotel":               { "lat": 41.1362, "lng": -8.6127, "city": "Porto" }
+  },
+  "landmarks": {
+    "Clive Steps, King Charles Street, Westminster, London SW1A 2AQ":            { "lat": 51.5024, "lng": -0.1301 },
+    "Parliament Square, Westminster, London SW1P 3BD":                           { "lat": 51.5010, "lng": -0.1257 },
+    "Lambeth Road, London SE1 6HZ":                                              { "lat": 51.4963, "lng": -0.1097 },
+    "Great Russell Street, Bloomsbury, London WC1B 3DG":                         { "lat": 51.5194, "lng": -0.1270 },
+    "Tower of London, London EC3N 4AB":                                          { "lat": 51.5081, "lng": -0.0759 },
+    "West End theatre district, London":                                        { "lat": 51.5125, "lng": -0.1300 },
+    "Colleville-sur-Mer, 14710 Normandy":                                        { "lat": 49.3600, "lng": -0.8494 },
+    "14450 Cricqueville-en-Bessin":                                              { "lat": 49.3958, "lng": -0.9897 },
+    "50480 Sainte-Marie-du-Mont":                                                { "lat": 49.4136, "lng": -1.1750 },
+    "Courseulles-sur-Mer, 14470":                                                { "lat": 49.3350, "lng": -0.4536 },
+    "Esplanade Général Eisenhower, 14050 Caen":                                  { "lat": 49.1925, "lng": -0.3702 },
+    "Bärenschanzstraße 72, 90429 Nuremberg":                                     { "lat": 49.4587, "lng": 11.0523 },
+    "Burg 17, 90403 Nuremberg":                                                  { "lat": 49.4593, "lng": 11.0767 },
+    "Bayernstraße 110, 90478 Nuremberg":                                         { "lat": 49.4267, "lng": 11.1150 },
+    "Quinta do Vallado, Vila Nova de Gaia waterfront":                           { "lat": 41.1339, "lng": -8.6119, "approx": true },
+    "Graham's Port Lodge, Vila Nova de Gaia":                                    { "lat": 41.1360, "lng": -8.6115 },
+    "Quinta do Crasto, Gouvinhas, Sabrosa (Douro Valley)":                       { "lat": 41.2140, "lng": -7.6100, "approx": true },
+    "Livraria Lello, Rua das Carmelitas 144, Porto":                             { "lat": 41.1466, "lng": -8.6146 }
+  }
+}
