@@ -215,8 +215,27 @@
       '<div class="item-text">' + esc(displayText || '') + '</div>' +
       flightWarn +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
+      (item.logistics ? renderLogisticsRows(item.logistics) : '') +
       navigateRow +
       '</div></div>';
+  }
+
+  // Wear/Expect/Arrive rows — adapted from santafe-itinerary's per-activity
+  // accordion pattern, scoped to this trip's genuinely bookable/guided
+  // experiences (timed-entry sites, private tastings/tours) rather than
+  // every single item. General practical planning guidance, explicitly
+  // labeled as such — never a substitute for the venue's own real address/
+  // hours/phone, which come from the verified contact/hotel/restaurant
+  // fields elsewhere.
+  function renderLogisticsRows(l) {
+    var rows = [];
+    if (l.wear) rows.push(['Wear', l.wear]);
+    if (l.expect) rows.push(['Expect', l.expect]);
+    if (l.meet) rows.push(['Arrive', l.meet]);
+    if (!rows.length) return '';
+    return '<div class="logistics-rows">' + rows.map(function (r) {
+      return '<div class="logistics-row"><span class="logistics-label">' + esc(r[0]) + '</span><p>' + esc(r[1]) + '</p></div>';
+    }).join('') + '<p class="logistics-disclaimer">General planning guidance — not a verified fact about this specific venue.</p></div>';
   }
 
   function toMinutes(t) {

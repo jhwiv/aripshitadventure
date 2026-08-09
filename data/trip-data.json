@@ -193,7 +193,12 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "logistics": {
+            "wear": "Comfortable shoes — several small rooms and low-ceiling corridors, little seating for most of the visit.",
+            "expect": "Compact, mostly one-way underground route with an included audio guide; can get crowded mid-morning. Budget 90 min-2 hrs.",
+            "meet": "Enter via Clive Steps, King Charles Street, off Horse Guards Road — nearest tube is Westminster."
+          }
         },
         {
           "type": "Activity",
@@ -543,7 +548,12 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "logistics": {
+            "wear": "Sturdy walking shoes — cobblestones and stairs throughout the grounds and towers.",
+            "expect": "Large site with several separate exhibits; the Crown Jewels line moves slowly midday. Arriving near opening avoids the worst of it.",
+            "meet": "Main entrance off Tower Hill, next to Tower Hill tube station."
+          }
         },
         {
           "type": "Dinner",
@@ -682,7 +692,12 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "logistics": {
+            "wear": "Closed-toe shoes with grip — uneven, cratered cliff-top terrain, can be muddy after rain.",
+            "expect": "Exposed to wind off the Channel with little shade or shelter. Self-guided, roughly 45-60 min.",
+            "meet": "On-site parking and visitor center at the point itself, off the D514."
+          }
         },
         {
           "type": "Activity",
@@ -1515,7 +1530,12 @@
           "flight": null,
           "hotel": null,
           "restaurant": null,
-          "_locationUnverified": "Quinta do Vallado is a real Douro Valley estate ~100km from Porto; this item claims a riverfront tasting room on Avenida Diogo Leite in Vila Nova de Gaia, which is plausible (several Douro producers run Gaia tasting rooms) but not independently confirmed - verify this specific location exists before relying on it."
+          "_locationUnverified": "Quinta do Vallado is a real Douro Valley estate ~100km from Porto; this item claims a riverfront tasting room on Avenida Diogo Leite in Vila Nova de Gaia, which is plausible (several Douro producers run Gaia tasting rooms) but not independently confirmed - verify this specific location exists before relying on it.",
+          "logistics": {
+            "wear": "Comfortable shoes if a vineyard walk is included; bring a layer — the terrace can be breezy.",
+            "expect": "A guided tasting flight, typically 3-5 wines, often with a short vineyard or cellar walk.",
+            "meet": "Confirm the exact meeting point directly when booking — this property's address was not independently verified for this plan (see the flag above)."
+          }
         },
         {
           "type": "Dinner",
@@ -1607,7 +1627,12 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "logistics": {
+            "wear": "Flat, closed shoes — cellar floors can be uneven and slightly damp.",
+            "expect": "A guided cellar tour followed by a seated tasting flight, roughly 60-75 min.",
+            "meet": "Graham's Lodge entrance on Rua do Agro, Vila Nova de Gaia — a short walk or taxi from central Porto across the Dom Luís I bridge."
+          }
         },
         {
           "type": "Transport",
@@ -1738,7 +1763,12 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "logistics": {
+            "wear": "Comfortable walking shoes for the vineyard terraces; a layer for the drive up — higher elevation, can run cooler and windier than Porto.",
+            "expect": "A guided vineyard walk, cellar visit, tasting, and a seated estate lunch — plan for most of the midday.",
+            "meet": "A rural estate outside Régua — confirm transport arrangements when booking; best reached by car or a pre-arranged driver."
+          }
         },
         {
           "type": "Note",
