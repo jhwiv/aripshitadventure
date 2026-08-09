@@ -356,12 +356,19 @@
   /* ---------------------------------------------------------
      AIR & HOTEL — consolidated real flight/hotel data
      --------------------------------------------------------- */
+  var TRIP_START = new Date(2026, 9, 10); // Oct 10 2026, confirmed against day labels
+  function dayDateISO(dayIndex) {
+    var d = new Date(TRIP_START);
+    d.setDate(d.getDate() + dayIndex);
+    return d.toISOString().slice(0, 10);
+  }
+
   (function renderAirHotel() {
     var flights = [];
     var hotelsByName = {};
-    (TRIP.days || []).forEach(function (day) {
+    (TRIP.days || []).forEach(function (day, idx) {
       (day.items || []).forEach(function (item) {
-        if (item.type === 'Flight' && item.flight) flights.push(item.flight);
+        if (item.type === 'Flight' && item.flight) flights.push({ f: item.flight, dayIndex: idx });
         if (item.hotel && item.hotel.name) {
           var h = hotelsByName[item.hotel.name] || { city: day.city };
           Object.keys(item.hotel).forEach(function (k) { if (item.hotel[k] && !h[k]) h[k] = item.hotel[k]; });
@@ -370,9 +377,12 @@
       });
     });
 
-    document.getElementById('flightTable').innerHTML = flights.map(function (f) {
+    document.getElementById('flightTable').innerHTML = flights.map(function (row, i) {
+      var f = row.f;
+      var unverified = !!f._modelEstimatedFlightNumber;
       return '<div class="ref-card">' +
         '<div class="ref-title">' + esc(f.carrier || '') + ' ' + esc(f.flight_number || '') + '</div>' +
+        (unverified ? '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>' : '') +
         '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
         (f.depart_time ? ' · Departs ' + esc(formatTime12(f.depart_time)) : '') + (f.arrive_time ? ' · Arrives ' + esc(formatTime12(f.arrive_time)) : '') + '</div>' +
         (f.duration ? '<div class="ref-line">' + esc(f.duration) + (f.nonstop ? ' · Nonstop' : '') + '</div>' : '') +
@@ -382,8 +392,32 @@
             (l.terminal ? ' · ' + esc(l.terminal) : '') +
             (l.access ? '<br><span class="ai-note">Access: ' + esc(l.access) + '</span>' : '') + '</div>';
         }).join('') : '') +
+        '<div class="ref-line flight-status" id="fstatus-' + i + '">Checking live schedule…</div>' +
         '</div>';
     }).join('') || '<p class="ai-note">No flights in this plan.</p>';
+
+    // Live schedule check via /api/flight-status (Cloudflare Pages Function,
+    // needs AEROAPI_KEY set in the Pages project's env vars to actually work -
+    // without it this correctly reports "could not verify" rather than
+    // silently pretending the flight is confirmed).
+    flights.forEach(function (row, i) {
+      var f = row.f;
+      var el = document.getElementById('fstatus-' + i);
+      if (!f.flight_number || !el) return;
+      var url = '/api/flight-status?ident=' + encodeURIComponent(f.flight_number) + '&date=' + dayDateISO(row.dayIndex);
+      fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+        if (data && data.ok && data.status && data.status !== 'Unknown') {
+          el.textContent = '✓ Live status: ' + data.status + (data.scheduledOut ? ' · scheduled ' + data.scheduledOut : '');
+          el.classList.add('flight-status-ok');
+        } else {
+          el.textContent = '⚠ Could not verify this flight against a live schedule.';
+          el.classList.add('flight-status-warn');
+        }
+      }).catch(function () {
+        el.textContent = '⚠ Live schedule check unavailable right now.';
+        el.classList.add('flight-status-warn');
+      });
+    });
 
     document.getElementById('hotelTable').innerHTML = Object.keys(hotelsByName).map(function (name) {
       var h = hotelsByName[name];
