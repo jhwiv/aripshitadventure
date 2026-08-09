@@ -127,10 +127,66 @@
     return bits;
   }
 
+  // The user is driving themselves, not hiring a private driver - the
+  // source plan's wording assumed a chauffeur service that was never
+  // requested. Swap the framing at render time (data itself is untouched).
+  function humanizeTransportText(text) {
+    if (!text) return text;
+    return text.replace(/Private driver/gi, 'Self-drive').replace(/Private transfer/gi, 'Self-drive transfer');
+  }
+
+  // Which hotel is actually being slept at THIS specific day. day.city is
+  // NOT reliable for this on a transit day (it reflects where the day's
+  // activities happen, not where the night is spent - documented failure
+  // mode) - check for an actual check-in item first, only fall back to the
+  // city-level hotel mapping when there isn't one.
+  function resolveDayHotelName(day) {
+    var checkin = null;
+    (day.items || []).forEach(function (it) {
+      if (it.type === 'Hotel' && it.hotel && it.hotel.name && /check[\s-]?in/i.test(it.text || '')) {
+        checkin = it.hotel.name;
+      }
+    });
+    if (checkin) return checkin;
+    var fallback = null;
+    Object.keys(PINS.hotels || {}).forEach(function (name) { if (PINS.hotels[name].city === day.city) fallback = name; });
+    return fallback;
+  }
+
+  // Extract a clean "to <destination>" from a Transport item's free text so
+  // the maps links navigate to an actual place, not the raw sentence
+  // ("Drive to Juno Beach — 45 min via D514" -> "Juno Beach"). Falls back
+  // to null (caller uses the existing generic fallback) when no "to X"
+  // phrase is present, e.g. a pickup event that isn't itself a destination.
+  function parseTransportDestination(text, day) {
+    if (!text) return null;
+    // Using exec() in a loop (not .match() with /g) because .match() with
+    // the global flag discards capture groups and returns whole matches
+    // instead - which silently included the trailing delimiter ("Juno
+    // Beach —" instead of "Juno Beach"), breaking the hotel-name check
+    // below since "hotel —" doesn't match /\bhotel$/. Caught by testing
+    // before push, not assumed correct.
+    var re = /\bto\s+([^—·(]+?)(?:\s*[—·(]|\s+for\b|$)/gi;
+    var m, last = null;
+    while ((m = re.exec(text)) !== null) { last = m[1]; }
+    if (!last) return null;
+    var dest = last.trim();
+    if (!dest) return null;
+    if (/\bhotel$/i.test(dest)) {
+      return resolveDayHotelName(day) || dest;
+    }
+    return dest;
+  }
+
   function renderItemHTML(item, day) {
     var icon = ITEM_ICONS[item.type] || '•';
     var extras = itemExtra(item);
+    var displayText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
     var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
+    if (item.type === 'Transport') {
+      var driveDest = parseTransportDestination(item.text, day);
+      if (driveDest) searchTarget = driveDest;
+    }
     var timeLine = esc(formatTime12(item.time)) + (item.end_time ? '–' + esc(formatTime12(item.end_time)) : '');
     var flightWarn = '';
     if (item.type === 'Flight' && item.flight) {
@@ -143,18 +199,21 @@
         flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
       }
     }
+    var navigateRow = item.type === 'Transport'
+      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + '</div>'
+      : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
+        (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
+        (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+        '</div>';
     return '<div class="item">' +
       '<div class="item-icon">' + icon + '</div>' +
       '<div class="item-body">' +
       '<div class="item-time">' + timeLine + '</div>' +
-      '<div class="item-text">' + esc(item.text || '') + '</div>' +
+      '<div class="item-text">' + esc(displayText || '') + '</div>' +
       flightWarn +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
-      '<div class="item-links">' +
-      directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
-      (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
-      (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
-      '</div></div></div>';
+      navigateRow +
+      '</div></div>';
   }
 
   function renderDayBlockHTML(day, dayNum) {
@@ -193,8 +252,9 @@
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
           ? ' <span class="cond-warn">⚠ unverified schedule</span>' : '';
+        var condText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
         html += '<div class="cond-row"><span class="cond-time">' + esc(formatTime12(item.time)) + '</span> ' +
-          esc(item.text || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + '</div>';
+          esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + '</div>';
       });
       html += '</div>';
     });
@@ -285,7 +345,7 @@
     (TRIP.days || []).forEach(function (day, idx) {
       (day.items || []).forEach(function (item) {
         if (item.type !== 'Transport' && item.type !== 'Flight') return;
-        rows.push({ dayNum: idx + 1, dayLabel: day.label, item: item });
+        rows.push({ dayNum: idx + 1, dayLabel: day.label, item: item, day: day });
       });
     });
     var el = document.getElementById('transportQuickRef');
@@ -303,11 +363,19 @@
           flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
         }
       }
+      var navLine = '';
+      if (item.type === 'Transport') {
+        var dest = parseTransportDestination(item.text, row.day);
+        var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
+        navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(query) + '</div>';
+      }
+      var refText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
       return '<div class="ref-card">' +
         '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(formatTime12(item.time)) + '</div>' +
-        '<div class="ref-line">' + esc(item.text || '') + '</div>' +
+        '<div class="ref-line">' + esc(refText || '') + '</div>' +
         flightLine +
         flightWarn +
+        navLine +
         '</div>';
     }).join('');
   })();
