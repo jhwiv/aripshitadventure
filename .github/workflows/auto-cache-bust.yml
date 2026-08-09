@@ -1,0 +1,63 @@
+name: Auto cache-bust on deploy
+
+# Stamps every ?v=... query string in index.html with the current commit SHA
+# on every push to main, so Cloudflare Pages always serves fresh app.js /
+# style.css instead of a stale cached copy after a deploy.
+#
+# Adapted from the identical, proven workflow in jhwiv/santafe-itinerary,
+# created there after a real incident where a site kept serving stale
+# cached assets after main was updated. See jhwiv/cloudflare-worker
+# docs/cloudflare-wiki.md lesson #9.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/auto-cache-bust.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bust:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cache-bust]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Compute version stamp
+        id: stamp
+        run: |
+          STAMP="$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+          echo "stamp=$STAMP" >> "$GITHUB_OUTPUT"
+          echo "Using cache-buster: $STAMP"
+
+      - name: Rewrite ?v=... in index.html
+        run: |
+          python3 - <<'PY'
+          import re, os
+          stamp = os.environ["STAMP"]
+          with open("index.html", "r", encoding="utf-8") as f:
+              html = f.read()
+          new_html, n = re.subn(r"\?v=[^\"'&\s<>)]+", f"?v={stamp}", html)
+          with open("index.html", "w", encoding="utf-8") as f:
+              f.write(new_html)
+          print(f"index.html: rewrote {n} cache-buster occurrence(s) to v={stamp}")
+          PY
+        env:
+          STAMP: ${{ steps.stamp.outputs.stamp }}
+
+      - name: Commit & push if changed
+        run: |
+          if git diff --quiet index.html; then
+            echo "No cache-buster changes — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: cache-bust to v=${{ steps.stamp.outputs.stamp }} [skip cache-bust]"
+          git push

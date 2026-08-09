@@ -1,0 +1,28 @@
+# Cloudflare Pages reads this file to set HTTP headers on responses.
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Adapted from santafe-itinerary's proven pattern (see
+# jhwiv/cloudflare-worker docs/cloudflare-wiki.md lesson #9 - a real
+# incident where a site kept serving a stale cached copy after a deploy).
+
+# index.html (and any path that resolves to it) must always re-check the
+# origin so deploys go live immediately. Otherwise browsers/the edge cache
+# can serve a stale copy of the page even after Pages has rebuilt.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# Static assets carry a ?v=<sha> cache-buster (set automatically by the
+# auto-cache-bust workflow on every push to main), so they're safe to
+# cache aggressively - a new deploy always gets a new URL.
+/app.js
+  Cache-Control: public, max-age=31536000, immutable
+/style.css
+  Cache-Control: public, max-age=31536000, immutable
+/manifest.json
+  Cache-Control: public, max-age=31536000, immutable
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# functions/api/* responses set their own Cache-Control - don't override here.

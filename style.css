@@ -384,3 +384,22 @@ img { max-width: 100%; display: block; }
   #itineraryMap { height: 320px; }
   .sv-frame { height: 200px; }
 }
+
+/* ── PRINT ── prints whichever tab is currently open (a roadbook of the
+   full trip in one print job isn't attempted here - see parking-lot
+   items in docs/new-trip-site-playbook.md for that as a future add) ── */
+@media print {
+  .site-nav, .fab-row, .panel, #welcome-screen, .map-filters,
+  #itineraryMap, .sv-frame, .banner::before { display: none !important; }
+  .hero { background: none !important; color: #1c2840; padding: 12px 0; }
+  .hero-overlay { display: none; }
+  .hero .eyebrow, .hero .meta { color: #5b6577; }
+  .hero .route { color: #1c2840; }
+  body { background: #fff; }
+  .container { max-width: 100%; padding: 0; }
+  .day-block { break-inside: avoid; page-break-inside: avoid; }
+  .item { break-inside: avoid; }
+  a { color: #1c2840; text-decoration: underline; }
+  .directions-group a, .navigate-row { display: none; }
+  .item-links a[href^="tel:"], .item-links a[href^="http"] { text-decoration: underline; }
+}
