@@ -1201,18 +1201,6 @@
           "restaurant": null
         },
         {
-          "type": "Transport",
-          "time": "14:00",
-          "end_time": null,
-          "text": "Walk to Documentation Center — 25 min via Altstadt",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
           "type": "Dinner",
           "time": "19:00",
           "end_time": null,
@@ -1314,6 +1302,18 @@
             "check_out_time": "12:00",
             "confirmation_note": "Request luggage hold until 2:00 PM pickup"
           },
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "09:00",
+          "end_time": null,
+          "text": "Walk to Documentation Center — 25 min via Altstadt",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
           "restaurant": null
         },
         {
@@ -1542,7 +1542,8 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Quinta do Vallado is a real Douro Valley estate ~100km from Porto; this item claims a riverfront tasting room on Avenida Diogo Leite in Vila Nova de Gaia, which is plausible (several Douro producers run Gaia tasting rooms) but not independently confirmed - verify this specific location exists before relying on it."
         },
         {
           "type": "Dinner",

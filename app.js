@@ -199,6 +199,9 @@
         flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
       }
     }
+    if (item._locationUnverified) {
+      flightWarn += '<div class="flight-warn">⚠ ' + esc(item._locationUnverified) + '</div>';
+    }
     var navigateRow = item.type === 'Transport'
       ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + '</div>'
       : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
@@ -216,13 +219,50 @@
       '</div></div>';
   }
 
+  function toMinutes(t) {
+    if (!t || !/^\d{1,2}:\d{2}$/.test(t)) return null;
+    var p = t.split(':');
+    return parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+  }
+
+  // Several days had large silent gaps between a morning activity and an
+  // evening dinner (e.g. 5-7 hours unaccounted for) with nothing telling
+  // the reader it's unscheduled leisure time rather than a missing item -
+  // label it honestly instead of leaving it silent. Threshold is 150 min;
+  // doesn't invent an activity, just names the gap.
+  var FREE_TIME_THRESHOLD_MIN = 150;
+  function freeTimeCardHTML(gapMin) {
+    var hrs = (gapMin / 60).toFixed(1).replace(/\.0$/, '');
+    return '<div class="item free-time-item">' +
+      '<div class="item-icon">🕐</div>' +
+      '<div class="item-body"><div class="item-text">Free time (~' + hrs + ' hrs, unscheduled)</div></div></div>';
+  }
+
   function renderDayBlockHTML(day, dayNum) {
     var weatherLine = (day.weather && (day.weather.summary || day.weather.condition)) || '';
     var html = '<div class="day-block" id="day-' + dayNum + '">' +
       '<div class="day-block-label">' + esc(day.label) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
       (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) + '</div>' : '');
-    (day.items || []).forEach(function (item) { html += renderItemHTML(item, day); });
+    var items = day.items || [];
+    items.forEach(function (item, i) {
+      html += renderItemHTML(item, day);
+      // A Flight item's own "end" is its arrival time (item.flight.arrive_time),
+      // not its departure time (item.time) - using item.time here produced a
+      // false ~14hr "free time" gap between an 8:20 AM departure/8:40 PM
+      // arrival and the next item, caught by screenshot before push.
+      var flightArrive = item.type === 'Flight' && item.flight ? toMinutes(item.flight.arrive_time) : null;
+      var thisEnd = toMinutes(item.end_time) || flightArrive || toMinutes(item.time);
+      var next = items[i + 1];
+      var nextStart = next ? toMinutes(next.time) : null;
+      // Skip when the next item is just an "Overnight at X" reminder - that's
+      // bedtime, not meaningfully free/unscheduled time to call out.
+      var nextIsOvernightReminder = next && next.type === 'Hotel' && /^overnight\b/i.test(next.text || '');
+      if (thisEnd != null && nextStart != null && !nextIsOvernightReminder &&
+          (nextStart - thisEnd) >= FREE_TIME_THRESHOLD_MIN) {
+        html += freeTimeCardHTML(nextStart - thisEnd);
+      }
+    });
     html += '</div>';
     return html;
   }
