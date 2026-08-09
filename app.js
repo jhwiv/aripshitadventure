@@ -131,11 +131,24 @@
     var icon = ITEM_ICONS[item.type] || '•';
     var extras = itemExtra(item);
     var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
+    var timeLine = esc(formatTime12(item.time)) + (item.end_time ? '–' + esc(formatTime12(item.end_time)) : '');
+    var flightWarn = '';
+    if (item.type === 'Flight' && item.flight) {
+      var f = item.flight;
+      // Flight items previously only showed the departure time, leaving a
+      // long unexplained gap to whatever the next item was - show arrival
+      // too, same info the Air & Hotel tab already has.
+      if (f.arrive_time) timeLine += ' · Arrives ' + esc(formatTime12(f.arrive_time));
+      if (f._modelEstimatedFlightNumber) {
+        flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
+      }
+    }
     return '<div class="item">' +
       '<div class="item-icon">' + icon + '</div>' +
       '<div class="item-body">' +
-      '<div class="item-time">' + esc(formatTime12(item.time)) + (item.end_time ? '–' + esc(formatTime12(item.end_time)) : '') + '</div>' +
+      '<div class="item-time">' + timeLine + '</div>' +
       '<div class="item-text">' + esc(item.text || '') + '</div>' +
+      flightWarn +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
       '<div class="item-links">' +
       directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
@@ -178,8 +191,10 @@
       html += '<div class="cond-day"><div class="cond-day-label">' + esc(day.label) + '</div>';
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
+        var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
+          ? ' <span class="cond-warn">⚠ unverified schedule</span>' : '';
         html += '<div class="cond-row"><span class="cond-time">' + esc(formatTime12(item.time)) + '</span> ' +
-          esc(item.text || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + '</div>';
+          esc(item.text || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + '</div>';
       });
       html += '</div>';
     });
@@ -279,15 +294,20 @@
       var item = row.item;
       var icon = ITEM_ICONS[item.type] || '•';
       var flightLine = '';
+      var flightWarn = '';
       if (item.type === 'Flight' && item.flight) {
         var f = item.flight;
         flightLine = '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
           (f.duration ? ' · ' + esc(f.duration) : '') + (f.nonstop ? ' · Nonstop' : '') + '</div>';
+        if (f._modelEstimatedFlightNumber) {
+          flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
+        }
       }
       return '<div class="ref-card">' +
         '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(formatTime12(item.time)) + '</div>' +
         '<div class="ref-line">' + esc(item.text || '') + '</div>' +
         flightLine +
+        flightWarn +
         '</div>';
     }).join('');
   })();
