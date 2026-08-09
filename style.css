@@ -241,6 +241,12 @@ img { max-width: 100%; display: block; }
 .day-block-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #3f7d86; font-weight: 700; }
 .day-block-headline { font-size: 20px; font-weight: 700; margin: 4px 0 4px; font-family: 'Playfair Display', Georgia, serif; }
 .day-block-weather { font-size: 13px; color: #5b6577; margin-bottom: 16px; }
+.weather-tip {
+  font-style: italic; font-size: 13px; color: var(--navy);
+  margin: 6px 0 0; padding: 6px 10px;
+  background: #fff7e6; border-left: 2px solid var(--gold);
+  border-radius: 0 4px 4px 0; display: inline-block;
+}
 
 .item { display: flex; gap: 12px; padding: 12px 0; border-top: 1px dashed #e6e3da; }
 .item:first-of-type { border-top: none; }

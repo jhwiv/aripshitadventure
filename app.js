@@ -238,12 +238,37 @@
       '<div class="item-body"><div class="item-text">Free time (~' + hrs + ' hrs, unscheduled)</div></div></div>';
   }
 
+  // day.weather is a plain string in this trip's real data (e.g. "High 59°F
+  // / low 48°F · overcast with 40% chance of light rain") - not an object
+  // with .summary/.condition fields, which a previous version of this
+  // function assumed. That silently blanked the per-day weather line on
+  // every city tab, since the object-shaped access always returned
+  // undefined on a string. Fixed to read the string directly.
+  function weatherAdvisory(weatherStr) {
+    if (!weatherStr) return '';
+    var hiMatch = weatherStr.match(/High\s+(\d+)°F/i);
+    var loMatch = weatherStr.match(/low\s+(\d+)°F/i);
+    var rainMatch = weatherStr.match(/(\d+)%/);
+    var hi = hiMatch ? parseInt(hiMatch[1], 10) : null;
+    var lo = loMatch ? parseInt(loMatch[1], 10) : null;
+    var rainPct = rainMatch ? parseInt(rainMatch[1], 10) : null;
+    var bits = [];
+    if (rainPct != null && rainPct >= 30) bits.push('pack a rain layer');
+    if (lo != null && lo <= 50) bits.push('mornings run cool — bring a jacket');
+    if (hi != null && hi >= 70) bits.push('warm for the season — light layers work');
+    if (!bits.length) return '';
+    var joined = bits.join('; ');
+    return joined.charAt(0).toUpperCase() + joined.slice(1) + '.';
+  }
+
   function renderDayBlockHTML(day, dayNum) {
-    var weatherLine = (day.weather && (day.weather.summary || day.weather.condition)) || '';
+    var weatherLine = (typeof day.weather === 'string' && day.weather) || '';
+    var advisory = weatherAdvisory(weatherLine);
     var html = '<div class="day-block" id="day-' + dayNum + '">' +
       '<div class="day-block-label">' + esc(day.label) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
-      (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) + '</div>' : '');
+      (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) +
+        (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') + '</div>' : '');
     var items = day.items || [];
     items.forEach(function (item, i) {
       html += renderItemHTML(item, day);
