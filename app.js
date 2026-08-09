@@ -916,6 +916,18 @@
     if (e.key === 'Enter') sendChat();
   });
 
+  var chatSuggestions = document.getElementById('chatSuggestions');
+  if (chatSuggestions) {
+    chatSuggestions.addEventListener('click', function (e) {
+      var btn = e.target.closest('.chat-suggest-btn');
+      if (!btn) return;
+      var q = btn.getAttribute('data-q');
+      if (!q) return;
+      chatInput.value = q;
+      sendChat();
+    });
+  }
+
 })();
 
 /* ---------------------------------------------------------

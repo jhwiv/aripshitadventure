@@ -326,6 +326,13 @@ img { max-width: 100%; display: block; }
 
 .local-cats { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .local-cats button { border: 1px solid #dcd8cf; background: #f8f7f3; border-radius: 20px; padding: 6px 12px; font-size: 12.5px; cursor: pointer; }
+
+.chat-suggestions { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 14px; border-bottom: 1px solid #dcd8cf; }
+.chat-suggest-btn {
+  border: 1px solid #cfe0e0; background: #eef3f3; color: #1c2840; border-radius: 20px;
+  padding: 6px 12px; font-size: 11.5px; cursor: pointer; white-space: nowrap;
+}
+.chat-suggest-btn:hover { background: #dfeaea; }
 .local-result { padding: 8px 0; border-top: 1px dashed #e6e3da; }
 .local-result:first-child { border-top: none; }
 .local-result .name { font-weight: 700; font-size: 13.5px; }
