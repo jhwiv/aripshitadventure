@@ -245,6 +245,40 @@
   })();
 
   /* ---------------------------------------------------------
+     TRANSPORT QUICK REFERENCE — every transfer/flight in the plan, in
+     order. The drive/transfer duration is already embedded in each
+     Transport item's own text field (e.g. "Drive to Juno Beach — 45 min
+     via D514") - this just pulls every one of those into one scannable
+     list instead of leaving them buried inside each day's card stack.
+     --------------------------------------------------------- */
+  (function renderTransportQuickRef() {
+    var rows = [];
+    (TRIP.days || []).forEach(function (day, idx) {
+      (day.items || []).forEach(function (item) {
+        if (item.type !== 'Transport' && item.type !== 'Flight') return;
+        rows.push({ dayNum: idx + 1, dayLabel: day.label, item: item });
+      });
+    });
+    var el = document.getElementById('transportQuickRef');
+    if (!rows.length) { el.innerHTML = '<p class="ai-note">No transport/flight items in this plan.</p>'; return; }
+    el.innerHTML = rows.map(function (row) {
+      var item = row.item;
+      var icon = ITEM_ICONS[item.type] || '•';
+      var flightLine = '';
+      if (item.type === 'Flight' && item.flight) {
+        var f = item.flight;
+        flightLine = '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
+          (f.duration ? ' · ' + esc(f.duration) : '') + (f.nonstop ? ' · Nonstop' : '') + '</div>';
+      }
+      return '<div class="ref-card">' +
+        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(item.time || '') + '</div>' +
+        '<div class="ref-line">' + esc(item.text || '') + '</div>' +
+        flightLine +
+        '</div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
      TRANSIT — general per-city reference
      --------------------------------------------------------- */
   (function renderTransit() {
@@ -449,6 +483,26 @@
       var p = PINS.landmarks[loc];
       addMarker(loc.split(',')[0], p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null);
     });
+
+    // Route overview line — straight connectors between city centers in the
+    // order the trip actually visits them (derived from each day's own
+    // `city` field, deduped for consecutive repeats). This is NOT a real
+    // driving route (no routing API/key used or available) - just shows the
+    // overall shape of the trip at a glance. Labeled honestly, not implied
+    // as turn-by-turn directions.
+    var visitOrder = [];
+    (TRIP.days || []).forEach(function (day) {
+      if (day.city && visitOrder[visitOrder.length - 1] !== day.city) visitOrder.push(day.city);
+    });
+    var routePoints = visitOrder
+      .map(function (city) { return PINS.cities[city]; })
+      .filter(Boolean)
+      .map(function (c) { return [c.lat, c.lng]; });
+    if (routePoints.length > 1) {
+      L.polyline(routePoints, {
+        color: '#c9a24b', weight: 3, opacity: 0.85, dashArray: '2 10', lineCap: 'round'
+      }).addTo(mapInstance).bindPopup('Overview route between cities — straight-line, not an actual driving path.');
+    }
 
     if (bounds.length) mapInstance.fitBounds(bounds, { padding: [24, 24] });
   }
