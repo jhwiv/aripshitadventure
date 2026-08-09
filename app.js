@@ -949,6 +949,73 @@
     });
   }
 
+  /* ---------------------------------------------------------
+     TIME PILL — home vs. current-leg local time, adapted from
+     maritimes-grandloop-v2. The zone table is built from the real
+     per-day city + computed date already on the page (dayDateISO,
+     TRIP.days) rather than a separately hand-maintained date range,
+     so it can't drift from the actual itinerary.
+     --------------------------------------------------------- */
+  (function () {
+    var pill = document.getElementById('time-pill');
+    if (!pill) return;
+
+    var CITY_TZ = {
+      London: { tz: 'Europe/London', flag: '🇬🇧' },
+      Normandy: { tz: 'Europe/Paris', flag: '🇫🇷' },
+      Nuremberg: { tz: 'Europe/Berlin', flag: '🇩🇪' },
+      Porto: { tz: 'Europe/Lisbon', flag: '🇵🇹' }
+    };
+    var HOME_TZ = 'America/New_York'; // trip departs EWR — Eastern is the traveler's home zone
+
+    var zones = (TRIP.days || []).map(function (day, idx) {
+      return { date: dayDateISO(idx), city: day.city, info: CITY_TZ[day.city] };
+    }).filter(function (z) { return z.info; });
+
+    function todayISO() {
+      var d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    function currentZone() {
+      var today = todayISO();
+      for (var i = 0; i < zones.length; i++) {
+        if (zones[i].date === today) return zones[i];
+      }
+      return zones[0] || null; // before/after the trip: default to the first leg
+    }
+
+    function fmtTime(tz) {
+      return new Date().toLocaleTimeString('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    var destFlag = document.getElementById('tp-dest-flag');
+    var destTime = document.getElementById('tp-dest-time');
+    var destLabel = document.getElementById('tp-dest-label');
+    var homeTime = document.getElementById('tp-home-time');
+    var sep = document.getElementById('tp-sep-1');
+    var destZone = document.getElementById('tp-dest');
+
+    function update() {
+      homeTime.textContent = fmtTime(HOME_TZ);
+      var zone = currentZone();
+      if (!zone || zone.info.tz === HOME_TZ) {
+        sep.style.display = 'none';
+        destZone.style.display = 'none';
+      } else {
+        sep.style.display = '';
+        destZone.style.display = '';
+        destFlag.textContent = zone.info.flag;
+        destTime.textContent = fmtTime(zone.info.tz);
+        destLabel.textContent = zone.city.toUpperCase();
+      }
+      pill.classList.add('visible');
+    }
+
+    update();
+    setInterval(update, 30000);
+  })();
+
 })();
 
 /* ---------------------------------------------------------

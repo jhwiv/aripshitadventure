@@ -309,6 +309,21 @@ function dismissWelcome() {
 
 <div class="footer-note" id="footerNote"></div>
 
+<!-- Home/local time comparison pill -->
+<div id="time-pill" aria-label="Timezone comparison">
+  <div class="tp-zone" id="tp-home">
+    <span class="tp-flag">🇺🇸</span>
+    <span class="tp-time" id="tp-home-time"></span>
+    <span class="tp-label">EASTERN (HOME)</span>
+  </div>
+  <div class="tp-sep" id="tp-sep-1"></div>
+  <div class="tp-zone" id="tp-dest">
+    <span class="tp-flag" id="tp-dest-flag">🇬🇧</span>
+    <span class="tp-time" id="tp-dest-time"></span>
+    <span class="tp-label" id="tp-dest-label">LONDON</span>
+  </div>
+</div>
+
 <!-- Floating action buttons: local search + AI concierge -->
 <div class="fab-row">
   <button class="fab" id="fabChat" title="Ask the trip concierge" aria-label="Chat">💬</button>

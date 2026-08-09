@@ -396,7 +396,7 @@ img { max-width: 100%; display: block; }
    full trip in one print job isn't attempted here - see parking-lot
    items in docs/new-trip-site-playbook.md for that as a future add) ── */
 @media print {
-  .site-nav, .fab-row, .panel, #welcome-screen, .map-filters,
+  .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill,
   #itineraryMap, .sv-frame, .banner::before { display: none !important; }
   .hero { background: none !important; color: #1c2840; padding: 12px 0; }
   .hero-overlay { display: none; }
@@ -409,4 +409,28 @@ img { max-width: 100%; display: block; }
   a { color: #1c2840; text-decoration: underline; }
   .directions-group a, .navigate-row { display: none; }
   .item-links a[href^="tel:"], .item-links a[href^="http"] { text-decoration: underline; }
+}
+
+/* ── TIME PILL ── home-vs-local clock, adapted from maritimes-grandloop-v2.
+   Trip-zone table is derived at runtime from the real per-day city/date
+   data already embedded on the page (app.js), not duplicated here. ── */
+#time-pill {
+  position: fixed; top: 14px; right: 14px; z-index: 65;
+  display: none; align-items: center; gap: 0;
+  background: var(--navy);
+  border: 1px solid rgba(200, 168, 75, 0.25);
+  border-radius: 20px;
+  padding: 5px 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  font-family: 'DM Mono', monospace;
+  cursor: default; user-select: none;
+}
+#time-pill.visible { display: flex; }
+#time-pill .tp-zone { display: flex; flex-direction: column; align-items: center; min-width: 58px; }
+#time-pill .tp-flag { font-size: 10px; line-height: 1; margin-bottom: 1px; }
+#time-pill .tp-time { font-size: 11px; font-weight: 600; color: var(--cream); letter-spacing: 0.02em; white-space: nowrap; }
+#time-pill .tp-label { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dim); margin-top: 1px; white-space: nowrap; }
+#time-pill .tp-sep { width: 1px; height: 20px; background: rgba(200, 168, 75, 0.25); margin: 0 8px; }
+@media (max-width: 480px) {
+  #time-pill { top: auto; bottom: 14px; right: 14px; }
 }
