@@ -877,3 +877,58 @@
   });
 
 })();
+
+/* ---------------------------------------------------------
+   PACKING LIST persistence (from travel-app-components/packing-list-v2)
+   Separate top-level IIFE (matches the component's documented pattern) -
+   works regardless of which tab is active since checkboxes exist in the
+   DOM at all times, just hidden via .tab-section { display: none }.
+   --------------------------------------------------------- */
+(function () {
+  var panel = document.getElementById('tab-packing');
+  if (!panel) return;
+  var STORAGE_KEY = 'aripshitadventure-packing-v1';
+  var checks = Array.prototype.slice.call(panel.querySelectorAll('.pack-list input[type="checkbox"]'));
+  if (!checks.length) return;
+
+  checks.forEach(function (cb, i) {
+    var groupEl = cb.closest('[data-pack-group]');
+    var group = groupEl ? groupEl.getAttribute('data-pack-group') : 'x';
+    cb.dataset.pkid = group + ':' + i;
+  });
+
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { saved = {}; }
+  checks.forEach(function (cb) { if (saved[cb.dataset.pkid]) cb.checked = true; });
+
+  var progress = document.getElementById('pack-progress');
+  function updateProgress() {
+    var done = checks.filter(function (c) { return c.checked; }).length;
+    if (progress) progress.textContent = done + ' of ' + checks.length + ' packed';
+    checks.forEach(function (c) {
+      var li = c.closest('li');
+      if (li) li.classList.toggle('is-packed', c.checked);
+    });
+  }
+  function save() {
+    var out = {};
+    checks.forEach(function (c) { if (c.checked) out[c.dataset.pkid] = 1; });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(out)); } catch (e) { /* ignore */ }
+  }
+
+  checks.forEach(function (cb) {
+    cb.addEventListener('change', function () { save(); updateProgress(); });
+  });
+
+  var resetBtn = document.getElementById('pack-reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      if (!confirm('Clear all checked items on the packing list?')) return;
+      checks.forEach(function (c) { c.checked = false; });
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+      updateProgress();
+    });
+  }
+
+  updateProgress();
+})();

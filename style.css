@@ -1,3 +1,11 @@
+:root {
+  /* Mapped for reuse of travel-app-components snippets (welcome-screen,
+     packing-list-v2), which expect these variable names. Values match
+     this site's existing hardcoded palette exactly - not new colors. */
+  --navy: #0d2133; --navy2: #091b2a; --gold: #c9a24b; --gold-dim: #a8894a;
+  --gold-soft: #dcc48a; --cream: #f8f7f3; --steel: #5b6577; --ink: #1c2840;
+  --paper: #fff; --rule: #dcd8cf;
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -10,6 +18,74 @@ body {
 h1, h2, h3, .display { font-family: 'Playfair Display', Georgia, serif; }
 .mono, .item-time, .tag, .eyebrow, .day-block-label, .section-heading,
 .nav-chip, .cond-time, .meal-badge, .wx-stat, .banner-eyebrow, .ref-city { font-family: 'DM Mono', monospace; }
+/* ── WELCOME / ONBOARDING SCREEN (from travel-app-components/welcome-screen) ── */
+#welcome-screen{
+  position:fixed;inset:0;z-index:99999;
+  background:linear-gradient(170deg, #0b1826 0%, #0d2133 55%, #091b2a 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 20px 32px;
+}
+#welcome-screen.hidden{
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .5s ease,visibility 0s linear .5s;
+}
+#welcome-screen.hidden *{pointer-events:none!important}
+#welcome-screen > *:not(.welcome-skip-bar){position:relative;z-index:1}
+.welcome-skip-bar{ position:absolute;top:env(safe-area-inset-top,14px);right:16px;z-index:2;padding:14px 0; }
+.welcome-skip{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:8px 16px;cursor:pointer;
+}
+.welcome-skip:hover{color:#fff;background:rgba(0,0,0,.5)}
+.welcome-eyebrow{ font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px; }
+.welcome-title{
+  font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,42px);font-weight:900;
+  color:#fff;line-height:1.05;margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,.3);
+}
+.welcome-subtitle{ font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px; }
+.welcome-body{ font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;color:rgba(255,255,255,.7);margin-bottom:16px; }
+.welcome-card{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;margin-bottom:12px;
+}
+.welcome-card-label{ font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px; }
+.welcome-features{ display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px; }
+.welcome-feature{ display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.05); }
+.welcome-feature-icon{font-size:15px;flex-shrink:0}
+.welcome-feature-name{ font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:600; }
+.welcome-install-row{ display:flex;gap:8px;margin-bottom:10px; }
+.welcome-install-btn{
+  flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px;cursor:pointer;
+  transition:all .2s;text-decoration:none;
+}
+.welcome-install-btn:hover,.welcome-install-btn:active{ background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25); }
+.welcome-install-icon{font-size:22px;flex-shrink:0}
+.welcome-install-text{display:flex;flex-direction:column}
+.welcome-install-title{ font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.85); }
+.welcome-install-desc{ font-family:'Crimson Pro',serif;font-size:11.5px;color:rgba(255,255,255,.45);margin-top:1px; }
+.welcome-tip{
+  background:rgba(201,162,75,.15);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(201,162,75,.35);border-radius:10px;padding:12px 16px;margin-bottom:16px;
+}
+.welcome-tip-label{ font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;font-weight:600; }
+.welcome-tip-text{ font-family:'Crimson Pro',serif;font-size:15px;line-height:1.5;color:rgba(255,255,255,.85); }
+.welcome-enter-btn{
+  display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  padding:14px 20px;width:100%;border-radius:8px;background:rgba(255,255,255,.92);color:var(--navy2);
+  border:none;cursor:pointer;transition:all .2s;min-height:46px;
+}
+.welcome-enter-btn:hover{background:#fff;transform:translateY(-1px)}
+.welcome-enter-btn:active{transform:scale(.97)}
+
+/* FABs/panels stay hidden until the welcome screen is dismissed */
+body:not(.welcomed) .fab-row,
+body:not(.welcomed) .panel { display: none !important; }
+
 a { color: #3f7d86; text-decoration: none; }
 a:hover { text-decoration: underline; }
 img { max-width: 100%; display: block; }
@@ -259,6 +335,48 @@ img { max-width: 100%; display: block; }
 .chat-msg a { text-decoration: underline; }
 
 .footer-note { font-size: 12px; color: #9aa1ad; text-align: center; padding: 24px 0; }
+
+/* ── PACKING LIST (from travel-app-components/packing-list-v2) ── */
+.pack-actions {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 14px 0 22px; padding: 12px 14px; background: #f8f7f3;
+  border: 1px solid #dcd8cf; border-left: 3px solid var(--gold);
+  border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 12px;
+  letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy);
+}
+.pack-progress { color: #3f7d86; font-weight: 600; }
+.pack-reset {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: transparent; color: #5b6577; border: 1px solid #dcd8cf; padding: 6px 12px;
+  border-radius: 3px; cursor: pointer; transition: color .15s ease, border-color .15s ease;
+}
+.pack-reset:hover { color: #c9524b; border-color: #c9524b; }
+.pack-group { margin: 22px 0 8px; }
+.pack-group .grouphead { margin-bottom: 10px; font-size: 15px; font-weight: 700; }
+.pack-list { list-style: none; padding: 0; margin: 0 0 6px; border-top: 1px solid #dcd8cf; }
+.pack-list li { border-bottom: 1px solid #dcd8cf; }
+.pack-list label {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 4px; cursor: pointer;
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 16px; line-height: 1.45;
+  color: #1c2840; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.pack-list input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none; width: 20px; height: 20px; flex-shrink: 0;
+  margin-top: 2px; border: 1.5px solid var(--gold-soft); border-radius: 3px; background: #fff;
+  position: relative; cursor: pointer; transition: background .15s ease, border-color .15s ease;
+}
+.pack-list input[type="checkbox"]:hover { border-color: #3f7d86; }
+.pack-list input[type="checkbox"]:checked { background: #3f7d86; border-color: #3f7d86; }
+.pack-list input[type="checkbox"]:checked::after {
+  content: ""; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.pack-list li.is-packed span { color: #9aa1ad; text-decoration: line-through; text-decoration-color: var(--gold-soft); }
+@media (max-width: 540px) {
+  .pack-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .pack-progress { text-align: center; }
+  .pack-list label { font-size: 15.5px; }
+}
 
 @media (max-width: 480px) {
   #itineraryMap { height: 320px; }
