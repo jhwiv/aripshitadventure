@@ -1427,66 +1427,38 @@
           "type": "Dinner",
           "time": "20:00",
           "end_time": null,
-          "text": "Dinner at Antiqvvm",
+          "text": "Dinner at Cantinho do Avillez",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "Antiqvvm",
-            "neighborhood": "Vila Nova de Gaia",
-            "cuisine": "Contemporary Portuguese (1 Michelin star)",
-            "price_range": "$$$$",
-            "why": "Michelin-starred, perched on a hillside with floor-to-ceiling Douro views. Chef Vítor Matos weaves northern Portuguese tradition into precise, elegant plates — octopus rice, dry-aged beef with turnip, citrus-forward desserts. Book the terrace if weather holds.",
+            "name": "Cantinho do Avillez",
+            "neighborhood": "Baixa (downtown Porto)",
+            "cuisine": "Contemporary Portuguese",
+            "price_range": "$$$",
+            "why": "José Avillez's Porto outpost — playful, ingredient-focused, excellent wine list. Same thoughtful sourcing, less formal setting. Open daily.",
             "reservation": {
-              "platform": "phone",
-              "phone": "+351 22 377 6543"
+              "platform": "resy",
+              "url": "https://resy.com/cities/opo/cantinho-do-avillez"
             },
             "contact": {
-              "address": "Rua de Entre-Quintas 220, Vila Nova de Gaia, Porto",
-              "phone": "+351 22 377 6543",
-              "website": "https://www.antiqvvm.pt",
-              "hours": "Tue–Sat 12:30–3:00 PM, 7:30–11:00 PM"
+              "address": "Rua Mouzinho da Silveira 166, Porto",
+              "phone": "+351 22 327 6712",
+              "hours": "Daily 12:00–3:00 PM, 7:00–11:00 PM"
             },
             "open_days": [
+              "mon",
               "tue",
               "wed",
               "thu",
               "fri",
-              "sat"
+              "sat",
+              "sun"
             ],
-            "closure_note": "Closed Sundays and Mondays — arriving Monday so dinner tonight won't work; moved to Day 11.",
-            "backup": {
-              "name": "Cantinho do Avillez",
-              "neighborhood": "Baixa (downtown Porto)",
-              "cuisine": "Contemporary Portuguese",
-              "price_range": "$$$",
-              "why": "José Avillez's Porto outpost — playful, ingredient-focused, excellent wine list. Same thoughtful sourcing, less formal setting. Open daily.",
-              "reservation": {
-                "platform": "resy",
-                "url": "https://resy.com/cities/opo/cantinho-do-avillez"
-              },
-              "contact": {
-                "address": "Rua Mouzinho da Silveira 166, Porto",
-                "phone": "+351 22 327 6712",
-                "hours": "Daily 12:00–3:00 PM, 7:00–11:00 PM"
-              },
-              "open_days": [
-                "mon",
-                "tue",
-                "wed",
-                "thu",
-                "fri",
-                "sat",
-                "sun"
-              ],
-              "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-            },
-            "_weekdayMismatch": "mon",
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Antiqvvm%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
           }
         },
         {
@@ -1560,7 +1532,7 @@
             "neighborhood": "Vila Nova de Gaia",
             "cuisine": "Contemporary Portuguese (1 Michelin star)",
             "price_range": "$$$$",
-            "why": "Return visit — first appeared Day 10. Michelin-starred, perched on a hillside with floor-to-ceiling Douro views. Chef Vítor Matos weaves northern Portuguese tradition into precise, elegant plates — octopus rice, dry-aged beef with turnip, citrus-forward desserts. Book the terrace if weather holds.",
+            "why": "Michelin-starred, perched on a hillside with floor-to-ceiling Douro views. Chef Vítor Matos weaves northern Portuguese tradition into precise, elegant plates — octopus rice, dry-aged beef with turnip, citrus-forward desserts. Book the terrace if weather holds.",
             "reservation": {
               "platform": "phone",
               "phone": "+351 22 377 6543"
@@ -1606,7 +1578,6 @@
               "verify_status": "verify_before_booking",
               "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
             },
-            "_isReturnVisit": true,
             "verify_status": "verify_before_booking",
             "verify_url": "https://www.google.com/maps/search/?api=1&query=Antiqvvm%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
           }

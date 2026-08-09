@@ -559,6 +559,58 @@
   })();
 
   /* ---------------------------------------------------------
+     RESERVATION TIMELINE — every restaurant reservation, sorted by
+     date, with an urgency badge computed from real elapsed days
+     (today → the reservation's real date, via dayDateISO). The
+     platform-specific "booking window" framing (OpenTable/Resy
+     windows typically open ~30 days out) is general, labeled
+     booking-channel knowledge — never a per-venue confirmed fact,
+     since this trip's data has no confirmation-tracking field.
+     --------------------------------------------------------- */
+  (function renderReservationTimeline() {
+    var el = document.getElementById('reservationTimeline');
+    if (!el) return;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var rows = [];
+    (TRIP.days || []).forEach(function (day, idx) {
+      (day.items || []).forEach(function (item) {
+        if (!item.restaurant) return;
+        var r = item.restaurant;
+        var resDate = new Date(dayDateISO(idx) + 'T00:00:00');
+        var daysUntil = Math.round((resDate - today) / 86400000);
+        rows.push({ day: day.label, time: item.time, r: r, daysUntil: daysUntil, dateISO: dayDateISO(idx) });
+      });
+    });
+    rows.sort(function (a, b) { return a.dateISO.localeCompare(b.dateISO); });
+
+    if (!rows.length) { el.innerHTML = '<p class="ai-note">No restaurant reservations in this plan.</p>'; return; }
+
+    var ONLINE_PLATFORMS = { resy: 1, opentable: 1, tock: 1, yelp: 1 };
+    el.innerHTML = rows.map(function (row) {
+      var r = row.r;
+      var platform = (r.reservation && r.reservation.platform) || null;
+      var cls = 'tl-flex', badge = 'Reservation info unavailable';
+      if (row.daysUntil < 0) {
+        cls = 'tl-done'; badge = 'Date has passed';
+      } else if (platform === 'walkin') {
+        cls = 'tl-flex'; badge = 'No booking needed';
+      } else if (platform === 'phone') {
+        cls = 'tl-soon'; badge = 'Call to reserve';
+      } else if (ONLINE_PLATFORMS[platform]) {
+        if (row.daysUntil <= 30) { cls = 'tl-urgent'; badge = 'Booking window likely open'; }
+        else { cls = 'tl-flex'; badge = 'Opens ~' + (row.daysUntil - 30) + 'd (in ' + row.daysUntil + ' days)'; }
+      }
+      return '<li class="timeline-row ' + cls + '">' +
+        '<span class="tl-badge">' + esc(badge) + '</span>' +
+        '<div class="tl-body">' +
+        '<p class="tl-name">' + esc(r.name) + ' · ' + esc(row.day.split('·').slice(0, 2).map(function (s) { return s.trim(); }).join(' · ')) + ', ' + esc(formatTime12(row.time)) + '</p>' +
+        '<p class="tl-note">' + esc(RESERVATION_LABELS[platform] || 'Verify booking channel directly with the venue') +
+        (r.contact && r.contact.phone ? ' · <a href="tel:' + esc(r.contact.phone) + '">' + esc(r.contact.phone) + '</a>' : '') + '</p>' +
+        '</div></li>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
      LIVE WEATHER (Open-Meteo, free, no key) — full field set
      --------------------------------------------------------- */
   var WX_CODES = {

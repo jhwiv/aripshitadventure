@@ -219,6 +219,22 @@ img { max-width: 100%; display: block; }
 .meal-badge { font-size: 10px; text-transform: uppercase; padding: 2px 8px; border-radius: 8px; background: #eef3f3; color: #3f7d86; white-space: nowrap; }
 .meal-meta { font-size: 12px; color: #5b6577; margin-top: 2px; }
 
+/* ---- Reservation Timeline (adapted from santafe-itinerary) ---- */
+.timeline-intro { font-size: 13.5px; color: #5b6577; line-height: 1.55; margin: 6px 0 16px; }
+.timeline-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.timeline-row { display: grid; grid-template-columns: 1fr; gap: 6px; background: #fff; border: 1px solid #dcd8cf; border-left: 3px solid #dcd8cf; padding: 12px 14px; border-radius: 4px; }
+.timeline-row.tl-urgent { border-left-color: #c9524b; background: #fdf3ee; }
+.timeline-row.tl-soon { border-left-color: var(--gold); }
+.timeline-row.tl-done { border-left-color: #2d6b3b; background: #eaf4ec; }
+.timeline-row.tl-flex { border-left-color: #9aa1ad; }
+.tl-badge { display: inline-block; width: fit-content; justify-self: start; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; background: var(--cream); color: var(--navy); border: 1px solid #dcd8cf; }
+.tl-urgent .tl-badge { background: #c9524b; color: #fff; border-color: #c9524b; }
+.tl-soon .tl-badge { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.tl-done .tl-badge { background: #2d6b3b; color: #fff; border-color: #2d6b3b; }
+.tl-flex .tl-badge { background: #fff; color: #9aa1ad; }
+.tl-name { font-weight: 700; font-size: 14.5px; margin: 0 0 2px; }
+.tl-note { font-size: 12.5px; color: #5b6577; margin: 0; line-height: 1.5; }
+
 /* ---- Day items (used inside city tabs) ---- */
 .day-block { padding: 24px 0; border-bottom: 1px solid #dcd8cf; }
 .day-block:last-child { border-bottom: none; }
