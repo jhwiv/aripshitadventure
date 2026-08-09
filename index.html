@@ -8,38 +8,127 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0d2133">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="hero">
+<!-- ============================================================
+     HERO — background photo set via #hero rule in style.css once
+     a real photo URL is supplied. Until then it's the solid navy
+     gradient already in style.css.
+     ============================================================ -->
+<header class="hero" id="hero">
+  <div class="hero-overlay"></div>
   <div class="hero-inner">
     <div class="eyebrow">Oct 10 – Oct 24, 2026 · 14 nights · 2 adults</div>
-    <h1 id="heroTitle">Loading…</h1>
+    <h1 id="heroTitle">A Ripshit Adventure</h1>
     <div class="route" id="heroRoute"></div>
     <div class="meta" id="heroMeta"></div>
   </div>
 </header>
 
-<nav class="day-nav" id="dayNav"></nav>
+<nav class="site-nav" id="siteNav">
+  <div class="nav-row" id="navRow1">
+    <button class="nav-chip active" data-target="tab-condensed">Condensed</button>
+    <button class="nav-chip" data-target="tab-city-London">London</button>
+    <button class="nav-chip" data-target="tab-city-Normandy">Normandy</button>
+    <button class="nav-chip" data-target="tab-city-Nuremberg">Nuremberg</button>
+    <button class="nav-chip" data-target="tab-city-Porto">Porto</button>
+  </div>
+  <div class="nav-row" id="navRow2">
+    <button class="nav-chip" data-target="tab-essentials">Essentials</button>
+    <button class="nav-chip" data-target="tab-transit">Transit</button>
+    <button class="nav-chip" data-target="tab-streetviews">Street Views</button>
+    <button class="nav-chip" data-target="tab-history">History</button>
+    <button class="nav-chip" data-target="tab-map">Map</button>
+    <button class="nav-chip" data-target="tab-airhotel">Air &amp; Hotel</button>
+  </div>
+</nav>
 
 <main class="container">
 
-  <section id="overview">
+  <!-- ===================== CONDENSED ===================== -->
+  <section class="tab-section active" id="tab-condensed">
     <div class="section-heading">Trip Overview</div>
     <div class="city-cards" id="cityCards"></div>
     <div class="logistics" id="logisticsChips"></div>
-  </section>
 
-  <section class="tint" id="arcSection">
-    <div class="section-heading">The Arc</div>
+    <div class="section-heading" style="margin-top:32px;">The Arc</div>
     <p class="arc-text" id="arcText"></p>
+
+    <div class="section-heading" style="margin-top:32px;">Condensed Itinerary</div>
+    <div id="condensedList"></div>
+
+    <div class="meals-banner">
+      Booking channel shown below is from the plan itself — none of these
+      reservations are confirmation-tracked, so verify/book each one before
+      the trip rather than treating any of them as already secured.
+    </div>
+    <div class="section-heading" style="margin-top:24px;">Meals &amp; Reservations</div>
+    <div id="mealsList"></div>
   </section>
 
-  <section id="daysSection"></section>
+  <!-- ===================== CITY TABS ===================== -->
+  <section class="tab-section" id="tab-city-London">
+    <div class="banner" data-city="London"><div class="banner-inner"><div class="banner-eyebrow">City</div><div class="banner-title">London</div></div></div>
+    <div id="cityDays-London"></div>
+  </section>
+  <section class="tab-section" id="tab-city-Normandy">
+    <div class="banner" data-city="Normandy"><div class="banner-inner"><div class="banner-eyebrow">City</div><div class="banner-title">Normandy</div></div></div>
+    <div id="cityDays-Normandy"></div>
+  </section>
+  <section class="tab-section" id="tab-city-Nuremberg">
+    <div class="banner" data-city="Nuremberg"><div class="banner-inner"><div class="banner-eyebrow">City</div><div class="banner-title">Nuremberg</div></div></div>
+    <div id="cityDays-Nuremberg"></div>
+  </section>
+  <section class="tab-section" id="tab-city-Porto">
+    <div class="banner" data-city="Porto"><div class="banner-inner"><div class="banner-eyebrow">City</div><div class="banner-title">Porto</div></div></div>
+    <div id="cityDays-Porto"></div>
+  </section>
 
-  <section class="tint" id="mapSection">
+  <!-- ===================== ESSENTIALS ===================== -->
+  <section class="tab-section" id="tab-essentials">
+    <div class="section-heading">Essentials</div>
+    <div id="essentialsHotels"></div>
+    <div class="section-heading" style="margin-top:28px;">General Reference</div>
+    <p class="ai-note">General guidance below, not verified trip-specific fact — confirm locally.</p>
+    <div id="essentialsGeneral"></div>
+  </section>
+
+  <!-- ===================== TRANSIT ===================== -->
+  <section class="tab-section" id="tab-transit">
+    <div class="section-heading">Transit</div>
+    <p class="ai-note">General guidance below, not verified trip-specific fact — confirm locally.</p>
+    <div id="transitList"></div>
+  </section>
+
+  <!-- ===================== STREET VIEWS ===================== -->
+  <section class="tab-section" id="tab-streetviews">
+    <div class="section-heading">Street Views</div>
+    <p class="ai-note">Nearest available Street View panorama per landmark — no exact heading/bearing tuning yet.</p>
+    <div id="streetViewList"></div>
+  </section>
+
+  <!-- ===================== HISTORY ===================== -->
+  <section class="tab-section" id="tab-history">
+    <div class="section-heading">History</div>
+    <p class="ai-note">AI-authored general historical context, not independently verified — treat as background reading, not fact-checked citation.</p>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- ===================== MAP ===================== -->
+  <section class="tab-section" id="tab-map">
     <div class="section-heading">Itinerary Map</div>
+    <div class="map-filters" id="mapFilters">
+      <button class="map-filter-btn active" data-city="all">All</button>
+      <button class="map-filter-btn" data-city="London">London</button>
+      <button class="map-filter-btn" data-city="Normandy">Normandy</button>
+      <button class="map-filter-btn" data-city="Nuremberg">Nuremberg</button>
+      <button class="map-filter-btn" data-city="Porto">Porto</button>
+    </div>
     <div id="itineraryMap"></div>
     <div class="map-legend">
       <span><span class="dot" style="background:#3f7d86"></span>London</span>
@@ -47,6 +136,14 @@
       <span><span class="dot" style="background:#8a5fc9"></span>Nuremberg</span>
       <span><span class="dot" style="background:#c9a24b"></span>Porto</span>
     </div>
+  </section>
+
+  <!-- ===================== AIR & HOTEL ===================== -->
+  <section class="tab-section" id="tab-airhotel">
+    <div class="section-heading">Air &amp; Hotel</div>
+    <div id="flightTable"></div>
+    <div class="section-heading" style="margin-top:28px;">Hotels</div>
+    <div id="hotelTable"></div>
   </section>
 
 </main>

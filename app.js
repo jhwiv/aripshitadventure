@@ -9,32 +9,83 @@
   var CHAT_API = 'https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026';
 
   var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Nuremberg: '#8a5fc9', Porto: '#c9a24b' };
+  var CITIES = ['London', 'Normandy', 'Nuremberg', 'Porto'];
 
   var ITEM_ICONS = {
     Flight: '✈️', Transport: '🚗', Hotel: '🏨', Dinner: '🍽️',
     Lunch: '🍽️', Breakfast: '☕', Activity: '📍', Note: '📝'
   };
 
+  var RESERVATION_LABELS = {
+    resy: 'Book via Resy',
+    opentable: 'Book via OpenTable',
+    tock: 'Book via Tock',
+    yelp: 'Book via Yelp',
+    phone: 'Call to reserve',
+    walkin: 'Walk-in only'
+  };
+
+  function mapsLink(query) {
+    return 'https://maps.google.com/?q=' + encodeURIComponent(query);
+  }
+
+  // Three-way directions picker — Google Maps, Apple Maps, Waze. All three
+  // are standard, keyless universal-link formats (no API key for any of
+  // them): Google opens maps.google.com, Apple Maps opens maps.apple.com
+  // (works on iOS/macOS, falls back to a web preview elsewhere), Waze opens
+  // waze.com/ul (falls back to the Waze web site if the app isn't
+  // installed). Behavior when tapped (native app vs. web fallback) depends
+  // on the visitor's device/installed apps - not something verifiable from
+  // a headless browser, only that the links themselves are well-formed.
+  function directionsLinksHTML(query) {
+    var q = encodeURIComponent(query);
+    return '<span class="directions-group">' +
+      '<a href="https://maps.google.com/?q=' + q + '" target="_blank" rel="noopener">Google</a>' +
+      '<a href="https://maps.apple.com/?q=' + q + '" target="_blank" rel="noopener">Apple</a>' +
+      '<a href="https://waze.com/ul?q=' + q + '&navigate=yes" target="_blank" rel="noopener">Waze</a>' +
+      '</span>';
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* ---------------------------------------------------------
+     TAB SWITCHING
+     --------------------------------------------------------- */
+  var navChips = Array.prototype.slice.call(document.querySelectorAll('.nav-chip'));
+  var tabSections = Array.prototype.slice.call(document.querySelectorAll('.tab-section'));
+
+  function activateTab(targetId) {
+    tabSections.forEach(function (s) { s.classList.toggle('active', s.id === targetId); });
+    navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === targetId); });
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    if (targetId === 'tab-map') { initMapOnce(); }
+  }
+
+  navChips.forEach(function (chip) {
+    chip.addEventListener('click', function () { activateTab(chip.dataset.target); });
+  });
+
   /* ---------------------------------------------------------
      HERO
      --------------------------------------------------------- */
-  document.getElementById('heroTitle').textContent = 'Arip Shit Adventure';
   document.getElementById('heroRoute').textContent = TRIP.destination;
   document.getElementById('heroMeta').textContent = TRIP.meta;
   document.title = TRIP.destination + ' · ' + TRIP.meta;
 
   /* ---------------------------------------------------------
-     OVERVIEW: city cards + logistics
+     OVERVIEW: city cards + logistics + arc
      --------------------------------------------------------- */
   var cityCardsEl = document.getElementById('cityCards');
   (TRIP.cities || []).forEach(function (c) {
     var card = document.createElement('div');
     card.className = 'city-card';
     card.innerHTML =
-      '<h3>' + c.name + '</h3>' +
-      '<div class="nights">' + c.nights + ' nights · ' + c.days_range + '</div>' +
-      '<div class="stay">' + c.stay + '</div>' +
-      '<div class="wx loading" id="wx-' + c.name + '">Loading weather…</div>';
+      '<h3>' + esc(c.name) + '</h3>' +
+      '<div class="nights">' + esc(c.nights) + ' nights · ' + esc(c.days_range) + '</div>' +
+      '<div class="stay">' + esc(c.stay) + '</div>' +
+      '<div class="wx" id="wx-' + esc(c.name) + '"><span class="wx-loading">Loading weather…</span></div>';
     cityCardsEl.appendChild(card);
   });
 
@@ -53,11 +104,8 @@
     'Generated ' + (TRIP.generatedOn || '') + ' · Weather, map, and local search are live. Verify addresses/hours before relying on them for bookings.';
 
   /* ---------------------------------------------------------
-     DAY NAV + DAY SECTIONS
+     ITEM CARD (shared by condensed + city tabs)
      --------------------------------------------------------- */
-  var dayNavEl = document.getElementById('dayNav');
-  var daysSectionEl = document.getElementById('daysSection');
-
   function itemExtra(item) {
     var bits = [];
     if (item.restaurant && item.restaurant.name) bits.push(item.restaurant.name);
@@ -65,74 +113,243 @@
     return bits;
   }
 
-  function mapsLink(query) {
-    return 'https://maps.google.com/?q=' + encodeURIComponent(query);
+  function renderItemHTML(item, day) {
+    var icon = ITEM_ICONS[item.type] || '•';
+    var extras = itemExtra(item);
+    var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
+    return '<div class="item">' +
+      '<div class="item-icon">' + icon + '</div>' +
+      '<div class="item-body">' +
+      '<div class="item-time">' + esc(item.time || '') + (item.end_time ? '–' + esc(item.end_time) : '') + '</div>' +
+      '<div class="item-text">' + esc(item.text || '') + '</div>' +
+      (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
+      '<div class="item-links">' +
+      directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
+      (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
+      (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      '</div></div></div>';
   }
 
-  (TRIP.days || []).forEach(function (day, idx) {
-    var dayNum = idx + 1;
-
-    // nav pill
-    var pill = document.createElement('button');
-    pill.className = 'day-nav-btn';
-    pill.textContent = 'Day ' + dayNum;
-    pill.dataset.target = 'day-' + dayNum;
-    pill.addEventListener('click', function () {
-      document.getElementById('day-' + dayNum).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-    dayNavEl.appendChild(pill);
-
-    // day block
-    var block = document.createElement('div');
-    block.className = 'day-block';
-    block.id = 'day-' + dayNum;
-
+  function renderDayBlockHTML(day, dayNum) {
     var weatherLine = (day.weather && (day.weather.summary || day.weather.condition)) || '';
-
-    var html = '<div class="day-block-label">' + day.label + '</div>' +
-      '<div class="day-block-headline">' + day.headline + '</div>' +
-      (weatherLine ? '<div class="day-block-weather">' + weatherLine + '</div>' : '');
-
-    (day.items || []).forEach(function (item) {
-      var icon = ITEM_ICONS[item.type] || '•';
-      var extras = itemExtra(item);
-      var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
-      html += '<div class="item">' +
-        '<div class="item-icon">' + icon + '</div>' +
-        '<div class="item-body">' +
-        '<div class="item-time">' + (item.time || '') + (item.end_time ? '–' + item.end_time : '') + '</div>' +
-        '<div class="item-text">' + (item.text || '') + '</div>' +
-        (item.why ? '<div class="item-why">' + item.why + '</div>' : '') +
-        '<div class="item-links">' +
-        '<a href="' + mapsLink(searchTarget + (day.city ? ', ' + day.city : '')) + '" target="_blank" rel="noopener">Directions</a>' +
-        (item.contact && item.contact.phone ? '<a href="tel:' + item.contact.phone + '">' + item.contact.phone + '</a>' : '') +
-        (item.contact && item.contact.website ? '<a href="' + item.contact.website + '" target="_blank" rel="noopener">Website</a>' : '') +
-        '</div></div></div>';
-    });
-
-    block.innerHTML = html;
-    daysSectionEl.appendChild(block);
-  });
-
-  // active-pill highlighting on scroll
-  var dayBlocks = Array.prototype.slice.call(document.querySelectorAll('.day-block'));
-  var navPills = Array.prototype.slice.call(document.querySelectorAll('.day-nav-btn'));
-  if ('IntersectionObserver' in window) {
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var id = entry.target.id;
-          navPills.forEach(function (p) {
-            p.classList.toggle('active', p.dataset.target === id);
-          });
-        }
-      });
-    }, { rootMargin: '-40% 0px -50% 0px' });
-    dayBlocks.forEach(function (b) { obs.observe(b); });
+    var html = '<div class="day-block" id="day-' + dayNum + '">' +
+      '<div class="day-block-label">' + esc(day.label) + '</div>' +
+      '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
+      (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) + '</div>' : '');
+    (day.items || []).forEach(function (item) { html += renderItemHTML(item, day); });
+    html += '</div>';
+    return html;
   }
 
   /* ---------------------------------------------------------
-     LIVE WEATHER (Open-Meteo, free, no key)
+     CITY TABS — group days by city
+     --------------------------------------------------------- */
+  CITIES.forEach(function (cityName) {
+    var container = document.getElementById('cityDays-' + cityName);
+    if (!container) return;
+    var html = '';
+    (TRIP.days || []).forEach(function (day, idx) {
+      if (day.city === cityName) html += renderDayBlockHTML(day, idx + 1);
+    });
+    container.innerHTML = html || '<p class="ai-note">No days assigned to this city.</p>';
+  });
+
+  /* ---------------------------------------------------------
+     CONDENSED — compact one-line-per-item list
+     --------------------------------------------------------- */
+  var condensedEl = document.getElementById('condensedList');
+  (function renderCondensed() {
+    var html = '';
+    (TRIP.days || []).forEach(function (day, idx) {
+      html += '<div class="cond-day"><div class="cond-day-label">' + esc(day.label) + '</div>';
+      (day.items || []).forEach(function (item) {
+        var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
+        html += '<div class="cond-row"><span class="cond-time">' + esc(item.time || '') + '</span> ' +
+          esc(item.text || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + '</div>';
+      });
+      html += '</div>';
+    });
+    condensedEl.innerHTML = html;
+  })();
+
+  /* ---------------------------------------------------------
+     MEALS & RESERVATIONS — built from real reservation.platform,
+     never a fabricated confirmation status (see plan notes: this
+     trip's data has no confirmation-tracking field at all).
+     --------------------------------------------------------- */
+  var mealsEl = document.getElementById('mealsList');
+  (function renderMeals() {
+    var rows = [];
+    (TRIP.days || []).forEach(function (day, idx) {
+      (day.items || []).forEach(function (item) {
+        if (!item.restaurant) return;
+        rows.push({ day: day.label, time: item.time, r: item.restaurant });
+      });
+    });
+    if (!rows.length) { mealsEl.innerHTML = '<p class="ai-note">No restaurant reservations in this plan.</p>'; return; }
+    mealsEl.innerHTML = rows.map(function (row) {
+      var r = row.r;
+      var platform = (r.reservation && r.reservation.platform) || null;
+      var label = RESERVATION_LABELS[platform] || 'Reservation info unavailable';
+      var contact = r.contact || {};
+      var reserveHref = (r.reservation && r.reservation.url) ? r.reservation.url
+        : (r.reservation && r.reservation.phone) ? 'tel:' + r.reservation.phone
+        : (contact.phone ? 'tel:' + contact.phone : null);
+      return '<div class="meal-row">' +
+        '<div class="meal-top"><span class="meal-name">' + esc(r.name) + '</span>' +
+        '<span class="meal-badge">' + esc(label) + '</span></div>' +
+        '<div class="meal-meta">' + esc(row.day) + ' · ' + esc(row.time || '') +
+        (contact.address ? ' · ' + esc(contact.address) : '') + '</div>' +
+        '<div class="item-links">' +
+        directionsLinksHTML(r.name) +
+        (reserveHref ? '<a href="' + esc(reserveHref) + '" target="_blank" rel="noopener">Reserve</a>' : '') +
+        (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+        '</div></div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     ESSENTIALS — real hotel data + general reference
+     --------------------------------------------------------- */
+  (function renderEssentials() {
+    var hotelsByName = {};
+    (TRIP.days || []).forEach(function (day) {
+      (day.items || []).forEach(function (item) {
+        if (item.hotel && item.hotel.name) {
+          var h = hotelsByName[item.hotel.name] || {};
+          Object.keys(item.hotel).forEach(function (k) { if (item.hotel[k] && !h[k]) h[k] = item.hotel[k]; });
+          hotelsByName[item.hotel.name] = h;
+        }
+      });
+    });
+    var el = document.getElementById('essentialsHotels');
+    el.innerHTML = Object.keys(hotelsByName).map(function (name) {
+      var h = hotelsByName[name];
+      return '<div class="ref-card"><div class="ref-title">' + esc(name) + '</div>' +
+        (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
+        (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
+        (h.website ? '<div class="ref-line"><a href="' + esc(h.website) + '" target="_blank" rel="noopener">Website</a></div>' : '') +
+        (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
+        '</div>';
+    }).join('');
+
+    var general = {
+      'Currency': 'UK: Pound sterling (GBP). France/Germany: Euro (EUR). Portugal: Euro (EUR). Contactless cards are widely accepted in all four countries.',
+      'Power outlets': 'UK uses Type G plugs (230V). France, Germany, and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Nuremberg/Porto and vice versa.',
+      'Emergency number': 'UK: 999 or 112. France, Germany, Portugal: 112 (EU-wide emergency number works in all three).',
+      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France/Germany: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.'
+    };
+    document.getElementById('essentialsGeneral').innerHTML = Object.keys(general).map(function (k) {
+      return '<div class="ref-card"><div class="ref-title">' + esc(k) + '</div><div class="ref-line">' + esc(general[k]) + '</div></div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     TRANSIT — general per-city reference
+     --------------------------------------------------------- */
+  (function renderTransit() {
+    var content = {
+      London: 'Contactless card or phone tap works directly on the Tube, buses, and Overground — no need for an Oyster card. Black cabs can be hailed on the street; Uber/Bolt also operate widely. Heathrow Express runs every 15 min to Paddington.',
+      Normandy: 'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. A private driver or rental car is the practical way to cover the beach sites in a day; taxis exist in Bayeux but are sparse.',
+      Nuremberg: 'VAG runs an efficient U-Bahn/tram/bus network — a day ticket covers all of it. The old town is very walkable; the Documentation Center and Rally Grounds are a short tram ride from the center.',
+      Porto: 'The Andante card covers metro, bus, and some train lines. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.'
+    };
+    document.getElementById('transitList').innerHTML = CITIES.map(function (c) {
+      return '<div class="ref-card"><div class="ref-title">' + esc(c) + '</div><div class="ref-line">' + esc(content[c]) + '</div></div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     STREET VIEWS — keyless Google embed (output=svembed),
+     same trick zurich-pwa uses. No API key needed.
+     --------------------------------------------------------- */
+  (function renderStreetViews() {
+    var entries = [];
+    Object.keys(PINS.landmarks || {}).forEach(function (loc) {
+      var p = PINS.landmarks[loc];
+      entries.push({ name: loc.split(',')[0], lat: p.lat, lng: p.lng });
+    });
+    Object.keys(PINS.hotels || {}).forEach(function (name) {
+      var h = PINS.hotels[name];
+      entries.push({ name: name, lat: h.lat, lng: h.lng });
+    });
+    var el = document.getElementById('streetViewList');
+    el.innerHTML = entries.map(function (e) {
+      var embedUrl = 'https://www.google.com/maps?layer=c&cbll=' + e.lat + ',' + e.lng + '&output=svembed';
+      var fullUrl = 'https://www.google.com/maps?layer=c&cbll=' + e.lat + ',' + e.lng;
+      return '<div class="sv-card">' +
+        '<div class="sv-title">' + esc(e.name) + '</div>' +
+        '<iframe class="sv-frame" src="' + embedUrl + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+        '<a class="sv-link" href="' + fullUrl + '" target="_blank" rel="noopener">Open panorama in Google Maps ↗</a>' +
+        '<div class="item-links" style="margin-top:4px;">' + directionsLinksHTML(e.name) + '</div>' +
+        '</div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     HISTORY — AI-authored general context (labeled at top of tab)
+     --------------------------------------------------------- */
+  (function renderHistory() {
+    var entries = [
+      { title: 'Churchill War Rooms & the Blitz', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet directed Britain’s WWII strategy, preserved largely as it was left in 1945. London itself was hit hard during the Blitz (1940–41) — much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
+      { title: 'The Normandy Landings', body: 'On June 6, 1944 (D-Day), Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. The American Cemetery at Colleville-sur-Mer overlooks Omaha Beach; Pointe du Hoc, a cliff assaulted by U.S. Army Rangers, still shows the bomb-cratered landscape. Juno was the Canadian sector.' },
+      { title: 'The Nuremberg Trials', body: 'Nuremberg was chosen for the 1945–46 International Military Tribunal partly for symbolic reasons — it had been the site of the Nazi Party’s massive annual rallies. Courtroom 600, where the trials were held, is still an active courtroom and only open to visitors when not in session. The Rally Grounds (Reichsparteitagsgelände) and their Documentation Center now serve as a museum on the mechanics of Nazi propaganda.' },
+      { title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
+    ];
+    document.getElementById('historyList').innerHTML = entries.map(function (e) {
+      return '<div class="accordion-item"><button class="accordion-header">' + esc(e.title) + '</button>' +
+        '<div class="accordion-body">' + esc(e.body) + '</div></div>';
+    }).join('');
+    document.querySelectorAll('#historyList .accordion-header').forEach(function (btn) {
+      btn.addEventListener('click', function () { btn.parentElement.classList.toggle('open'); });
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     AIR & HOTEL — consolidated real flight/hotel data
+     --------------------------------------------------------- */
+  (function renderAirHotel() {
+    var flights = [];
+    var hotelsByName = {};
+    (TRIP.days || []).forEach(function (day) {
+      (day.items || []).forEach(function (item) {
+        if (item.type === 'Flight' && item.flight) flights.push(item.flight);
+        if (item.hotel && item.hotel.name) {
+          var h = hotelsByName[item.hotel.name] || { city: day.city };
+          Object.keys(item.hotel).forEach(function (k) { if (item.hotel[k] && !h[k]) h[k] = item.hotel[k]; });
+          hotelsByName[item.hotel.name] = h;
+        }
+      });
+    });
+
+    document.getElementById('flightTable').innerHTML = flights.map(function (f) {
+      return '<div class="ref-card">' +
+        '<div class="ref-title">' + esc(f.carrier || '') + ' ' + esc(f.flight_number || '') + '</div>' +
+        '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
+        (f.depart_time ? ' · Departs ' + esc(f.depart_time) : '') + (f.arrive_time ? ' · Arrives ' + esc(f.arrive_time) : '') + '</div>' +
+        (f.duration ? '<div class="ref-line">' + esc(f.duration) + (f.nonstop ? ' · Nonstop' : '') + '</div>' : '') +
+        (f.confirmation_note ? '<div class="ref-line ai-note">' + esc(f.confirmation_note) + '</div>' : '') +
+        (f.lounge_access && f.lounge_access.length ? f.lounge_access.map(function (l) {
+          return '<div class="ref-line">Lounge: ' + esc(l.name || '') +
+            (l.terminal ? ' · ' + esc(l.terminal) : '') +
+            (l.access ? '<br><span class="ai-note">Access: ' + esc(l.access) + '</span>' : '') + '</div>';
+        }).join('') : '') +
+        '</div>';
+    }).join('') || '<p class="ai-note">No flights in this plan.</p>';
+
+    document.getElementById('hotelTable').innerHTML = Object.keys(hotelsByName).map(function (name) {
+      var h = hotelsByName[name];
+      return '<div class="ref-card"><div class="ref-title">' + esc(name) + ' <span class="ref-city">' + esc(h.city || '') + '</span></div>' +
+        (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
+        (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
+        (h.room_type ? '<div class="ref-line">' + esc(h.room_type) + '</div>' : '') +
+        (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
+        '</div>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     LIVE WEATHER (Open-Meteo, free, no key) — full field set
      --------------------------------------------------------- */
   var WX_CODES = {
     0: 'Clear', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
@@ -147,12 +364,19 @@
   function fetchWeather(lat, lng, tz) {
     var url = 'https://api.open-meteo.com/v1/forecast'
       + '?latitude=' + lat + '&longitude=' + lng
-      + '&current=temperature_2m,weather_code'
-      + '&temperature_unit=fahrenheit&timezone=' + encodeURIComponent(tz);
+      + '&current=temperature_2m,weather_code,wind_speed_10m'
+      + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset'
+      + '&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=' + encodeURIComponent(tz) + '&forecast_days=1';
     return fetch(url).then(function (r) {
       if (!r.ok) throw new Error('weather ' + r.status);
       return r.json();
     });
+  }
+
+  function shortTime(iso) {
+    if (!iso) return '';
+    var t = iso.split('T')[1];
+    return t ? t.slice(0, 5) : '';
   }
 
   Object.keys(PINS.cities || {}).forEach(function (cityName) {
@@ -160,28 +384,46 @@
     var el = document.getElementById('wx-' + cityName);
     if (!el) return;
     fetchWeather(c.lat, c.lng, c.tz).then(function (data) {
-      var t = Math.round(data.current.temperature_2m);
-      var cond = WX_CODES[data.current.weather_code] || 'Mixed';
-      el.textContent = t + '°F, ' + cond;
-      el.classList.remove('loading');
+      var cur = data.current;
+      var day = data.daily;
+      var t = Math.round(cur.temperature_2m);
+      var cond = WX_CODES[cur.weather_code] || 'Mixed';
+      var hi = day && day.temperature_2m_max ? Math.round(day.temperature_2m_max[0]) : null;
+      var lo = day && day.temperature_2m_min ? Math.round(day.temperature_2m_min[0]) : null;
+      var rain = day && day.precipitation_probability_max ? day.precipitation_probability_max[0] : null;
+      var wind = Math.round(cur.wind_speed_10m);
+      var sunrise = day && day.sunrise ? shortTime(day.sunrise[0]) : null;
+      var sunset = day && day.sunset ? shortTime(day.sunset[0]) : null;
+      el.innerHTML =
+        '<div class="wx-top">' + t + '°F' + (hi != null && lo != null ? ' <span class="wx-hilo">Hi ' + hi + '° / Lo ' + lo + '°</span>' : '') + '</div>' +
+        '<div class="wx-cond">' + esc(cond) + '</div>' +
+        '<div class="wx-stats">' +
+        (rain != null ? '<span class="wx-stat">Rain ' + rain + '%</span>' : '') +
+        '<span class="wx-stat">Wind ' + wind + ' mph</span>' +
+        (sunrise ? '<span class="wx-stat">☀ ' + sunrise + '</span>' : '') +
+        (sunset ? '<span class="wx-stat">☾ ' + sunset + '</span>' : '') +
+        '</div>';
     }).catch(function () {
-      el.textContent = 'Weather unavailable';
-      el.classList.remove('loading');
+      el.innerHTML = '<span class="wx-loading">Weather unavailable</span>';
     });
   });
 
   /* ---------------------------------------------------------
      MAP (Leaflet + free CartoDB tiles, no API key)
      --------------------------------------------------------- */
-  function initMap() {
+  var mapInstance = null;
+  var mapMarkers = []; // { marker, city }
+
+  function initMapOnce() {
+    if (mapInstance) { mapInstance.invalidateSize(); return; }
     var mapEl = document.getElementById('itineraryMap');
     if (!mapEl || typeof L === 'undefined') return;
 
-    var map = L.map('itineraryMap', { scrollWheelZoom: false }).setView([48.5, 2.5], 5);
+    mapInstance = L.map('itineraryMap', { scrollWheelZoom: false }).setView([48.5, 2.5], 5);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap, © CARTO',
       maxZoom: 19
-    }).addTo(map);
+    }).addTo(mapInstance);
 
     var bounds = [];
 
@@ -189,12 +431,13 @@
       var color = CITY_COLORS[city] || '#3f7d86';
       var marker = L.circleMarker([lat, lng], {
         radius: 7, color: color, fillColor: color, fillOpacity: 0.85, weight: 2
-      }).addTo(map);
+      }).addTo(mapInstance);
       marker.bindPopup(
-        '<strong>' + name + '</strong>' + (extraLabel ? '<br>' + extraLabel : '') +
-        '<br><a href="' + mapsLink(name + ', ' + city) + '" target="_blank" rel="noopener">Directions</a>'
+        '<strong>' + esc(name) + '</strong>' + (extraLabel ? '<br>' + esc(extraLabel) : '') +
+        '<br>' + directionsLinksHTML(name + ', ' + city)
       );
       bounds.push([lat, lng]);
+      mapMarkers.push({ marker: marker, city: city });
     }
 
     Object.keys(PINS.hotels || {}).forEach(function (name) {
@@ -207,7 +450,7 @@
       addMarker(loc.split(',')[0], p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null);
     });
 
-    if (bounds.length) map.fitBounds(bounds, { padding: [24, 24] });
+    if (bounds.length) mapInstance.fitBounds(bounds, { padding: [24, 24] });
   }
 
   function guessCityForLandmark(loc) {
@@ -219,12 +462,17 @@
     return 'London';
   }
 
-  // Leaflet's script tag is loaded before this file in index.html, so L should exist.
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    initMap();
-  } else {
-    window.addEventListener('DOMContentLoaded', initMap);
-  }
+  document.getElementById('mapFilters').addEventListener('click', function (e) {
+    var btn = e.target.closest('.map-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.map-filter-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
+    var city = btn.dataset.city;
+    mapMarkers.forEach(function (m) {
+      var show = city === 'all' || m.city === city;
+      var el = m.marker.getElement && m.marker.getElement();
+      m.marker.setStyle({ opacity: show ? 1 : 0, fillOpacity: show ? 0.85 : 0 });
+    });
+  });
 
   /* ---------------------------------------------------------
      GEOLOCATION helper — used by local search + chat
@@ -234,9 +482,6 @@
     return new Promise(function (resolve) {
       if (!navigator.geolocation) return resolve(null);
       var settled = false;
-      // Belt-and-suspenders timeout: some browsers only start the geolocation
-      // API's own `timeout` clock once the permission prompt is answered, so
-      // an unanswered prompt can otherwise hang this forever.
       var timer = setTimeout(function () {
         if (settled) return;
         settled = true;
@@ -262,17 +507,11 @@
   }
 
   function currentCityCoords() {
-    // Fall back to the city of the day-block nearest the viewport center.
-    var best = null, bestDist = Infinity;
-    dayBlocks.forEach(function (b) {
-      var rect = b.getBoundingClientRect();
-      var dist = Math.abs(rect.top);
-      if (dist < bestDist) { bestDist = dist; best = b; }
-    });
-    if (best) {
-      var idx = dayBlocks.indexOf(best);
-      var city = TRIP.days[idx] && TRIP.days[idx].city;
-      if (city && PINS.cities[city]) return PINS.cities[city];
+    // Whichever city tab is currently active; otherwise default to London.
+    var activeSection = document.querySelector('.tab-section.active');
+    if (activeSection && activeSection.id.indexOf('tab-city-') === 0) {
+      var city = activeSection.id.replace('tab-city-', '');
+      if (PINS.cities[city]) return PINS.cities[city];
     }
     return PINS.cities.London;
   }
@@ -345,9 +584,8 @@
       localResults.innerHTML = places.map(function (p) {
         var mins = Math.round((p.dist * 1.4) / 67);
         return '<div class="local-result">' +
-          '<div class="name">' + p.name + '</div>' +
-          '<div class="meta">' + (p.type || '') + ' · ~' + Math.max(mins, 1) + ' min walk · ' +
-          '<a href="' + mapsLink(p.name) + '" target="_blank" rel="noopener">Directions</a></div>' +
+          '<div class="name">' + esc(p.name) + '</div>' +
+          '<div class="meta">' + esc(p.type || '') + ' · ~' + Math.max(mins, 1) + ' min walk · ' + directionsLinksHTML(p.name) + '</div>' +
           '</div>';
       }).join('');
     } catch (err) {
@@ -379,8 +617,7 @@
   }
 
   function linkify(text) {
-    // Render [Label](url) markdown links; escape everything else minimally.
-    var escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    var escaped = esc(text);
     return escaped.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
   }
 
@@ -403,7 +640,7 @@
           lng: pos ? pos.lng : null,
           gpsStatus: pos ? 'granted' : null,
           localTime: new Date().toISOString(),
-          activeTab: 'itinerary'
+          activeTab: (document.querySelector('.tab-section.active') || {}).id || 'itinerary'
         })
       });
 
