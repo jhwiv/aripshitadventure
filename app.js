@@ -1435,6 +1435,7 @@
       Porto: { tz: 'Europe/Lisbon', flag: '🇵🇹' }
     };
     var HOME_TZ = 'America/Chicago'; // traveler's actual home base is Dallas, TX (Central), not the EWR departure city
+    var NY_TZ = 'America/New_York'; // both this trip's flights route through Newark (EWR) - worth its own zone alongside home
 
     var zones = (TRIP.days || []).map(function (day, idx) {
       return { date: dayDateISO(idx), city: day.city, info: CITY_TZ[day.city] };
@@ -1461,11 +1462,13 @@
     var destTime = document.getElementById('tp-dest-time');
     var destLabel = document.getElementById('tp-dest-label');
     var homeTime = document.getElementById('tp-home-time');
+    var nyTime = document.getElementById('tp-ny-time');
     var sep = document.getElementById('tp-sep-1');
     var destZone = document.getElementById('tp-dest');
 
     function update() {
       homeTime.textContent = fmtTime(HOME_TZ);
+      if (nyTime) nyTime.textContent = fmtTime(NY_TZ);
       var zone = currentZone();
       if (!zone || zone.info.tz === HOME_TZ) {
         sep.style.display = 'none';
