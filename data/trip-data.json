@@ -16,7 +16,7 @@
       "days_range": "Day 6–Day 8",
       "focus": "D-Day landing beaches — American Cemetery, Pointe du Hoc, Juno Beach, Caen Memorial",
       "stay": "Villa Lara Hôtel (Bayeux)",
-      "transport_in": "Fly LHR→CFR (Caen-Carpiquet) · 1h 10m · Air France via CDG connection · then 20 min drive to Bayeux"
+      "transport_in": "Private car via Eurotunnel Le Shuttle from London — approx. 5.5 hrs door to door including the Channel crossing"
     },
     {
       "name": "Nuremberg",
@@ -43,16 +43,16 @@
     {
       "label": "Day 1 · Sat Oct 10 · Arrive London",
       "city": "London",
-      "headline": "Evening walk through Mayfair after check-in, martini at The Dorchester",
+      "headline": "Overnight flight lands, easy arrival day, dinner at Scott's Mayfair",
       "weather": "High 59°F / low 48°F · overcast with 40% chance of light rain",
       "items": [
         {
           "type": "Flight",
-          "time": "08:20",
+          "time": "09:35",
           "end_time": null,
           "text": "Newark (EWR) to London Heathrow (LHR) — nonstop",
           "location": null,
-          "why": null,
+          "why": "Overnight flight — departs Newark the evening before (Fri, Oct 9) and lands this morning, London time.",
           "contact": {
             "phone": "+1-800-864-8331",
             "website": "https://www.united.com"
@@ -62,13 +62,13 @@
             "flight_number": "UA934",
             "from_airport": "EWR",
             "to_airport": "LHR",
-            "depart_time": "08:20",
-            "arrive_time": "20:40",
+            "depart_time": "21:15",
+            "arrive_time": "09:35",
             "duration": "7h 20m",
             "nonstop": true,
             "cabin": "Economy",
             "aircraft": "Boeing 767-300ER",
-            "confirmation_note": "Book directly on united.com for MileagePlus accrual. Polaris business upgrade available with miles (typically 60–85K one-way) or PlusPoints if 1K-status. Verify flight number, times and equipment at booking — schedules change.",
+            "confirmation_note": "Overnight flight - departs Newark the evening of Friday, Oct 9 and lands the morning of Saturday, Oct 10 (standard scheduling for this route; nearly all EWR-LHR service runs overnight). Book directly on united.com for MileagePlus accrual. Polaris business upgrade available with miles (typically 60-85K one-way) or PlusPoints if 1K-status. Verify flight number, times and equipment at booking - schedules change.",
             "airport_arrival_buffer": "2.5 h",
             "lounge_access": [
               {
@@ -94,7 +94,7 @@
         },
         {
           "type": "Transport",
-          "time": "22:00",
+          "time": "11:00",
           "end_time": null,
           "text": "Heathrow Express to Paddington, then taxi to Mayfair — 50 min total",
           "location": null,
@@ -110,9 +110,9 @@
         },
         {
           "type": "Hotel",
-          "time": "23:00",
+          "time": "12:00",
           "end_time": null,
-          "text": "Check in — London Marriott Hotel Park Lane",
+          "text": "Luggage drop at hotel — London Marriott Hotel Park Lane (early check-in requested)",
           "location": null,
           "why": null,
           "contact": null,
@@ -124,15 +124,27 @@
             "website": "https://www.marriott.com/en-us/hotels/lonpl-london-marriott-hotel-park-lane/overview/",
             "check_in_time": "15:00",
             "room_type": "Deluxe Room, Park View",
-            "confirmation_note": "Bonvoy member rate. Request high floor for Hyde Park view. Late check-in confirmed for overnight arrival."
+            "confirmation_note": "Bonvoy member rate. Request high floor for Hyde Park view. Early check-in requested given the overnight flight arrival - not guaranteed before the 3:00 PM standard check-in time; luggage storage is available if the room isn't ready yet."
           },
           "restaurant": null
         },
         {
-          "type": "Dinner",
-          "time": "23:30",
+          "type": "Note",
+          "time": "13:00",
           "end_time": null,
-          "text": "Late supper at Scott's Mayfair (walk-in bar seats)",
+          "text": "Rest & recover from the overnight flight — a shower and a couple of quiet hours reset the clock better than pushing through on no sleep. A short walk through Hyde Park or Mayfair once you're up for it.",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Dinner",
+          "time": "19:00",
+          "end_time": null,
+          "text": "Dinner at Scott's Mayfair",
           "location": null,
           "why": null,
           "contact": null,
@@ -143,7 +155,7 @@
             "neighborhood": "Mayfair",
             "cuisine": "Seafood",
             "price_range": "$$$",
-            "why": "Open until 11:30 PM, Scott's bar takes walk-ins for oysters, Dover sole, and a proper martini after a transatlantic flight. Civilized, classic Mayfair energy.",
+            "why": "Classic Mayfair seafood — oysters, Dover sole, and a proper cocktail list in a civilized, old-London dining room. An easy, low-key first dinner once you've had a chance to rest.",
             "contact": {
               "address": "20 Mount Street, Mayfair, London W1K 2HE",
               "phone": "+44 20 7495 7309",
@@ -637,14 +649,28 @@
     {
       "label": "Day 6 · Thu Oct 15 · Normandy American Cemetery",
       "city": "Normandy",
-      "headline": "Stand at the cliff edge above Omaha Beach at dawn",
+      "headline": "Cross the Channel to Normandy, then the D-Day beaches — Omaha, Pointe du Hoc, Utah",
       "weather": "High 61°F / low 50°F · partly cloudy with occasional drizzle",
       "items": [
         {
           "type": "Transport",
-          "time": "08:00",
+          "time": "06:00",
+          "end_time": "11:30",
+          "text": "Private car transfer to Bayeux · via Eurotunnel Le Shuttle (Folkestone → Calais) — approx. 5.5 hrs total including the Channel crossing",
+          "location": null,
+          "why": "The practical way to reach Normandy from London for this kind of trip — there's no meaningful direct flight; Caen's airport has minimal scheduled international service, and the drive via the Channel Tunnel is the standard routing Normandy tour operators use.",
+          "contact": {
+            "booking_note": "Book a private long-distance transfer or car service in advance — this leg was not pre-arranged in this plan. Confirm Eurotunnel Le Shuttle timing directly (crossings run roughly every 15-30 min, but book ahead for a fixed departure)."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "11:30",
           "end_time": null,
-          "text": "Private driver pickup from hotel for full-day Normandy D-Day tour",
+          "text": "Meet private guide in Bayeux for full-day Normandy D-Day tour",
           "location": null,
           "why": "A private guide lets you move at your own pace and dive deep into the stories that resonate most.",
           "contact": {
@@ -658,8 +684,8 @@
         },
         {
           "type": "Activity",
-          "time": "09:30",
-          "end_time": "11:00",
+          "time": "12:00",
+          "end_time": "13:15",
           "text": "Normandy American Cemetery & Memorial",
           "location": "Colleville-sur-Mer, 14710 Normandy",
           "why": "9,388 white marble crosses above Omaha Beach — the solemnity of the place is overwhelming and necessary. Arrive early before tour groups.",
@@ -677,8 +703,8 @@
         },
         {
           "type": "Activity",
-          "time": "11:30",
-          "end_time": "13:00",
+          "time": "13:45",
+          "end_time": "14:45",
           "text": "Pointe du Hoc Ranger Monument",
           "location": "14450 Cricqueville-en-Bessin",
           "why": "The bomb craters are still here, frozen in 1944. Walk the cliff the Rangers scaled under fire — it's visceral history.",
@@ -701,8 +727,8 @@
         },
         {
           "type": "Activity",
-          "time": "14:00",
-          "end_time": "15:30",
+          "time": "15:15",
+          "end_time": "16:30",
           "text": "Utah Beach Museum (Musée du Débarquement)",
           "location": "50480 Sainte-Marie-du-Mont",
           "why": "Built on the actual beach, this museum grounds the abstract strategy in sand and tides. The B-26 Marauder suspended inside is haunting.",
@@ -720,7 +746,7 @@
         },
         {
           "type": "Transport",
-          "time": "17:30",
+          "time": "17:00",
           "end_time": null,
           "text": "Return to Bayeux hotel",
           "location": null,

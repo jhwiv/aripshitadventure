@@ -193,8 +193,18 @@
       var f = item.flight;
       // Flight items previously only showed the departure time, leaving a
       // long unexplained gap to whatever the next item was - show arrival
-      // too, same info the Air & Hotel tab already has.
-      if (f.arrive_time) timeLine += ' · Arrives ' + esc(formatTime12(f.arrive_time));
+      // too, same info the Air & Hotel tab already has. For an overnight
+      // flight, item.time is deliberately set to the ARRIVAL time (so the
+      // item sorts into the correct day/position) rather than the departure
+      // time, which belongs to the previous calendar day - appending
+      // "Arrives X" in that case just repeated the same time twice
+      // ("9:35 AM · Arrives 9:35 AM"). Show the full Departs/Arrives pair
+      // instead whenever item.time isn't the departure time.
+      if (f.depart_time && f.arrive_time && f.depart_time !== item.time) {
+        timeLine = 'Departs ' + esc(formatTime12(f.depart_time)) + ' → Arrives ' + esc(formatTime12(f.arrive_time));
+      } else if (f.arrive_time) {
+        timeLine += ' · Arrives ' + esc(formatTime12(f.arrive_time));
+      }
       if (f._modelEstimatedFlightNumber) {
         flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
       }
@@ -337,7 +347,10 @@
         var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
           ? ' <span class="cond-warn">⚠ unverified schedule</span>' : '';
         var condText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
-        html += '<div class="cond-row"><span class="cond-time">' + esc(formatTime12(item.time)) + '</span> ' +
+        var condTimeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
+          ? 'Arrives ' + formatTime12(item.time)
+          : formatTime12(item.time);
+        html += '<div class="cond-row"><span class="cond-time">' + esc(condTimeLabel) + '</span> ' +
           esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + '</div>';
       });
       html += '</div>';
@@ -454,8 +467,14 @@
         navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(query) + '</div>';
       }
       var refText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
+      // Same overnight-flight case as the item-card renderer: item.time is
+      // the arrival time when it differs from flight.depart_time, so label
+      // it explicitly instead of showing a bare time that reads as departure.
+      var timeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
+        ? 'Arrives ' + esc(formatTime12(item.time))
+        : esc(formatTime12(item.time));
       return '<div class="ref-card">' +
-        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + esc(formatTime12(item.time)) + '</div>' +
+        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + timeLabel + '</div>' +
         '<div class="ref-line">' + esc(refText || '') + '</div>' +
         flightLine +
         flightWarn +
