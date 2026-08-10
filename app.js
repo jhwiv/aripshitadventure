@@ -15,15 +15,18 @@
   // load (see renderHeroPhoto below). Neither zurich-pwa nor
   // maritimes-grandloop-v2 actually has a rotating hero (both use a single
   // static photo), so this is a new feature built specifically per
-  // request rather than copied from either reference. Currently the same 4
-  // real, user-supplied city photos used for the .location-banner images
-  // (hosted locally under images/, since this environment cannot reach any
-  // external image host — confirmed against images.unsplash.com itself,
-  // the exact CDN both reference sites use, which 403s here too). Add more
-  // local images/*.jpg entries here to widen the rotation beyond one photo
-  // per city.
+  // request rather than copied from either reference. Hosted locally under
+  // images/, since this environment cannot reach any external image host
+  // (confirmed against images.unsplash.com itself, the exact CDN both
+  // reference sites use, which 403s here too) — real files delivered via a
+  // GitHub upload instead. hero-02/hero-03/banner-porto are free-license
+  // (Unsplash/Pexels) photos from the trip's own photo manifest; nuremberg
+  // is still the earlier unlicensed stock placeholder pending a real
+  // Nuremberg photo (see images/README.md and task #41). Add more local
+  // images/*.jpg entries here to widen the rotation further.
   var HERO_PHOTOS = [
-    'images/london.jpg', 'images/normandy.jpg', 'images/nuremberg.jpg', 'images/porto.jpg'
+    'images/hero-02-london-night.jpg', 'images/hero-03-normandy.jpg',
+    'images/nuremberg.jpg', 'images/banner-porto.jpg'
   ];
 
   var ITEM_ICONS = {

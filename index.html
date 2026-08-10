@@ -176,14 +176,17 @@ function dismissWelcome() {
        current .location-banner/.location-banner-img (confirmed by reading
        its live source directly - not the stale March-dated archive this
        build wrongly relied on the first time, which is why the first pass
-       at this used illustrated SVG instead). Photos below are real, user-
-       supplied images (images/london.jpg etc.), hosted locally since this
-       environment cannot reach any external image CDN (confirmed:
-       images.unsplash.com itself, the exact CDN zurich-pwa/maritimes-
-       grandloop-v2 both use, returns a 403 org policy denial here too). -->
+       at this used illustrated SVG instead). Photos hosted locally under
+       images/ since this environment cannot reach any external image CDN
+       (confirmed: images.unsplash.com itself, the exact CDN zurich-pwa/
+       maritimes-grandloop-v2 both use, returns a 403 org policy denial
+       here too) - real files delivered via a GitHub upload instead.
+       London/Normandy/Porto are free-license (Unsplash/Pexels) photos from
+       the trip's own photo manifest; Nuremberg is still the earlier
+       unlicensed stock placeholder - see images/README.md and task #41. -->
   <section class="tab-section" id="tab-city-London">
     <div class="location-banner" data-city="London">
-      <div class="location-banner-img" style="background-image:url('images/london.jpg')"></div>
+      <div class="location-banner-img" style="background-image:url('images/banner-london.jpg')"></div>
       <div class="location-banner-content">
         <div class="location-banner-flag">🇬🇧</div>
         <div class="location-banner-city">London</div>
@@ -194,7 +197,7 @@ function dismissWelcome() {
   </section>
   <section class="tab-section" id="tab-city-Normandy">
     <div class="location-banner" data-city="Normandy">
-      <div class="location-banner-img" style="background-image:url('images/normandy.jpg')"></div>
+      <div class="location-banner-img" style="background-image:url('images/banner-normandy.jpg')"></div>
       <div class="location-banner-content">
         <div class="location-banner-flag">🇫🇷</div>
         <div class="location-banner-city">Normandy</div>
@@ -216,7 +219,7 @@ function dismissWelcome() {
   </section>
   <section class="tab-section" id="tab-city-Porto">
     <div class="location-banner" data-city="Porto">
-      <div class="location-banner-img" style="background-image:url('images/porto.jpg')"></div>
+      <div class="location-banner-img" style="background-image:url('images/banner-porto.jpg')"></div>
       <div class="location-banner-content">
         <div class="location-banner-flag">🇵🇹</div>
         <div class="location-banner-city">Porto</div>

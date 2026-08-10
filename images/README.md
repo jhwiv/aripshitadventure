@@ -1,18 +1,26 @@
-# ⚠ Placeholder photos — replace before real-world sharing
+# Photo credits and remaining gap
 
-`london.jpg`, `normandy.jpg`, and `porto.jpg` are Adobe Stock / Getty-iStockphoto
-**preview/comp downloads**, not licensed images:
+## Free-license (Unsplash/Pexels), from the trip's own photo manifest
 
-- `london.jpg` — Adobe Stock preview asset (visible tiled watermark).
-- `normandy.jpg` — Getty Images/iStockphoto preview; embedded XMP metadata
-  includes an unpurchased `LicensorURL` and a "data mining prohibited" rights
-  flag.
-- `porto.jpg` — Adobe Stock preview asset (same pattern as london.jpg).
-- `nuremberg.jpg` — no stock-service metadata found, but that isn't proof of a
-  clear license either.
+- `banner-london.jpg` — Westminster Bridge & Big Ben landscape
+- `banner-normandy.jpg` — Bayeux old town canal
+- `banner-porto.jpg` — Ribeira riverfront, Porto (also used in the hero carousel)
+- `hero-02-london-night.jpg` — Parliament & Big Ben at twilight
+- `hero-03-normandy.jpg` — Normandy American Cemetery, Omaha Beach
 
-Shipped anyway at the owner's explicit request, as a placeholder to unblock
-the hero carousel / city banner build ("Ship it for now. Remind me to get
-photos without restrictions."). Swap all four for actually-licensed or
-owned photos before treating this as a finished, shareable site — the
-London watermark in particular is visible on the live page right now.
+Unsplash License / Pexels License — free for commercial use, no attribution
+legally required. See the original `photomanifest.json` shared in-session
+for source URLs and photographer credits if a courtesy credits screen is
+ever added.
+
+## ⚠ Still an unlicensed placeholder
+
+`nuremberg.jpg` is an Adobe Stock / Getty-iStockphoto-style preview download,
+not a purchased license — no stock-service metadata was found on this
+specific file, but that isn't proof of a clear license either. It's still in
+active use (Nuremberg's `.location-banner` and one hero-carousel slot) because
+no replacement has been supplied yet.
+
+Tracked as task #41: swap in a real, licensed Nuremberg photo (ideally named
+`banner-nuremberg.jpg`) to close this out. Everything else this task covered
+is now done — London, Normandy, and Porto are all real, free-license photos.
