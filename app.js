@@ -88,6 +88,28 @@
   document.getElementById('heroMeta').textContent = TRIP.meta;
   document.title = TRIP.destination + ' · ' + TRIP.meta;
 
+  // Trip countdown - computed from the real trip dates (Oct 10-24 2026),
+  // not a static string, so it stays correct no matter when the page loads.
+  (function renderCountdown() {
+    var el = document.getElementById('countdownBadge');
+    if (!el) return;
+    var totalDays = (TRIP.days || []).length;
+    if (!totalDays) return;
+    var tripStart = new Date(2026, 9, 10); tripStart.setHours(0, 0, 0, 0);
+    var tripEnd = new Date(tripStart); tripEnd.setDate(tripEnd.getDate() + totalDays - 1);
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var msPerDay = 86400000;
+    var daysUntilStart = Math.round((tripStart - today) / msPerDay);
+    if (daysUntilStart > 0) {
+      el.textContent = '✈ ' + daysUntilStart + (daysUntilStart === 1 ? ' day' : ' days') + ' until departure';
+    } else if (today <= tripEnd) {
+      var dayNum = Math.round((today - tripStart) / msPerDay) + 1;
+      el.textContent = '📍 Day ' + dayNum + ' of ' + totalDays + ' — enjoy the trip';
+    } else {
+      el.textContent = '✓ Trip complete — hope it was a ripshit adventure';
+    }
+  })();
+
   /* ---------------------------------------------------------
      OVERVIEW: city cards + logistics + arc
      --------------------------------------------------------- */
@@ -328,10 +350,22 @@
     var container = document.getElementById('cityDays-' + cityName);
     if (!container) return;
     var html = '';
+    var dayNums = [];
     (TRIP.days || []).forEach(function (day, idx) {
-      if (day.city === cityName) html += renderDayBlockHTML(day, idx + 1);
+      if (day.city === cityName) {
+        html += renderDayBlockHTML(day, idx + 1);
+        dayNums.push(idx + 1);
+      }
     });
-    container.innerHTML = html || '<p class="ai-note">No days assigned to this city.</p>';
+    if (!html) { container.innerHTML = '<p class="ai-note">No days assigned to this city.</p>'; return; }
+    // Quick-jump nav so a 5-day city tab (e.g. London) doesn't force scrolling
+    // past every earlier day to reach the one you actually want.
+    var jumpNav = dayNums.length > 1
+      ? '<div class="day-jump-nav">' + dayNums.map(function (n) {
+          return '<a href="#day-' + n + '" class="day-jump-pill">Day ' + n + '</a>';
+        }).join('') + '</div>'
+      : '';
+    container.innerHTML = jumpNav + html;
   });
 
   /* ---------------------------------------------------------
