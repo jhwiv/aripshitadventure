@@ -9,6 +9,7 @@
   var CHAT_API = 'https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026';
 
   var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Porto: '#c9a24b' };
+  var CITY_FLAGS = { London: '🇬🇧', Normandy: '🇫🇷', Porto: '🇵🇹' };
   var CITIES = ['London', 'Normandy', 'Porto'];
 
   // Hero photo carousel — one of these is picked at random on every page
@@ -177,15 +178,52 @@
      OVERVIEW: city cards + logistics + arc
      --------------------------------------------------------- */
   var cityCardsEl = document.getElementById('cityCards');
+  var totalTripNights = (TRIP.cities || []).reduce(function (sum, c) { return sum + (Number(c.nights) || 0); }, 0);
   (TRIP.cities || []).forEach(function (c) {
     var card = document.createElement('div');
     card.className = 'city-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-expanded', 'false');
+
+    var pct = totalTripNights ? Math.round((Number(c.nights) || 0) / totalTripNights * 100) : 0;
+    var color = CITY_COLORS[c.name] || '#8a8f98';
+    var flag = CITY_FLAGS[c.name] || '';
+    // c.focus is a free-text highlight list (e.g. "WWII history — Churchill War
+    // Rooms, Imperial War Museum, Battle of Britain Bunker") — split it into
+    // individual chips for the expanded view rather than one dense sentence.
+    var focusChips = (c.focus || '')
+      .split(/—|,/)
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+
     card.innerHTML =
-      '<h3>' + esc(c.name) + '</h3>' +
-      '<div class="nights">' + esc(c.nights) + ' nights · ' + esc(c.days_range) + '</div>' +
-      '<div class="stay">' + esc(c.stay) + '</div>' +
-      (c.transport_in ? '<div class="city-transport-in">→ ' + esc(c.transport_in) + '</div>' : '') +
-      '<div class="wx" id="wx-' + esc(c.name) + '"><span class="wx-loading">Loading weather…</span></div>';
+      '<div class="city-card-head">' +
+        '<div class="city-card-flag">' + flag + '</div>' +
+        '<div class="city-card-name">' + esc(c.name) + '</div>' +
+        '<div class="city-card-bar-track"><div class="city-card-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
+        '<div class="city-card-nights">' + esc(c.nights) + 'n · ' + pct + '%</div>' +
+        '<div class="city-card-chevron">▾</div>' +
+      '</div>' +
+      '<div class="city-card-body-outer"><div class="city-card-body-inner"><div class="city-card-body">' +
+        '<div class="nights-detail">' + esc(c.days_range) + '</div>' +
+        '<div class="stay">' + esc(c.stay) + '</div>' +
+        (c.transport_in ? '<div class="city-transport-in">→ ' + esc(c.transport_in) + '</div>' : '') +
+        (focusChips.length ? '<div class="city-card-focus">' + focusChips.map(function (f) {
+          return '<span class="city-card-focus-chip">' + esc(f) + '</span>';
+        }).join('') + '</div>' : '') +
+        '<div class="wx" id="wx-' + esc(c.name) + '"><span class="wx-loading">Loading weather…</span></div>' +
+      '</div></div></div>';
+
+    function toggleCard() {
+      var isExpanded = card.classList.toggle('expanded');
+      card.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    }
+    card.addEventListener('click', toggleCard);
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(); }
+    });
+
     cityCardsEl.appendChild(card);
   });
 

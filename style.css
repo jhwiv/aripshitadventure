@@ -258,14 +258,37 @@ img { max-width: 100%; display: block; }
    .banner[data-city="London"] .banner-scene { display: none; }
    matching zurich-pwa's .location-banner pattern. */
 
-/* ---- Overview: city cards + logistics ---- */
-.city-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.city-card { background: #f8f7f3; border: 1px solid #dcd8cf; border-radius: 10px; padding: 14px; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
-.city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(13,33,51,0.1); border-color: var(--gold-soft); }
-.city-card h3 { font-size: 16px; margin-bottom: 4px; }
-.city-card .nights { font-size: 11px; color: #9aa1ad; margin-bottom: 8px; }
-.city-card .stay { font-size: 12.5px; color: #5b6577; margin-bottom: 10px; }
-.city-transport-in { font-size: 11.5px; color: #9aa1ad; margin: -4px 0 10px; line-height: 1.4; }
+/* ---- Overview: city cards + logistics ----
+   Rectangular, infographic-style, expand-on-click. Each card is a full-width
+   bar (not a squarish tile) whose fill width encodes that city's share of
+   total trip nights at a glance; tapping/clicking reveals the stay, transport
+   leg, trip-focus highlights, and live weather underneath via a
+   grid-template-rows 0fr->1fr animation (no fixed max-height guess needed). */
+.city-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.city-card {
+  background: #f8f7f3; border: 1px solid #dcd8cf; border-radius: 10px;
+  overflow: hidden; cursor: pointer;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.city-card:hover { box-shadow: 0 8px 20px rgba(13,33,51,0.1); border-color: var(--gold-soft); }
+.city-card:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: -2px; }
+.city-card-head { display: flex; align-items: center; gap: 12px; padding: 13px 16px; }
+.city-card-flag { font-size: 20px; line-height: 1; flex: none; }
+.city-card-name { font-size: 15px; font-weight: 700; flex: none; min-width: 82px; }
+.city-card-bar-track { flex: 1; height: 9px; background: #e7e3d9; border-radius: 5px; overflow: hidden; }
+.city-card-bar-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease; }
+.city-card-nights { font-family: 'DM Mono', monospace; font-size: 11px; color: #5b6577; white-space: nowrap; flex: none; }
+.city-card-chevron { font-size: 11px; color: #9aa1ad; flex: none; transition: transform 0.2s ease; }
+.city-card.expanded .city-card-chevron { transform: rotate(180deg); }
+.city-card-body-outer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.28s ease; }
+.city-card.expanded .city-card-body-outer { grid-template-rows: 1fr; }
+.city-card-body-inner { overflow: hidden; min-height: 0; }
+.city-card-body { padding: 0 16px 16px; border-top: 1px dashed #e6e3da; margin-top: -1px; padding-top: 12px; }
+.city-card .nights-detail { font-size: 11px; color: #9aa1ad; margin-bottom: 6px; }
+.city-card .stay { font-size: 12.5px; color: #5b6577; margin-bottom: 8px; }
+.city-transport-in { font-size: 11.5px; color: #9aa1ad; margin: -2px 0 10px; line-height: 1.4; }
+.city-card-focus { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.city-card-focus-chip { font-size: 11px; background: #fff; border: 1px solid #dcd8cf; border-radius: 20px; padding: 3px 10px; color: #5b6577; }
 
 .logistics { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
 .tag { font-size: 11px; background: #fff; border: 1px solid #dcd8cf; border-radius: 4px; padding: 4px 10px; color: #5b6577; }
@@ -597,6 +620,15 @@ img { max-width: 100%; display: block; }
     display: block !important; position: static; box-shadow: none; border: none;
     background: none; padding: 4px 0 0; max-width: none; width: auto;
   }
+  /* .city-card-body-outer collapses to 0fr height until .expanded is toggled
+     by a click - print has no click interaction, so left alone the stay,
+     transport, focus chips, and weather for every unexpanded city card would
+     silently vanish from print, same failure shape as .wx-chip above. Force
+     it open and drop the now-nonfunctional chevron/bar-track infographic. */
+  .city-card-body-outer { display: block !important; }
+  .city-card-body-inner { overflow: visible !important; }
+  .city-card-chevron, .city-card-bar-track { display: none; }
+  .city-card { break-inside: avoid; page-break-inside: avoid; cursor: default; }
   body { background: #fff; }
   .container { max-width: 100%; padding: 0; }
   .day-block { break-inside: avoid; page-break-inside: avoid; }
