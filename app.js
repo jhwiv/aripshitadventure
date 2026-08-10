@@ -102,10 +102,33 @@
   function directionsLinksHTML(query) {
     var q = encodeURIComponent(query);
     return '<span class="directions-group">' +
-      '<a href="https://maps.google.com/?q=' + q + '" target="_blank" rel="noopener">Google</a>' +
-      '<a href="https://maps.apple.com/?q=' + q + '" target="_blank" rel="noopener">Apple</a>' +
-      '<a href="https://waze.com/ul?q=' + q + '&navigate=yes" target="_blank" rel="noopener">Waze</a>' +
+      '<a href="https://maps.google.com/?q=' + q + '" target="_blank" rel="noopener">🗺️ Google</a>' +
+      '<a href="https://maps.apple.com/?q=' + q + '" target="_blank" rel="noopener">🧭 Apple</a>' +
+      '<a href="https://waze.com/ul?q=' + q + '&navigate=yes" target="_blank" rel="noopener">🚗 Waze</a>' +
       '</span>';
+  }
+
+  // Pulls a duration ("45 min", "2h30m", "40-50 min") out of a Transport
+  // item's own text, ANCHORED to the start of whatever follows the text's
+  // last " — " or " · " separator - the consistent convention this data
+  // uses for "action — duration [via road] [(distance)]" (e.g. "Drive to
+  // Juno Beach — 45 min via D514"). Anchoring to the start of that trailing
+  // segment (not just searching the whole string) deliberately avoids
+  // false-matching a number that isn't a travel duration but happens to
+  // share a unit word later in the same sentence - e.g. "Check in for
+  // Brittany Ferries... — boarding opens approx. 90 min before departure"
+  // is a check-in WINDOW, not how long the crossing takes, and correctly
+  // returns null here since "boarding opens" precedes the number. Returns
+  // null (never a fabricated/guessed value) for anything that isn't in
+  // this shape, rather than trying to parse free-form prose everywhere.
+  function parseTransportDuration(text) {
+    if (!text) return null;
+    var lastDash = text.lastIndexOf(' — ');
+    var lastDot = text.lastIndexOf(' · ');
+    var cut = Math.max(lastDash, lastDot);
+    var segment = cut === -1 ? text : text.slice(cut + 3);
+    var m = segment.match(/^\s*(?:approx\.?\s*~?)?(\d+\s?h\s?\d*m|\d+(?:[–-]\d+)?\s*(?:min|mins|minutes)|\d+\s*(?:hrs?|hours?))\b/i);
+    return m ? m[1].replace(/\s+/g, ' ').trim() : null;
   }
 
   function esc(s) {
@@ -378,8 +401,10 @@
     if (item._locationUnverified) {
       flightWarn += '<div class="flight-warn">⚠ ' + esc(item._locationUnverified) + '</div>';
     }
+    var driveDuration = item.type === 'Transport' ? parseTransportDuration(item.text) : null;
+    var durationBadge = driveDuration ? '<span class="drive-duration">⏱ ' + esc(driveDuration) + '</span>' : '';
     var navigateRow = item.type === 'Transport'
-      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + '</div>'
+      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + '</div>'
       : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
         (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
         (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
@@ -784,7 +809,9 @@
       if (item.type === 'Transport') {
         var dest = parseTransportDestination(item.text, row.day);
         var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
-        navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(query) + '</div>';
+        var refDuration = parseTransportDuration(item.text);
+        var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
+        navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + refDurationBadge + directionsLinksHTML(query) + '</div>';
       }
       var refText = item.text;
       // Same overnight-flight case as the item-card renderer: item.time is
