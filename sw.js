@@ -25,7 +25,7 @@
 
 const CACHE_NAME = 'trip-cache-v2';
 const ALWAYS_PRECACHE = [
-  '/', '/index.html', '/manifest.json', '/icon.svg', '/sw.js',
+  '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',
 ];
 

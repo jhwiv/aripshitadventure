@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>London → Normandy → Porto · Oct 10–22, 2026</title>
 <meta name="description" content="Trip guide: London, Normandy, Porto — Oct 2026. Live weather, map, local search, AI concierge.">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<!-- iOS "Add to Home Screen" ignores manifest.json's icons array entirely
-     and does NOT support SVG for its own icon - it looks specifically for
-     apple-touch-icon (PNG required). Without this tag, iOS silently falls
-     back to a screenshot of the page as the "icon," which reads as no icon
-     at all - this site only ever had icon.svg + a manifest SVG entry,
-     neither of which iOS's home-screen icon resolution reads.
+<!-- Icon is now a real photo (Mont-Saint-Michel, the actual Normandy day-trip
+     stop on this itinerary), not a vector mark - so the favicon/manifest/
+     touch-icon are all PNG renders of one square crop rather than an SVG.
+     iOS "Add to Home Screen" ignores manifest.json's icons array entirely
+     and looks specifically for apple-touch-icon (PNG required) - without
+     it, iOS silently falls back to a screenshot of the page as the "icon."
      apple-mobile-web-app-title is the same story for the label under that
      icon - without it, iOS uses the full <title> tag text ("London →
      Normandy → Porto · Oct 10-22, 2026") instead of a short label. -->
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Trip Guide">
