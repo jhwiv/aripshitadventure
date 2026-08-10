@@ -585,7 +585,8 @@
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
-          ? ' <span class="cond-warn">⚠ unverified schedule</span>' : '';
+          ? ' <span class="cond-warn">⚠ unverified schedule</span>'
+          : (item._locationUnverified ? ' <span class="cond-warn">⚠ unverified</span>' : '');
         var condText = item.text;
         var condTimeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
           ? 'Arrives ' + formatTime12(item.time)
@@ -838,7 +839,7 @@
       var f = row.f;
       var unverified = !!f._modelEstimatedFlightNumber;
       return '<div class="ref-card">' +
-        '<div class="ref-title">' + esc(f.carrier || '') + ' ' + esc(f.flight_number || '') + '</div>' +
+        '<div class="ref-title">' + esc(f.carrier || '') + ' · ' + esc(f.flight_number || 'TBD') + '</div>' +
         (unverified ? '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>' : '') +
         '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
         (f.depart_time ? ' · Departs ' + esc(formatTime12(f.depart_time)) : '') + (f.arrive_time ? ' · Arrives ' + esc(formatTime12(f.arrive_time)) : '') + '</div>' +

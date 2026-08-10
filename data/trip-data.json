@@ -436,7 +436,8 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Researched for this rebuild (not from the original trip-planning app's verified export) — confirm address/hours/phone closer to departure."
         },
         {
           "type": "Transport",
@@ -692,7 +693,8 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Researched for this rebuild (not from the original trip-planning app's verified export) — confirm address/hours/phone closer to departure."
         },
         {
           "type": "Transport",
@@ -719,7 +721,8 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Sailing time researched for this rebuild, not confirmed against a live booking — verify the exact departure time for this date when booking."
         },
         {
           "type": "Dinner",
@@ -1027,7 +1030,8 @@
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Researched for this rebuild (not from the original trip-planning app's verified export) — confirm address/hours/phone closer to departure."
         },
         {
           "type": "Activity",
@@ -1146,7 +1150,8 @@
           "contact": null,
           "flight": null,
           "hotel": null,
-          "restaurant": null
+          "restaurant": null,
+          "_locationUnverified": "Researched for this rebuild (not from the original trip-planning app's verified export) — confirm address/hours/phone closer to departure."
         },
         {
           "type": "Note",
@@ -1281,7 +1286,7 @@
             "from_airport": "CDG",
             "to_airport": "OPO",
             "depart_time": "13:00",
-            "arrive_time": "13:20",
+            "arrive_time": "14:20",
             "duration": "2h 20m",
             "nonstop": true,
             "cabin": "Economy",
