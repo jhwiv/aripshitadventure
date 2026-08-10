@@ -457,10 +457,38 @@
       'Currency': 'UK: Pound sterling (GBP). France/Germany: Euro (EUR). Portugal: Euro (EUR). Contactless cards are widely accepted in all four countries.',
       'Power outlets': 'UK uses Type G plugs (230V). France, Germany, and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Nuremberg/Porto and vice versa.',
       'Emergency number': 'UK: 999 or 112. France, Germany, Portugal: 112 (EU-wide emergency number works in all three).',
-      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France/Germany: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.'
+      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France/Germany: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.',
+      'Health & water': 'Tap water is safe to drink in London, Normandy, Nuremberg, and Porto. No special vaccinations are required for typical US travelers to the UK, France, Germany, or Portugal — check with your doctor or a travel clinic if you have specific health needs. Pharmacies (marked with a green cross) can handle minor ailments without a doctor visit.',
+      'Travel insurance': 'None of these four countries have a reciprocal healthcare agreement with the US — a travel insurance policy covering medical care, evacuation, and trip interruption is strongly recommended for a trip this length.',
+      'Staying connected': 'An eSIM covering the UK + EU roaming zone (e.g. Airalo, Holafly, or your carrier\'s international day-pass) is the simplest way to have data in all four countries without swapping physical SIM cards. Hotel and cafe wifi is also widely available.'
     };
     document.getElementById('essentialsGeneral').innerHTML = Object.keys(general).map(function (k) {
       return '<div class="ref-card"><div class="ref-title">' + esc(k) + '</div><div class="ref-line">' + esc(general[k]) + '</div></div>';
+    }).join('');
+
+    // Before You Go — entry requirements are the single most time-sensitive
+    // pre-trip action item (can block travel entirely if missed), so this
+    // gets its own prominent callout above everything else on the tab
+    // rather than being buried as one more item in the general list.
+    document.getElementById('beforeYouGo').innerHTML =
+      '<div class="byg-card">' +
+      '<div class="byg-title">⚠ Before You Go — Entry Requirements</div>' +
+      '<div class="byg-line"><strong>UK (London):</strong> US citizens need an Electronic Travel Authorisation (ETA) approved before flying in — apply online well ahead of departure. This is separate from, and in addition to, your passport.</div>' +
+      '<div class="byg-line"><strong>EU (Normandy, Nuremberg, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
+      '<div class="byg-line"><strong>Passport:</strong> Valid at least 6 months past the Oct 24, 2026 return date (already on the packing list) and issued within the last 10 years for Schengen entry.</div>' +
+      '<div class="byg-line">Requirements and processing times change — verify the current rules directly (gov.uk for the UK ETA, the official EU ETIAS site) close to departure rather than relying on this note alone.</div>' +
+      '</div>';
+
+    // Emergency & consular contacts — one nearest post per leg of the trip.
+    var embassies = [
+      { city: 'London', name: 'U.S. Embassy London', note: 'Covers the UK leg directly.' },
+      { city: 'Normandy', name: 'U.S. Embassy Paris', note: 'Nearest major U.S. diplomatic post to Normandy.' },
+      { city: 'Nuremberg', name: 'U.S. Consulate General Frankfurt', note: 'Nearest major U.S. diplomatic post to Nuremberg/Bavaria.' },
+      { city: 'Porto', name: 'U.S. Embassy Lisbon', note: 'Nearest major U.S. diplomatic post to Porto.' }
+    ];
+    document.getElementById('essentialsEmbassy').innerHTML = embassies.map(function (e) {
+      return '<div class="ref-card"><div class="ref-title">' + esc(e.city) + ' — ' + esc(e.name) + '</div>' +
+        '<div class="ref-line">' + esc(e.note) + ' Search "' + esc(e.name) + '" for current address, phone, and after-hours emergency contact.</div></div>';
     }).join('');
   })();
 

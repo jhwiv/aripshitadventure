@@ -251,6 +251,13 @@ img { max-width: 100%; display: block; }
 
 /* ---- Meals & Reservations ---- */
 .meals-banner { background: #fff7ed; border: 1px solid #f5d9b8; color: #92400e; font-size: 12.5px; padding: 10px 14px; border-radius: 8px; margin-top: 16px; }
+
+/* ---- Before You Go (entry requirements) ---- */
+.byg-card { background: #fff7ed; border: 1px solid #f5d9b8; border-radius: 10px; padding: 16px 18px; margin-bottom: 8px; }
+.byg-title { font-weight: 700; font-size: 14.5px; color: #92400e; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.byg-line { font-size: 13px; color: #6b4a2a; line-height: 1.6; margin-bottom: 8px; }
+.byg-line:last-child { margin-bottom: 0; }
+.byg-line strong { color: #92400e; }
 .meal-row { padding: 12px 0; border-top: 1px dashed #e6e3da; }
 .meal-row:first-child { border-top: none; }
 .meal-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
