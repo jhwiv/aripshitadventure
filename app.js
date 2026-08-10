@@ -33,6 +33,37 @@
     Lunch: '🍽️', Breakfast: '☕', Activity: '📍', Note: '📝'
   };
 
+  // PINS.landmarks is keyed by full street address (needed for accurate
+  // coordinates), but showing that raw key as a display name/title reads as
+  // confusing or meaningless for anything whose street name isn't itself
+  // recognizable - "Wren Ave", "Sherwood Drive", "Boulevard Fabian Ware", or
+  // (worse) a bare postal-code-plus-town like "14450 Cricqueville-en-Bessin"
+  // (Pointe du Hoc) or "50480 Sainte-Marie-du-Mont" (Utah Beach). A plain
+  // `loc.split(',')[0]` happens to work when the street name IS the venue
+  // (e.g. "Livraria Lello, Rua..." -> "Livraria Lello"), which is why this
+  // went unnoticed for the entries that already read fine - it's not a
+  // regression from any one rebuild, it's an inherent gap in that heuristic
+  // for any address whose first segment isn't the venue's own name. Used by
+  // BOTH renderStreetViews (card titles) and initMapOnce (marker
+  // popups/directions links) - fixing only one would leave the other
+  // showing the same confusing text and its directions link built from the
+  // same unhelpful query.
+  var LANDMARK_DISPLAY_NAMES = {
+    'Clive Steps, King Charles Street, Westminster, London SW1A 2AQ': 'Churchill War Rooms',
+    'Lambeth Road, London SE1 6HZ': 'Imperial War Museum London',
+    'Wren Ave, Uxbridge UB10 0GG': 'Battle of Britain Bunker',
+    'Sherwood Drive, Bletchley, Milton Keynes MK3 6EB': 'Bletchley Park',
+    'Bovington, Wareham, Dorset BH20 6JG': 'The Tank Museum, Bovington',
+    '50480 Sainte-Marie-du-Mont': 'Utah Beach',
+    '14450 Cricqueville-en-Bessin': 'Pointe du Hoc Ranger Monument',
+    'Colleville-sur-Mer, 14710 Normandy': 'Normandy American Cemetery',
+    'Boulevard Fabian Ware, 14400 Bayeux': 'Musée Mémorial de la Bataille de Normandie',
+    'Le Mont-Saint-Michel, 50170, Normandy': 'Mont-Saint-Michel',
+  };
+  function landmarkDisplayName(loc) {
+    return LANDMARK_DISPLAY_NAMES[loc] || loc.split(',')[0];
+  }
+
   var RESERVATION_LABELS = {
     resy: 'Book via Resy',
     opentable: 'Book via OpenTable',
@@ -794,7 +825,7 @@
     var entries = [];
     Object.keys(PINS.landmarks || {}).forEach(function (loc) {
       var p = PINS.landmarks[loc];
-      entries.push({ name: loc.split(',')[0], lat: p.lat, lng: p.lng });
+      entries.push({ name: landmarkDisplayName(loc), lat: p.lat, lng: p.lng });
     });
     Object.keys(PINS.hotels || {}).forEach(function (name) {
       var h = PINS.hotels[name];
@@ -1070,7 +1101,7 @@
 
     Object.keys(PINS.landmarks || {}).forEach(function (loc) {
       var p = PINS.landmarks[loc];
-      addMarker(loc.split(',')[0], p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null);
+      addMarker(landmarkDisplayName(loc), p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null);
     });
 
     // Route overview line — straight connectors between city centers in the
