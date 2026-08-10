@@ -352,6 +352,35 @@ img { max-width: 100%; display: block; }
   border-radius: 0 4px 4px 0; display: inline-block;
 }
 
+/* ---- Weather chip: collapsed infographic (icon + hi/lo + short label),
+   expands on click/tap to the full sentence + advisory tip. Replaces the
+   always-on-screen full-sentence .day-block-weather for every day whose
+   weather string is parseable (see parseWeatherLine in app.js) — .day-
+   block-weather above is kept only as the fallback for the one compound
+   two-city transit day that doesn't parse. ---- */
+.wx-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-bottom: 16px; padding: 5px 10px;
+  background: #f8f7f3; border: 1px solid #dcd8cf; border-radius: 16px;
+  cursor: pointer; user-select: none; position: relative;
+}
+.wx-chip:hover { border-color: var(--gold); }
+.wx-chip-icon { font-size: 15px; line-height: 1; }
+.wx-chip-temp { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; color: #0d2133; }
+.wx-chip-short { font-size: 12px; color: #5b6577; }
+.wx-chip-caret { font-size: 11px; color: #9aa1ad; transition: transform 0.15s; margin-left: 2px; }
+.wx-chip[aria-expanded="true"] .wx-chip-caret { transform: rotate(180deg); }
+.wx-chip-detail {
+  display: none; position: absolute; z-index: 5; top: calc(100% + 6px); left: 0;
+  width: max-content; max-width: min(320px, 80vw);
+  background: #fff; border: 1px solid #dcd8cf; border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  padding: 10px 12px; font-size: 13px; color: #5b6577;
+  cursor: default; white-space: normal;
+}
+.wx-chip[aria-expanded="true"] .wx-chip-detail { display: block; }
+.wx-chip-detail .weather-tip { margin-top: 8px; display: block; }
+
 /* ---- Wear / Expect / Arrive rows (adapted from santafe-itinerary) ---- */
 .logistics-rows { margin-top: 8px; padding: 8px 10px; background: #f8f7f3; border-left: 2px solid var(--gold-soft); border-radius: 0 4px 4px 0; }
 .logistics-row { display: grid; grid-template-columns: 60px 1fr; gap: 8px; padding: 3px 0; font-size: 12.5px; color: #5b6577; line-height: 1.45; }
@@ -557,6 +586,17 @@ img { max-width: 100%; display: block; }
   .location-banner-city, .day-banner-title { color: #1c2840; }
   .location-banner-sub, .day-banner-eyebrow { color: #5b6577; }
   .day-banner::before { background: #c9a24b; }
+  /* .wx-chip's expanded detail is a JS-toggled absolute popover, invisible
+     by default (aria-expanded="false") - print has no click interaction to
+     reveal it, so left alone the weather detail + advisory tip would
+     silently vanish from every printed day. Force it open and flow inline
+     instead of floating, and drop the now-nonfunctional caret. */
+  .wx-chip { display: block; background: none; border: none; padding: 0; margin-bottom: 8px; }
+  .wx-chip-caret { display: none; }
+  .wx-chip-detail {
+    display: block !important; position: static; box-shadow: none; border: none;
+    background: none; padding: 4px 0 0; max-width: none; width: auto;
+  }
   body { background: #fff; }
   .container { max-width: 100%; padding: 0; }
   .day-block { break-inside: avoid; page-break-inside: avoid; }
@@ -568,9 +608,19 @@ img { max-width: 100%; display: block; }
 
 /* ── TIME PILL ── home-vs-local clock, adapted from maritimes-grandloop-v2.
    Trip-zone table is derived at runtime from the real per-day city/date
-   data already embedded on the page (app.js), not duplicated here. ── */
+   data already embedded on the page (app.js), not duplicated here.
+   Bottom-right (not top-right): the old top-right placement was chosen back
+   when clicking a city nav-chip hard-switched tabs and reset scroll to top,
+   landing this pill directly over the freshly-revealed sticky nav/tab
+   content every time. The continuous-scroll rebuild (KNOWN FAILURE MODE-
+   style regression, see the day-jump-nav mobile-padding fix earlier in this
+   file) removed that reset entirely, so there's no more scroll-to-top event
+   for a top-corner pill to avoid landing on - and top-right now visibly
+   overlapped the sticky .site-nav tab row instead. Bottom-right mirrors the
+   FAB row's own bottom-left placement (opposite corner, so neither collides
+   with the other or with the .panel popouts, which anchor bottom-left). ── */
 #time-pill {
-  position: fixed; top: 14px; right: 14px; z-index: 65;
+  position: fixed; bottom: 14px; right: 14px; z-index: 65;
   display: none; align-items: center; gap: 0;
   background: var(--navy);
   border: 1px solid rgba(200, 168, 75, 0.25);
@@ -587,14 +637,6 @@ img { max-width: 100%; display: block; }
 #time-pill .tp-label { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dim); margin-top: 1px; white-space: nowrap; }
 #time-pill .tp-sep { width: 1px; height: 20px; background: rgba(200, 168, 75, 0.25); margin: 0 8px; }
 @media (max-width: 480px) {
-  /* Was previously moved to bottom-right on mobile; switched back to
-     top-right (matching desktop) because bottom placement collided with
-     whatever content the sticky nav's scroll-to-top() lands on for every
-     single tab switch - confirmed live, it was hiding real content (a
-     hotel card's name/address on Essentials, the day quick-jump pills on
-     every city tab). Top-right only has to coexist with the hero's own
-     already-centered text and the sticky nav, neither of which conflicts
-     with a small corner pill. */
-  #time-pill { font-size: 10px; }
+  #time-pill { font-size: 10px; bottom: 10px; right: 10px; }
   #time-pill .tp-zone { min-width: 46px; }
 }

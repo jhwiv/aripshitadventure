@@ -373,9 +373,71 @@
     return joined.charAt(0).toUpperCase() + joined.slice(1) + '.';
   }
 
+  // Compact "weather chip" — collapsed to an icon + hi/lo temp range (an
+  // infographic glance, not a sentence), expandable on click/tap to reveal
+  // the full original text plus the advisory tip. Replaces the old
+  // always-expanded .day-block-weather paragraph, which repeated a full
+  // sentence on all 15 days regardless of whether the reader wanted the
+  // detail. Parses the same "High X°F / low Y°F · <condition>" shape
+  // weatherAdvisory() above already parses (kept as a SEPARATE regex pass
+  // rather than refactored to share one, since this one also needs an icon
+  // + short-label lookup weatherAdvisory has no reason to do). One real
+  // day's data (the Nuremberg→Porto transit day) has a compound two-city
+  // string ("Nuremberg: High 55°F/low 41°F · partly cloudy. Porto arrival:
+  // High 68°F/low 55°F · clear") — confirmed live that this still parses
+  // cleanly: the regex takes the FIRST city's numbers for the collapsed
+  // badge (today's actual weather), and the expanded detail always shows
+  // the complete original string, so the Porto-arrival note isn't lost.
+  // day-block-weather/.day-block-weather's plain-text rendering below is
+  // kept only as a fail-safe for a weather string shaped too differently
+  // for this regex to match at all (parseWeatherLine returns null), not
+  // because any day in this trip's real data currently needs it.
+  var WX_ICON_RULES = [
+    [/thunderstorm/i, '⛈️'],
+    [/snow/i, '❄️'],
+    [/rain|drizzle|shower/i, '🌧️'],
+    [/fog/i, '🌫️'],
+    [/overcast/i, '☁️'],
+    [/cloud/i, '⛅'],
+    [/sun|clear|dry/i, '☀️']
+  ];
+  var WX_SHORT_RULES = [
+    [/overcast/i, 'Overcast'],
+    [/thunderstorm/i, 'Storms'],
+    [/heavy rain/i, 'Heavy rain'],
+    [/light rain|drizzle/i, 'Light rain'],
+    [/rain/i, 'Rain likely'],
+    [/shower/i, 'Showers'],
+    [/snow/i, 'Snow'],
+    [/fog/i, 'Foggy'],
+    [/partly cloudy|partly sunny/i, 'Partly cloudy'],
+    [/mostly cloudy/i, 'Mostly cloudy'],
+    [/mostly sunny|sun with high clouds/i, 'Mostly sunny'],
+    [/sunny|clear/i, 'Clear'],
+    [/cloud/i, 'Cloudy'],
+    [/dry/i, 'Dry']
+  ];
+  function pickFirst(rules, text, fallback) {
+    for (var i = 0; i < rules.length; i++) {
+      if (rules[i][0].test(text)) return rules[i][1];
+    }
+    return fallback;
+  }
+  function parseWeatherLine(weatherStr) {
+    if (!weatherStr) return null;
+    var m = weatherStr.match(/High\s+(-?\d+)°F\s*\/\s*low\s+(-?\d+)°F\s*·\s*(.*)/i);
+    if (!m) return null;
+    return {
+      hi: m[1], lo: m[2], detail: m[3],
+      icon: pickFirst(WX_ICON_RULES, m[3], '🌤️'),
+      short: pickFirst(WX_SHORT_RULES, m[3], m[3].split(',')[0].split(';')[0])
+    };
+  }
+
   function renderDayBlockHTML(day, dayNum) {
     var weatherLine = (typeof day.weather === 'string' && day.weather) || '';
     var advisory = weatherAdvisory(weatherLine);
+    var wx = parseWeatherLine(weatherLine);
     // Day banner: a thin navy divider per day, matching the real
     // .day-banner pattern (eyebrow "DAY N" + the date) - sits right above
     // each day's own content, same as it does directly under the location
@@ -388,8 +450,18 @@
     var html = dayBanner + '<div class="day-block" id="day-' + dayNum + '">' +
       '<div class="day-block-label">' + esc(day.label) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
-      (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) +
-        (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') + '</div>' : '');
+      (wx ?
+        '<div class="wx-chip" role="button" tabindex="0" aria-expanded="false">' +
+          '<span class="wx-chip-icon">' + wx.icon + '</span>' +
+          '<span class="wx-chip-temp">' + esc(wx.hi) + '°/' + esc(wx.lo) + '°F</span>' +
+          '<span class="wx-chip-short">' + esc(wx.short) + '</span>' +
+          '<span class="wx-chip-caret">⌄</span>' +
+          '<div class="wx-chip-detail">' + esc(weatherLine) +
+            (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') +
+          '</div>' +
+        '</div>' :
+        (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) +
+          (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') + '</div>' : ''));
     var items = day.items || [];
     items.forEach(function (item, i) {
       html += renderItemHTML(item, day);
@@ -412,6 +484,24 @@
     html += '</div>';
     return html;
   }
+
+  // Delegated (not per-element) so it works for every .wx-chip regardless of
+  // which container rendered it (city tabs, condensed list) without needing
+  // to re-bind after each innerHTML render.
+  document.addEventListener('click', function (e) {
+    var chip = e.target.closest && e.target.closest('.wx-chip');
+    if (!chip) return;
+    var open = chip.getAttribute('aria-expanded') === 'true';
+    chip.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var chip = e.target.closest && e.target.closest('.wx-chip');
+    if (!chip) return;
+    e.preventDefault();
+    var open = chip.getAttribute('aria-expanded') === 'true';
+    chip.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
 
   /* ---------------------------------------------------------
      CITY TABS — group days by city
@@ -1213,7 +1303,7 @@
       Nuremberg: { tz: 'Europe/Berlin', flag: '🇩🇪' },
       Porto: { tz: 'Europe/Lisbon', flag: '🇵🇹' }
     };
-    var HOME_TZ = 'America/New_York'; // trip departs EWR — Eastern is the traveler's home zone
+    var HOME_TZ = 'America/Chicago'; // traveler's actual home base is Dallas, TX (Central), not the EWR departure city
 
     var zones = (TRIP.days || []).map(function (day, idx) {
       return { date: dayDateISO(idx), city: day.city, info: CITY_TZ[day.city] };
