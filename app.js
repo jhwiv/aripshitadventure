@@ -11,6 +11,21 @@
   var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Nuremberg: '#8a5fc9', Porto: '#c9a24b' };
   var CITIES = ['London', 'Normandy', 'Nuremberg', 'Porto'];
 
+  // Hero photo carousel — one of these is picked at random on every page
+  // load (see renderHeroPhoto below). Neither zurich-pwa nor
+  // maritimes-grandloop-v2 actually has a rotating hero (both use a single
+  // static photo), so this is a new feature built specifically per
+  // request rather than copied from either reference. Placeholder URLs:
+  // this environment cannot reach any external host to source real photos
+  // (confirmed against images.unsplash.com itself, the exact CDN both
+  // reference sites use, which 403s here too) - replace these 10 entries
+  // with real itinerary photo URLs (ideally 2-3 per city, London/Normandy/
+  // Nuremberg/Porto) to activate the carousel with real photography.
+  var HERO_PHOTOS = [
+    'PHOTO_URL_HERO_1', 'PHOTO_URL_HERO_2', 'PHOTO_URL_HERO_3', 'PHOTO_URL_HERO_4', 'PHOTO_URL_HERO_5',
+    'PHOTO_URL_HERO_6', 'PHOTO_URL_HERO_7', 'PHOTO_URL_HERO_8', 'PHOTO_URL_HERO_9', 'PHOTO_URL_HERO_10'
+  ];
+
   var ITEM_ICONS = {
     Flight: '✈️', Transport: '🚗', Hotel: '🏨', Dinner: '🍽️',
     Lunch: '🍽️', Breakfast: '☕', Activity: '📍', Note: '📝'
@@ -65,21 +80,53 @@
   }
 
   /* ---------------------------------------------------------
-     TAB SWITCHING
+     NAVIGATION — continuous scroll with scroll-spy active-nav
+     highlighting. Matches zurich-pwa's real, current mechanism
+     (confirmed by reading its actual source directly): every section
+     lives in the page's normal flow all the time - nothing is hidden
+     and shown on click anymore. A nav-chip click smooth-scrolls to its
+     section; a scroll listener keeps the nav highlight in sync with
+     whatever section the user has actually scrolled to, unprompted -
+     exactly the "tabs auto-advance as you scroll" behavior the real
+     site has and this build's earlier click-only tab system did not.
      --------------------------------------------------------- */
   var navChips = Array.prototype.slice.call(document.querySelectorAll('.nav-chip'));
   var tabSections = Array.prototype.slice.call(document.querySelectorAll('.tab-section'));
+  var navTapLock = false;
+  var navTapTimer = null;
 
-  function activateTab(targetId) {
-    tabSections.forEach(function (s) { s.classList.toggle('active', s.id === targetId); });
+  function scrollToSection(targetId) {
+    var el = document.getElementById(targetId);
+    if (!el) return;
     navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === targetId); });
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
-    if (targetId === 'tab-map') { initMapOnce(); }
+    lastActiveSection = targetId;
+    navTapLock = true;
+    clearTimeout(navTapTimer);
+    // Give the smooth scroll time to finish before scroll-spy can override
+    // the just-clicked chip - otherwise a fast scroll-spy tick mid-animation
+    // can flicker the highlight back to whatever section is passing by.
+    navTapTimer = setTimeout(function () { navTapLock = false; }, 1000);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   navChips.forEach(function (chip) {
-    chip.addEventListener('click', function () { activateTab(chip.dataset.target); });
+    chip.addEventListener('click', function () { scrollToSection(chip.dataset.target); });
   });
+
+  var lastActiveSection = tabSections.length ? tabSections[0].id : null;
+  function onScroll() {
+    if (navTapLock) return;
+    var navH = 96; // clearance below the sticky nav
+    var active = lastActiveSection;
+    tabSections.forEach(function (s) {
+      if (s.getBoundingClientRect().top <= navH) active = s.id;
+    });
+    if (active && active !== lastActiveSection) {
+      lastActiveSection = active;
+      navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === active); });
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   /* ---------------------------------------------------------
      HERO
@@ -87,6 +134,20 @@
   document.getElementById('heroRoute').textContent = TRIP.destination;
   document.getElementById('heroMeta').textContent = TRIP.meta;
   document.title = TRIP.destination + ' · ' + TRIP.meta;
+
+  // Hero photo carousel - picks a different photo on each page load (a
+  // real rotation, not just a static hero). Filters out any placeholder
+  // entries that don't look like a real URL, so this degrades cleanly to
+  // the plain gradient background (see .hero's CSS) until real photo URLs
+  // are dropped into HERO_PHOTOS above.
+  (function renderHeroPhoto() {
+    var el = document.getElementById('heroPhoto');
+    if (!el) return;
+    var real = HERO_PHOTOS.filter(function (u) { return /^https?:\/\//.test(u); });
+    if (!real.length) return;
+    var pick = real[Math.floor(Math.random() * real.length)];
+    el.style.backgroundImage = 'url(\'' + pick + '\')';
+  })();
 
   // Trip countdown - computed from the real trip dates (Oct 10-24 2026),
   // not a static string, so it stays correct no matter when the page loads.
@@ -311,7 +372,16 @@
   function renderDayBlockHTML(day, dayNum) {
     var weatherLine = (typeof day.weather === 'string' && day.weather) || '';
     var advisory = weatherAdvisory(weatherLine);
-    var html = '<div class="day-block" id="day-' + dayNum + '">' +
+    // Day banner: a thin navy divider per day, matching the real
+    // .day-banner pattern (eyebrow "DAY N" + the date) - sits right above
+    // each day's own content, same as it does directly under the location
+    // banner for a city's first day in the confirmed real reference.
+    var labelParts = (day.label || '').split('·').map(function (s) { return s.trim(); });
+    var dayBanner = '<div class="day-banner">' +
+      '<div class="day-banner-eyebrow">' + esc((labelParts[0] || '').toUpperCase()) + '</div>' +
+      '<div class="day-banner-title">' + esc(labelParts[1] || '') + '</div>' +
+      '</div>';
+    var html = dayBanner + '<div class="day-block" id="day-' + dayNum + '">' +
       '<div class="day-block-label">' + esc(day.label) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
       (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) +
@@ -1188,6 +1258,17 @@
     update();
     setInterval(update, 30000);
   })();
+
+  // The map's container is now always in normal document flow (never
+  // display:none since the continuous-scroll rebuild), so Leaflet can size
+  // itself correctly on first init without waiting for a tab-click reveal.
+  // Called last, after every other setup in this IIFE (mapMarkers etc.) has
+  // already run - calling it too early threw (confirmed live: an earlier
+  // attempt at this placed the call right after the nav setup, before
+  // mapMarkers was declared further down the file, which broke ALL city-day
+  // rendering, not just the map, since the resulting uncaught exception
+  // aborted the rest of the script).
+  initMapOnce();
 
 })();
 

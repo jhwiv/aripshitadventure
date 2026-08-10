@@ -92,37 +92,44 @@ img { max-width: 100%; display: block; }
 
 /* ---- Hero ---- */
 .hero {
-  /* Solid gradient by default. Once a real photo URL is supplied, replace
-     this rule's `background` with:
-     background: url('PHOTO_URL') center/cover no-repeat;
-     and add .hero-overlay { background: linear-gradient(180deg, rgba(11,24,38,.35), rgba(9,27,42,.75)); }
-     matching zurich-pwa's #hero pattern exactly. */
+  /* Real full-bleed photo hero, matching zurich-pwa's #hero exactly (its
+     ACTUAL current source - confirmed by reading /workspace/jhwiv/zurich-pwa,
+     not the stale March-dated archive this build wrongly relied on the
+     first time). #hero-photo carries the photo (set by app.js from
+     HERO_PHOTOS, one of up to 10 candidates picked at random per page
+     load - see the "carousel" comment on HERO_PHOTOS in app.js), swapped
+     as a background-image so a missing/placeholder URL degrades to this
+     gradient instead of a broken image. */
+  min-height: 100vh; min-height: 100dvh;
   background: linear-gradient(170deg, #0b1826 0%, #0d2133 55%, #091b2a 100%);
   color: #fff;
-  padding: 72px 24px 56px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px 24px 64px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-.hero-scene { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.9; }
+.hero-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
 .hero-overlay {
   position: absolute; inset: 0; z-index: 1;
-  background:
-    radial-gradient(ellipse 110% 55% at 50% 108%, rgba(63,125,134,0.55) 0%, transparent 65%),
-    radial-gradient(ellipse 70% 40% at 90% 0%, rgba(201,162,75,0.15) 0%, transparent 55%);
+  background: linear-gradient(to bottom, rgba(9,20,32,.2) 0%, rgba(9,20,32,.15) 40%, rgba(9,20,32,.55) 75%, rgba(9,20,32,.82) 100%);
   pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
 .hero .eyebrow {
   font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.55); margin-bottom: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.7); margin-bottom: 14px; font-weight: 500;
 }
 .hero h1 {
   font-size: clamp(30px, 7vw, 50px); font-weight: 700; font-style: italic;
   letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 10px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.35);
 }
-.hero .route { font-size: clamp(15px, 3vw, 19px); color: rgba(255,255,255,0.85); margin-bottom: 14px; }
-.hero .meta { font-size: 13px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
+.hero .route { font-size: clamp(15px, 3vw, 19px); color: rgba(255,255,255,0.92); margin-bottom: 14px; }
+.hero .meta { font-size: 13px; color: rgba(255,255,255,0.75); letter-spacing: 0.02em; }
 .countdown-badge {
   display: inline-block; margin-top: 18px; padding: 7px 16px;
   font-family: 'DM Mono', monospace; font-size: 11.5px; letter-spacing: 0.06em;
@@ -163,14 +170,14 @@ img { max-width: 100%; display: block; }
 
 /* ---- Layout ---- */
 .container { max-width: 760px; margin: 0 auto; padding: 20px 20px 40px; }
-.tab-section { display: none; }
-.tab-section.active { display: block; animation: tabFadeIn 0.25s ease; }
-@keyframes tabFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* Continuous scroll (matches zurich-pwa's real architecture - confirmed
+   from its actual current source, not the earlier stale-archive mistake):
+   every section lives in normal document flow all the time. The nav no
+   longer shows/hides sections on click - it smooth-scrolls to them, and
+   a scroll-spy (app.js) highlights whichever one is currently in view.
+   scroll-margin-top keeps a clicked-to section clear of the sticky nav. */
+.tab-section { display: block; scroll-margin-top: 96px; }
 @media (prefers-reduced-motion: reduce) {
-  .tab-section.active { animation: none; }
   .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill {
     transition: none;
   }
@@ -181,40 +188,71 @@ img { max-width: 100%; display: block; }
 }
 .ai-note { font-size: 12.5px; color: #9aa1ad; font-style: italic; margin-bottom: 14px; }
 
-/* ---- City / section banners ----
-   Illustrated (not photographic): this environment's egress policy blocks
-   all outbound photo sourcing (confirmed via the agent proxy's own status
-   endpoint - a 403 org policy denial, not a transient failure), and real
-   photo URLs were never supplied, so hand-crafted inline SVG scenes stand
-   in for photography rather than risking an unverified/broken hotlink. Each
-   city gets its own on-brand illustration (.banner-scene); swapping in a
-   real photo later is a one-line change - drop a
-   `.banner[data-city="X"] { background-image: url(...) }` rule and hide
-   .banner-scene for that city. */
-.banner {
-  background: linear-gradient(170deg, #0b1826 0%, #0d2133 100%);
-  color: #fff;
-  border-radius: 12px;
-  padding: 28px 24px;
-  margin-bottom: 24px;
+/* ---- Location banner (real photo, at each city transition) ----
+   Matches zurich-pwa's .location-banner/.location-banner-img exactly (its
+   ACTUAL current source, confirmed live in the repo - not the stale
+   archive this build wrongly relied on the first pass). .location-banner-img
+   carries the real photo as a background-image (set inline per element by
+   app.js from LOCATION_PHOTOS); .banner is kept as a bare fallback color
+   only visible for the instant before the image paints / if a URL is
+   missing. */
+.location-banner {
+  height: 150px; position: relative; overflow: hidden;
+  background: var(--navy);
+  /* Break out of .container's 20px side padding so the photo runs edge to
+     edge, matching the real reference exactly - without this it would sit
+     inset like a bordered card instead of a full-bleed banner. */
+  margin: 0 -20px 24px; width: calc(100% + 40px);
+}
+.location-banner-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: brightness(0.65);
+}
+.location-banner-content {
+  position: relative; z-index: 1; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 0 24px;
+}
+.location-banner-flag { font-size: 1.5rem; margin-bottom: 4px; }
+.location-banner-city {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 5vw, 28px); font-weight: 700;
+  color: #fff; letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.location-banner-sub {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.8); margin-top: 4px;
+}
+
+/* ---- Day banner (small navy marker, one per day - the accent color
+   piece of the real pattern; kept deliberately thin so it reads as a
+   divider, not another oversized color block). ---- */
+.day-banner {
+  background: var(--navy);
+  padding: 18px 24px;
+  text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 180px;
-  display: flex;
-  align-items: flex-end;
+  margin: 0 -20px; width: calc(100% + 40px);
 }
-.banner-scene { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
-.banner::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(9,20,32,0.15) 0%, rgba(9,20,32,0.55) 65%, rgba(9,20,32,0.85) 100%);
-  z-index: 0;
+.day-banner::before {
+  content: ""; display: block; width: 40px; height: 2px;
+  background: var(--gold); margin: 0 auto 10px;
 }
-.banner::before {
-  content: ""; position: absolute; left: 24px; top: 18px; width: 40px; height: 3px; background: #c9a24b; z-index: 2;
+.day-banner-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 4px;
 }
-.banner-inner { position: relative; padding-top: 10px; z-index: 2; }
-.banner-eyebrow { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
-.banner-title { font-size: 26px; font-weight: 700; font-style: italic; }
+.day-banner-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(16px, 4vw, 20px); font-weight: 700;
+  color: #fff; line-height: 1.2;
+}
 /* Once a real city photo URL is supplied, add per-city rules like:
    .banner[data-city="London"] { background: url('LONDON_PHOTO_URL') center/cover no-repeat; }
    .banner[data-city="London"] .banner-scene { display: none; }
@@ -288,15 +326,15 @@ img { max-width: 100%; display: block; }
 
 /* ---- Day quick-jump nav (top of each city tab) ---- */
 .day-jump-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
-@media (max-width: 480px) {
-  /* Every tab switch resets scroll to top (activateTab), so this row is the
-     first interactive thing visible on a fresh city-tab load - reserve
-     clearance so it never renders directly under the fixed FAB stack
-     (bottom-left) or the time pill (bottom-right), both of which sit at a
-     fixed screen position regardless of scroll. Confirmed live: without
-     this, "Day 1" was fully hidden behind the chat FAB on every city tab. */
-  .day-jump-nav { padding-left: 84px; padding-right: 172px; }
-}
+/* NOTE: this row used to get large left/right padding on mobile to clear the
+   fixed FAB stack, back when clicking a city nav-chip hard-switched tabs and
+   reset scroll to top - landing this row directly under the FABs every time.
+   Under the continuous-scroll architecture (scrollIntoView, no tab reset)
+   this row appears wherever it naturally falls in the page, not pinned under
+   the FABs, so that padding just crushed the pills into a single narrow
+   column and forced them onto one row each. Removed; confirmed live via
+   Playwright at 375px that FAB/pill overlap does not occur without it
+   (the FABs are fixed at the bottom of the viewport, this row scrolls). */
 .day-jump-pill {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em;
   padding: 6px 12px; border-radius: 14px; background: #f8f7f3; border: 1px solid #dcd8cf;
@@ -503,19 +541,22 @@ img { max-width: 100%; display: block; }
    items in docs/new-trip-site-playbook.md for that as a future add) ── */
 @media print {
   .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill,
-  #itineraryMap, .sv-frame, .banner::before, .hero-scene, .banner-scene,
+  #itineraryMap, .sv-frame, .hero-photo,
   .day-jump-nav, .countdown-badge { display: none !important; }
-  .hero { background: none !important; color: #1c2840; padding: 12px 0; }
+  .hero { background: none !important; min-height: 0; color: #1c2840; padding: 12px 0; }
   .hero-overlay { display: none; }
   .hero .eyebrow, .hero .meta { color: #5b6577; }
   .hero .route { color: #1c2840; }
-  /* City banners default to white-on-navy for screen; without this override
-     a printed page (or any browser with "print background graphics" off,
-     which is the common default) would show white text on white paper -
-     unreadable. Same light-on-white treatment as the hero, just above. */
-  .banner { background: none !important; color: #1c2840; padding: 8px 0; border-bottom: 2px solid #c9a24b; border-radius: 0; min-height: 0; }
-  .banner::after { display: none; }
-  .banner-eyebrow { color: #5b6577; }
+  /* Location/day banners default to white-on-photo or white-on-navy for
+     screen; without this override a printed page (or any browser with
+     "print background graphics" off, the common default) would show white
+     text on a white page - unreadable. Same light-on-white treatment as
+     the hero, just above. */
+  .location-banner, .day-banner { background: none !important; height: auto; margin: 0 0 8px; padding: 4px 0; }
+  .location-banner-img { display: none; }
+  .location-banner-city, .day-banner-title { color: #1c2840; }
+  .location-banner-sub, .day-banner-eyebrow { color: #5b6577; }
+  .day-banner::before { background: #c9a24b; }
   body { background: #fff; }
   .container { max-width: 100%; padding: 0; }
   .day-block { break-inside: avoid; page-break-inside: avoid; }
