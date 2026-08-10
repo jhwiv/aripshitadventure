@@ -121,6 +121,7 @@
       '<h3>' + esc(c.name) + '</h3>' +
       '<div class="nights">' + esc(c.nights) + ' nights · ' + esc(c.days_range) + '</div>' +
       '<div class="stay">' + esc(c.stay) + '</div>' +
+      (c.transport_in ? '<div class="city-transport-in">→ ' + esc(c.transport_in) + '</div>' : '') +
       '<div class="wx" id="wx-' + esc(c.name) + '"><span class="wx-loading">Loading weather…</span></div>';
     cityCardsEl.appendChild(card);
   });

@@ -24,7 +24,7 @@
       "days_range": "Day 8–Day 10",
       "focus": "Nuremberg Trials courthouse (Saturday-only), Rally Grounds Documentation Center, medieval old town",
       "stay": "Sheraton Carlton Hotel Nürnberg",
-      "transport_in": "Fly CFR→NUE · 1h 40m via connection · Lufthansa or Air France · then 15 min taxi to city center"
+      "transport_in": "Private driver to Paris CDG (~3h) · Fly CDG→NUE nonstop · Air France · then taxi to city center"
     },
     {
       "name": "Porto",
@@ -1120,7 +1120,7 @@
         {
           "type": "Activity",
           "time": "15:30",
-          "end_time": "17:30",
+          "end_time": "17:00",
           "text": "Memorium Nürnberger Prozesse (Nuremberg Trials Memorial)",
           "location": "Bärenschanzstraße 72, 90429 Nuremberg",
           "why": "Courtroom 600 is preserved exactly as it was in 1945–46. You sit in the same gallery where the world watched Göring, Speer, and the others face judgment. The audio guide is essential — it reconstructs the trial testimony in the very seats where it was spoken. This is the moral reckoning that defines postwar justice.",
