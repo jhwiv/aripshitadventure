@@ -1154,11 +1154,23 @@
     if (!btn) return;
     document.querySelectorAll('.map-filter-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
     var city = btn.dataset.city;
+    // Filtering previously only dimmed non-matching markers, leaving the
+    // map at whatever zoom level initMapOnce's one-time fitBounds(all
+    // markers) had set - so picking "London" alone still showed the whole
+    // trip's ~1000-mile UK-to-Portugal span, a genuinely unhelpful "100k
+    // foot view" for looking at one city's own points. Re-fit to just the
+    // visible markers' own bounds on every filter change instead (the
+    // "all" case naturally re-collects every marker, since `show` is true
+    // for all of them there too).
+    var visibleLatLngs = [];
     mapMarkers.forEach(function (m) {
       var show = city === 'all' || m.city === city;
-      var el = m.marker.getElement && m.marker.getElement();
       m.marker.setStyle({ opacity: show ? 1 : 0, fillOpacity: show ? 0.85 : 0 });
+      if (show) visibleLatLngs.push(m.marker.getLatLng());
     });
+    if (visibleLatLngs.length && mapInstance) {
+      mapInstance.fitBounds(visibleLatLngs, { padding: [24, 24], maxZoom: 12 });
+    }
   });
 
   /* ---------------------------------------------------------
