@@ -541,5 +541,14 @@ function dismissWelcome() {
 <script src="vendor/leaflet/leaflet.js"></script>
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <script src="app.js?v=20260810-0866c66"></script>
+<script>
+  // Offline support - see sw.js for the caching strategy. Registered here
+  // rather than app.js so it runs even if app.js itself fails to parse.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function () { /* offline support unavailable - app still works online */ });
+    });
+  }
+</script>
 </body>
 </html>

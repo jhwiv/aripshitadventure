@@ -13,6 +13,13 @@
 /index.html
   Cache-Control: no-cache
 
+# The service worker file itself must never be cached aggressively, or a
+# fix to the offline-caching logic would never reach devices that already
+# have it installed - browsers already re-check it periodically, but an
+# explicit no-cache header makes that immediate rather than eventual.
+/sw.js
+  Cache-Control: no-cache
+
 # Static assets carry a ?v=<sha> cache-buster (set automatically by the
 # auto-cache-bust workflow on every push to main), so they're safe to
 # cache aggressively - a new deploy always gets a new URL.
