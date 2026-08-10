@@ -187,6 +187,11 @@ img { max-width: 100%; display: block; }
   color: #3f7d86; font-weight: 700; margin-bottom: 18px;
 }
 .ai-note { font-size: 12.5px; color: #9aa1ad; font-style: italic; margin-bottom: 14px; }
+/* Plain explanatory caption - unlike .ai-note, carries no "unverified AI
+   content" meaning, just a short "here's how to read this" hint above a
+   UI element that isn't self-explanatory on its own (e.g. what a bar's
+   fill width represents). */
+.section-note { font-size: 12px; color: #9aa1ad; margin: -10px 0 14px; line-height: 1.5; }
 
 /* ---- Location banner (real photo, at each city transition) ----
    Matches zurich-pwa's .location-banner/.location-banner-img exactly (its

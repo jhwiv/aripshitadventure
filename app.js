@@ -178,7 +178,17 @@
      OVERVIEW: city cards + logistics + arc
      --------------------------------------------------------- */
   var cityCardsEl = document.getElementById('cityCards');
-  var totalTripNights = (TRIP.cities || []).reduce(function (sum, c) { return sum + (Number(c.nights) || 0); }, 0);
+  // Ground truth is the actual day count (N days = N-1 nights), NOT a sum of
+  // cities[].nights - a city's own nights entry only covers nights actually
+  // spent THERE, so a night spent in transit (e.g. this trip's overnight
+  // Portsmouth-Caen ferry, which belongs to no city) is real trip time that
+  // a naive sum silently drops. Confirmed: summing cities[].nights here gave
+  // 11, while the trip is genuinely 12 nights (days.length - 1) - the same
+  // discrepancy the hero's own meta line already spells out explicitly
+  // ("5 London + 1 overnight ferry + 3 Normandy + 3 Porto nights").
+  var totalTripNights = (TRIP.days || []).length ? (TRIP.days.length - 1) : 0;
+  var tripNightsTotalEl = document.getElementById('tripNightsTotal');
+  if (tripNightsTotalEl) tripNightsTotalEl.textContent = totalTripNights;
   (TRIP.cities || []).forEach(function (c) {
     var card = document.createElement('div');
     card.className = 'city-card';
@@ -188,6 +198,12 @@
 
     var pct = totalTripNights ? Math.round((Number(c.nights) || 0) / totalTripNights * 100) : 0;
     var color = CITY_COLORS[c.name] || '#8a8f98';
+    // Plain "X of Y nights" instead of a bare percentage - a raw "45%" next
+    // to a bar reads as ambiguous (45% of what?) without a legend attached
+    // to every single card; a fraction is self-explanatory on its own, and
+    // the shared caption above the card list explains what the bar itself
+    // (fill width) represents.
+    var nightsLabel = esc(c.nights) + ' of ' + totalTripNights + ' nights';
     var flag = CITY_FLAGS[c.name] || '';
     // c.focus is a free-text highlight list (e.g. "WWII history — Churchill War
     // Rooms, Imperial War Museum, Battle of Britain Bunker") — split it into
@@ -202,7 +218,7 @@
         '<div class="city-card-flag">' + flag + '</div>' +
         '<div class="city-card-name">' + esc(c.name) + '</div>' +
         '<div class="city-card-bar-track"><div class="city-card-bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>' +
-        '<div class="city-card-nights">' + esc(c.nights) + 'n · ' + pct + '%</div>' +
+        '<div class="city-card-nights">' + nightsLabel + '</div>' +
         '<div class="city-card-chevron">▾</div>' +
       '</div>' +
       '<div class="city-card-body-outer"><div class="city-card-body-inner"><div class="city-card-body">' +
