@@ -854,17 +854,27 @@
         '</div>';
     }).join('') || '<p class="ai-note">No flights in this plan.</p>';
 
-    // Live schedule check via /api/flight-status (Cloudflare Pages Function,
-    // needs AEROAPI_KEY set in the Pages project's env vars to actually work -
-    // without it this correctly reports "could not verify" rather than
-    // silently pretending the flight is confirmed).
+    // Live schedule check via /api/flight-status, which proxies server-side
+    // to the same shared flight-status Worker santafejune.com/trip-optimizer
+    // already use in production (see that function's own header comment) -
+    // no separate AEROAPI_KEY needed in this project.
     flights.forEach(function (row, i) {
       var f = row.f;
       var el = document.getElementById('fstatus-' + i);
       if (!f.flight_number || !el) return;
-      var url = '/api/flight-status?ident=' + encodeURIComponent(f.flight_number) + '&date=' + dayDateISO(row.dayIndex);
+      var qs = 'ident=' + encodeURIComponent(f.flight_number) + '&date=' + dayDateISO(row.dayIndex);
+      if (f.from_airport) qs += '&origin=' + encodeURIComponent(f.from_airport);
+      if (f.to_airport) qs += '&destination=' + encodeURIComponent(f.to_airport);
+      var url = '/api/flight-status?' + qs;
       fetch(url).then(function (r) { return r.json(); }).then(function (data) {
-        if (data && data.ok && data.status && data.status !== 'Unknown') {
+        if (data && data.beyondHorizon) {
+          // AeroAPI's personal tier only resolves live status ~2 days out -
+          // this is the normal, expected case for a trip booked weeks/months
+          // ahead, not a failure. Say so plainly instead of the generic
+          // "could not verify" warning, which reads like something's wrong.
+          el.textContent = 'Live tracking opens closer to departure (not yet available this far out).';
+          el.classList.add('flight-status-pending');
+        } else if (data && data.ok && data.status && data.status !== 'Unknown') {
           el.textContent = '✓ Live status: ' + data.status + (data.scheduledOut ? ' · scheduled ' + data.scheduledOut : '');
           el.classList.add('flight-status-ok');
         } else {

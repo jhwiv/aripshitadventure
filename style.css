@@ -452,6 +452,7 @@ img { max-width: 100%; display: block; }
 .flight-status { font-size: 11.5px; color: #9aa1ad; font-style: italic; }
 .flight-status-ok { color: #166534; font-style: normal; font-weight: 600; }
 .flight-status-warn { color: #b91c1c; font-style: normal; }
+.flight-status-pending { color: #9aa1ad; font-style: italic; }
 
 /* ---- Street Views ---- */
 .sv-card { margin-bottom: 18px; }
