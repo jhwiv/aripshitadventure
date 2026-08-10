@@ -818,9 +818,25 @@
   })();
 
   /* ---------------------------------------------------------
-     STREET VIEWS — keyless Google embed (output=svembed),
-     same trick zurich-pwa uses. No API key needed.
+     STREET VIEWS
      --------------------------------------------------------- */
+  // The old design tried to inline-embed an interactive panorama via
+  // https://www.google.com/maps?layer=c&cbll=<lat>,<lng>&output=svembed - a
+  // "keyless embed" trick with no official support, that this site (and
+  // zurich-pwa before it) had only ever verified by grepping the source for
+  // an API-key parameter, never by actually loading it in a browser with
+  // real network access (this sandbox's egress policy blocks google.com
+  // entirely, same as every other external host). Confirmed broken live, by
+  // the user's own screenshot: the iframe renders Google's generic
+  // zoomed-out world map with a floating "Maps" chip, not a street-level
+  // panorama, for every landmark - Google no longer honors this URL shape
+  // as an embeddable Street View request. An official, reliable embed
+  // (Maps Embed API's /maps/embed/v1/streetview) requires an API key this
+  // project doesn't have configured, so rather than keep shipping a fake
+  // inline preview that doesn't work, each card now leads with a real,
+  // working action: a direct link to the actual Street View in Google
+  // Maps, which is normal navigation (not an unusual embed trick) and
+  // therefore actually opens the panorama.
   (function renderStreetViews() {
     var entries = [];
     Object.keys(PINS.landmarks || {}).forEach(function (loc) {
@@ -833,13 +849,11 @@
     });
     var el = document.getElementById('streetViewList');
     el.innerHTML = entries.map(function (e) {
-      var embedUrl = 'https://www.google.com/maps?layer=c&cbll=' + e.lat + ',' + e.lng + '&output=svembed';
       var fullUrl = 'https://www.google.com/maps?layer=c&cbll=' + e.lat + ',' + e.lng;
       return '<div class="sv-card">' +
         '<div class="sv-title">' + esc(e.name) + '</div>' +
-        '<iframe class="sv-frame" src="' + embedUrl + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-        '<a class="sv-link" href="' + fullUrl + '" target="_blank" rel="noopener">Open panorama in Google Maps ↗</a>' +
-        '<div class="item-links" style="margin-top:4px;">' + directionsLinksHTML(e.name) + '</div>' +
+        '<a class="sv-open-btn" href="' + fullUrl + '" target="_blank" rel="noopener">👁 Open Street View ↗</a>' +
+        '<div class="item-links" style="margin-top:8px;">' + directionsLinksHTML(e.name) + '</div>' +
         '</div>';
     }).join('');
   })();
