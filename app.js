@@ -15,15 +15,15 @@
   // load (see renderHeroPhoto below). Neither zurich-pwa nor
   // maritimes-grandloop-v2 actually has a rotating hero (both use a single
   // static photo), so this is a new feature built specifically per
-  // request rather than copied from either reference. Placeholder URLs:
-  // this environment cannot reach any external host to source real photos
-  // (confirmed against images.unsplash.com itself, the exact CDN both
-  // reference sites use, which 403s here too) - replace these 10 entries
-  // with real itinerary photo URLs (ideally 2-3 per city, London/Normandy/
-  // Nuremberg/Porto) to activate the carousel with real photography.
+  // request rather than copied from either reference. Currently the same 4
+  // real, user-supplied city photos used for the .location-banner images
+  // (hosted locally under images/, since this environment cannot reach any
+  // external image host — confirmed against images.unsplash.com itself,
+  // the exact CDN both reference sites use, which 403s here too). Add more
+  // local images/*.jpg entries here to widen the rotation beyond one photo
+  // per city.
   var HERO_PHOTOS = [
-    'PHOTO_URL_HERO_1', 'PHOTO_URL_HERO_2', 'PHOTO_URL_HERO_3', 'PHOTO_URL_HERO_4', 'PHOTO_URL_HERO_5',
-    'PHOTO_URL_HERO_6', 'PHOTO_URL_HERO_7', 'PHOTO_URL_HERO_8', 'PHOTO_URL_HERO_9', 'PHOTO_URL_HERO_10'
+    'images/london.jpg', 'images/normandy.jpg', 'images/nuremberg.jpg', 'images/porto.jpg'
   ];
 
   var ITEM_ICONS = {
@@ -136,14 +136,15 @@
   document.title = TRIP.destination + ' · ' + TRIP.meta;
 
   // Hero photo carousel - picks a different photo on each page load (a
-  // real rotation, not just a static hero). Filters out any placeholder
-  // entries that don't look like a real URL, so this degrades cleanly to
-  // the plain gradient background (see .hero's CSS) until real photo URLs
-  // are dropped into HERO_PHOTOS above.
+  // real rotation, not just a static hero). Filters out any leftover
+  // PHOTO_URL_* placeholder entries, so this degrades cleanly to the plain
+  // gradient background (see .hero's CSS) if HERO_PHOTOS is ever emptied
+  // back out. Accepts both real http(s) URLs and local relative paths
+  // (e.g. 'images/london.jpg') since the actual photos are hosted locally.
   (function renderHeroPhoto() {
     var el = document.getElementById('heroPhoto');
     if (!el) return;
-    var real = HERO_PHOTOS.filter(function (u) { return /^https?:\/\//.test(u); });
+    var real = HERO_PHOTOS.filter(function (u) { return !/^PHOTO_URL_/.test(u); });
     if (!real.length) return;
     var pick = real[Math.floor(Math.random() * real.length)];
     el.style.backgroundImage = 'url(\'' + pick + '\')';
