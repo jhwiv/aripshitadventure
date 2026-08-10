@@ -308,12 +308,33 @@ img { max-width: 100%; display: block; }
 .wx-stats { display: flex; gap: 8px; flex-wrap: wrap; }
 .wx-stat { font-size: 10.5px; background: #fff; border: 1px solid #dcd8cf; border-radius: 4px; padding: 2px 7px; color: #5b6577; }
 
-/* ---- Condensed itinerary ---- */
-.cond-day { padding: 10px 0; border-top: 1px dashed #e6e3da; }
-.cond-day:first-child { border-top: none; }
-.cond-day-label { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: #3f7d86; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-.cond-row { font-size: 13.5px; padding: 3px 0; color: #333; }
-.cond-time { color: #9aa1ad; font-size: 11px; }
+/* ---- Condensed itinerary ----
+   Was a flat, single-weight list (day label + bare time/text rows, no
+   headline, no city cue, no per-item icon) - hard to scan or absorb at a
+   glance since every one of 13 days looked identical. Each day is now a
+   distinct card: a city-colored left accent bar + flag (the same visual
+   anchor city tabs already give you, since Condensed deliberately shows
+   every day back to back with no tab boundary between cities), the day's
+   real headline as a subtitle (already existed in the data, just never
+   rendered here), and the same circular item-type icon used in the
+   day-tab card view so a flight/meal/hotel/activity pattern-matches at a
+   glance down a long day instead of reading as identical text rows. */
+.cond-day {
+  padding: 14px 14px 12px; margin: 0 0 12px; border-left: 4px solid #dcd8cf;
+  background: #fbfaf7; border-radius: 0 8px 8px 0;
+}
+.cond-day:last-child { margin-bottom: 0; }
+.cond-day-head { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+.cond-day-flag { font-size: 15px; line-height: 1; }
+.cond-day-label { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; color: #3f7d86; text-transform: uppercase; letter-spacing: 0.06em; }
+.cond-day-headline { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: #1c2840; line-height: 1.3; margin-bottom: 10px; }
+.cond-row { display: flex; align-items: flex-start; gap: 10px; padding: 5px 0; }
+.cond-row-icon {
+  flex: none; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%;
+  background: #eef3f3; display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+.cond-row-body { flex: 1; min-width: 0; font-size: 13.5px; color: #333; line-height: 1.45; }
+.cond-time { color: #9aa1ad; font-size: 11px; display: block; }
 .cond-warn { color: #b91c1c; font-size: 11px; font-weight: 600; }
 
 /* ---- Meals & Reservations ---- */
@@ -639,6 +660,7 @@ img { max-width: 100%; display: block; }
   .container { max-width: 100%; padding: 0; }
   .day-block { break-inside: avoid; page-break-inside: avoid; }
   .item { break-inside: avoid; }
+  .cond-day { break-inside: avoid; page-break-inside: avoid; background: none; }
   a { color: #1c2840; text-decoration: underline; }
   .directions-group a, .navigate-row { display: none; }
   .item-links a[href^="tel:"], .item-links a[href^="http"] { text-decoration: underline; }

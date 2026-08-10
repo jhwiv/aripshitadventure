@@ -581,7 +581,22 @@
   (function renderCondensed() {
     var html = '';
     (TRIP.days || []).forEach(function (day, idx) {
-      html += '<div class="cond-day"><div class="cond-day-label">' + esc(day.label) + '</div>';
+      var color = CITY_COLORS[day.city] || '#8a8f98';
+      var flag = CITY_FLAGS[day.city] || '';
+      // A left accent bar + flag give an instant "which leg of the trip am I
+      // looking at" cue while scrolling a long, all-days-at-once list - city
+      // tabs already split this apart, but Condensed deliberately shows
+      // everything back to back with nothing else marking the boundary.
+      html += '<div class="cond-day" style="border-left-color:' + color + '">' +
+        '<div class="cond-day-head">' +
+          (flag ? '<span class="cond-day-flag">' + flag + '</span>' : '') +
+          '<span class="cond-day-label">' + esc(day.label) + '</span>' +
+        '</div>' +
+        // The headline already exists on every day (it's the same one-line
+        // "what this day is about" shown at the top of the day-tab card) but
+        // Condensed never rendered it - without it this view was just a flat
+        // list of times and venue names with no sense of the day's shape.
+        (day.headline ? '<div class="cond-day-headline">' + esc(day.headline) + '</div>' : '');
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
@@ -591,8 +606,14 @@
         var condTimeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
           ? 'Arrives ' + formatTime12(item.time)
           : formatTime12(item.time);
-        html += '<div class="cond-row"><span class="cond-time">' + esc(condTimeLabel) + '</span> ' +
-          esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + '</div>';
+        var icon = ITEM_ICONS[item.type] || '•';
+        html += '<div class="cond-row">' +
+          '<div class="cond-row-icon">' + icon + '</div>' +
+          '<div class="cond-row-body">' +
+            '<span class="cond-time">' + esc(condTimeLabel) + '</span>' +
+            esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag +
+          '</div>' +
+        '</div>';
       });
       html += '</div>';
     });
