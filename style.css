@@ -287,6 +287,15 @@ img { max-width: 100%; display: block; }
 
 /* ---- Day quick-jump nav (top of each city tab) ---- */
 .day-jump-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+@media (max-width: 480px) {
+  /* Every tab switch resets scroll to top (activateTab), so this row is the
+     first interactive thing visible on a fresh city-tab load - reserve
+     clearance so it never renders directly under the fixed FAB stack
+     (bottom-left) or the time pill (bottom-right), both of which sit at a
+     fixed screen position regardless of scroll. Confirmed live: without
+     this, "Day 1" was fully hidden behind the chat FAB on every city tab. */
+  .day-jump-nav { padding-left: 84px; padding-right: 172px; }
+}
 .day-jump-pill {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em;
   padding: 6px 12px; border-radius: 14px; background: #f8f7f3; border: 1px solid #dcd8cf;
@@ -382,6 +391,16 @@ img { max-width: 100%; display: block; }
   background: #0d2133; color: #fff; border: none;
   font-size: 20px; cursor: pointer;
   box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+@media (max-width: 480px) {
+  /* Every tab switch resets scroll to top, so the FAB stack's fixed
+     bottom-left footprint sits over whatever a tab's first-viewport
+     content happens to be. Shrinking it (still above the 44px accessible
+     touch-target minimum) reduces how much real content it can cover,
+     paired with the .day-jump-nav clearance fix above for the case that
+     actually blocked interaction. */
+  .fab-row { left: 14px; bottom: 14px; gap: 8px; }
+  .fab { width: 46px; height: 46px; font-size: 18px; }
 }
 .panel {
   position: fixed; left: 18px; bottom: 150px;
@@ -518,5 +537,14 @@ img { max-width: 100%; display: block; }
 #time-pill .tp-label { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dim); margin-top: 1px; white-space: nowrap; }
 #time-pill .tp-sep { width: 1px; height: 20px; background: rgba(200, 168, 75, 0.25); margin: 0 8px; }
 @media (max-width: 480px) {
-  #time-pill { top: auto; bottom: 14px; right: 14px; }
+  /* Was previously moved to bottom-right on mobile; switched back to
+     top-right (matching desktop) because bottom placement collided with
+     whatever content the sticky nav's scroll-to-top() lands on for every
+     single tab switch - confirmed live, it was hiding real content (a
+     hotel card's name/address on Essentials, the day quick-jump pills on
+     every city tab). Top-right only has to coexist with the hero's own
+     already-centered text and the sticky nav, neither of which conflicts
+     with a small corner pill. */
+  #time-pill { font-size: 10px; }
+  #time-pill .tp-zone { min-width: 46px; }
 }

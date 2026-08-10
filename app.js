@@ -152,11 +152,6 @@
   // The user is driving themselves, not hiring a private driver - the
   // source plan's wording assumed a chauffeur service that was never
   // requested. Swap the framing at render time (data itself is untouched).
-  function humanizeTransportText(text) {
-    if (!text) return text;
-    return text.replace(/Private driver/gi, 'Self-drive').replace(/Private transfer/gi, 'Self-drive transfer');
-  }
-
   // Which hotel is actually being slept at THIS specific day. day.city is
   // NOT reliable for this on a transit day (it reflects where the day's
   // activities happen, not where the night is spent - documented failure
@@ -203,7 +198,7 @@
   function renderItemHTML(item, day) {
     var icon = ITEM_ICONS[item.type] || '•';
     var extras = itemExtra(item);
-    var displayText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
+    var displayText = item.text;
     var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
     if (item.type === 'Transport') {
       var driveDest = parseTransportDestination(item.text, day);
@@ -380,7 +375,7 @@
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
           ? ' <span class="cond-warn">⚠ unverified schedule</span>' : '';
-        var condText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
+        var condText = item.text;
         var condTimeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
           ? 'Arrives ' + formatTime12(item.time)
           : formatTime12(item.time);
@@ -528,7 +523,7 @@
         var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
         navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + directionsLinksHTML(query) + '</div>';
       }
-      var refText = item.type === 'Transport' ? humanizeTransportText(item.text) : item.text;
+      var refText = item.text;
       // Same overnight-flight case as the item-card renderer: item.time is
       // the arrival time when it differs from flight.depart_time, so label
       // it explicitly instead of showing a bare time that reads as departure.
