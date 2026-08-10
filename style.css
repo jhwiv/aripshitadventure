@@ -502,11 +502,19 @@ img { max-width: 100%; display: block; }
    items in docs/new-trip-site-playbook.md for that as a future add) ── */
 @media print {
   .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill,
-  #itineraryMap, .sv-frame, .banner::before { display: none !important; }
+  #itineraryMap, .sv-frame, .banner::before, .hero-scene, .banner-scene,
+  .day-jump-nav, .countdown-badge { display: none !important; }
   .hero { background: none !important; color: #1c2840; padding: 12px 0; }
   .hero-overlay { display: none; }
   .hero .eyebrow, .hero .meta { color: #5b6577; }
   .hero .route { color: #1c2840; }
+  /* City banners default to white-on-navy for screen; without this override
+     a printed page (or any browser with "print background graphics" off,
+     which is the common default) would show white text on white paper -
+     unreadable. Same light-on-white treatment as the hero, just above. */
+  .banner { background: none !important; color: #1c2840; padding: 8px 0; border-bottom: 2px solid #c9a24b; border-radius: 0; min-height: 0; }
+  .banner::after { display: none; }
+  .banner-eyebrow { color: #5b6577; }
   body { background: #fff; }
   .container { max-width: 100%; padding: 0; }
   .day-block { break-inside: avoid; page-break-inside: avoid; }
