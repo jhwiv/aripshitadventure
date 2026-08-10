@@ -8,8 +8,8 @@
   // this trip is registered there under the "wwii2026" site key.
   var CHAT_API = 'https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026';
 
-  var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Nuremberg: '#8a5fc9', Porto: '#c9a24b' };
-  var CITIES = ['London', 'Normandy', 'Nuremberg', 'Porto'];
+  var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Porto: '#c9a24b' };
+  var CITIES = ['London', 'Normandy', 'Porto'];
 
   // Hero photo carousel — one of these is picked at random on every page
   // load (see renderHeroPhoto below). Neither zurich-pwa nor
@@ -19,14 +19,12 @@
   // images/, since this environment cannot reach any external image host
   // (confirmed against images.unsplash.com itself, the exact CDN both
   // reference sites use, which 403s here too) — real files delivered via a
-  // GitHub upload instead. hero-02/hero-03/banner-porto are free-license
-  // (Unsplash/Pexels) photos from the trip's own photo manifest; nuremberg
-  // is still the earlier unlicensed stock placeholder pending a real
-  // Nuremberg photo (see images/README.md and task #41). Add more local
-  // images/*.jpg entries here to widen the rotation further.
+  // GitHub upload instead. All three are free-license (Unsplash/Pexels)
+  // photos from the trip's own photo manifest. Add more local images/*.jpg
+  // entries here to widen the rotation further.
   var HERO_PHOTOS = [
     'images/hero-02-london-night.jpg', 'images/hero-03-normandy.jpg',
-    'images/nuremberg.jpg', 'images/banner-porto.jpg'
+    'images/banner-porto.jpg'
   ];
 
   var ITEM_ICONS = {
@@ -377,17 +375,11 @@
   // infographic glance, not a sentence), expandable on click/tap to reveal
   // the full original text plus the advisory tip. Replaces the old
   // always-expanded .day-block-weather paragraph, which repeated a full
-  // sentence on all 15 days regardless of whether the reader wanted the
-  // detail. Parses the same "High X°F / low Y°F · <condition>" shape
+  // sentence on all 13 days regardless of whether the reader wanted the
+  // detail. Parses the "High X°F / low Y°F · <condition>" shape
   // weatherAdvisory() above already parses (kept as a SEPARATE regex pass
   // rather than refactored to share one, since this one also needs an icon
-  // + short-label lookup weatherAdvisory has no reason to do). One real
-  // day's data (the Nuremberg→Porto transit day) has a compound two-city
-  // string ("Nuremberg: High 55°F/low 41°F · partly cloudy. Porto arrival:
-  // High 68°F/low 55°F · clear") — confirmed live that this still parses
-  // cleanly: the regex takes the FIRST city's numbers for the collapsed
-  // badge (today's actual weather), and the expanded detail always shows
-  // the complete original string, so the Porto-arrival note isn't lost.
+  // + short-label lookup weatherAdvisory has no reason to do).
   // day-block-weather/.day-block-weather's plain-text rendering below is
   // kept only as a fail-safe for a weather string shaped too differently
   // for this regex to match at all (parseWeatherLine returns null), not
@@ -614,13 +606,13 @@
     }).join('');
 
     var general = {
-      'Currency': 'UK: Pound sterling (GBP). France/Germany: Euro (EUR). Portugal: Euro (EUR). Contactless cards are widely accepted in all four countries.',
-      'Power outlets': 'UK uses Type G plugs (230V). France, Germany, and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Nuremberg/Porto and vice versa.',
-      'Emergency number': 'UK: 999 or 112. France, Germany, Portugal: 112 (EU-wide emergency number works in all three).',
-      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France/Germany: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.',
-      'Health & water': 'Tap water is safe to drink in London, Normandy, Nuremberg, and Porto. No special vaccinations are required for typical US travelers to the UK, France, Germany, or Portugal — check with your doctor or a travel clinic if you have specific health needs. Pharmacies (marked with a green cross) can handle minor ailments without a doctor visit.',
-      'Travel insurance': 'None of these four countries have a reciprocal healthcare agreement with the US — a travel insurance policy covering medical care, evacuation, and trip interruption is strongly recommended for a trip this length.',
-      'Staying connected': 'An eSIM covering the UK + EU roaming zone (e.g. Airalo, Holafly, or your carrier\'s international day-pass) is the simplest way to have data in all four countries without swapping physical SIM cards. Hotel and cafe wifi is also widely available.'
+      'Currency': 'UK: Pound sterling (GBP). France/Portugal: Euro (EUR). Contactless cards are widely accepted in all three countries.',
+      'Power outlets': 'UK uses Type G plugs (230V). France and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Porto and vice versa.',
+      'Emergency number': 'UK: 999 or 112. France, Portugal: 112 (EU-wide emergency number works in both).',
+      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.',
+      'Health & water': 'Tap water is safe to drink in London, Normandy, and Porto. No special vaccinations are required for typical US travelers to the UK, France, or Portugal — check with your doctor or a travel clinic if you have specific health needs. Pharmacies (marked with a green cross) can handle minor ailments without a doctor visit.',
+      'Travel insurance': 'None of these three countries have a reciprocal healthcare agreement with the US — a travel insurance policy covering medical care, evacuation, and trip interruption is strongly recommended for a trip this length.',
+      'Staying connected': 'An eSIM covering the UK + EU roaming zone (e.g. Airalo, Holafly, or your carrier\'s international day-pass) is the simplest way to have data in all three countries without swapping physical SIM cards. Hotel and cafe wifi is also widely available.'
     };
     document.getElementById('essentialsGeneral').innerHTML = Object.keys(general).map(function (k) {
       return '<div class="ref-card"><div class="ref-title">' + esc(k) + '</div><div class="ref-line">' + esc(general[k]) + '</div></div>';
@@ -634,8 +626,8 @@
       '<div class="byg-card">' +
       '<div class="byg-title">⚠ Before You Go — Entry Requirements</div>' +
       '<div class="byg-line"><strong>UK (London):</strong> US citizens need an Electronic Travel Authorisation (ETA) approved before flying in — apply online well ahead of departure. This is separate from, and in addition to, your passport.</div>' +
-      '<div class="byg-line"><strong>EU (Normandy, Nuremberg, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
-      '<div class="byg-line"><strong>Passport:</strong> Valid at least 6 months past the Oct 24, 2026 return date (already on the packing list) and issued within the last 10 years for Schengen entry.</div>' +
+      '<div class="byg-line"><strong>EU (Normandy, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
+      '<div class="byg-line"><strong>Passport:</strong> Valid at least 6 months past the Oct 22, 2026 return date (already on the packing list) and issued within the last 10 years for Schengen entry.</div>' +
       '<div class="byg-line">Requirements and processing times change — verify the current rules directly (gov.uk for the UK ETA, the official EU ETIAS site) close to departure rather than relying on this note alone.</div>' +
       '</div>';
 
@@ -643,7 +635,6 @@
     var embassies = [
       { city: 'London', name: 'U.S. Embassy London', note: 'Covers the UK leg directly.' },
       { city: 'Normandy', name: 'U.S. Embassy Paris', note: 'Nearest major U.S. diplomatic post to Normandy.' },
-      { city: 'Nuremberg', name: 'U.S. Consulate General Frankfurt', note: 'Nearest major U.S. diplomatic post to Nuremberg/Bavaria.' },
       { city: 'Porto', name: 'U.S. Embassy Lisbon', note: 'Nearest major U.S. diplomatic post to Porto.' }
     ];
     document.getElementById('essentialsEmbassy').innerHTML = embassies.map(function (e) {
@@ -711,8 +702,7 @@
   (function renderTransit() {
     var content = {
       London: 'Contactless card or phone tap works directly on the Tube, buses, and Overground — no need for an Oyster card. Black cabs can be hailed on the street; Uber/Bolt also operate widely. Heathrow Express runs every 15 min to Paddington.',
-      Normandy: 'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. A private driver or rental car is the practical way to cover the beach sites in a day; taxis exist in Bayeux but are sparse.',
-      Nuremberg: 'VAG runs an efficient U-Bahn/tram/bus network — a day ticket covers all of it. The old town is very walkable; the Documentation Center and Rally Grounds are a short tram ride from the center.',
+      Normandy: 'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. A private driver or rental car is the practical way to cover these sites in a day; taxis exist in Bayeux but are sparse.',
       Porto: 'The Andante card covers metro, bus, and some train lines. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.'
     };
     document.getElementById('transitList').innerHTML = CITIES.map(function (c) {
@@ -753,8 +743,8 @@
   (function renderHistory() {
     var entries = [
       { title: 'Churchill War Rooms & the Blitz', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet directed Britain’s WWII strategy, preserved largely as it was left in 1945. London itself was hit hard during the Blitz (1940–41) — much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
-      { title: 'The Normandy Landings', body: 'On June 6, 1944 (D-Day), Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. The American Cemetery at Colleville-sur-Mer overlooks Omaha Beach; Pointe du Hoc, a cliff assaulted by U.S. Army Rangers, still shows the bomb-cratered landscape. Juno was the Canadian sector.' },
-      { title: 'The Nuremberg Trials', body: 'Nuremberg was chosen for the 1945–46 International Military Tribunal partly for symbolic reasons — it had been the site of the Nazi Party’s massive annual rallies. Courtroom 600, where the trials were held, is still an active courtroom and only open to visitors when not in session. The Rally Grounds (Reichsparteitagsgelände) and their Documentation Center now serve as a museum on the mechanics of Nazi propaganda.' },
+      { title: 'The Normandy Landings', body: 'On June 6, 1944 (D-Day), Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. The American Cemetery at Colleville-sur-Mer overlooks Omaha Beach; Pointe du Hoc, a cliff assaulted by U.S. Army Rangers, still shows the bomb-cratered landscape. Utah was the westernmost American beach, secured with the lightest casualties of the five.' },
+      { title: 'The Battle of Britain & Bletchley Park', body: 'In summer/autumn 1940, RAF Fighter Command — directed from the Uxbridge bunker\'s No. 11 Group Operations Room — fought off the Luftwaffe\'s assault on Britain\'s airfields and cities, a defeat that forced Hitler to abandon his invasion plans. A few miles north at Bletchley Park, codebreakers including Alan Turing worked to crack Germany\'s Enigma cipher, an achievement historians credit with shortening the war by an estimated two years.' },
       { title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
@@ -1022,9 +1012,8 @@
 
   function guessCityForLandmark(loc) {
     var l = loc.toLowerCase();
-    if (l.indexOf('london') !== -1 || /sw1|se1|wc1|ec3|west end/.test(l)) return 'London';
-    if (l.indexOf('normandy') !== -1 || l.indexOf('caen') !== -1 || l.indexOf('cricqueville') !== -1 || l.indexOf('sainte-marie') !== -1 || l.indexOf('courseulles') !== -1) return 'Normandy';
-    if (l.indexOf('nuremberg') !== -1 || l.indexOf('nürnberg') !== -1) return 'Nuremberg';
+    if (l.indexOf('london') !== -1 || /sw1|se1|wc1|ec3|west end|uxbridge|bletchley|bovington|dorset/.test(l)) return 'London';
+    if (l.indexOf('normandy') !== -1 || l.indexOf('caen') !== -1 || l.indexOf('cricqueville') !== -1 || l.indexOf('sainte-marie') !== -1 || l.indexOf('sainte-mère') !== -1 || l.indexOf('bayeux') !== -1 || l.indexOf('mont-saint-michel') !== -1) return 'Normandy';
     if (l.indexOf('porto') !== -1 || l.indexOf('gaia') !== -1 || l.indexOf('douro') !== -1 || l.indexOf('sabrosa') !== -1) return 'Porto';
     return 'London';
   }
@@ -1300,7 +1289,6 @@
     var CITY_TZ = {
       London: { tz: 'Europe/London', flag: '🇬🇧' },
       Normandy: { tz: 'Europe/Paris', flag: '🇫🇷' },
-      Nuremberg: { tz: 'Europe/Berlin', flag: '🇩🇪' },
       Porto: { tz: 'Europe/Lisbon', flag: '🇵🇹' }
     };
     var HOME_TZ = 'America/Chicago'; // traveler's actual home base is Dallas, TX (Central), not the EWR departure city

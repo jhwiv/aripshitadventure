@@ -1,7 +1,7 @@
 {
-  "name": "London → Normandy → Nuremberg → Porto",
+  "name": "London → Normandy → Porto",
   "short_name": "Trip Guide",
-  "description": "14-night WWII history + Porto trip guide — Oct 10–24, 2026",
+  "description": "12-night WWII history + Porto trip guide — Oct 10–22, 2026",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8f7f3",

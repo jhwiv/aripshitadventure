@@ -1,4 +1,4 @@
-# Photo credits and remaining gap
+# Photo credits
 
 ## Free-license (Unsplash/Pexels), from the trip's own photo manifest
 
@@ -13,14 +13,11 @@ legally required. See the original `photomanifest.json` shared in-session
 for source URLs and photographer credits if a courtesy credits screen is
 ever added.
 
-## ⚠ Still an unlicensed placeholder
+## Nuremberg leg removed (task #41 closed by removal, not replacement)
 
-`nuremberg.jpg` is an Adobe Stock / Getty-iStockphoto-style preview download,
-not a purchased license — no stock-service metadata was found on this
-specific file, but that isn't proof of a clear license either. It's still in
-active use (Nuremberg's `.location-banner` and one hero-carousel slot) because
-no replacement has been supplied yet.
-
-Tracked as task #41: swap in a real, licensed Nuremberg photo (ideally named
-`banner-nuremberg.jpg`) to close this out. Everything else this task covered
-is now done — London, Normandy, and Porto are all real, free-license photos.
+The itinerary dropped Nuremberg entirely (Aug 2026 rebuild — London/Normandy/
+Porto only now). `nuremberg.jpg`, the unlicensed Adobe Stock/Getty-style
+placeholder previously tracked under task #41, has been deleted along with
+every reference to it (`.location-banner`, hero carousel, nav/map/packing
+text). Every photo in this directory is now a real, free-license image with
+no outstanding licensing gap.

@@ -1,14 +1,20 @@
 # Arip Shit Adventure
 
-Trip guide for **London → Normandy → Nuremberg → Porto**, Oct 10–24 2026 (14 nights, 2 adults).
+Trip guide for **London → Normandy → Porto**, Oct 10–22 2026 (12 nights, 2 adults).
 
-Static site, no build step, deployed via Cloudflare Pages. Content is sourced directly from
-the verified itinerary export (`data/trip-data.json` — the same structured JSON embedded in
-the "Export as Web App" download from the trip-planning app that built this itinerary).
+Static site, no build step, deployed via Cloudflare Pages. Content originates from the
+verified itinerary export (`data/trip-data.json` — the same structured JSON embedded in
+the "Export as Web App" download from the trip-planning app that built this itinerary),
+but at runtime `app.js` reads it from an inline `<script id="trip-data">` JSON blob
+embedded directly in `index.html` (same for `data/pins.json` → `<script id="pins-data">`),
+not from a `fetch()` of the `data/` files themselves. **Any edit to `data/trip-data.json`
+or `data/pins.json` must be re-embedded into `index.html`'s matching `<script>` tag, or the
+live site won't reflect it.** `data/trip-data.min.json` is a minified mirror of
+`trip-data.json`, kept for reference/diffing — nothing reads it at runtime either.
 
 ## Features
 
-- Day-by-day itinerary rendered from `data/trip-data.json` at runtime
+- Day-by-day itinerary rendered from the `trip-data` JSON embedded in `index.html` (sourced from `data/trip-data.json`)
 - Live weather per city (Open-Meteo, free/keyless) — `data/pins.json` holds city coordinates
 - Interactive map (Leaflet + free CartoDB tiles, vendored locally in `vendor/leaflet/` — no CDN dependency, no API key)
 - Location-aware local search (OpenStreetMap Overpass API — coffee/food/drinks/pharmacy near you or the city you're viewing)

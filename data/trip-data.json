@@ -1,43 +1,35 @@
 {
-  "destination": "London → Normandy → Nuremberg → Porto",
-  "meta": "Sat Oct 10 – Sat Oct 24, 2026 · 14 nights · 2 adults · Cultural WWII focus + Porto finish · 5+2+2+5 nights",
+  "destination": "London → Normandy → Porto",
+  "meta": "Sat Oct 10 – Thu Oct 22, 2026 · 12 nights · 2 adults · Cultural WWII focus + Porto finish · 5 London + 1 overnight ferry + 3 Normandy + 3 Porto nights",
   "cities": [
     {
       "name": "London",
       "nights": 5,
       "days_range": "Day 1–Day 6",
-      "focus": "WWII history — Churchill War Rooms, Imperial War Museum, Tower of London",
+      "focus": "WWII history — Churchill War Rooms, Imperial War Museum, Battle of Britain Bunker, Bletchley Park, The Tank Museum",
       "stay": "London Marriott Hotel Park Lane",
       "transport_in": "Fly EWR→LHR · 7h nonstop · British Airways or United · then 50 min Heathrow Express + taxi to Mayfair"
     },
     {
       "name": "Normandy",
-      "nights": 2,
-      "days_range": "Day 6–Day 8",
-      "focus": "D-Day landing beaches — American Cemetery, Pointe du Hoc, Juno Beach, Caen Memorial",
+      "nights": 3,
+      "days_range": "Day 7–Day 10",
+      "focus": "D-Day landing beaches — American Cemetery, Utah Beach, Omaha Beach, self-guided Bayeux, Mont-Saint-Michel",
       "stay": "Villa Lara Hôtel (Bayeux)",
-      "transport_in": "Private car via Eurotunnel Le Shuttle from London — approx. 5.5 hrs door to door including the Channel crossing"
-    },
-    {
-      "name": "Nuremberg",
-      "nights": 2,
-      "days_range": "Day 8–Day 10",
-      "focus": "Nuremberg Trials courthouse (Saturday-only), Rally Grounds Documentation Center, medieval old town",
-      "stay": "Sheraton Carlton Hotel Nürnberg",
-      "transport_in": "Private driver to Paris CDG (~3h) · Fly CDG→NUE nonstop · Air France · then taxi to city center"
+      "transport_in": "Overnight Brittany Ferries crossing, Portsmouth → Ouistreham (Caen) — approx. 8 hrs including the Channel crossing, cabin booked"
     },
     {
       "name": "Porto",
-      "nights": 5,
-      "days_range": "Day 10–Day 15",
-      "focus": "Ribeira riverside, port lodges, Douro Valley day trip, slow mornings",
+      "nights": 3,
+      "days_range": "Day 10–Day 13",
+      "focus": "Ribeira riverside, port lodges, Douro Valley day trip",
       "stay": "The Yeatman Hotel",
-      "transport_in": "Fly NUE→OPO · 3h 15m nonstop · Ryanair or TAP · then 25 min taxi to Vila Nova de Gaia"
+      "transport_in": "Private driver to Paris CDG (~2h45m) · Fly CDG→OPO nonstop · Air France · then taxi to Vila Nova de Gaia"
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads together the fabric of World War II memory and its aftermath across four countries, then pivots to the sensory peace of Portugal's wine country. You begin in London, standing in Churchill's Map Room and walking the Imperial War Museum's Holocaust galleries, anchoring the story at its command center. Normandy follows—dawn at the American Cemetery cliff edge above Omaha Beach, the cratered moonscape of Pointe du Hoc, and the Canadian perspective at Juno—before the journey moves east to Nuremberg, where you sit in Courtroom 600 and confront the Rally Grounds where the ideology was staged and later judged. Porto closes the arc: two-and-a-half days of port lodges, Douro terraces, and riverside dinners, a deliberate exhale after the weight of history.",
-    "differentiators": "The sequencing choices here are surgical. Churchill War Rooms and the Imperial War Museum frontload context before you stand on the beaches, so Omaha and Pointe du Hoc carry the full freight of what was planned in those underground corridors. Normandy's dawn arrival at the American Cemetery—timed for the cliff edge above Omaha Beach at first light—precedes the crowds and frames the sacrifice in silence. The itinerary builds Juno Beach and the Caen Memorial into Day 7, weaving the Canadian story and the peace-museum perspective most tours skip. Nuremberg's Saturday arrival unlocks same-day access to Courtroom 600 at the Memorium Nürnberger Prozesse, open only weekends, so you sit in the actual chairs where Göring and Speer faced the bench. The Documentation Center follows on Day 10, reversing the usual rally-grounds-first approach so the ideology's stage is understood after its reckoning. Porto is not a tack-on: the private cellar tour at Graham's, the vineyard lunch at Quinta do Crasto overlooking terraced Douro vines, and the sunset port tasting at Quinta do Vallado's terrace are earned grace notes. Even the final morning—Livraria Lello's art-nouveau staircase and sunset port at Taylor's—refuses to rush the ending."
+    "arc": "This itinerary threads together WWII history across Britain and Normandy, then closes on the sensory peace of Portugal's wine country. London goes deeper than the standard war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge, the Bletchley Park codebreaking huts, and a long detour to Bovington for the Tank Museum's Tiger 131 — before an overnight Channel ferry carries the trip straight into Normandy. Three days based in Bayeux cover the American D-Day beaches with a private guide, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel. Porto closes the arc: three days of port lodges, the Ribeira waterfront, and a Douro Valley vineyard lunch, a deliberate exhale after the weight of history.",
+    "differentiators": "The London sequencing builds outward from the center: Churchill War Rooms and the Imperial War Museum first, then two out-of-town detours — the Battle of Britain Bunker at Uxbridge and Bletchley Park — that most first-time visitors skip entirely. The Tank Museum day solves its own logistics: rather than an 8-hour round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. That tour, run by Objective Normandy, moves west to east in invasion order — Sainte-Mère-Église, Utah Beach, Pointe du Hoc, and Omaha/the American Cemetery last — so the Cemetery lands with the full weight of what came before it. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027. Porto is not a tack-on: the port-lodge visit in Vila Nova de Gaia, the vineyard lunch at Quinta do Crasto overlooking terraced Douro vines, and dinner at two-Michelin-star Pedro Lemos are earned grace notes after nine days of history."
   },
   "days": [
     {
@@ -177,59 +169,46 @@
             ],
             "_missingBackup": true,
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Scott's%20Mayfair%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Scott's%20Mayfair%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
     },
     {
-      "label": "Day 2 · Sun Oct 11 · Westminster & Churchill War Rooms",
+      "label": "Day 2 · Sun Oct 11 · Churchill War Rooms & West End",
       "city": "London",
-      "headline": "Stand in Churchill's Map Room where the war was directed",
-      "weather": "High 60°F / low 49°F · partly cloudy, 30% chance of showers",
+      "headline": "Stand in Churchill's Map Room, then an evening West End show",
+      "weather": "High 59°F / low 48°F · overcast with 30% chance of light rain",
       "items": [
         {
           "type": "Activity",
           "time": "10:00",
-          "end_time": "12:00",
+          "end_time": null,
           "text": "Churchill War Rooms",
           "location": "Clive Steps, King Charles Street, Westminster, London SW1A 2AQ",
-          "why": "The underground nerve center where Churchill and his Cabinet directed WWII operations — the Map Room frozen in time as it was the day the lights went out in August 1945. Essential WWII context for the rest of your trip.",
+          "why": "The underground Cabinet War Rooms Churchill worked and slept in during the Blitz — preserved as they were left in 1945, including the Map Room and Transatlantic Telephone Room.",
           "contact": {
-            "phone": "+44 20 7930 6961",
-            "website": "https://www.iwm.org.uk/visits/churchill-war-rooms",
-            "address": "Clive Steps, King Charles Street, Westminster, London SW1A 2AQ",
-            "hours": "Daily 9:30 AM–6:00 PM, last admission 5:00 PM",
-            "price": "£30/adult",
-            "booking_note": "Book timed-entry tickets online 7+ days ahead — weekends sell out. Audio guide included."
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "logistics": {
-            "wear": "Comfortable shoes — several small rooms and low-ceiling corridors, little seating for most of the visit.",
-            "expect": "Compact, mostly one-way underground route with an included audio guide; can get crowded mid-morning. Budget 90 min-2 hrs.",
-            "meet": "Enter via Clive Steps, King Charles Street, off Horse Guards Road — nearest tube is Westminster."
-          }
-        },
-        {
-          "type": "Activity",
-          "time": "12:30",
-          "end_time": "14:00",
-          "text": "Walk Westminster — Parliament Square, Churchill statue, Big Ben exterior, Westminster Abbey exterior",
-          "location": "Parliament Square, Westminster, London SW1P 3BD",
-          "why": "The heart of wartime London, where Churchill addressed the nation. Walk the same streets he paced during the Blitz. Stop at the Churchill statue in Parliament Square's northeast corner — iconic photo op and thematic anchor for the War Rooms visit.",
-          "contact": {
-            "address": "Parliament Square, Westminster, London SW1P 3BD",
-            "booking_note": "Self-guided walk. Westminster Abbey interior visits require separate timed tickets if desired."
+            "website": "https://www.iwm.org.uk/visits/churchill-war-rooms"
           },
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
+          "type": "Activity",
+          "time": "12:30",
+          "end_time": null,
+          "text": "Walk Westminster — Parliament Square, Churchill statue, Big Ben exterior, Westminster Abbey exterior",
+          "location": "Parliament Square, Westminster, London SW1P 3BD",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
           "type": "Dinner",
-          "time": "19:30",
+          "time": "17:30",
           "end_time": null,
           "text": "Dinner at Veeraswamy",
           "location": null,
@@ -288,11 +267,23 @@
                 "sun"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Gymkhana%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Gymkhana%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Veeraswamy%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Veeraswamy%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
+        },
+        {
+          "type": "Activity",
+          "time": "19:30",
+          "end_time": null,
+          "text": "West End theatre — evening performance",
+          "location": "West End theatre district, London",
+          "why": "Book in advance once you've picked a show — Veeraswamy's Regent Street location is a 10-min walk from most West End theatres, and it's open Sundays (many Soho spots, Kiln included, are not).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
         },
         {
           "type": "Hotel",
@@ -303,9 +294,7 @@
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "London Marriott Hotel Park Lane"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
@@ -322,7 +311,7 @@
           "end_time": "13:00",
           "text": "Imperial War Museum London",
           "location": "Lambeth Road, London SE1 6HZ",
-          "why": "Britain's definitive WWII collection — the Holocaust Exhibition is one of the most powerful in Europe, and the Second World War galleries trace the home front and the global conflict in detail. Essential preparation for Normandy and Nuremberg.",
+          "why": "Britain's definitive WWII collection — the Holocaust Exhibition is one of the most powerful in Europe, and the Second World War galleries trace the home front and the global conflict in detail. Essential preparation for the beaches ahead in Normandy.",
           "contact": {
             "phone": "+44 20 7416 5000",
             "website": "https://www.iwm.org.uk/visits/iwm-london",
@@ -394,10 +383,10 @@
               ],
               "_weekdayMismatch": "mon",
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Pentolina%20Brook%20Green%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Pentolina%20Brook%20Green%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Clio%20Marylebone%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Clio%20Marylebone%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -417,35 +406,55 @@
       ]
     },
     {
-      "label": "Day 4 · Tue Oct 13 · British Museum & West End",
+      "label": "Day 4 · Tue Oct 13 · Battle of Britain Bunker",
       "city": "London",
-      "headline": "Evening West End show — history on stage after a museum day",
-      "weather": "High 60°F / low 49°F · partly sunny, dry",
+      "headline": "The real underground Operations Room that directed the Battle of Britain",
+      "weather": "High 58°F / low 47°F · partly cloudy",
       "items": [
         {
+          "type": "Transport",
+          "time": "09:15",
+          "end_time": null,
+          "text": "Underground to Uxbridge (Piccadilly or Metropolitan line), then a signed 15-min walk through Dowding Park — approx. 55 min door to door",
+          "location": null,
+          "why": "Uxbridge is well outside central London — budget the better part of an hour each way on the Tube, matching the roughly 1-hour trip this stop takes from Mayfair.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
           "type": "Activity",
-          "time": "10:00",
-          "end_time": "12:30",
-          "text": "British Museum",
-          "location": "Great Russell Street, Bloomsbury, London WC1B 3DG",
-          "why": "One of the world's great museums — the Enlightenment Gallery, the Rosetta Stone, the Parthenon sculptures, and Egyptian collections form the foundation of cultural literacy. The WWII-era Blitz damage is part of the building's story.",
+          "time": "10:15",
+          "end_time": null,
+          "text": "Battle of Britain Bunker — RAF Uxbridge's underground No. 11 Group Operations Room",
+          "location": "Wren Ave, Uxbridge UB10 0GG",
+          "why": "The actual command bunker Air Vice-Marshal Park directed the Battle of Britain from in real time — the plotting table and headset positions are preserved as they were on 15 September 1940, \"Battle of Britain Day.\" Guided tours run roughly every 75 minutes (10:15, 11:30, 12:45, 2:00, 3:15); each is about an hour including a 35-minute presentation in the plotting room. Last admission 15:30.",
           "contact": {
-            "phone": "+44 20 7323 8299",
-            "website": "https://www.britishmuseum.org",
-            "address": "Great Russell Street, Bloomsbury, London WC1B 3DG",
-            "hours": "Daily 10:00 AM–5:00 PM (Fridays until 8:30 PM)",
-            "price": "Free (donations welcomed)",
-            "booking_note": "Free entry, no reservation required. Highlights tours available."
+            "phone": "+44 1895 238154",
+            "website": "https://battleofbritainbunker.co.uk"
           },
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
-          "type": "Dinner",
-          "time": "17:00",
+          "type": "Transport",
+          "time": "13:00",
           "end_time": null,
-          "text": "Pre-theatre dinner at Kiln",
+          "text": "Underground back to central London — approx. 55 min",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Dinner",
+          "time": "19:30",
+          "end_time": null,
+          "text": "Dinner at Kiln",
           "location": null,
           "why": null,
           "contact": null,
@@ -499,73 +508,69 @@
                 "sat"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Bao%20Soho%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Bao%20Soho%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
-          "type": "Activity",
-          "time": "19:30",
-          "end_time": "22:00",
-          "text": "West End theatre — evening performance",
-          "location": "West End theatre district, London",
-          "why": "London's theatre is a living tradition — catch a show at one of the historic West End houses. Current productions vary; book ahead for best seats.",
-          "contact": {
-            "phone": "+44 844 871 7687",
-            "website": "https://www.officiallondontheatre.com",
-            "booking_note": "Book 7–14 days ahead. TodayTix app offers last-minute discounts. Check current productions: Hamilton, Les Mis, Phantom, or new plays."
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
           "type": "Hotel",
-          "time": "23:30",
+          "time": "23:00",
           "end_time": null,
           "text": "Overnight — London Marriott Hotel Park Lane",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "London Marriott Hotel Park Lane"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 5 · Wed Oct 14 · Tower of London",
+      "label": "Day 5 · Wed Oct 14 · Bletchley Park",
       "city": "London",
-      "headline": "Stand where Anne Boleyn was beheaded, see the Crown Jewels",
-      "weather": "High 59°F / low 48°F · mostly cloudy, 30% chance of light rain",
+      "headline": "Where Turing and the codebreakers cracked Enigma",
+      "weather": "High 57°F / low 46°F · overcast",
       "items": [
         {
+          "type": "Transport",
+          "time": "08:45",
+          "end_time": null,
+          "text": "Train from London Euston to Bletchley (West Midlands Railway) — approx. 40–50 min, then a 10-min signed walk to the park entrance",
+          "location": null,
+          "why": "Trains run roughly every 15–30 min from Euston — no need to book ahead, buy at the station or via the Trainline app.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
           "type": "Activity",
-          "time": "09:30",
-          "end_time": "12:30",
-          "text": "Tower of London",
-          "location": "Tower of London, London EC3N 4AB",
-          "why": "A thousand years of history in one fortress — the Crown Jewels, the Yeoman Warder tours, the execution site, and the White Tower. The WWII damage and the Tower's role as a symbol of British resilience tie into your broader trip theme.",
+          "time": "10:00",
+          "end_time": "15:30",
+          "text": "Bletchley Park — the Mansion, Huts 3/6/8, and the wartime codebreaking story",
+          "location": "Sherwood Drive, Bletchley, Milton Keynes MK3 6EB",
+          "why": "This is a full-day site, not a quick stop — the Mansion, the codebreaking huts, and the Turing/Enigma exhibits easily fill 4+ hours. The National Museum of Computing (home of the rebuilt Colossus, the world's first electronic computer) sits on the same grounds with a separate small admission if there's time.",
           "contact": {
-            "phone": "+44 333 320 6000",
-            "website": "https://www.hrp.org.uk/tower-of-london",
-            "address": "Tower of London, London EC3N 4AB",
-            "hours": "Tue–Sat 9:00 AM–5:30 PM, Sun–Mon 10:00 AM–5:30 PM (winter hours; confirm seasonally)",
-            "price": "£34.80/adult",
-            "booking_note": "Book timed-entry tickets online 7+ days ahead. Arrive early to beat crowds. Yeoman Warder tours depart every 30 min."
+            "website": "https://bletchleypark.org.uk"
           },
           "flight": null,
           "hotel": null,
-          "restaurant": null,
-          "logistics": {
-            "wear": "Sturdy walking shoes — cobblestones and stairs throughout the grounds and towers.",
-            "expect": "Large site with several separate exhibits; the Crown Jewels line moves slowly midday. Arriving near opening avoids the worst of it.",
-            "meet": "Main entrance off Tower Hill, next to Tower Hill tube station."
-          }
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "15:45",
+          "end_time": null,
+          "text": "Train back to London Euston — approx. 40–50 min",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
         },
         {
           "type": "Dinner",
@@ -624,59 +629,180 @@
                 "sat"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=64%20Goodge%20Street%20Fitzrovia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=64%20Goodge%20Street%20Fitzrovia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20River%20Restaurant%20by%20Gordon%20Ramsay%20Southwark%20%2F%20South%20Bank%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20River%20Restaurant%20by%20Gordon%20Ramsay%20Southwark%20%2F%20South%20Bank%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Hotel",
-          "time": "23:00",
+          "time": "22:30",
           "end_time": null,
-          "text": "Overnight — London Marriott Hotel Park Lane",
+          "text": "Overnight — London Marriott Hotel Park Lane — last London night",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "London Marriott Hotel Park Lane"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 6 · Thu Oct 15 · Normandy American Cemetery",
+      "label": "Day 6 · Thu Oct 15 · The Tank Museum & overnight ferry to Normandy",
+      "city": "London",
+      "headline": "Bovington's Tiger 131, then an overnight Channel crossing straight into Normandy",
+      "weather": "High 59°F / low 49°F · partly cloudy",
+      "items": [
+        {
+          "type": "Hotel",
+          "time": "07:00",
+          "end_time": null,
+          "text": "Check out — London Marriott Hotel Park Lane",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "07:30",
+          "end_time": null,
+          "text": "Private car/rental to The Tank Museum, Bovington, Dorset — approx. 2h30m via M3/A31 (120 miles)",
+          "location": null,
+          "why": "This solves the day's own logistics problem: rather than a same-day round trip from London (which would be close to 8 hours of driving for a few hours at the museum), the route continues on to the Portsmouth ferry afterward, so today's drive doubles as the start of the transfer to Normandy.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "10:15",
+          "end_time": "14:00",
+          "text": "The Tank Museum, Bovington — 300+ armored vehicles from WWI to today, including Tiger 131, the only running Tiger I tank in the world",
+          "location": "Bovington, Wareham, Dorset BH20 6JG",
+          "why": "The world's most complete tank collection — worth the detour on its own, and Tiger 131 (captured in Tunisia in 1943, the tank that helped break Enigma's naval codes at Bletchley) ties directly back to yesterday.",
+          "contact": {
+            "phone": "+44 1929 405096",
+            "website": "https://tankmuseum.org"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "14:15",
+          "end_time": null,
+          "text": "Drive Bovington to Portsmouth International Port — approx. 1h20m via A35/A31 (65 miles)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Check in for Brittany Ferries overnight sailing, Portsmouth → Ouistreham (Caen) — boarding opens approx. 90 min before departure",
+          "location": null,
+          "why": null,
+          "contact": {
+            "website": "https://www.brittany-ferries.co.uk",
+            "booking_note": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45–23:30 departure."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Dinner",
+          "time": "20:00",
+          "end_time": null,
+          "text": "Dinner aboard the ferry — onboard restaurant",
+          "location": null,
+          "why": "Brittany Ferries' Portsmouth–Caen ships (MV Normandie / MV Mont St Michel) both run a sit-down restaurant and a self-service option — book a table when you check in if you'd rather not queue.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "22:45",
+          "end_time": null,
+          "text": "Ferry departs Portsmouth — overnight crossing, cabin booked, approx. 8 hrs — arrives Ouistreham (Caen) approx. 06:15 local time (Day 7)",
+          "location": null,
+          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        }
+      ]
+    },
+    {
+      "label": "Day 7 · Fri Oct 16 · American Sector — Utah, Omaha & the Cemetery",
       "city": "Normandy",
-      "headline": "Cross the Channel to Normandy, then the D-Day beaches — Omaha, Pointe du Hoc, Utah",
-      "weather": "High 61°F / low 50°F · partly cloudy with occasional drizzle",
+      "headline": "Full-day guided tour with Objective Normandy: Sainte-Mère-Église to the American Cemetery",
+      "weather": "High 60°F / low 49°F · partly cloudy, light Channel breeze",
       "items": [
         {
           "type": "Transport",
-          "time": "06:00",
-          "end_time": "11:30",
-          "text": "Private car transfer to Bayeux · via Eurotunnel Le Shuttle (Folkestone → Calais) — approx. 5.5 hrs total including the Channel crossing",
+          "time": "06:15",
+          "end_time": null,
+          "text": "Ferry docks at Ouistreham (Caen) — French time (clocks forward 1h from UK)",
           "location": null,
-          "why": "The practical way to reach Normandy from London for this kind of trip — there's no meaningful direct flight; Caen's airport has minimal scheduled international service, and the drive via the Channel Tunnel is the standard routing Normandy tour operators use.",
-          "contact": {
-            "booking_note": "Book a private long-distance transfer or car service in advance — this leg was not pre-arranged in this plan. Confirm Eurotunnel Le Shuttle timing directly (crossings run roughly every 15-30 min, but book ahead for a fixed departure)."
-          },
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
           "type": "Transport",
-          "time": "11:30",
+          "time": "06:45",
           "end_time": null,
-          "text": "Meet private guide in Bayeux for full-day Normandy D-Day tour",
+          "text": "Drive Ouistreham to Bayeux — approx. 20 min",
           "location": null,
-          "why": "A private guide lets you move at your own pace and dive deep into the stories that resonate most.",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Hotel",
+          "time": "07:15",
+          "end_time": null,
+          "text": "Early luggage drop at Villa Lara Hôtel, Bayeux — coffee and a quick freshen-up before the guide arrives; full check-in later today",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Villa Lara Hôtel",
+            "address": "6 Place de Québec, 14400 Bayeux, France",
+            "phone": "+33 2 31 92 05 55",
+            "website": "https://www.hotel-villalara.com"
+          },
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "08:30",
+          "end_time": null,
+          "text": "Meet guide Elisha (Objective Normandy) for the full-day American Sector D-Day tour",
+          "location": null,
+          "why": "Objective Normandy runs step-on tours of the American sector — Sainte-Mère-Église, Utah Beach, Pointe du Hoc, Omaha Beach, and the American Cemetery — tailored and flexible rather than a fixed script.",
           "contact": {
-            "phone": "+33 2 31 51 70 52",
-            "website": "https://www.normandy-dday-tours.com",
-            "booking_note": "Book 10+ days ahead — June anniversaries fill early"
+            "website": "https://objectivenormandy.com"
           },
           "flight": null,
           "hotel": null,
@@ -684,71 +810,69 @@
         },
         {
           "type": "Activity",
-          "time": "12:00",
-          "end_time": "13:15",
-          "text": "Normandy American Cemetery & Memorial",
-          "location": "Colleville-sur-Mer, 14710 Normandy",
-          "why": "9,388 white marble crosses above Omaha Beach — the solemnity of the place is overwhelming and necessary. Arrive early before tour groups.",
-          "contact": {
-            "phone": "+33 2 31 51 62 00",
-            "website": "https://www.abmc.gov/cemeteries-memorials/europe/normandy-american-cemetery",
-            "address": "Colleville-sur-Mer, 14710, France",
-            "hours": "Daily 9:00 AM – 5:00 PM",
-            "price": "Free",
-            "booking_note": "No reservation required"
-          },
+          "time": "09:00",
+          "end_time": null,
+          "text": "Sainte-Mère-Église — the first French town liberated on D-Day, famous for the paratrooper caught on the church steeple",
+          "location": "Sainte-Mère-Église, 50480, Normandy",
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
           "type": "Activity",
-          "time": "13:45",
-          "end_time": "14:45",
-          "text": "Pointe du Hoc Ranger Monument",
-          "location": "14450 Cricqueville-en-Bessin",
-          "why": "The bomb craters are still here, frozen in 1944. Walk the cliff the Rangers scaled under fire — it's visceral history.",
-          "contact": {
-            "phone": "+33 2 31 51 62 00",
-            "website": "https://www.abmc.gov/pointe-du-hoc",
-            "address": "14450 Cricqueville-en-Bessin, France",
-            "hours": "Daily 9:00 AM – 5:00 PM",
-            "price": "Free",
-            "booking_note": "Free — no reservation"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "logistics": {
-            "wear": "Closed-toe shoes with grip — uneven, cratered cliff-top terrain, can be muddy after rain.",
-            "expect": "Exposed to wind off the Channel with little shade or shelter. Self-guided, roughly 45-60 min.",
-            "meet": "On-site parking and visitor center at the point itself, off the D514."
-          }
-        },
-        {
-          "type": "Activity",
-          "time": "15:15",
-          "end_time": "16:30",
-          "text": "Utah Beach Museum (Musée du Débarquement)",
+          "time": "10:30",
+          "end_time": null,
+          "text": "Utah Beach & the Utah Beach Landing Museum",
           "location": "50480 Sainte-Marie-du-Mont",
-          "why": "Built on the actual beach, this museum grounds the abstract strategy in sand and tides. The B-26 Marauder suspended inside is haunting.",
-          "contact": {
-            "phone": "+33 2 33 71 53 35",
-            "website": "https://utah-beach.com",
-            "address": "50480 Sainte-Marie-du-Mont, France",
-            "hours": "Daily 9:30 AM – 6:00 PM (Oct)",
-            "price": "€12/adult",
-            "booking_note": "Tickets at door — advance booking not required"
-          },
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Note",
+          "time": "12:30",
+          "end_time": null,
+          "text": "Lunch — casual café stop near Sainte-Marie-du-Mont or Utah Beach, on the tour's own schedule",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "13:30",
+          "end_time": null,
+          "text": "Pointe du Hoc Ranger Monument — the cliff the 2nd Ranger Battalion scaled under fire",
+          "location": "14450 Cricqueville-en-Bessin",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "15:00",
+          "end_time": null,
+          "text": "Omaha Beach & Normandy American Cemetery — 9,388 graves overlooking the beach",
+          "location": "Colleville-sur-Mer, 14710 Normandy",
+          "why": "Saved for last on purpose — the Cemetery lands hardest after standing on the beach and at Pointe du Hoc first.",
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
           "type": "Transport",
-          "time": "17:00",
+          "time": "17:30",
           "end_time": null,
-          "text": "Return to Bayeux hotel",
+          "text": "Return to Bayeux",
           "location": null,
           "why": null,
           "contact": null,
@@ -812,17 +936,17 @@
                 "phone": "+33 2 31 21 05 45"
               },
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Rapi%C3%A8re%20Bayeux%20old%20town%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Rapi%C3%A8re%20Bayeux%20old%20town%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Pommier%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Pommier%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Hotel",
           "time": "22:00",
           "end_time": null,
-          "text": "Overnight at Villa Lara Hôtel",
+          "text": "Overnight, full check-in — Villa Lara Hôtel",
           "location": null,
           "why": null,
           "contact": null,
@@ -838,16 +962,16 @@
       ]
     },
     {
-      "label": "Day 7 · Fri Oct 16 · Juno Beach & Caen Memorial",
+      "label": "Day 8 · Sat Oct 17 · Self-guided Bayeux",
       "city": "Normandy",
-      "headline": "Walk the Canadian beach at Juno, then the Caen peace museum",
-      "weather": "High 60°F / low 49°F · overcast with light rain likely",
+      "headline": "The cathedral, the old town, and the largest Commonwealth WWII cemetery in France",
+      "weather": "High 59°F / low 48°F · mostly sunny",
       "items": [
         {
-          "type": "Transport",
-          "time": "09:00",
+          "type": "Note",
+          "time": "09:30",
           "end_time": null,
-          "text": "Drive to Juno Beach — 45 min via D514",
+          "text": "Leisurely morning, hotel breakfast",
           "location": null,
           "why": null,
           "contact": null,
@@ -857,28 +981,33 @@
         },
         {
           "type": "Activity",
-          "time": "10:00",
-          "end_time": "12:00",
-          "text": "Juno Beach Centre",
-          "location": "Courseulles-sur-Mer, 14470",
-          "why": "The Canadian D-Day story is less told but no less heroic. The museum is beautifully done, and the beach outside is hauntingly quiet.",
-          "contact": {
-            "phone": "+33 2 31 37 32 17",
-            "website": "https://www.junobeach.org",
-            "address": "Voie des Français Libres, 14470 Courseulles-sur-Mer, France",
-            "hours": "Daily 9:30 AM – 6:00 PM (Oct)",
-            "price": "€11/adult",
-            "booking_note": "Tickets at door or online — advance recommended Oct weekends"
-          },
+          "time": "10:30",
+          "end_time": null,
+          "text": "Self-guided walk — Bayeux old town, half-timbered houses and water mills along the Aure river",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
-          "type": "Transport",
+          "type": "Activity",
+          "time": "11:30",
+          "end_time": null,
+          "text": "Bayeux Cathedral (Cathédrale Notre-Dame de Bayeux) — self-guided",
+          "location": "Bayeux Cathedral, Bayeux, France",
+          "why": "Consecrated 1077, the original home of the Bayeux Tapestry for nearly 700 years before it moved to a dedicated museum.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Note",
           "time": "13:00",
           "end_time": null,
-          "text": "Drive to Caen — 30 min via N13",
+          "text": "Lunch in the town center",
           "location": null,
           "why": null,
           "contact": null,
@@ -888,29 +1017,24 @@
         },
         {
           "type": "Activity",
-          "time": "13:45",
-          "end_time": "16:30",
-          "text": "Mémorial de Caen (Caen Memorial Museum)",
-          "location": "Esplanade Général Eisenhower, 14050 Caen",
-          "why": "The best contextual museum in Normandy — it frames D-Day within the entire arc of WWII, the Occupation, and the Cold War. Plan 3 hours minimum.",
+          "time": "14:30",
+          "end_time": "16:00",
+          "text": "Musée Mémorial de la Bataille de Normandie (Battle of Normandy Memorial Museum) — self-guided",
+          "location": "Boulevard Fabian Ware, 14400 Bayeux",
+          "why": "NOTE: the Bayeux Tapestry Museum is closed for renovation (Sept 2025–Oct 2027) and will not be open during this trip — this museum, covering the Battle of Normandy itself, is the substitute for a Bayeux museum day. Real uniforms, vehicles, and a diorama of the full campaign.",
           "contact": {
-            "phone": "+33 2 31 06 06 45",
-            "website": "https://www.memorial-caen.fr",
-            "address": "Esplanade Général Eisenhower, 14050 Caen, France",
-            "hours": "Daily 9:30 AM – 6:00 PM (Oct)",
-            "price": "€19.80/adult",
-            "booking_note": "Book online 2+ days ahead for timed entry"
+            "phone": "+33 2 31 51 46 90"
           },
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
-          "type": "Transport",
-          "time": "17:00",
+          "type": "Activity",
+          "time": "16:00",
           "end_time": null,
-          "text": "Return to Bayeux — 35 min via N13",
-          "location": null,
+          "text": "Bayeux War Cemetery — the largest British and Commonwealth WWII cemetery in France, 4,648 graves, directly across the road from the museum",
+          "location": "Boulevard Fabian Ware, 14400 Bayeux",
           "why": null,
           "contact": null,
           "flight": null,
@@ -974,164 +1098,88 @@
                 "phone": "+33 2 31 92 06 90"
               },
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=L'Angle%20Saint%20Laurent%20Bayeux%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=L'Angle%20Saint%20Laurent%20Bayeux%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Hotel",
           "time": "22:00",
           "end_time": null,
-          "text": "Overnight at Villa Lara Hôtel",
+          "text": "Overnight — Villa Lara Hôtel",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "Villa Lara Hôtel",
-            "address": "6 Place de Québec, 14400 Bayeux, France",
-            "phone": "+33 2 31 92 05 55",
-            "website": "https://www.hotel-villalara.com"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 8 · Sat Oct 17 · Nuremberg Trials Memorial",
-      "city": "Nuremberg",
-      "headline": "Sit in Courtroom 600 where the architects of the Holocaust faced justice",
-      "weather": "High 57°F / low 43°F · partly cloudy, crisp autumn air",
+      "label": "Day 9 · Sun Oct 18 · Mont-Saint-Michel",
+      "city": "Normandy",
+      "headline": "The tidal abbey — a day trip from Bayeux",
+      "weather": "High 61°F / low 50°F · sunny, breezy on the causeway",
       "items": [
         {
-          "type": "Hotel",
-          "time": "06:30",
+          "type": "Transport",
+          "time": "08:30",
           "end_time": null,
-          "text": "Check out from Villa Lara Hôtel",
+          "text": "Drive Bayeux to Mont-Saint-Michel — approx. 1h25m (76 miles)",
           "location": null,
-          "why": null,
+          "why": "Leave early to beat the day-trip buses from Paris — the village and abbey get crowded by late morning.",
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "Villa Lara Hôtel",
-            "address": "6 Place de Québec, 14400 Bayeux, France",
-            "phone": "+33 2 31 92 05 55",
-            "check_out_time": "11:00"
-          },
-          "restaurant": null
-        },
-        {
-          "type": "Transport",
-          "time": "06:45",
-          "end_time": null,
-          "text": "Private driver to Paris CDG — 3h via A13/A86",
-          "location": null,
-          "why": null,
-          "contact": {
-            "phone": "+33 1 45 26 80 63",
-            "booking_note": "Concierge to arrange — verify operator and quote"
-          },
-          "flight": null,
           "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Flight",
-          "time": "12:00",
-          "end_time": null,
-          "text": "Fly Paris CDG → Nuremberg · nonstop",
-          "location": null,
-          "why": null,
-          "contact": {
-            "phone": "+33 1 41 56 78 00",
-            "website": "https://www.airfrance.com"
-          },
-          "flight": {
-            "carrier": "Air France",
-            "flight_number": "AF1810",
-            "from_airport": "CDG",
-            "to_airport": "NUE",
-            "depart_time": "12:00",
-            "arrive_time": "13:25",
-            "duration": "1h 25m",
-            "nonstop": true,
-            "cabin": "Economy",
-            "aircraft": "Airbus A320",
-            "confirmation_note": "Book directly on airfrance.com. Verify flight number, times and equipment at booking — schedules change.",
-            "airport_arrival_buffer": "2 h",
-            "lounge_access": [
-              {
-                "name": "Air France Lounge",
-                "terminal": "Terminal 2F, post-security",
-                "access": "SkyTeam Elite Plus or Flying Blue Gold/Platinum",
-                "gate_proximity": "Same terminal as Air France gates",
-                "notes": "Open 6:00 AM – 9:00 PM · Champagne bar, hot food"
-              },
-              {
-                "name": "Priority Pass Lounge (Icare Lounge)",
-                "terminal": "Terminal 2E, Hall L",
-                "access": "Priority Pass or Amex Plat (with same-day boarding pass)",
-                "gate_proximity": "Different hall — allow 15+ min walk from 2F",
-                "notes": "Open 6:00 AM – 10:00 PM · Basic hot/cold buffet"
-              }
-            ],
-            "_originalFlightNumber": "AF1810",
-            "_modelEstimatedFlightNumber": true
-          },
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Transport",
-          "time": "14:00",
-          "end_time": null,
-          "text": "Taxi NUE airport to hotel — 20 min",
-          "location": null,
-          "why": null,
-          "contact": {
-            "booking_note": "Taxi rank at arrivals hall — €25–30 to city center"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Hotel",
-          "time": "14:30",
-          "end_time": null,
-          "text": "Check in at Sheraton Carlton Hotel Nürnberg",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": {
-            "name": "Sheraton Carlton Hotel Nürnberg",
-            "address": "Eilgutstraße 15, 90443 Nuremberg, Germany",
-            "phone": "+49 911 20030",
-            "website": "https://www.marriott.com/hotels/travel/nursc-sheraton-carlton-hotel-nuernberg",
-            "check_in_time": "15:00",
-            "room_type": "Standard room",
-            "confirmation_note": "Marriott Bonvoy property — use member rate"
-          },
           "restaurant": null
         },
         {
           "type": "Activity",
-          "time": "15:30",
-          "end_time": "17:00",
-          "text": "Memorium Nürnberger Prozesse (Nuremberg Trials Memorial)",
-          "location": "Bärenschanzstraße 72, 90429 Nuremberg",
-          "why": "Courtroom 600 is preserved exactly as it was in 1945–46. You sit in the same gallery where the world watched Göring, Speer, and the others face judgment. The audio guide is essential — it reconstructs the trial testimony in the very seats where it was spoken. This is the moral reckoning that defines postwar justice.",
-          "contact": {
-            "phone": "+49 911 3217 9372",
-            "website": "https://museums.nuernberg.de/memorium-nuremberg-trials",
-            "address": "Bärenschanzstraße 72, 90429 Nuremberg, Germany",
-            "hours": "Sat 1:00 PM – 5:00 PM (ONLY open Sat & Sun in Oct, 1:00–5:00 PM)",
-            "price": "€6/adult",
-            "booking_note": "ONLY open Saturdays & Sundays 1:00–5:00 PM — plan accordingly. Book online or call ahead."
-          },
+          "time": "10:00",
+          "end_time": null,
+          "text": "Mont-Saint-Michel village — self-guided walk up the Grande Rue to the abbey entrance",
+          "location": "Le Mont-Saint-Michel, 50170, Normandy",
+          "why": "One of the most recognizable silhouettes in France — a tidal island abbey with over 1,000 years of history.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Note",
+          "time": "12:30",
+          "end_time": null,
+          "text": "Lunch in the village, or bring a picnic for the mainland dike viewpoint — village restaurants are priced for the tourist crush",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "14:00",
+          "end_time": "16:00",
+          "text": "Abbey interior and ramparts — self-guided, audio guide available on-site",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "16:30",
+          "end_time": null,
+          "text": "Drive back to Bayeux — approx. 1h25m",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
@@ -1140,247 +1188,64 @@
           "type": "Dinner",
           "time": "19:30",
           "end_time": null,
-          "text": "Dinner at Essigbrätlein",
+          "text": "Dinner at Le Lion d'Or",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "Essigbrätlein",
-            "neighborhood": "Nuremberg Altstadt",
-            "cuisine": "Modern German (2 Michelin stars)",
-            "price_range": "$$$$",
-            "why": "Two Michelin stars in a medieval house. Chef Andree Köthe turns Franconian tradition into art — the tasting menu is a progression of regional ingredients treated with surgical precision.",
+            "name": "Le Lion d'Or",
+            "neighborhood": "Bayeux center",
+            "cuisine": "French bistro",
+            "price_range": "$$",
+            "why": "Historic coaching inn with a fireplace and a menu built around Norman cider and Calvados. The duck confit is reliable.",
             "contact": {
-              "phone": "+49 911 225131",
-              "address": "Weinmarkt 3, 90403 Nuremberg, Germany",
-              "hours": "Wed–Sat 6:30 PM – 10:00 PM"
+              "phone": "+33 2 31 92 06 90",
+              "address": "71 Rue Saint-Jean, 14400 Bayeux, France"
             },
             "open_days": [
-              "wed",
-              "thu",
-              "fri",
-              "sat"
-            ],
-            "hours_note": "Closed Sun–Tue",
-            "reservation": {
-              "platform": "phone",
-              "phone": "+49 911 225131"
-            },
-            "backup": {
-              "name": "Albrecht Dürer Stube",
-              "neighborhood": "Nuremberg Altstadt",
-              "cuisine": "Franconian German",
-              "price_range": "$$",
-              "why": "16th-century vaulted cellar serving Nuremberg classics — schäufele (pork shoulder), Nuremberg bratwurst, and dark beer from local breweries.",
-              "contact": {
-                "phone": "+49 911 227209",
-                "address": "Albrecht-Dürer-Straße 6, 90403 Nuremberg, Germany"
-              },
-              "open_days": [
-                "mon",
-                "tue",
-                "wed",
-                "thu",
-                "fri",
-                "sat",
-                "sun"
-              ],
-              "reservation": {
-                "platform": "phone",
-                "phone": "+49 911 227209"
-              },
-              "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Albrecht%20D%C3%BCrer%20Stube%20Nuremberg%20Altstadt%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Essigbr%C3%A4tlein%20Nuremberg%20Altstadt%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
-        },
-        {
-          "type": "Hotel",
-          "time": "22:30",
-          "end_time": null,
-          "text": "Overnight at Sheraton Carlton Hotel Nürnberg",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": {
-            "name": "Sheraton Carlton Hotel Nürnberg",
-            "address": "Eilgutstraße 15, 90443 Nuremberg, Germany",
-            "phone": "+49 911 20030"
-          },
-          "restaurant": null
-        }
-      ]
-    },
-    {
-      "label": "Day 9 · Sun Oct 18 · Nuremberg old town",
-      "city": "Nuremberg",
-      "headline": "Walk the ramparts of Kaiserburg at golden hour",
-      "weather": "High 56°F / low 42°F · sunny intervals, cool breeze",
-      "items": [
-        {
-          "type": "Activity",
-          "time": "10:00",
-          "end_time": "12:00",
-          "text": "Nuremberg Castle (Kaiserburg) & Sinwell Tower",
-          "location": "Burg 17, 90403 Nuremberg",
-          "why": "The Holy Roman Emperors held court here. Climb the Sinwell Tower for a 360° view over the Altstadt's red roofs, then walk the medieval ramparts.",
-          "contact": {
-            "phone": "+49 911 244659-0",
-            "website": "https://www.kaiserburg-nuernberg.de",
-            "address": "Burg 17, 90403 Nuremberg, Germany",
-            "hours": "Daily 9:00 AM – 6:00 PM (Oct)",
-            "price": "€7/adult",
-            "booking_note": "No reservation required — tickets at entry"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Dinner",
-          "time": "19:00",
-          "end_time": null,
-          "text": "Dinner at Waidwerk",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": {
-            "name": "Waidwerk",
-            "neighborhood": "Nuremberg Altstadt",
-            "cuisine": "Contemporary Franconian",
-            "price_range": "$$$",
-            "why": "Nose-to-tail Franconian cooking with a thoughtful wine list. The venison and local trout are beautifully handled, and the space is warm without being stuffy.",
-            "contact": {
-              "phone": "+49 911 94488844",
-              "address": "Am Ölberg 15, 90403 Nuremberg, Germany",
-              "hours": "Wed–Sun 6:00 PM – 11:00 PM"
-            },
-            "open_days": [
+              "mon",
+              "tue",
               "wed",
               "thu",
               "fri",
               "sat",
               "sun"
             ],
-            "hours_note": "Closed Mon-Tue",
             "reservation": {
               "platform": "phone",
-              "phone": "+49 911 94488844"
-            },
-            "backup": {
-              "name": "Bratwursthäusle",
-              "neighborhood": "Nuremberg Altstadt",
-              "cuisine": "Traditional Franconian",
-              "price_range": "$",
-              "why": "The most famous bratwurst grill in Nuremberg, operating since 1419. Order the 'sechs im Weggla' (six sausages in a bun) and a stein of Tucher.",
-              "contact": {
-                "phone": "+49 911 227695",
-                "address": "Rathausplatz 1, 90403 Nuremberg, Germany"
-              },
-              "open_days": [
-                "mon",
-                "tue",
-                "wed",
-                "thu",
-                "fri",
-                "sat",
-                "sun"
-              ],
-              "reservation": {
-                "platform": "walkin"
-              },
-              "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Bratwursth%C3%A4usle%20Nuremberg%20Altstadt%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "phone": "+33 2 31 92 06 90"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Waidwerk%20Nuremberg%20Altstadt%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Hotel",
-          "time": "21:30",
+          "time": "22:00",
           "end_time": null,
-          "text": "Overnight at Sheraton Carlton Hotel Nürnberg",
+          "text": "Overnight — Villa Lara Hôtel — last Normandy night",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "Sheraton Carlton Hotel Nürnberg",
-            "address": "Eilgutstraße 15, 90443 Nuremberg, Germany",
-            "phone": "+49 911 20030"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 10 · Mon Oct 19 · Documentation Center & evening to Porto",
-      "city": "Nuremberg",
-      "headline": "Confront the Rally Grounds, then fly to Portugal's wine capital",
-      "weather": "Nuremberg: High 55°F / low 41°F · partly cloudy. Porto arrival: High 68°F / low 55°F · clear",
+      "label": "Day 10 · Mon Oct 19 · Fly to Porto",
+      "city": "Porto",
+      "headline": "Drive to Paris, fly south to port wine country",
+      "weather": "High 68°F / low 55°F · sunny",
       "items": [
         {
           "type": "Hotel",
-          "time": "09:00",
+          "time": "08:00",
           "end_time": null,
-          "text": "Check out from Sheraton Carlton Hotel Nürnberg · luggage hold",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": {
-            "name": "Sheraton Carlton Hotel Nürnberg",
-            "address": "Eilgutstraße 15, 90443 Nuremberg, Germany",
-            "phone": "+49 911 20030",
-            "check_out_time": "12:00",
-            "confirmation_note": "Request luggage hold until 2:00 PM pickup"
-          },
-          "restaurant": null
-        },
-        {
-          "type": "Transport",
-          "time": "09:00",
-          "end_time": null,
-          "text": "Walk to Documentation Center — 25 min via Altstadt",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Activity",
-          "time": "09:30",
-          "end_time": "12:00",
-          "text": "Documentation Center Nazi Party Rally Grounds (Dokumentationszentrum Reichsparteitagsgelände)",
-          "location": "Bayernstraße 110, 90478 Nuremberg",
-          "why": "Built inside the unfinished Congress Hall the Nazis intended as a temple to their Thousand-Year Reich. The permanent exhibition 'Fascination and Terror' walks you through the mechanics of propaganda, the rallies filmed by Riefenstahl, and the path to genocide. Walk the Zeppelin Field tribunes afterward — the scale is disorienting.",
-          "contact": {
-            "phone": "+49 911 231 7538",
-            "website": "https://museums.nuernberg.de/documentation-center",
-            "address": "Bayernstraße 110, 90478 Nuremberg, Germany",
-            "hours": "Mon–Fri 9:00 AM – 6:00 PM, Sat–Sun 10:00 AM – 6:00 PM",
-            "price": "€6/adult",
-            "booking_note": "No reservation required"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Transport",
-          "time": "12:30",
-          "end_time": null,
-          "text": "Taxi back to hotel for luggage pickup — 15 min",
+          "text": "Check out — Villa Lara Hôtel",
           "location": null,
           "why": null,
           "contact": null,
@@ -1390,9 +1255,9 @@
         },
         {
           "type": "Transport",
-          "time": "13:00",
+          "time": "08:30",
           "end_time": null,
-          "text": "Taxi to Nuremberg Airport (NUE) — 20 min",
+          "text": "Private driver to Paris CDG — approx. 2h45m via A13",
           "location": null,
           "why": null,
           "contact": null,
@@ -1402,29 +1267,25 @@
         },
         {
           "type": "Flight",
-          "time": "15:55",
+          "time": "13:00",
           "end_time": null,
-          "text": "Fly Nuremberg → Porto · nonstop",
+          "text": "Fly Paris CDG to Porto (CDG → OPO) — nonstop",
           "location": null,
           "why": null,
           "contact": {
-            "phone": "+353 1 249 7791",
-            "website": "https://www.ryanair.com"
+            "website": "https://www.airfrance.com"
           },
           "flight": {
-            "carrier": "Ryanair",
-            "flight_number": "FR7935",
-            "from_airport": "NUE",
+            "carrier": "Air France",
+            "flight_number": null,
+            "from_airport": "CDG",
             "to_airport": "OPO",
-            "depart_time": "15:55",
-            "arrive_time": "17:55",
-            "duration": "3h",
+            "depart_time": "13:00",
+            "arrive_time": "13:20",
+            "duration": "2h 20m",
             "nonstop": true,
             "cabin": "Economy",
-            "aircraft": "Boeing 737-800",
-            "confirmation_note": "Book directly on ryanair.com. Add baggage if needed. Verify flight number, times and equipment at booking — schedules change.",
-            "airport_arrival_buffer": "1.5 h",
-            "_originalFlightNumber": "FR7935",
+            "confirmation_note": "Air France runs the only true nonstop CDG–OPO service, several times weekly, out of Terminal 2F. Portugal is 1 hour behind mainland France, hence the short apparent flight time on the clock. Verify flight number, exact time and equipment at booking — schedules change.",
             "_modelEstimatedFlightNumber": true
           },
           "hotel": null,
@@ -1432,23 +1293,21 @@
         },
         {
           "type": "Transport",
-          "time": "18:20",
+          "time": "15:35",
           "end_time": null,
           "text": "Taxi OPO airport to hotel — 25 min via VCI",
           "location": null,
           "why": null,
-          "contact": {
-            "booking_note": "Taxi rank at arrivals — €25–30 to Vila Nova de Gaia"
-          },
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
           "type": "Hotel",
-          "time": "18:50",
+          "time": "16:00",
           "end_time": null,
-          "text": "Check in at The Yeatman Hotel",
+          "text": "Check in — The Yeatman Hotel",
           "location": null,
           "why": null,
           "contact": null,
@@ -1499,38 +1358,34 @@
               "sun"
             ],
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Hotel",
-          "time": "23:00",
+          "time": "22:30",
           "end_time": null,
-          "text": "Overnight at The Yeatman Hotel",
+          "text": "Overnight — The Yeatman Hotel",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "The Yeatman Hotel",
-            "address": "Rua do Choupelo, 4400-088 Vila Nova de Gaia, Portugal",
-            "phone": "+351 220 133 100"
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 11 · Tue Oct 20 · Porto arrival & riverside evening",
+      "label": "Day 11 · Tue Oct 20 · Self-guided Porto",
       "city": "Porto",
-      "headline": "First port wine tasting overlooking the Douro at sunset",
-      "weather": "High 68°F / low 54°F · mostly sunny, 20% chance light rain",
+      "headline": "Livraria Lello, the Ribeira waterfront, and a port lodge on your own schedule",
+      "weather": "High 70°F / low 56°F · sunny",
       "items": [
         {
           "type": "Note",
-          "time": "10:30",
+          "time": "09:30",
           "end_time": null,
-          "text": "Sleep in, leisurely hotel breakfast with Douro panorama",
+          "text": "Leisurely breakfast with Douro panorama",
           "location": null,
           "why": null,
           "contact": null,
@@ -1540,131 +1395,33 @@
         },
         {
           "type": "Activity",
-          "time": "14:00",
-          "end_time": "15:30",
-          "text": "Wine tasting at Quinta do Vallado terrace",
-          "location": "Quinta do Vallado, Vila Nova de Gaia waterfront",
-          "why": "One of the Douro's most respected estates opened this elegant riverfront tasting room with views across to Ribeira. Their Touriga Nacional is outstanding, and the late-afternoon light on the water is the best welcome to Porto you'll find.",
-          "contact": {
-            "phone": "+351 22 374 6060",
-            "website": "https://www.quintadovallado.com",
-            "address": "Avenida Diogo Leite 312, Vila Nova de Gaia, Porto",
-            "hours": "Daily 10:00 AM–7:00 PM",
-            "price": "€15–30/tasting flight",
-            "booking_note": "Walk-ins welcome; reserve ahead for sunset terrace seating"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "_locationUnverified": "Quinta do Vallado is a real Douro Valley estate ~100km from Porto; this item claims a riverfront tasting room on Avenida Diogo Leite in Vila Nova de Gaia, which is plausible (several Douro producers run Gaia tasting rooms) but not independently confirmed - verify this specific location exists before relying on it.",
-          "logistics": {
-            "wear": "Comfortable shoes if a vineyard walk is included; bring a layer — the terrace can be breezy.",
-            "expect": "A guided tasting flight, typically 3-5 wines, often with a short vineyard or cellar walk.",
-            "meet": "Confirm the exact meeting point directly when booking — this property's address was not independently verified for this plan (see the flag above)."
-          }
-        },
-        {
-          "type": "Dinner",
-          "time": "20:00",
+          "time": "10:30",
           "end_time": null,
-          "text": "Dinner at Antiqvvm",
-          "location": null,
+          "text": "Livraria Lello bookshop & Clérigos Tower — self-guided",
+          "location": "Livraria Lello, Rua das Carmelitas 144, Porto",
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
-          "restaurant": {
-            "name": "Antiqvvm",
-            "neighborhood": "Vila Nova de Gaia",
-            "cuisine": "Contemporary Portuguese (1 Michelin star)",
-            "price_range": "$$$$",
-            "why": "Michelin-starred, perched on a hillside with floor-to-ceiling Douro views. Chef Vítor Matos weaves northern Portuguese tradition into precise, elegant plates — octopus rice, dry-aged beef with turnip, citrus-forward desserts. Book the terrace if weather holds.",
-            "reservation": {
-              "platform": "phone",
-              "phone": "+351 22 377 6543"
-            },
-            "contact": {
-              "address": "Rua de Entre-Quintas 220, Vila Nova de Gaia, Porto",
-              "phone": "+351 22 377 6543",
-              "website": "https://www.antiqvvm.pt",
-              "hours": "Tue–Sat 12:30–3:00 PM, 7:30–11:00 PM"
-            },
-            "open_days": [
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat"
-            ],
-            "closure_note": "Open Tuesdays — no conflict.",
-            "backup": {
-              "name": "Cantinho do Avillez",
-              "neighborhood": "Baixa (downtown Porto)",
-              "cuisine": "Contemporary Portuguese",
-              "price_range": "$$$",
-              "why": "José Avillez's Porto outpost — playful, ingredient-focused, excellent wine list. Same thoughtful sourcing, less formal setting. Open daily.",
-              "reservation": {
-                "platform": "resy",
-                "url": "https://resy.com/cities/opo/cantinho-do-avillez"
-              },
-              "contact": {
-                "address": "Rua Mouzinho da Silveira 166, Porto",
-                "phone": "+351 22 327 6712",
-                "hours": "Daily 12:00–3:00 PM, 7:00–11:00 PM"
-              },
-              "open_days": [
-                "mon",
-                "tue",
-                "wed",
-                "thu",
-                "fri",
-                "sat",
-                "sun"
-              ],
-              "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Antiqvvm%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
-        }
-      ]
-    },
-    {
-      "label": "Day 12 · Wed Oct 21 · Ribeira & port lodges",
-      "city": "Porto",
-      "headline": "Private cellar tour at Graham's, then francesinha for lunch",
-      "weather": "High 67°F / low 55°F · partly cloudy, pleasant autumn day",
-      "items": [
-        {
-          "type": "Activity",
-          "time": "10:00",
-          "end_time": "12:00",
-          "text": "Private port-lodge tour & tasting at Graham's",
-          "location": "Graham's Port Lodge, Vila Nova de Gaia",
-          "why": "Graham's has been making vintage port since 1820, and their hillside lodge offers the definitive introduction to port production — oak vats, vertical tastings, and a terrace overlooking the Ribeira that will ruin every other view. Book the private tour for access to older vintages and the library cellar.",
-          "contact": {
-            "phone": "+351 22 377 6484",
-            "website": "https://www.grahams-port.com",
-            "address": "Rua Rei Ramiro 514, Vila Nova de Gaia, Porto",
-            "hours": "Daily 9:30 AM–6:00 PM",
-            "price": "€25 standard tour; €65 private vintage tasting",
-            "booking_note": "Book private tour 5+ days ahead via website"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "logistics": {
-            "wear": "Flat, closed shoes — cellar floors can be uneven and slightly damp.",
-            "expect": "A guided cellar tour followed by a seated tasting flight, roughly 60-75 min.",
-            "meet": "Graham's Lodge entrance on Rua do Agro, Vila Nova de Gaia — a short walk or taxi from central Porto across the Dom Luís I bridge."
-          }
+          "restaurant": null
         },
         {
           "type": "Transport",
+          "time": "12:00",
+          "end_time": null,
+          "text": "Walk down to Ribeira — 15 min via Ponte Luís I lower deck",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
           "time": "12:30",
           "end_time": null,
-          "text": "Walk down to Ribeira · 15 min via Ponte Luís I lower deck",
+          "text": "Self-guided Ribeira waterfront — azulejo-tiled buildings, São Francisco Church, Praça da Ribeira",
           "location": null,
           "why": null,
           "contact": null,
@@ -1674,10 +1431,22 @@
         },
         {
           "type": "Note",
-          "time": "13:00",
+          "time": "13:30",
           "end_time": null,
-          "text": "Explore Ribeira waterfront — azulejo-tiled buildings, São Francisco Church, Praça da Ribeira",
+          "text": "Lunch in Ribeira",
           "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "15:00",
+          "end_time": null,
+          "text": "Self-guided port-lodge visit & tasting, Vila Nova de Gaia — walk-in at Graham's or Taylor's",
+          "location": "Graham's Port Lodge, Vila Nova de Gaia",
           "why": null,
           "contact": null,
           "flight": null,
@@ -1743,16 +1512,28 @@
                 "sun"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
+        },
+        {
+          "type": "Hotel",
+          "time": "22:00",
+          "end_time": null,
+          "text": "Overnight — The Yeatman Hotel",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 13 · Thu Oct 22 · Douro Valley day trip",
+      "label": "Day 12 · Wed Oct 21 · Douro Valley day trip",
       "city": "Porto",
       "headline": "Quinta do Crasto vineyard lunch overlooking terraced vines",
       "weather": "High 66°F / low 54°F · sun with high clouds, ideal for Douro driving",
@@ -1878,147 +1659,19 @@
               ],
               "closure_note": "Closed Mondays",
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Taberninha%20do%20Manel%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Taberninha%20do%20Manel%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Trasca%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Trasca%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
     },
     {
-      "label": "Day 14 · Fri Oct 23 · Porto slow morning & evening flight prep",
-      "city": "Porto",
-      "headline": "Morning at Livraria Lello, then sunset port at Taylor's terrace",
-      "weather": "High 65°F / low 53°F · partly cloudy, light breeze",
-      "items": [
-        {
-          "type": "Activity",
-          "time": "09:30",
-          "end_time": "11:00",
-          "text": "Livraria Lello bookshop & Clérigos Tower",
-          "location": "Livraria Lello, Rua das Carmelitas 144, Porto",
-          "why": "The art-nouveau staircase and stained-glass skylight at Lello make it one of the world's most beautiful bookshops (and a rumored inspiration for Hogwarts). Buy the €8 ticket online to skip the queue, arrive at opening for the best light and fewest tourists, then climb Clérigos Tower next door for 360° Porto views.",
-          "contact": {
-            "phone": "+351 22 200 2037",
-            "website": "https://www.livrarialello.pt",
-            "address": "Rua das Carmelitas 144, Porto",
-            "hours": "Daily 9:00 AM–7:00 PM",
-            "price": "€8 (redeemable toward book purchase)",
-            "booking_note": "Book timed-entry ticket online 1–2 days ahead to avoid line"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Note",
-          "time": "12:00",
-          "end_time": null,
-          "text": "Free afternoon — stroll Jardins do Palácio de Cristal, browse Rua Miguel Bombarda galleries, or relax at hotel wine spa",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Note",
-          "time": "17:30",
-          "end_time": "19:00",
-          "text": "Sunset port tasting at Taylor's terrace (walk-in) — sweeping Douro panorama, quiet end to the trip",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Dinner",
-          "time": "20:00",
-          "end_time": null,
-          "text": "Dinner at O Paparico",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": {
-            "name": "O Paparico",
-            "neighborhood": "Campanhã (near city center)",
-            "cuisine": "Traditional Portuguese",
-            "price_range": "$$$",
-            "why": "A hidden gem in a restored 18th-century house — stone walls, vaulted ceilings, and a menu that reads like a love letter to northern Portugal. Roast kid, bacalhau à Brás done the old way, and a wine list curated by someone who actually cares. It's the farewell dinner Porto deserves.",
-            "reservation": {
-              "platform": "phone",
-              "phone": "+351 22 540 0548"
-            },
-            "contact": {
-              "address": "Rua de Costa Cabral 2343, Porto",
-              "phone": "+351 22 540 0548",
-              "website": "https://www.opaparico.com",
-              "hours": "Mon–Sat 12:30–3:00 PM, 7:30–11:00 PM"
-            },
-            "open_days": [
-              "mon",
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat"
-            ],
-            "closure_note": "Closed Sundays — Friday OK",
-            "backup": {
-              "name": "Oficina",
-              "neighborhood": "Baixa",
-              "cuisine": "Contemporary Portuguese",
-              "price_range": "$$$",
-              "why": "Chef-driven tasting menus in an intimate setting. Seasonal, creative, flawlessly executed. A strong finish if O Paparico is full.",
-              "reservation": {
-                "platform": "phone",
-                "phone": "+351 22 205 6279"
-              },
-              "contact": {
-                "address": "Rua Cândido dos Reis 78, Porto",
-                "phone": "+351 22 205 6279",
-                "hours": "Tue–Sat 7:00–11:00 PM"
-              },
-              "open_days": [
-                "tue",
-                "wed",
-                "thu",
-                "fri",
-                "sat"
-              ],
-              "closure_note": "Closed Sun–Mon",
-              "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Oficina%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=O%20Paparico%20Campanh%C3%A3%20(near%20city%20center)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
-        },
-        {
-          "type": "Hotel",
-          "time": "22:00",
-          "end_time": null,
-          "text": "The Yeatman Hotel · overnight",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        }
-      ]
-    },
-    {
-      "label": "Day 15 · Sat Oct 24 · Depart Porto",
+      "label": "Day 13 · Thu Oct 22 · Depart Porto",
       "city": "Porto",
       "headline": "Morning at leisure, then fly Porto → Newark",
-      "weather": "High 64°F / low 52°F · partly sunny",
+      "weather": "High 66°F / low 53°F · partly sunny",
       "items": [
         {
           "type": "Note",
@@ -2108,9 +1761,9 @@
   "logistics": [
     "EWR→LHR nonstop · United or British Airways",
     "London Marriott Park Lane (Mayfair) · 5 nights",
-    "Villa Lara Bayeux · 2 nights Normandy",
-    "Sheraton Carlton Nürnberg · 2 nights",
-    "The Yeatman Porto · 5 nights",
+    "Overnight Brittany Ferries crossing, Portsmouth → Ouistreham — 1 night aboard",
+    "Villa Lara Bayeux · 3 nights Normandy",
+    "The Yeatman Porto · 3 nights",
     "OPO→EWR return · United nonstop"
   ],
   "generatedOn": "August 9, 2026"
