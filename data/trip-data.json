@@ -686,7 +686,7 @@
           "end_time": "14:00",
           "text": "The Tank Museum, Bovington — 300+ armored vehicles from WWI to today, including Tiger 131, the only running Tiger I tank in the world",
           "location": "Bovington, Wareham, Dorset BH20 6JG",
-          "why": "The world's most complete tank collection — worth the detour on its own, and Tiger 131 (captured in Tunisia in 1943, the tank that helped break Enigma's naval codes at Bletchley) ties directly back to yesterday.",
+          "why": "The world's most complete tank collection — worth the detour on its own. Tiger 131, the star exhibit, is the only running Tiger I in the world: captured largely intact by the Sherwood Foresters in Tunisia in April 1943, its capture was significant enough that Churchill and King George VI both flew out to be photographed with it, and Allied engineers used it to study German tank design and develop countermeasures. (Not connected to yesterday's Bletchley Park visit — the real Naval Enigma captures were separate incidents involving U-boats, not tanks.)",
           "contact": {
             "phone": "+44 1929 405096",
             "website": "https://tankmuseum.org"
@@ -694,7 +694,7 @@
           "flight": null,
           "hotel": null,
           "restaurant": null,
-          "_locationUnverified": "Researched for this rebuild (not from the original trip-planning app's verified export) — confirm address/hours/phone closer to departure."
+          "_locationUnverified": "Address, phone, and hours (10am-5pm, no closure conflict on this date) verified via web search — museum policies can still change, confirm again if booking well before departure."
         },
         {
           "type": "Transport",

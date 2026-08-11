@@ -107,6 +107,50 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Tank Museum day fully verified (2026-08-11), found a fabricated
+  history claim AND a systemic free-time miscalculation affecting 21
+  items trip-wide.** User asked to verify all the Tank Museum logistics.
+  Checked every checkable claim via `WebSearch` rather than spot-checking:
+  address/phone/hours (all correct — 10am-5pm, no closure conflict on
+  Oct 15, last admission ~4pm, the planned 10:15-2:00 visit sits
+  comfortably inside that), both drive legs (121mi/2h24m real vs.
+  120mi/2h30m stated; 65-68mi/1h13-19m real vs. 65mi/1h20m stated — both
+  accurate and appropriately conservative), and the Tiger 131 historical
+  claims.
+  - **Found a fabrication**: the item's `why` field claimed Tiger 131
+    "helped break Enigma's naval codes at Bletchley." This is false — the
+    real Naval Enigma captures were separate incidents involving U-boats
+    (U-110 in 1941, U-559 in 1942), unconnected to this tank, captured in
+    Tunisia in April 1943 by an entirely different unit. The claim reads
+    like an invented link to tie the day back to the previous day's
+    Bletchley Park visit. Replaced with Tiger 131's own real significance
+    (Churchill and King George VI both visited it; Allied engineers used
+    it to study German tank design) and an explicit note that it is NOT
+    connected to Bletchley Park, in case a future edit tries to re-add
+    the link. Since the address/hours/phone were independently verified
+    in the same pass, also updated the item's stale `_locationUnverified`
+    flag to reflect that rather than leaving a "still unverified" warning
+    on facts that had just been checked.
+  - **Found a real, systemic bug while screenshotting the fix**: a
+    "Free time (~2.8 hrs, unscheduled)" card appeared directly after the
+    Tank Museum's own 2h30m drive — the drive itself was being counted as
+    free time. Root cause: the day-block renderer's free-time detector
+    computes a Transport item's "end" from `item.end_time`, falling back
+    to the item's own START time if absent — exactly the bug already
+    fixed once for Flight items (see the comment a few lines above it in
+    `app.js`), but never fixed for Transport. 21 of the trip's Transport
+    items have no `end_time`. Fixed by adding
+    `parseTransportDurationMinutes()` (reuses the existing
+    `parseTransportDuration()` already used for the Navigate duration
+    badges) so a Transport item's implied end is now `item.time +` its
+    own parsed duration when `end_time` is absent. Confirmed live:
+    trip-wide free-time card count dropped from 19 to 15 — 4 false
+    positives eliminated — while the genuine ~2.9hr gap at the Portsmouth
+    ferry terminal (arrival to check-in) correctly still shows. **If a
+    new Transport item type or duration phrasing is ever added, verify
+    `parseTransportDurationMinutes()` still parses it — a silent parse
+    failure just falls back to the old (wrong) zero-duration behavior for
+    that one item, not an error.**
 - **Packing list de-fancified for the real travelers (a 57-year-old
   father and 20-year-old son, "nothing fancy needed") + a real Michelin
   fact-check (2026-08-11).** The Dinner outfits section implied a

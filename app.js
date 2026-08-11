@@ -130,6 +130,30 @@
     return m ? m[1].replace(/\s+/g, ' ').trim() : null;
   }
 
+  // Converts a parseTransportDuration() string ("2h30m", "50 min",
+  // "40-50 min") into a minute count, for computing a Transport item's
+  // implied end time when it has no explicit end_time - the same class of
+  // fix already applied to Flight items below (see the day-block loop's
+  // "thisEnd" comment): without this, a Transport item with a real
+  // multi-hour duration in its own text but no end_time gets treated as a
+  // zero-duration point event, and the free-time detector then counts the
+  // ENTIRE drive itself as unscheduled "free time." A range ("40-50 min")
+  // conservatively uses the upper bound, since underestimating a drive's
+  // duration only makes the false-free-time overstatement worse.
+  function parseTransportDurationMinutes(text) {
+    var d = parseTransportDuration(text);
+    if (!d) return null;
+    var hm = d.match(/^(\d+)\s?h\s?(\d*)m$/i);
+    if (hm) return parseInt(hm[1], 10) * 60 + (hm[2] ? parseInt(hm[2], 10) : 0);
+    var hoursOnly = d.match(/^(\d+)\s*(?:hrs?|hours?)$/i);
+    if (hoursOnly) return parseInt(hoursOnly[1], 10) * 60;
+    var range = d.match(/^(\d+)[–-](\d+)\s*(?:min|mins|minutes)$/i);
+    if (range) return parseInt(range[2], 10);
+    var minsOnly = d.match(/^(\d+)\s*(?:min|mins|minutes)$/i);
+    if (minsOnly) return parseInt(minsOnly[1], 10);
+    return null;
+  }
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
@@ -575,8 +599,16 @@
       // not its departure time (item.time) - using item.time here produced a
       // false ~14hr "free time" gap between an 8:20 AM departure/8:40 PM
       // arrival and the next item, caught by screenshot before push.
+      // Same class of bug for Transport items: a drive/transfer with a real
+      // multi-hour duration in its own text but no explicit end_time was
+      // being treated as instantaneous, so the detector counted the ENTIRE
+      // drive as unscheduled "free time" (caught on the Tank Museum day -
+      // a stated "2h30m" drive showed as "~2.8 hrs free time" right after
+      // it, when the real gap to the next item was ~15 minutes).
       var flightArrive = item.type === 'Flight' && item.flight ? toMinutes(item.flight.arrive_time) : null;
-      var thisEnd = toMinutes(item.end_time) || flightArrive || toMinutes(item.time);
+      var transportDurationMin = item.type === 'Transport' ? parseTransportDurationMinutes(item.text) : null;
+      var transportEnd = transportDurationMin != null ? toMinutes(item.time) + transportDurationMin : null;
+      var thisEnd = toMinutes(item.end_time) || flightArrive || transportEnd || toMinutes(item.time);
       var next = items[i + 1];
       var nextStart = next ? toMinutes(next.time) : null;
       // Skip when the next item is just an "Overnight at X" reminder - that's
