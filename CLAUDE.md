@@ -107,6 +107,19 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Banner/hero photos compressed; a dead unreferenced image deleted
+  (2026-08-11).** The 5 real location photos were all 2400×1600 (or
+  1920×1272) source JPEGs — 3.3MB total — being served for a full-bleed
+  banner/hero that displays at realistic phone/tablet widths, not desktop-
+  fullscreen-retina. Resized to max 1600px wide, re-encoded at JPEG q80
+  progressive: 3.3MB → 1.4MB (~57% smaller), verified visually lossless
+  at actual display size via before/after screenshots. Also deleted
+  `porto.jpg` at the repo root (836×360, 114KB) — grepped every file for
+  it first and confirmed it was referenced NOWHERE (not `index.html`,
+  `app.js`, `style.css`, or `manifest.json`); genuinely dead weight sitting
+  in the deployed bundle. If a new banner/hero photo is ever added, resize
+  it to ~1600px wide before committing — don't commit a phone-camera-
+  resolution or stock-photo-original file straight through.
 - **Live Cams tab suppressed entirely (2026-08-11).** The tab (Street
   Views → Live Cams, see the entry directly below) was removed at the
   user's request: nav chip, `<section id="tab-livecams">`, the
