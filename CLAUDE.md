@@ -107,6 +107,34 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Packing list de-fancified for the real travelers (a 57-year-old
+  father and 20-year-old son, "nothing fancy needed") + a real Michelin
+  fact-check (2026-08-11).** The Dinner outfits section implied a
+  separate "dressier" formal outfit was needed for Pedro Lemos and
+  Gordon Ramsay's River Restaurant. Checked both venues' actual current
+  dress codes via `WebSearch` before deciding whether that tier was
+  warranted: Pedro Lemos is "smart and elegant," not black-tie; The
+  River Restaurant is officially smart casual, jacket optional. Neither
+  requires anything beyond what the regular smart-casual tier already
+  covers, so the separate "dressier outfit" line was removed — one
+  nicer smart-casual outfit does the job. Same treatment for the
+  footwear line ("dressier shoes" → "a clean pair that isn't your
+  walking sneakers").
+  - **Caught a real factual error while checking this**: the data
+    claimed Pedro Lemos has "2 Michelin stars" (in `restaurant.cuisine`,
+    `restaurant.why`, AND `introduction.differentiators`) — it actually
+    has 1, confirmed via `WebSearch`. Separately, the plan implied
+    Gordon Ramsay's River Restaurant is a fellow Michelin night; it
+    isn't — it holds a standard Michelin Guide listing and a "Plate"
+    award, not a star (a different Gordon Ramsay restaurant at the same
+    hotel, Restaurant 1890, has the star — not the one this trip
+    actually booked). Fixed all three source locations, not just the
+    packing list. Note: `restaurant.cuisine` and
+    `introduction.differentiators` are BOTH fields nothing in `app.js`
+    ever renders anywhere on the live site (grepped to confirm) — the
+    packing list is the first and only place a Michelin claim is
+    actually shown to a reader, which is exactly why this had never
+    surfaced as a visible bug before now.
 - **Ferry-crossing content deepened by studying a sibling ferry-heavy
   trip site (maritimes-grandloop-v2), fixing a real rendering gap along
   the way (2026-08-11).** User asked to check maritimesgrandloop.com for
