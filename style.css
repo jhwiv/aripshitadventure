@@ -352,6 +352,9 @@ img { max-width: 100%; display: block; }
 .meal-name { font-weight: 700; font-size: 14.5px; }
 .meal-badge { font-size: 10px; text-transform: uppercase; padding: 2px 8px; border-radius: 8px; background: #eef3f3; color: #376e76; white-space: nowrap; }
 .meal-meta { font-size: 12px; color: #5b6577; margin-top: 2px; }
+.meal-backup { margin-top: 10px; padding: 10px 12px; background: #f7f5ee; border: 1px dashed #dcd8cf; border-radius: 6px; }
+.meal-backup-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #656d7c; margin-bottom: 4px; }
+.meal-backup .meal-name { font-size: 13.5px; }
 
 /* ---- Reservation Timeline (adapted from santafe-itinerary) ---- */
 .timeline-intro { font-size: 13.5px; color: #5b6577; line-height: 1.55; margin: 6px 0 16px; }

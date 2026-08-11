@@ -90,6 +90,21 @@
     return h12 + ':' + m + ' ' + ampm;
   }
 
+  // check_in_time/check_out_time live on two DIFFERENT Hotel items per stay
+  // (the arrival item carries check_in_time, the departure item carries
+  // check_out_time) - both render paths that build hotelsByName already
+  // merge same-named hotel items' fields together, so by the time either
+  // renderer sees h, both times are already present on the same object.
+  // One shared helper (not copy-pasted per call site) so a future fix to
+  // this formatting doesn't have to be applied twice and risk drifting.
+  function hotelCheckTimesLine(h) {
+    if (!h.check_in_time && !h.check_out_time) return '';
+    var bits = [];
+    if (h.check_in_time) bits.push('Check-in ' + esc(formatTime12(h.check_in_time)));
+    if (h.check_out_time) bits.push('check-out ' + esc(formatTime12(h.check_out_time)));
+    return '<div class="ref-line">' + bits.join(' · ') + '</div>';
+  }
+
   // Three-way directions picker — Google Maps, Apple Maps, Waze. All three
   // are standard, keyless universal-link formats (no API key for any of
   // them): Google opens maps.google.com, Apple Maps opens maps.apple.com
@@ -727,6 +742,18 @@
       });
     });
     if (!rows.length) { mealsEl.innerHTML = '<p class="ai-note">No restaurant reservations in this plan.</p>'; return; }
+    // Renders a restaurant's cuisine/neighborhood/price + hours + closure
+    // note the same way for both a primary booking and its backup - kept
+    // as one function so the two don't drift the way other duplicated
+    // render logic in this file already has (see CLAUDE.md).
+    function restaurantDetailLines(r) {
+      var contact = r.contact || {};
+      var meta = [r.cuisine, r.neighborhood, r.price_range].filter(Boolean).join(' · ');
+      var closure = r.closure_note || r.hours_note || null;
+      return (meta ? '<div class="meal-meta">' + esc(meta) + '</div>' : '') +
+        (contact.hours ? '<div class="meal-meta">' + esc(contact.hours) + '</div>' : '') +
+        (closure ? '<div class="meal-meta">' + esc(closure) + '</div>' : '');
+    }
     mealsEl.innerHTML = rows.map(function (row) {
       var r = row.r;
       var platform = (r.reservation && r.reservation.platform) || null;
@@ -735,16 +762,29 @@
       var reserveHref = (r.reservation && r.reservation.url) ? r.reservation.url
         : (r.reservation && r.reservation.phone) ? 'tel:' + r.reservation.phone
         : (contact.phone ? 'tel:' + contact.phone : null);
+      var b = r.backup;
+      var backupBlock = b ? '<div class="meal-backup">' +
+        '<div class="meal-backup-label">If this falls through</div>' +
+        '<div class="meal-name">' + esc(b.name) + '</div>' +
+        restaurantDetailLines(b) +
+        (b.why ? '<div class="meal-meta">' + esc(b.why) + '</div>' : '') +
+        '<div class="item-links">' + directionsLinksHTML(b.name) +
+        ((b.contact || {}).phone ? '<a href="tel:' + esc(b.contact.phone) + '">' + esc(b.contact.phone) + '</a>' : '') +
+        ((b.contact || {}).website ? '<a href="' + esc(b.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+        '</div></div>' : '';
       return '<div class="meal-row">' +
         '<div class="meal-top"><span class="meal-name">' + esc(r.name) + '</span>' +
         '<span class="meal-badge">' + esc(label) + '</span></div>' +
         '<div class="meal-meta">' + esc(row.day) + ' · ' + esc(formatTime12(row.time)) +
         (contact.address ? ' · ' + esc(contact.address) : '') + '</div>' +
+        restaurantDetailLines(r) +
         '<div class="item-links">' +
         directionsLinksHTML(r.name) +
         (reserveHref ? '<a href="' + esc(reserveHref) + '" target="_blank" rel="noopener">Reserve</a>' : '') +
         (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
-        '</div></div>';
+        '</div>' +
+        backupBlock +
+        '</div>';
     }).join('');
   })();
 
@@ -769,6 +809,7 @@
         (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
         (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
         (h.website ? '<div class="ref-line"><a href="' + esc(h.website) + '" target="_blank" rel="noopener">Website</a></div>' : '') +
+        hotelCheckTimesLine(h) +
         (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
         '</div>';
     }).join('');
@@ -987,11 +1028,15 @@
         '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
         (f.depart_time ? ' · Departs ' + esc(formatTime12(f.depart_time)) : '') + (f.arrive_time ? ' · Arrives ' + esc(formatTime12(f.arrive_time)) : '') + '</div>' +
         (f.duration ? '<div class="ref-line">' + esc(f.duration) + (f.nonstop ? ' · Nonstop' : '') + '</div>' : '') +
+        (f.cabin || f.aircraft ? '<div class="ref-line">' + [f.cabin, f.aircraft].filter(Boolean).map(esc).join(' · ') + '</div>' : '') +
+        (f.airport_arrival_buffer ? '<div class="ref-line">Arrive ' + esc(f.airport_arrival_buffer) + ' before departure</div>' : '') +
         (f.confirmation_note ? '<div class="ref-line ai-note">' + esc(f.confirmation_note) + '</div>' : '') +
         (f.lounge_access && f.lounge_access.length ? f.lounge_access.map(function (l) {
           return '<div class="ref-line">Lounge: ' + esc(l.name || '') +
             (l.terminal ? ' · ' + esc(l.terminal) : '') +
-            (l.access ? '<br><span class="ai-note">Access: ' + esc(l.access) + '</span>' : '') + '</div>';
+            (l.gate_proximity ? ' · ' + esc(l.gate_proximity) : '') +
+            (l.access ? '<br><span class="ai-note">Access: ' + esc(l.access) + '</span>' : '') +
+            (l.notes ? '<br><span class="ai-note">' + esc(l.notes) + '</span>' : '') + '</div>';
         }).join('') : '') +
         '<div class="ref-line flight-status" id="fstatus-' + i + '">Checking live schedule…</div>' +
         '</div>';
@@ -1036,6 +1081,7 @@
         (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
         (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
         (h.room_type ? '<div class="ref-line">' + esc(h.room_type) + '</div>' : '') +
+        hotelCheckTimesLine(h) +
         (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
         '</div>';
     }).join('');

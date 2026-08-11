@@ -146,6 +146,32 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Wired ~10 previously-dead `trip-data.json` fields into the live UI
+  (2026-08-11), after asking "are there repairs or changes called for" and
+  the user replying "Do it" to my own offer.** A field-usage audit had
+  found real, already-populated data that no render path ever displayed:
+  restaurant `hours`/`closure_note`/`hours_note`, pre-picked `backup`
+  restaurants, `cuisine`/`neighborhood`/`price_range`, hotel
+  `check_in_time`/`check_out_time`, and flight `cabin`/`aircraft`/
+  `airport_arrival_buffer` plus lounge `gate_proximity`/`notes`. None of
+  this needed a data change — only render code. Two new shared helpers
+  were added specifically to avoid the sibling-render-path-drift bug this
+  project has hit repeatedly (see the contact-info fix further down this
+  log): `hotelCheckTimesLine(h)` (used by both `essentialsHotels` and
+  `hotelTable` — the two independent hotel-card locations) and
+  `restaurantDetailLines(r)` inside `renderMeals()` (used for both a
+  primary booking and its `backup`, so the two don't drift from each
+  other). New `.meal-backup`/`.meal-backup-label` CSS added (dashed-border
+  card, DM Mono label) for the "if this falls through" block. Verified
+  live via Playwright on a fresh `python3 -m http.server`: Veeraswamy
+  (has a `backup`, Gymkhana) renders cuisine/neighborhood/price, hours,
+  a closure-conflict note, and the full backup block with its own
+  directions/phone/website links; Scott's Mayfair (no `backup` field)
+  correctly renders with no backup block; both hotel-card locations show
+  check-in/check-out times; all three flight cards show cabin/aircraft,
+  the arrival buffer, and per-lounge gate proximity/notes; zero console
+  errors across a full 10-tab sweep. Screenshot-confirmed the new
+  backup-block styling reads cleanly at mobile width (402px).
 - **A 4th fabrication found: The Yeatman Hotel's loyalty-affiliation claim
   (2026-08-11), asked directly whether any repairs were still called for.**
   Rather than answer from memory, re-checked a few named claims the prior
