@@ -73,6 +73,45 @@ There is **no way to check the live production site** from this sandbox
 is "live" or "deployed" — only that it's pushed to `main` and passed local
 verification. Say exactly which one you checked.
 
+### A "QA pass" / "peer review" / "score the app" request has TWO required
+### halves, not one — content fact-checking is not optional extra credit
+
+**This has been the single biggest recurring gap in this project's history**
+(logged three times independently: the Tiger 131/Enigma fabrication, the
+Battle of Britain Bunker's fake tour schedule that actually broke Day 4's
+bookability, the Michelin star count). Every "QA" pass run before 2026-08-11
+checked structure (does it render, console errors, checkbox interactivity)
+and internal math (does the weekday label match the computed calendar, does
+flight arrival match departure+duration+timezone) — both checkable by
+comparing the data to itself or a formula, both exhaustively coverable by
+one script. **Neither of those checks a single word of prose against
+reality.** A specific factual claim (a historical detail, a tour schedule,
+a star count, a "the only X in the world" superlative) is only ever caught
+by deliberately recognizing it as a checkable claim and running `WebSearch`
+on it — there is no mechanical substitute, and skipping it is not a smaller
+version of QA, it's a different, unstarted half of it.
+
+**The standing rule: any future "QA pass," "peer review," or "score this"**
+**request on this project must include an explicit prose fact-check sweep**,
+structured the same way the 2026-08-11 pass did it:
+1. Extract every prose field that could carry a specific claim (`why`,
+   `confirmation_note`, `differentiators`, `arc`, History-tab entries,
+   anything with a named person/date/number/superlative/schedule).
+2. Triage: does this sentence assert something falsifiable (a date, a
+   count, a schedule, a named historical connection), or is it just
+   opinion/description ("worth the detour," "a great restaurant")? Only
+   the former needs external verification.
+3. Run `WebSearch` on every claim from step 2 — not a sample, all of them.
+   This is real, non-trivial work (the 2026-08-11 pass ran ~12 searches for
+   one day's worth of content); budget for it rather than compressing it
+   into "spot-checked a couple."
+4. A score or "passed QA" verdict given without having done this is
+   **incomplete, not just conservative** — say so explicitly rather than
+   presenting a structural-only pass as if it covered content accuracy too.
+   The 8.5/10 given on 2026-08-11 before this rule existed is the concrete
+   example of what NOT to repeat: a confident-sounding number that only
+   ever measured half of what "quality" means for a fact-driven trip site.
+
 ## Photo/licensing discipline
 
 Before using any image the user uploads or you source, check for stock-photo
