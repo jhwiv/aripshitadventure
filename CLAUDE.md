@@ -146,6 +146,33 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **A 4th fabrication found: The Yeatman Hotel's loyalty-affiliation claim
+  (2026-08-11), asked directly whether any repairs were still called for.**
+  Rather than answer from memory, re-checked a few named claims the prior
+  fact-check pass hadn't gotten to yet. The Yeatman's `confirmation_note`
+  said "Marriott Bonvoy partner (Design Hotels) — verify point redemption
+  or discount." Verified via `WebSearch`: false. The Yeatman is a Relais &
+  Châteaux member — an entirely different consortium — and Relais &
+  Châteaux doesn't even run a points-based loyalty program at all. This is
+  the same shape of fabrication as the Tiger 131/Enigma claim (a plausible-
+  sounding but invented affiliation), and it's worse in one respect: unlike
+  `restaurant.cuisine`/`differentiators` (confirmed dead fields nothing
+  renders), `confirmation_note` DOES render, in both the Essentials and Air
+  & Hotel tabs — this fabrication has been live and visible the whole time,
+  actively telling the traveler to try redeeming Marriott points at a hotel
+  with no such program. Fixed to state the real affiliation and how to
+  actually get upgrades/perks there (a Relais & Châteaux Preferred Partner
+  travel advisor, not point redemption). Cantinho do Avillez (real - chef
+  José Avillez's first restaurant outside Lisbon, confirmed) and Clio (real
+  - genuinely Michelin Guide-listed shortly after opening, matches the
+  app's own soft "recently added" phrasing) were also re-checked and held
+  up. **Pattern to watch for going forward: hotel/restaurant loyalty and
+  consortium affiliations are evidently a recurring fabrication shape in
+  this kind of AI-drafted content (this is the second one found, after
+  a documented history of the identical failure mode in this project's
+  sibling `trip-optimizer` repo) — treat any named loyalty program,
+  consortium, or "partner" claim on a hotel/restaurant as needing its own
+  explicit verification, not just headline historical/schedule claims.**
 - **Full prose fact-check across the whole itinerary (2026-08-11),
   triggered by the user asking why the Tank Museum's Enigma fabrication
   wasn't caught earlier.** Rather than answer in the abstract, extracted
