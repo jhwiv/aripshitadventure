@@ -479,21 +479,6 @@ img { max-width: 100%; display: block; }
 .flight-status-warn { color: #b91c1c; font-style: normal; }
 .flight-status-pending { color: #656d7c; font-style: italic; }
 
-/* ---- Live Cams ----
-   A small curated list of real webcams (see renderLiveCams's own comment
-   for why this isn't one card per landmark). Each card is a title + note
-   tying it to the itinerary + one clear, working primary action. */
-.sv-card {
-  margin-bottom: 12px; padding: 14px 16px; background: #f8f7f3;
-  border: 1px solid #dcd8cf; border-radius: 10px;
-}
-.sv-title { font-weight: 700; font-size: 14.5px; margin-bottom: 10px; }
-.sv-open-btn {
-  display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700;
-  color: #fff; background: #376e76; border-radius: 8px; padding: 9px 16px; text-decoration: none;
-}
-.sv-open-btn:hover { background: #35696f; text-decoration: none; }
-
 /* ---- History accordion ---- */
 .accordion-item { border-bottom: 1px solid #dcd8cf; }
 .accordion-header {

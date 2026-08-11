@@ -107,7 +107,17 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
-- **Street Views → Live Cams (2026-08-11).** The old tab linked every
+- **Live Cams tab suppressed entirely (2026-08-11).** The tab (Street
+  Views → Live Cams, see the entry directly below) was removed at the
+  user's request: nav chip, `<section id="tab-livecams">`, the
+  `renderLiveCams()` IIFE, and its dedicated `.sv-card`/`.sv-title`/
+  `.sv-open-btn` CSS are all gone — not hidden via CSS, actually deleted,
+  so there's no dead/unreachable code sitting in the bundle. If a future
+  session is asked to bring some version of this back, the entry below
+  documents the 4 real webcams + reasoning that were already researched —
+  reuse that rather than re-deriving it, but don't just uncomment old code
+  from git history without re-verifying the links still resolve.
+- **Street Views → Live Cams (2026-08-11, superseded by suppression above).** The old tab linked every
   landmark pin to a Google Maps Street View search — a static photo, not a
   live feed, and confusing given the tab was literally called "Street
   Views." Most of this trip's stops (small museums, monuments) have no

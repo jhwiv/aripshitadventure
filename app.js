@@ -843,61 +843,6 @@
     }).join('');
   })();
 
-  /* ---------------------------------------------------------
-     LIVE CAMS
-     --------------------------------------------------------- */
-  // Replaces the old per-landmark "Street View" list (a Google Maps
-  // panorama link for every pin, real but static - a photo, not a live
-  // feed). Most of this trip's stops are small museums/monuments with no
-  // dedicated camera, so rather than fabricate a webcam URL for every pin
-  // (this app's hard rule: never invent a link), this is a short, curated
-  // list of REAL, independently-findable live webcams that actually cover
-  // a place on the itinerary - one per city, tied to the specific day it's
-  // relevant to. Each source is a known, long-running public webcam
-  // aggregator or the venue's own site, not a guess. If a feed ever goes
-  // dark that's a problem with the third-party site, not a fabricated URL
-  // shipped by this app.
-  (function renderLiveCams() {
-    var CAMS = [
-      {
-        city: 'London', flag: '🇬🇧',
-        title: 'Westminster / Big Ben',
-        note: 'Overlooks the Parliament Square walk on Day 2 (Churchill War Rooms & Westminster).',
-        url: 'https://www.webcamtaxi.com/en/england/london/palace-of-westminster.html',
-        source: 'webcamtaxi.com'
-      },
-      {
-        city: 'Normandy', flag: '🇫🇷',
-        title: 'Utah Beach',
-        note: 'The Utah Beach Landing Museum’s own live cameras — Day 7, American Sector tour.',
-        url: 'https://utah-beach.com/en/videos/',
-        source: 'utah-beach.com (museum-run)'
-      },
-      {
-        city: 'Normandy', flag: '🇫🇷',
-        title: 'Mont-Saint-Michel',
-        note: 'The abbey and bay, from the official Normandy tourism board — Day 9 day trip.',
-        url: 'https://www.ot-montsaintmichel.com/webcams/',
-        source: 'ot-montsaintmichel.com (official tourism board)'
-      },
-      {
-        city: 'Porto', flag: '🇵🇹',
-        title: 'Douro River / Ribeira',
-        note: 'The riverside neighborhood your Day 11 self-guided walk covers.',
-        url: 'https://www.webcamtaxi.com/en/portugal/porto/douro-river.html',
-        source: 'webcamtaxi.com'
-      }
-    ];
-    var el = document.getElementById('liveCamList');
-    el.innerHTML = CAMS.map(function (c) {
-      return '<div class="sv-card">' +
-        '<div class="sv-title">' + c.flag + ' ' + esc(c.title) + '</div>' +
-        '<div class="ref-line" style="margin:2px 0 10px;">' + esc(c.note) + '</div>' +
-        '<a class="sv-open-btn" href="' + c.url + '" target="_blank" rel="noopener">📹 Watch Live ↗</a>' +
-        '<div class="section-note" style="margin:8px 0 0;">via ' + esc(c.source) + '</div>' +
-        '</div>';
-    }).join('');
-  })();
 
   /* ---------------------------------------------------------
      HISTORY — AI-authored general context (labeled at top of tab)
