@@ -479,10 +479,10 @@ img { max-width: 100%; display: block; }
 .flight-status-warn { color: #b91c1c; font-style: normal; }
 .flight-status-pending { color: #656d7c; font-style: italic; }
 
-/* ---- Street Views ----
-   No inline iframe anymore - see the render function's own comment for why
-   (the old "keyless embed" URL trick doesn't actually work; confirmed
-   live). Each card is a title + one clear, working primary action. */
+/* ---- Live Cams ----
+   A small curated list of real webcams (see renderLiveCams's own comment
+   for why this isn't one card per landmark). Each card is a title + note
+   tying it to the itinerary + one clear, working primary action. */
 .sv-card {
   margin-bottom: 12px; padding: 14px 16px; background: #f8f7f3;
   border: 1px solid #dcd8cf; border-radius: 10px;
@@ -504,6 +504,10 @@ img { max-width: 100%; display: block; }
 .accordion-header::after { content: '+'; float: right; color: #656d7c; }
 .accordion-item.open .accordion-header::after { content: '−'; }
 .accordion-body { display: none; font-size: 14px; line-height: 1.7; color: #333; padding-bottom: 14px; }
+.history-day-tag {
+  display: block; font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #376e76; margin-bottom: 2px;
+}
 .accordion-item.open .accordion-body { display: block; }
 
 /* ---- Map ---- */

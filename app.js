@@ -44,10 +44,9 @@
   // went unnoticed for the entries that already read fine - it's not a
   // regression from any one rebuild, it's an inherent gap in that heuristic
   // for any address whose first segment isn't the venue's own name. Used by
-  // BOTH renderStreetViews (card titles) and initMapOnce (marker
-  // popups/directions links) - fixing only one would leave the other
-  // showing the same confusing text and its directions link built from the
-  // same unhelpful query.
+  // initMapOnce (marker popups/directions links) - fixing only one would
+  // leave the other showing the same confusing text and its directions
+  // link built from the same unhelpful query.
   var LANDMARK_DISPLAY_NAMES = {
     'Clive Steps, King Charles Street, Westminster, London SW1A 2AQ': 'Churchill War Rooms',
     'Lambeth Road, London SE1 6HZ': 'Imperial War Museum London',
@@ -845,42 +844,57 @@
   })();
 
   /* ---------------------------------------------------------
-     STREET VIEWS
+     LIVE CAMS
      --------------------------------------------------------- */
-  // The old design tried to inline-embed an interactive panorama via
-  // https://www.google.com/maps?layer=c&cbll=<lat>,<lng>&output=svembed - a
-  // "keyless embed" trick with no official support, that this site (and
-  // zurich-pwa before it) had only ever verified by grepping the source for
-  // an API-key parameter, never by actually loading it in a browser with
-  // real network access (this sandbox's egress policy blocks google.com
-  // entirely, same as every other external host). Confirmed broken live, by
-  // the user's own screenshot: the iframe renders Google's generic
-  // zoomed-out world map with a floating "Maps" chip, not a street-level
-  // panorama, for every landmark - Google no longer honors this URL shape
-  // as an embeddable Street View request. An official, reliable embed
-  // (Maps Embed API's /maps/embed/v1/streetview) requires an API key this
-  // project doesn't have configured, so rather than keep shipping a fake
-  // inline preview that doesn't work, each card now leads with a real,
-  // working action: a direct link to the actual Street View in Google
-  // Maps, which is normal navigation (not an unusual embed trick) and
-  // therefore actually opens the panorama.
-  (function renderStreetViews() {
-    var entries = [];
-    Object.keys(PINS.landmarks || {}).forEach(function (loc) {
-      var p = PINS.landmarks[loc];
-      entries.push({ name: landmarkDisplayName(loc), lat: p.lat, lng: p.lng });
-    });
-    Object.keys(PINS.hotels || {}).forEach(function (name) {
-      var h = PINS.hotels[name];
-      entries.push({ name: name, lat: h.lat, lng: h.lng });
-    });
-    var el = document.getElementById('streetViewList');
-    el.innerHTML = entries.map(function (e) {
-      var fullUrl = 'https://www.google.com/maps?layer=c&cbll=' + e.lat + ',' + e.lng;
+  // Replaces the old per-landmark "Street View" list (a Google Maps
+  // panorama link for every pin, real but static - a photo, not a live
+  // feed). Most of this trip's stops are small museums/monuments with no
+  // dedicated camera, so rather than fabricate a webcam URL for every pin
+  // (this app's hard rule: never invent a link), this is a short, curated
+  // list of REAL, independently-findable live webcams that actually cover
+  // a place on the itinerary - one per city, tied to the specific day it's
+  // relevant to. Each source is a known, long-running public webcam
+  // aggregator or the venue's own site, not a guess. If a feed ever goes
+  // dark that's a problem with the third-party site, not a fabricated URL
+  // shipped by this app.
+  (function renderLiveCams() {
+    var CAMS = [
+      {
+        city: 'London', flag: '🇬🇧',
+        title: 'Westminster / Big Ben',
+        note: 'Overlooks the Parliament Square walk on Day 2 (Churchill War Rooms & Westminster).',
+        url: 'https://www.webcamtaxi.com/en/england/london/palace-of-westminster.html',
+        source: 'webcamtaxi.com'
+      },
+      {
+        city: 'Normandy', flag: '🇫🇷',
+        title: 'Utah Beach',
+        note: 'The Utah Beach Landing Museum’s own live cameras — Day 7, American Sector tour.',
+        url: 'https://utah-beach.com/en/videos/',
+        source: 'utah-beach.com (museum-run)'
+      },
+      {
+        city: 'Normandy', flag: '🇫🇷',
+        title: 'Mont-Saint-Michel',
+        note: 'The abbey and bay, from the official Normandy tourism board — Day 9 day trip.',
+        url: 'https://www.ot-montsaintmichel.com/webcams/',
+        source: 'ot-montsaintmichel.com (official tourism board)'
+      },
+      {
+        city: 'Porto', flag: '🇵🇹',
+        title: 'Douro River / Ribeira',
+        note: 'The riverside neighborhood your Day 11 self-guided walk covers.',
+        url: 'https://www.webcamtaxi.com/en/portugal/porto/douro-river.html',
+        source: 'webcamtaxi.com'
+      }
+    ];
+    var el = document.getElementById('liveCamList');
+    el.innerHTML = CAMS.map(function (c) {
       return '<div class="sv-card">' +
-        '<div class="sv-title">' + esc(e.name) + '</div>' +
-        '<a class="sv-open-btn" href="' + fullUrl + '" target="_blank" rel="noopener">👁 Open Street View ↗</a>' +
-        '<div class="item-links" style="margin-top:8px;">' + directionsLinksHTML(e.name) + '</div>' +
+        '<div class="sv-title">' + c.flag + ' ' + esc(c.title) + '</div>' +
+        '<div class="ref-line" style="margin:2px 0 10px;">' + esc(c.note) + '</div>' +
+        '<a class="sv-open-btn" href="' + c.url + '" target="_blank" rel="noopener">📹 Watch Live ↗</a>' +
+        '<div class="section-note" style="margin:8px 0 0;">via ' + esc(c.source) + '</div>' +
         '</div>';
     }).join('');
   })();
@@ -889,14 +903,27 @@
      HISTORY — AI-authored general context (labeled at top of tab)
      --------------------------------------------------------- */
   (function renderHistory() {
+    // One entry per major stop rather than one per city - a 12-night trip
+    // built around 7 distinct WWII sites (plus Mont-Saint-Michel, a major
+    // non-WWII historical stop) reads thin at 4 entries. Each is tagged
+    // with the day it corresponds to on THIS itinerary (cross-checked
+    // against the real trip-data.json, not guessed) so it reads as
+    // context for a specific day, not a detached encyclopedia list.
     var entries = [
-      { title: 'Churchill War Rooms & the Blitz', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet directed Britain’s WWII strategy, preserved largely as it was left in 1945. London itself was hit hard during the Blitz (1940–41) — much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
-      { title: 'The Normandy Landings', body: 'On June 6, 1944 (D-Day), Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. The American Cemetery at Colleville-sur-Mer overlooks Omaha Beach; Pointe du Hoc, a cliff assaulted by U.S. Army Rangers, still shows the bomb-cratered landscape. Utah was the westernmost American beach, secured with the lightest casualties of the five.' },
-      { title: 'The Battle of Britain & Bletchley Park', body: 'In summer/autumn 1940, RAF Fighter Command — directed from the Uxbridge bunker\'s No. 11 Group Operations Room — fought off the Luftwaffe\'s assault on Britain\'s airfields and cities, a defeat that forced Hitler to abandon his invasion plans. A few miles north at Bletchley Park, codebreakers including Alan Turing worked to crack Germany\'s Enigma cipher, an achievement historians credit with shortening the war by an estimated two years.' },
-      { title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
+      { day: 'Day 2', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
+      { day: 'Day 3', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip.' },
+      { day: 'Day 4', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain.' },
+      { day: 'Day 5', title: 'Bletchley Park & the Enigma codebreakers', body: 'Britain’s wartime codebreaking headquarters, where mathematicians and linguists — Alan Turing among them — worked to break Germany’s Enigma and Lorenz ciphers. Historians credit the intelligence produced here (Ultra) with shortening the war by an estimated one to two years; the work stayed officially secret until the 1970s.' },
+      { day: 'Day 6', title: 'Armored warfare & The Tank Museum', body: 'Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
+      { day: 'Day 7', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Utah, the westernmost American beach, was secured with the lightest casualties of the five; Omaha, by contrast, saw the heaviest fighting of the entire invasion. Pointe du Hoc, the clifftop battery between them, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today.' },
+      { day: 'Day 7', title: 'Sainte-Mère-Église and the paratroopers', body: 'The first French town liberated on D-Day, taken in the early hours of June 6 by U.S. paratroopers of the 82nd and 101st Airborne who had dropped, scattered and often alone, in the darkness beforehand. Its best-known story is Private John Steele, whose parachute caught on the church steeple during the drop — he hung there, playing dead, for two hours before being taken prisoner (and later escaping). A mannequin still hangs from the steeple today.' },
+      { day: 'Day 8', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England — a fitting bookend for a trip that started in London.)' },
+      { day: 'Day 9', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
+      { day: 'Days 11–12', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
-      return '<div class="accordion-item"><button class="accordion-header">' + esc(e.title) + '</button>' +
+      return '<div class="accordion-item"><button class="accordion-header">' +
+        '<span class="history-day-tag">' + esc(e.day) + '</span>' + esc(e.title) + '</button>' +
         '<div class="accordion-body">' + esc(e.body) + '</div></div>';
     }).join('');
     document.querySelectorAll('#historyList .accordion-header').forEach(function (btn) {
