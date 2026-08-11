@@ -179,3 +179,176 @@ check commit dates before trusting either).
   `apple-touch-icon` link tag was missing entirely from `<head>` — not a
   caching issue, not an iOS quirk, just absent. Always check the actual
   `<head>` markup exists before assuming a platform-specific bug.
+- **Street View / Map marker titles were raw street addresses
+  (2026-08-10).** `PINS.landmarks` is keyed by full street address (needed
+  for accurate coordinates), but both the old Street View cards and the
+  map's marker popups displayed `loc.split(',')[0]` as the venue name —
+  fine when the street name happens to BE the venue ("Livraria Lello,
+  Rua..." → "Livraria Lello"), genuinely confusing otherwise ("Wren Ave"
+  for the Battle of Britain Bunker, "Sherwood Drive" for Bletchley Park, a
+  bare postal code for Pointe du Hoc). This is why `landmarkDisplayName()`
+  and the `LANDMARK_DISPLAY_NAMES` override map exist — grep for every
+  `loc.split(',')[0]` call site before adding a new one; there were two
+  independent call sites reading the same bad name and both needed fixing
+  together, not just the one that prompted the report.
+- **City-card night total silently dropped a night (2026-08-10).** The
+  Trip Overview city cards summed `cities[].nights` for the "X of Y
+  nights" total, but a city's own `nights` field only covers nights spent
+  actually IN that city — the overnight Portsmouth↔Caen ferry crossing
+  belongs to no city entry, so the sum silently came out to 11 while the
+  trip is genuinely 12 nights (the hero's own meta line already said 12
+  correctly). Fixed by deriving the total from `days.length - 1` (ground
+  truth) instead of summing city entries — this is the general rule any
+  future "total nights" computation on this site should follow, not just
+  this one card.
+- **Itinerary rebuilt: Nuremberg dropped, London/Normandy/Porto
+  restructured (2026-08-10).** Direct response to traveler feedback that
+  Nuremberg was hard to reach from Normandy. Added Battle of Britain
+  Bunker, Bletchley Park, and The Tank Museum to London; kept the American
+  Sector D-Day tour, added a self-guided Bayeux day and Mont-Saint-Michel
+  to Normandy; compressed Porto to 3 nights. Every Nuremberg reference had
+  to be swept across `trip-data.json`, `pins.json`, `manifest.json`,
+  `app.js`, and `index.html` (nav, map filters/legend, packing list,
+  embassy/transit reference, `CITY_COLORS`/`CITIES`/`CITY_TZ`, timezone
+  map) — a city removal is NOT just a data-file edit, it touches constants
+  scattered through the JS too. If a city is ever added or removed again,
+  grep for the old city name across all five of those files, not just the
+  two data files.
+- **Continuous-scroll rebuild replaced a click-based tab system
+  (2026-08-10) — the current architecture (see "Architecture essentials"
+  above).** The prior version (illustrated SVG city banners, a show/hide
+  tab system) was built from a stale ~4.5-month-old *archived* snapshot of
+  the reference site (zurich-pwa) instead of its actively-maintained
+  source — confirmed by reading zurich-pwa's real current source and
+  comparing against the user's own live screenshots of aripshitadventure,
+  which didn't match. The real pattern is what's live today: one
+  continuous-scroll page, a scroll-spy nav, real photo banners at city
+  transitions, a full-bleed photo hero with a carousel. **Lesson: when
+  copying a pattern from a sibling/reference repo, read its CURRENT
+  source directly — an archived or cached copy can be meaningfully stale
+  without looking obviously wrong.** The illustrated SVG banners
+  themselves were a deliberate stopgap for a separate, real constraint:
+  this sandbox's egress is blocked to every image host, including the
+  exact CDN the reference sites hotlink from, so no real photo could be
+  fetched at the time. They were replaced with real licensed photos once
+  the user supplied them directly (uploaded via chat, not fetched) — if a
+  banner/hero ever needs a new photo, get it from the user, don't try to
+  hotlink one; the egress block isn't going away.
+- **"Self-drive" mislabeling shipped, then had to be walked back
+  (2026-08-09→08-10).** One commit added a blanket text transform —
+  display-time only, `humanizeTransportText()` — that replaced "Private
+  driver" with "Self-drive" and "Private transfer" with "Self-drive
+  transfer" on every Transport item, based on the user having said twice
+  that no private driver was wanted for the trip in general. A later
+  traveler-review pass checked every actual instance against the real
+  trip data and found 100% of them are genuinely hired, concierge-arranged
+  chauffeur services with dedicated contacts and price estimates (the
+  Normandy D-Day guide, the Paris CDG driver, the Douro Valley driver, the
+  Porto airport transfer) — not one was meant to be self-driven. The
+  general preference didn't apply to these specific, already-arranged
+  services. Removed the relabeling entirely (kept the Navigate buttons —
+  useful regardless of who's driving) and fixed the welcome-screen copy,
+  which made the same wrong assumption. **Lesson: a general stated
+  preference doesn't automatically apply to every specific instance in the
+  data — check what the data actually says before applying a blanket
+  transform, especially a text-replacement one that's easy to write
+  broadly and hard to notice is wrong once it's shipped.**
+- **Day 1's flight time was physically impossible (2026-08-10).** The
+  EWR→LHR flight departed 8:20 AM and landed 8:40 PM the same day —
+  internally self-consistent arithmetic, but this route is flown
+  overnight in reality, never as a same-day daytime flight. Separately,
+  `cities[].transport_in` claimed a Normandy leg routed through CDG that
+  never existed anywhere in `days[]` at all — Day 6 just started already
+  in Normandy with no transition item, and the claimed routing was also
+  geographically implausible (Caen is closer to London than Paris).
+  Restructured Day 1 around a real overnight EWR→LHR routing and added an
+  actual Eurotunnel Le Shuttle transfer for the Normandy leg. **Lesson:
+  "the times add up" is necessary but not sufficient — cross-check a
+  flight or transfer against whether that routing is realistic at all,
+  not just whether its own numbers are self-consistent.** Fixing this
+  surfaced three follow-on bugs in the same pass, all worth knowing about
+  if you touch time/text rendering again: (1) the "Arrives X" suffix logic
+  assumed `item.time` is always a departure time, but for this now-
+  overnight flight it's deliberately the ARRIVAL time, producing a
+  duplicated "9:35 AM · Arrives 9:35 AM" — now handled in every render
+  path that shows flight times; (2) the new Eurotunnel item's own text
+  used the phrase "door to door," which fed the same "last `to X` wins"
+  trap in `parseTransportDestination` (its own "to door" beat "to
+  Bayeux"), silently breaking the Navigate link; (3) an item with no
+  `end_time` gets double-counted as its own separate "Free time" gap by
+  the free-time detector — always set `end_time` on a multi-hour transfer.
+- **Weather line was silently blank on every single day (2026-08-09).**
+  `day.weather` is a plain string in this trip's real data (e.g. `"High
+  59°F / low 48°F · overcast..."`), but the renderer read
+  `day.weather.summary`/`day.weather.condition` — object-shaped access on
+  a string is always `undefined`, so the weather line rendered empty on
+  every city-tab day block, silently, with no error. Exactly the failure
+  class this file's "Trip data shape" section exists to prevent: check the
+  real field's actual type/shape before writing an accessor, don't assume
+  a nested-object shape because it "seems like" it should be one.
+- **A flagged data conflict shipped anyway — Antiqvvm double-booked
+  (2026-08-09).** Day 10's own record already carried a `closure_note`
+  saying it had been "moved to Day 11" due to a Monday closure, plus a
+  ready backup restaurant that was never actually applied — the flag
+  existed in the data, but the swap it described had never been made, so
+  the same restaurant was booked for dinner on both Day 10 AND Day 11.
+  **Lesson: a `_note`/`closure_note`/similar flag describing a fix is not
+  evidence the fix was actually applied — verify the described change
+  landed in the data, don't trust the annotation at face value.**
+- **`transport_in` existed in the data but was never rendered anywhere
+  (2026-08-10).** The third instance of the same failure class as the
+  weather bug above: a real, correct field sitting in `cities[]` with
+  nothing on the site ever displaying it, so a stale/wrong value (it said
+  "Fly CFR→NUE via connection" long after the actual plan changed to a
+  private driver + a real flight) went unnoticed because nothing showed it
+  to anyone, including whoever last edited the data. Now surfaced on each
+  city's overview card. **If you add a new field to `trip-data.json`,
+  confirm something on the site actually renders it — an unrendered field
+  can silently drift from reality indefinitely with nothing to catch it.**
+- **Offline support was promised in the UI and didn't exist
+  (2026-08-10).** The welcome screen's own tip told travelers to install
+  the site "before you land" because "Wi-Fi at Churchill's bunker is not
+  what it used to be" — but there was no service worker at all; a
+  traveler who followed that advice and lost signal would have gotten a
+  blank failed load. Built the precache-on-install service worker that's
+  live today (see `sw.js`'s own header comment for the two real caching
+  bugs found while building it — response-clone-after-read, and first-
+  visit-can't-retroactively-cache). **Lesson: copy that promises a
+  capability is a claim about the code, not just marketing text — check
+  the feature it describes actually exists before shipping copy that
+  assumes it does.**
+- **Fixed-position mobile elements collided more than once
+  (2026-08-09→08-10).** The bottom-left FAB stack and the day quick-jump
+  pill row overlapped on mobile hard enough that "Day 1" was completely
+  unreachable behind the chat FAB — found once during a traveler-review
+  pass (fixed with exact bounding-box math, not eyeballing) and then
+  again after the continuous-scroll rebuild reintroduced a related
+  collision (a stale mobile-only padding hack from the old tab
+  architecture crushed the day pills into a single column). **Any new
+  fixed-position element (FAB, pill row, banner) needs its bounding box
+  checked against every OTHER fixed-position element on mobile widths —
+  this has now broken twice via two unrelated code paths.** Also worth
+  knowing: an initial audit pass during the first fix flagged several
+  false "overlap" hits that turned out to be screenshot-timing artifacts
+  from the site's own `scroll-behavior: smooth` — a screenshot taken
+  before a smooth-scroll settles shows a transient, non-representative
+  state; always wait for scroll to settle before treating a screenshot as
+  ground truth.
+- **`welcome-screen`/`packing-list-v2` are adapted from the
+  `travel-app-components` library**, not written from scratch for this
+  trip (`fc069f0`) — if either needs a fix, check whether the same bug
+  exists in the library's source components too, since other trip sites
+  reuse them.
+- **Print stylesheet: colors that work on screen can fail on paper
+  (2026-08-10).** City banners rendered white-on-navy on screen (fine,
+  photo background) but the print stylesheet didn't override that, so a
+  printed itinerary showed white text on a white page — unreadable. Any
+  new colored-background element needs its own print-stylesheet check,
+  not just a screen check.
+- **Home timezone was guessed from the departure airport, and was wrong
+  (2026-08-10).** The time pill's `HOME_TZ` was set to `America/New_York`
+  — inferred from the EWR departure airport — not the traveler's actual
+  home base (Dallas, TX / Central). An airport code is not a reliable
+  proxy for where someone lives; if a "home" fact like this is ever needed
+  again, use what the traveler has actually told you, not what's
+  inferable from trip logistics.
