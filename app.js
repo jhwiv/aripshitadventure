@@ -105,6 +105,80 @@
     return '<div class="ref-line">' + bits.join(' · ') + '</div>';
   }
 
+  // Renders a restaurant's cuisine/neighborhood/price + hours + closure note
+  // the same way everywhere it's used - kept as one function so the many
+  // call sites (day-item cards, the Meals & Reservations list, a backup
+  // nested inside either of those) don't drift the way other duplicated
+  // render logic in this file already has (see CLAUDE.md).
+  function restaurantDetailLines(r) {
+    var contact = r.contact || {};
+    var meta = [r.cuisine, r.neighborhood, r.price_range].filter(Boolean).join(' · ');
+    var closure = r.closure_note || r.hours_note || null;
+    return (meta ? '<div class="meal-meta">' + esc(meta) + '</div>' : '') +
+      (contact.hours ? '<div class="meal-meta">' + esc(contact.hours) + '</div>' : '') +
+      (closure ? '<div class="meal-meta">' + esc(closure) + '</div>' : '');
+  }
+
+  // Full restaurant card: clickable name (opens the menu popup), details,
+  // directions/reserve/website links, and — if this booking has a
+  // pre-picked backup — the backup's own card nested underneath. ONE
+  // function used by both the day-item cards (renderItemHTML) and the
+  // consolidated Meals & Reservations list (renderMeals), so a booking's
+  // backup is visible everywhere the booking itself is, not just in one of
+  // the two places a reader might actually be looking. This function is
+  // exactly what was missing before — backups only ever rendered in the
+  // Meals & Reservations list, invisible to anyone reading day-by-day.
+  function restaurantCardHTML(r) {
+    var contact = r.contact || {};
+    var platform = (r.reservation && r.reservation.platform) || null;
+    var label = RESERVATION_LABELS[platform] || 'Reservation info unavailable';
+    var reserveHref = (r.reservation && r.reservation.url) ? r.reservation.url
+      : (r.reservation && r.reservation.phone) ? 'tel:' + r.reservation.phone
+      : (contact.phone ? 'tel:' + contact.phone : null);
+    var b = r.backup;
+    var backupBlock = b ? '<div class="meal-backup">' +
+      '<div class="meal-backup-label">If this falls through</div>' +
+      '<div class="meal-name">' + menuTriggerHTML(b.name) + '</div>' +
+      restaurantDetailLines(b) +
+      (b.why ? '<div class="meal-meta">' + esc(b.why) + '</div>' : '') +
+      '<div class="item-links">' + directionsLinksHTML(b.name) +
+      ((b.contact || {}).phone ? '<a href="tel:' + esc(b.contact.phone) + '">' + esc(b.contact.phone) + '</a>' : '') +
+      ((b.contact || {}).website ? '<a href="' + esc(b.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      '</div></div>' : '';
+    return '<div class="meal-top"><span class="meal-name">' + menuTriggerHTML(r.name) + '</span>' +
+      '<span class="meal-badge">' + esc(label) + '</span></div>' +
+      restaurantDetailLines(r) +
+      // r.why (the restaurant's own description) previously rendered ONLY
+      // on a backup pick, never on the primary - every one of the 11
+      // primary restaurants in this trip has real, populated why text that
+      // has never once reached the screen. Same dead-field shape as the
+      // backup-visibility bug above; fixed the same way, in the same pass.
+      (r.why ? '<div class="meal-meta">' + esc(r.why) + '</div>' : '') +
+      '<div class="item-links">' +
+      directionsLinksHTML(r.name) +
+      (reserveHref ? '<a href="' + esc(reserveHref) + '" target="_blank" rel="noopener">Reserve</a>' : '') +
+      (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      '</div>' +
+      backupBlock;
+  }
+
+  function menuTriggerHTML(name) {
+    return '<button type="button" class="menu-trigger" data-restaurant="' + esc(name) + '">' + esc(name) + '<span class="menu-trigger-hint">Menu ›</span></button>';
+  }
+
+  // Name -> restaurant object, covering both a day's primary booking and
+  // its backup (if any) - built once so the menu popup can look up either
+  // by the name printed on its own clickable trigger, from wherever that
+  // trigger was clicked.
+  var RESTAURANTS_BY_NAME = {};
+  (TRIP.days || []).forEach(function (day) {
+    (day.items || []).forEach(function (item) {
+      if (!item.restaurant) return;
+      RESTAURANTS_BY_NAME[item.restaurant.name] = item.restaurant;
+      if (item.restaurant.backup) RESTAURANTS_BY_NAME[item.restaurant.backup.name] = item.restaurant.backup;
+    });
+  });
+
   // Three-way directions picker — Google Maps, Apple Maps, Waze. All three
   // are standard, keyless universal-link formats (no API key for any of
   // them): Google opens maps.google.com, Apple Maps opens maps.apple.com
@@ -452,6 +526,15 @@
     var navigateRow = item.type === 'Transport'
       ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>'
       : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>';
+    // A Dinner/Lunch/Breakfast item's own restaurant details (hours, price,
+    // backup pick, menu popup trigger) previously rendered ONLY in the
+    // separate Meals & Reservations list, invisible to anyone reading the
+    // itinerary day-by-day in a city tab - the more common way to browse it.
+    // restaurantCardHTML already includes its own directions/website links,
+    // so it replaces navigateRow here rather than sitting alongside it.
+    var restaurantBlock = item.restaurant
+      ? '<div class="item-restaurant-card">' + restaurantCardHTML(item.restaurant) + '</div>'
+      : navigateRow;
     return '<div class="item">' +
       '<div class="item-icon">' + icon + '</div>' +
       '<div class="item-body">' +
@@ -460,7 +543,7 @@
       flightWarn +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
       (item.logistics ? renderLogisticsRows(item.logistics) : '') +
-      navigateRow +
+      restaurantBlock +
       '</div></div>';
   }
 
@@ -742,48 +825,17 @@
       });
     });
     if (!rows.length) { mealsEl.innerHTML = '<p class="ai-note">No restaurant reservations in this plan.</p>'; return; }
-    // Renders a restaurant's cuisine/neighborhood/price + hours + closure
-    // note the same way for both a primary booking and its backup - kept
-    // as one function so the two don't drift the way other duplicated
-    // render logic in this file already has (see CLAUDE.md).
-    function restaurantDetailLines(r) {
-      var contact = r.contact || {};
-      var meta = [r.cuisine, r.neighborhood, r.price_range].filter(Boolean).join(' · ');
-      var closure = r.closure_note || r.hours_note || null;
-      return (meta ? '<div class="meal-meta">' + esc(meta) + '</div>' : '') +
-        (contact.hours ? '<div class="meal-meta">' + esc(contact.hours) + '</div>' : '') +
-        (closure ? '<div class="meal-meta">' + esc(closure) + '</div>' : '');
-    }
+    // restaurantCardHTML/restaurantDetailLines are the SAME shared helpers
+    // renderItemHTML uses for a restaurant item's day-by-day card - kept as
+    // one function so a booking's backup/hours/price don't drift between
+    // the two places a reader might see it (see CLAUDE.md).
     mealsEl.innerHTML = rows.map(function (row) {
       var r = row.r;
-      var platform = (r.reservation && r.reservation.platform) || null;
-      var label = RESERVATION_LABELS[platform] || 'Reservation info unavailable';
       var contact = r.contact || {};
-      var reserveHref = (r.reservation && r.reservation.url) ? r.reservation.url
-        : (r.reservation && r.reservation.phone) ? 'tel:' + r.reservation.phone
-        : (contact.phone ? 'tel:' + contact.phone : null);
-      var b = r.backup;
-      var backupBlock = b ? '<div class="meal-backup">' +
-        '<div class="meal-backup-label">If this falls through</div>' +
-        '<div class="meal-name">' + esc(b.name) + '</div>' +
-        restaurantDetailLines(b) +
-        (b.why ? '<div class="meal-meta">' + esc(b.why) + '</div>' : '') +
-        '<div class="item-links">' + directionsLinksHTML(b.name) +
-        ((b.contact || {}).phone ? '<a href="tel:' + esc(b.contact.phone) + '">' + esc(b.contact.phone) + '</a>' : '') +
-        ((b.contact || {}).website ? '<a href="' + esc(b.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
-        '</div></div>' : '';
       return '<div class="meal-row">' +
-        '<div class="meal-top"><span class="meal-name">' + esc(r.name) + '</span>' +
-        '<span class="meal-badge">' + esc(label) + '</span></div>' +
         '<div class="meal-meta">' + esc(row.day) + ' · ' + esc(formatTime12(row.time)) +
         (contact.address ? ' · ' + esc(contact.address) : '') + '</div>' +
-        restaurantDetailLines(r) +
-        '<div class="item-links">' +
-        directionsLinksHTML(r.name) +
-        (reserveHref ? '<a href="' + esc(reserveHref) + '" target="_blank" rel="noopener">Reserve</a>' : '') +
-        (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
-        '</div>' +
-        backupBlock +
+        restaurantCardHTML(r) +
         '</div>';
     }).join('');
   })();
@@ -1466,6 +1518,51 @@
   });
   localClose.addEventListener('click', closeAllPanels);
   chatClose.addEventListener('click', closeAllPanels);
+
+  /* ---------------------------------------------------------
+     RESTAURANT MENU POPUP — opened by tapping a restaurant's name
+     (menu-trigger buttons, rendered by restaurantCardHTML) anywhere on
+     the site. Content is built from menu_highlights (verified via web
+     research, not the model's own generation - see CLAUDE.md) plus the
+     same cuisine/price/address data already shown on the card itself.
+     --------------------------------------------------------- */
+  var menuModal = document.getElementById('menuModal');
+  var menuModalBody = document.getElementById('menuModalBody');
+
+  function openMenuModal(name) {
+    var r = RESTAURANTS_BY_NAME[name];
+    if (!r || !menuModal || !menuModalBody) return;
+    var contact = r.contact || {};
+    var meta = [r.cuisine, r.neighborhood, r.price_range].filter(Boolean).join(' · ');
+    var highlights = r.menu_highlights || [];
+    menuModalBody.innerHTML =
+      '<button type="button" class="menu-modal-close" aria-label="Close menu">&times;</button>' +
+      '<div class="menu-modal-title">' + esc(r.name) + '</div>' +
+      (meta ? '<div class="meal-meta">' + esc(meta) + '</div>' : '') +
+      (contact.address ? '<div class="meal-meta">' + esc(contact.address) + '</div>' : '') +
+      (highlights.length
+        ? '<div class="menu-modal-section-label">What to order</div>' +
+          '<ul class="menu-highlights">' + highlights.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ul>' +
+          '<p class="menu-modal-caveat">Based on published reviews and the restaurant’s own site — kitchens change seasonally, so confirm before booking.</p>'
+        : '<p class="ai-note">No verified menu highlights for this one yet — check their website or call ahead.</p>') +
+      '<div class="item-links">' + directionsLinksHTML(r.name) +
+      (contact.phone ? '<a href="tel:' + esc(contact.phone) + '">' + esc(contact.phone) + '</a>' : '') +
+      (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      '</div>';
+    menuModal.hidden = false;
+  }
+  function closeMenuModal() { if (menuModal) menuModal.hidden = true; }
+
+  document.addEventListener('click', function (e) {
+    var trigger = e.target.closest && e.target.closest('.menu-trigger');
+    if (trigger) { openMenuModal(trigger.getAttribute('data-restaurant')); return; }
+    if (menuModal && !menuModal.hidden) {
+      if (e.target === menuModal || (e.target.closest && e.target.closest('.menu-modal-close'))) closeMenuModal();
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menuModal && !menuModal.hidden) closeMenuModal();
+  });
 
   function haversineMeters(lat1, lon1, lat2, lon2) {
     var R = 6371000, toRad = function (d) { return d * Math.PI / 180; };

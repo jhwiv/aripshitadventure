@@ -146,6 +146,75 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Menu popups, a second backup-visibility bug, two real address/phone
+  errors, and a distance-from-hotel audit (2026-08-11), from the user
+  directly: "Restaurants should have menu pop up cards. I also don't see
+  back up restaurants. Have you validated restaurant recommendations make
+  sense based on distance from hotel."**
+  - **Backup restaurants were STILL invisible in the main reading path.**
+    The previous "Do it" pass (entry below) wired backups into the
+    consolidated Meals & Reservations list, but `renderItemHTML` — the
+    day-by-day item card in each city tab, the way most people actually
+    read this itinerary — never rendered `item.restaurant` at all beyond
+    the plain `"Dinner at X"` headline. Same root cause as the flags/props
+    gaps this project keeps finding: a fix landing in one render path and
+    not its sibling. Fixed by hoisting `restaurantDetailLines`/a new
+    `restaurantCardHTML` to module scope so BOTH `renderItemHTML` and
+    `renderMeals` call the exact same function — a booking's backup, hours,
+    price, and now its menu trigger are visible everywhere the booking
+    itself is.
+  - **A THIRD instance of the same bug, found while fixing the second:**
+    every primary restaurant's own `.why` field (11 of them, real
+    descriptive text — Veeraswamy's 1926 founding, Pentolina's
+    locals-only pasta, etc.) has never rendered anywhere. Only a
+    *backup's* `.why` ever reached the screen. Fixed in the same
+    `restaurantCardHTML` pass.
+  - **Menu popups**, per the direct request: tapping any restaurant name
+    (day card or Meals list, primary or backup) opens a bottom-sheet modal
+    (`#menuModal`) with cuisine/price/address and a "What to order" list.
+    Per this file's hard rule against fabricating facts, the dish list is
+    NOT model-generated — it's `menu_highlights[]`, added to all 17 unique
+    restaurants in `trip-data.json` this session from real `WebSearch`
+    results (restaurant reviews, Michelin Guide, the restaurants' own
+    sites), with an explicit on-card caveat ("kitchens change seasonally —
+    confirm before booking") since a menu is not a static fact the way an
+    address is.
+  - **Distance-from-hotel audit, done properly rather than answered from
+    memory**: cross-checked every restaurant's real address against its
+    host-city hotel (`pins.json` coordinates for the hotels; addresses
+    verified via `WebSearch`, not assumed). Two were fine everywhere in
+    Bayeux (small town, everything's close) and most of London/Porto.
+    Two genuine problems found and fixed with a logistics note appended to
+    the restaurant's own `.why` text (now visible thanks to the fix
+    above): **Pedro Lemos** (Day 11 primary) is a real ~5 km / 15-20 min
+    taxi ride from The Yeatman in Foz do Douro — not walkable, and nothing
+    in the plan said so. **Pentolina** (Day 3's Clio backup) is in
+    Hammersmith, ~20-25 min from the Mayfair hotel by tube/taxi — a
+    legitimate restaurant but a poor same-evening pivot, now labeled as
+    such.
+  - **Two address/contact errors found DURING that audit, independent of
+    distance**: **Pentolina**'s address was wrong in a way that would have
+    sent someone to the wrong postcode — `"71 Brook Green, ... W6 7BE"`
+    (Brook Green is the neighborhood name, not the street) corrected to
+    the real `"71 Blythe Road, London W14 0HP"`; phone and website were
+    also wrong (`+44 20 7602 1932` / `pentolina.co.uk` → the real
+    `+44 20 3010 0091` / `pentolinarestaurant.co.uk`), and `open_days`
+    wrongly included Sunday (verified twice: closed Sun AND Mon).
+    **Taberninha do Manel**'s address was wrong in a way that inverted the
+    actual geography — `"Cais da Ribeira 36, Porto"` (the Porto-side quay,
+    across the river) corrected to the real `"Avenida Diogo Leite 308,
+    Vila Nova de Gaia"` — which is on the SAME side of the river as The
+    Yeatman, a few hundred meters away, not across a bridge. Neither error
+    would have been caught by the distance audit itself since a wrong
+    address can still "look" plausible; both were only caught by
+    independently verifying every restaurant's address against a real
+    source rather than trusting what was already in the data.
+  - Verified live via Playwright: the Day 2 Veeraswamy day-card now shows
+    its backup (Gymkhana) and its own `.why` text with zero code changes
+    needed on the Meals list side; clicking either restaurant's name opens
+    a modal with the real, sourced dish list; the corrected Pentolina
+    phone/Taberninha do Manel address/Pedro Lemos taxi note all render
+    correctly; full 10-tab console-error sweep clean.
 - **Wired ~10 previously-dead `trip-data.json` fields into the live UI
   (2026-08-11), after asking "are there repairs or changes called for" and
   the user replying "Do it" to my own offer.** A field-usage audit had

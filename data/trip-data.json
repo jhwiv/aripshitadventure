@@ -169,7 +169,13 @@
             ],
             "_missingBackup": true,
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Scott's%20Mayfair%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Scott's%20Mayfair%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Tempura fried oysters with ponzu aioli",
+              "Dover sole meunière",
+              "Twice-baked Keen's cheddar soufflé with black truffle",
+              "Oyster & champagne bar"
+            ]
           }
         }
       ]
@@ -267,10 +273,22 @@
                 "sun"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Gymkhana%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Gymkhana%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Tandoori masala lamb chops",
+                "Kid goat methi keema with pao",
+                "Wild muntjac biryani",
+                "Amritsari shrimp"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Veeraswamy%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Veeraswamy%20Mayfair%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Raj Kachori — puri, sprouted lentils, chutneys",
+              "Tandoori wild tiger prawn",
+              "Lamb biryani (on the menu since 1926)",
+              "Chicken Mirchi Makhani"
+            ]
           }
         },
         {
@@ -363,30 +381,41 @@
               "neighborhood": "Brook Green",
               "cuisine": "Italian",
               "price_range": "$$",
-              "why": "A wonderful, small family-owned Italian eatery with outstanding pasta — the kind of locals-only spot Londoners guard jealously. No pizza, just seasonal handmade pasta done right.",
+              "why": "A wonderful, small family-owned Italian eatery with outstanding pasta — the kind of locals-only spot Londoners guard jealously. No pizza, just seasonal handmade pasta done right. Note for planning: Hammersmith is a real trip from Mayfair — about 20-25 min by tube or taxi, not walkable — so this only works as a same-evening pivot if you're already headed that direction.",
               "contact": {
-                "address": "71 Brook Green, Hammersmith, London W6 7BE",
-                "phone": "+44 20 7602 1932",
-                "website": "https://www.pentolina.co.uk"
+                "address": "71 Blythe Road, London W14 0HP",
+                "phone": "+44 20 3010 0091",
+                "website": "https://pentolinarestaurant.co.uk"
               },
               "reservation": {
                 "platform": "phone",
-                "phone": "+44 20 7602 1932"
+                "phone": "+44 20 3010 0091"
               },
               "open_days": [
                 "tue",
                 "wed",
                 "thu",
                 "fri",
-                "sat",
-                "sun"
+                "sat"
               ],
               "_weekdayMismatch": "mon",
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Pentolina%20Brook%20Green%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Pentolina%20Brook%20Green%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Handmade seasonal pasta (no pizza on the menu)",
+                "Ossobuco",
+                "Egg tagliolini",
+                "Duck ragù; tiramisu for dessert"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Clio%20Marylebone%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Clio%20Marylebone%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Rabbit stifado",
+              "Greek salad tossed tableside",
+              "Deconstructed red prawn saganaki",
+              "Whole fish from the day-boat grill"
+            ]
           }
         },
         {
@@ -509,10 +538,22 @@
                 "sat"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Bao%20Soho%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Bao%20Soho%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "The Classic bao — braised pork, peanut, fermented greens",
+                "Prawn and short rib bao",
+                "Trotter nuggets with chili sauce",
+                "Walk-ins only — no reservations taken"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Baked glass noodles with Tamworth pork & crab",
+              "Grilled pork skewers with sticky rice",
+              "Bone marrow curry",
+              "Charcoal-roasted seasonal vegetables"
+            ]
           }
         },
         {
@@ -630,10 +671,22 @@
                 "sat"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=64%20Goodge%20Street%20Fitzrovia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=64%20Goodge%20Street%20Fitzrovia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Snail, bacon & garlic bon bons",
+                "Lobster vol-au-vent, sauce Américaine",
+                "Rabbit niçoise",
+                "Paris-Brest"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20River%20Restaurant%20by%20Gordon%20Ramsay%20Southwark%20%2F%20South%20Bank%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20River%20Restaurant%20by%20Gordon%20Ramsay%20Southwark%20%2F%20South%20Bank%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Chilled dressed shellfish platter",
+              "Tandoori-spiced monkfish with pakora",
+              "Sole meunière",
+              "Mango & coconut Knickerbocker Glory"
+            ]
           }
         },
         {
@@ -939,10 +992,22 @@
                 "phone": "+33 2 31 21 05 45"
               },
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Rapi%C3%A8re%20Bayeux%20old%20town%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Rapi%C3%A8re%20Bayeux%20old%20town%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Salmon gravlax with dill, beetroot, wasabi",
+                "Ravioli with langoustine and pollack",
+                "Fillet steak with pan gravy",
+                "Triple chocolate dessert"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Pommier%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Pommier%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Foie gras terrine with Pommeau-apple chutney",
+              "Duck breast; lamb shank",
+              "Norman seafood platter — oysters, whelks, prawns",
+              "Crème brûlée"
+            ]
           }
         },
         {
@@ -1102,10 +1167,22 @@
                 "phone": "+33 2 31 92 06 90"
               },
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Green asparagus tart, red shiso, umeboshi",
+                "Duckling filet in cocoa sauce with furikake",
+                "Normandy produce with Japanese/Thai influences",
+                "Weekly-changing chef's tasting menu"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=L'Angle%20Saint%20Laurent%20Bayeux%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=L'Angle%20Saint%20Laurent%20Bayeux%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Foie gras with citrus fruits",
+              "Roast monkfish with Bayeux pig fat",
+              "Smoked pork cutlet, saté-laced risotto",
+              "Michelin Bib Gourmand pick"
+            ]
           }
         },
         {
@@ -1223,7 +1300,13 @@
               "phone": "+33 2 31 92 06 90"
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d'Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Green asparagus tart, red shiso, umeboshi",
+              "Duckling filet in cocoa sauce with furikake",
+              "Normandy produce with Japanese/Thai influences",
+              "Weekly-changing chef's tasting menu"
+            ]
           }
         },
         {
@@ -1363,7 +1446,13 @@
               "sun"
             ],
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Marinated scallops with avocado cream",
+              "Octopus tartare",
+              "Baked Nisa cheese with rosemary honey",
+              "Chef José Avillez's first restaurant outside Lisbon"
+            ]
           }
         },
         {
@@ -1473,7 +1562,7 @@
             "neighborhood": "Foz do Douro",
             "cuisine": "Modern Portuguese (1 Michelin star)",
             "price_range": "$$$$",
-            "why": "One Michelin star, tucked into a renovated Foz townhouse. Chef Pedro Lemos sources obsessively — line-caught fish, mountain lamb, coastal herbs — and plates them with surgical precision. The tasting menu is Porto's best fine-dining experience without the fuss of The Yeatman.",
+            "why": "One Michelin star, tucked into a renovated Foz townhouse. Chef Pedro Lemos sources obsessively — line-caught fish, mountain lamb, coastal herbs — and plates them with surgical precision. The tasting menu is Porto's best fine-dining experience without the fuss of The Yeatman. Foz do Douro is a genuine trek from The Yeatman — about 5 km / 15-20 min by taxi along the river, not a walk. Worth it for the tasting menu, but book a taxi both ways and don't try to fit it in on foot.",
             "reservation": {
               "platform": "phone",
               "phone": "+351 22 011 5986"
@@ -1517,10 +1606,22 @@
                 "sun"
               ],
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20(downtown%20Porto)%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Marinated scallops with avocado cream",
+                "Octopus tartare",
+                "Baked Nisa cheese with rosemary honey",
+                "Chef José Avillez's first restaurant outside Lisbon"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Tasting menu only — 8 or 10 courses",
+              "Squab and squid",
+              "Duck foie gras with quince & brioche",
+              "1 Michelin star since 2014 — book well ahead"
+            ]
           }
         },
         {
@@ -1641,7 +1742,7 @@
             ],
             "backup": {
               "name": "Taberninha do Manel",
-              "neighborhood": "Ribeira",
+              "neighborhood": "Cais de Gaia",
               "cuisine": "Traditional Portuguese",
               "price_range": "$$",
               "why": "Tiny, family-run, zero pretense. Daily-changing menu chalked on the wall, perfect roast octopus, house wine poured from unlabeled bottles.",
@@ -1650,7 +1751,7 @@
                 "phone": "+351 22 205 8737"
               },
               "contact": {
-                "address": "Cais da Ribeira 36, Porto",
+                "address": "Avenida Diogo Leite 308, 4400-111 Vila Nova de Gaia",
                 "phone": "+351 22 205 8737",
                 "hours": "Tue–Sun 12:00–3:00 PM, 7:00–10:30 PM"
               },
@@ -1664,10 +1765,22 @@
               ],
               "closure_note": "Closed Mondays",
               "verify_status": "verify_before_booking",
-              "verify_url": "https://www.google.com/maps/search/?api=1&query=Taberninha%20do%20Manel%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+              "verify_url": "https://www.google.com/maps/search/?api=1&query=Taberninha%20do%20Manel%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+              "menu_highlights": [
+                "Oven-baked cod (bacalhau à brás)",
+                "Octopus with green sauce",
+                "Seafood rice",
+                "Riverside terrace on the Gaia quay"
+              ]
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Trasca%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Trasca%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto",
+            "menu_highlights": [
+              "Grilled sausages with apple purée",
+              "Baked Camembert with honey",
+              "Portuguese/Spanish tapas board",
+              "Small space — arrive early or expect a wait"
+            ]
           }
         }
       ]

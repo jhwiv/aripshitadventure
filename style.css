@@ -356,6 +356,51 @@ img { max-width: 100%; display: block; }
 .meal-backup-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #656d7c; margin-bottom: 4px; }
 .meal-backup .meal-name { font-size: 13.5px; }
 
+/* ---- Restaurant menu popup ---- */
+.menu-trigger {
+  background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit;
+  font-weight: 700; cursor: pointer; text-align: left; display: inline-flex; align-items: baseline; gap: 6px;
+}
+.menu-trigger:hover .menu-trigger-hint, .menu-trigger:focus-visible .menu-trigger-hint { opacity: 1; }
+.menu-trigger-hint {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.04em;
+  color: var(--gold); opacity: 0.75; white-space: nowrap;
+}
+.menu-modal-overlay {
+  position: fixed; inset: 0; z-index: 70; background: rgba(13,33,51,0.55);
+  display: flex; align-items: flex-end; justify-content: center; padding: 0;
+}
+@media (min-width: 600px) {
+  .menu-modal-overlay { align-items: center; padding: 20px; }
+}
+.menu-modal {
+  position: relative; background: #fff; width: 100%; max-width: 480px; max-height: 85vh;
+  overflow-y: auto; border-radius: 16px 16px 0 0; padding: 22px 20px 26px;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+}
+@media (min-width: 600px) {
+  .menu-modal { border-radius: 14px; }
+}
+.menu-modal-close {
+  position: absolute; top: 12px; right: 14px; background: none; border: none;
+  font-size: 24px; line-height: 1; color: #656d7c; cursor: pointer; padding: 4px;
+}
+.menu-modal-title {
+  font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 20px;
+  color: var(--navy); margin: 0 26px 6px 0;
+}
+.menu-modal-section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #656d7c; margin: 16px 0 8px;
+}
+.menu-highlights { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.menu-highlights li {
+  font-size: 13.5px; line-height: 1.5; padding-left: 16px; position: relative;
+}
+.menu-highlights li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+.menu-modal-caveat { font-size: 11.5px; color: #656d7c; font-style: italic; margin: 12px 0 0; line-height: 1.5; }
+.menu-modal .item-links { margin-top: 16px; padding-top: 14px; border-top: 1px dashed #e6e3da; }
+
 /* ---- Reservation Timeline (adapted from santafe-itinerary) ---- */
 .timeline-intro { font-size: 13.5px; color: #5b6577; line-height: 1.55; margin: 6px 0 16px; }
 .timeline-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
