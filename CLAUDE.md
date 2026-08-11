@@ -107,6 +107,59 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Added "Book & Confirm" timeline + expanded local-knowledge content
+  (2026-08-11), from a user-requested tour/pacing sanity check.** Three
+  separate pieces of work from one request:
+  1. **A real timing bug: Day 6→7 ferry arrival was off by 1.5 hours.**
+     The ferry item claimed departure 22:45, "approx. 8 hrs" duration, and
+     arrival "approx. 06:15 local time" — but 22:45 + 8h + the stated 1h
+     UK→France timezone shift computes to 07:45, not 06:15 (confirmed both
+     that the 8hr overnight-crossing duration is realistic AND that the
+     arrival math was wrong, via `WebSearch` before touching anything).
+     Fixed the arrival time and cascaded Day 7's morning sequence (ferry
+     dock → drive to Bayeux → luggage drop → guide meeting → the whole
+     guided-tour day) forward by the same ~30–90min this correction
+     implies. **If a future edit touches any overnight/timezone-crossing
+     transfer, recompute arrival from departure + duration + timezone
+     shift explicitly — don't trust a stated arrival time at face value,
+     even one that already looks internally plausible.**
+  2. **New "Book & Confirm — Tours, Tickets & Transport" timeline**
+     (`renderBookingActions()`, Condensed tab, right after the existing
+     restaurant Reservation Timeline) — the restaurant timeline only ever
+     covered `item.restaurant`; nothing tracked the trip's actual
+     ticketed/guided bookings (Bunker, Bletchley, Tank Museum, ferry,
+     D-Day guide, Mont-Saint-Michel, Douro tour, flights, hotels). Each
+     entry's guidance is real, individually researched per venue (via
+     `WebSearch`), not a blanket rule — critically, the venues genuinely
+     disagree with each other: the Battle of Britain Bunker has NO walk-in
+     access at all (phone/email pre-book mandatory), Bletchley Park and
+     the Tank Museum need no advance booking whatsoever, and
+     Mont-Saint-Michel's ticket office doesn't even release tickets until
+     about a month before the visit — booking it "early" would just fail.
+     Added a 5th timeline urgency tier (`.tl-wait`, teal) alongside the
+     existing 4 specifically for that last case, since "don't book yet"
+     is a genuinely different message than "no rush." **If a future trip
+     rebuild changes which venues are visited, this list needs its own
+     re-research per new venue — don't carry over old venues' policies to
+     new ones that happen to be a similar "type" (e.g. another small
+     UK museum won't necessarily share Bletchley's no-booking-needed
+     policy).**
+  3. **Local-knowledge content deepened** to match the specificity level
+     of the zurich-weekend.com reference (verified via `WebSearch`, since
+     direct `WebFetch` to that domain is blocked same as everywhere else):
+     a new "Apps to Download — Before You Land" Essentials card (8 apps,
+     each tied to a specific moment on THIS itinerary — Trainline for the
+     Day 5 Bletchley train, offline Google Maps for rural Normandy
+     driving, Andante's own app for Porto transit top-up — not a generic
+     "useful apps abroad" list), and the City Transit cards expanded from
+     one sentence each to 4 concrete, non-generic tips per city (Tube
+     escalator etiquette, French shop-greeting norms, Portuguese meal
+     timing, etc.). Motivated in part by a real finding from the pacing
+     check: the free-time detector already flags 19 separate unscheduled
+     gaps (2.5–6.5 hrs each) across the trip — deliberately honest, not a
+     bug (see `a9f7a50` in this log) — but it means travelers genuinely
+     need this kind of local knowledge to fill real unscheduled time, not
+     just a nice-to-have.
 - **Banner/hero photos compressed; a dead unreferenced image deleted
   (2026-08-11).** The 5 real location photos were all 2400×1600 (or
   1920×1272) source JPEGs — 3.3MB total — being served for a full-bleed

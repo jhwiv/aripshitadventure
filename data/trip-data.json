@@ -740,9 +740,9 @@
           "type": "Transport",
           "time": "22:45",
           "end_time": null,
-          "text": "Ferry departs Portsmouth — overnight crossing, cabin booked, approx. 8 hrs — arrives Ouistreham (Caen) approx. 06:15 local time (Day 7)",
+          "text": "Ferry departs Portsmouth — overnight crossing, cabin booked, approx. 8 hrs — arrives Ouistreham (Caen) approx. 07:45 local time (Day 7)",
           "location": null,
-          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally.",
+          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally. Arrival time is computed from the stated 22:45 departure + 8hr crossing + the 1hr UK-to-France timezone shift.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -758,7 +758,7 @@
       "items": [
         {
           "type": "Transport",
-          "time": "06:15",
+          "time": "07:45",
           "end_time": null,
           "text": "Ferry docks at Ouistreham (Caen) — French time (clocks forward 1h from UK)",
           "location": null,
@@ -770,7 +770,7 @@
         },
         {
           "type": "Transport",
-          "time": "06:45",
+          "time": "08:05",
           "end_time": null,
           "text": "Drive Ouistreham to Bayeux — approx. 20 min",
           "location": null,
@@ -782,9 +782,9 @@
         },
         {
           "type": "Hotel",
-          "time": "07:15",
+          "time": "08:10",
           "end_time": null,
-          "text": "Early luggage drop at Villa Lara Hôtel, Bayeux — coffee and a quick freshen-up before the guide arrives; full check-in later today",
+          "text": "Early luggage drop at Villa Lara Hôtel, Bayeux — quick check-in only, guide arrives in under an hour; full check-in later today",
           "location": null,
           "why": null,
           "contact": null,
@@ -799,7 +799,7 @@
         },
         {
           "type": "Transport",
-          "time": "08:30",
+          "time": "09:00",
           "end_time": null,
           "text": "Meet guide Elisha (Objective Normandy) for the full-day American Sector D-Day tour",
           "location": null,
@@ -813,7 +813,7 @@
         },
         {
           "type": "Activity",
-          "time": "09:00",
+          "time": "09:30",
           "end_time": null,
           "text": "Sainte-Mère-Église — the first French town liberated on D-Day, famous for the paratrooper caught on the church steeple",
           "location": "Sainte-Mère-Église, 50480, Normandy",
@@ -825,7 +825,7 @@
         },
         {
           "type": "Activity",
-          "time": "10:30",
+          "time": "11:00",
           "end_time": null,
           "text": "Utah Beach & the Utah Beach Landing Museum",
           "location": "50480 Sainte-Marie-du-Mont",
@@ -837,7 +837,7 @@
         },
         {
           "type": "Note",
-          "time": "12:30",
+          "time": "13:00",
           "end_time": null,
           "text": "Lunch — casual café stop near Sainte-Marie-du-Mont or Utah Beach, on the tour's own schedule",
           "location": null,
@@ -849,7 +849,7 @@
         },
         {
           "type": "Activity",
-          "time": "13:30",
+          "time": "14:00",
           "end_time": null,
           "text": "Pointe du Hoc Ranger Monument — the cliff the 2nd Ranger Battalion scaled under fire",
           "location": "14450 Cricqueville-en-Bessin",
@@ -861,7 +861,7 @@
         },
         {
           "type": "Activity",
-          "time": "15:00",
+          "time": "15:30",
           "end_time": null,
           "text": "Omaha Beach & Normandy American Cemetery — 9,388 graves overlooking the beach",
           "location": "Colleville-sur-Mer, 14710 Normandy",
@@ -873,7 +873,7 @@
         },
         {
           "type": "Transport",
-          "time": "17:30",
+          "time": "18:00",
           "end_time": null,
           "text": "Return to Bayeux",
           "location": null,

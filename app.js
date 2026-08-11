@@ -749,6 +749,23 @@
       return '<div class="ref-card"><div class="ref-title">' + esc(k) + '</div><div class="ref-line">' + esc(general[k]) + '</div></div>';
     }).join('');
 
+    // Each entry ties to a SPECIFIC moment on this itinerary (the Bletchley
+    // Park train, the rural Normandy driving days, the Andante top-up) —
+    // deliberately not a generic "useful apps abroad" list.
+    var APPS = [
+      { name: 'Citymapper or TfL Go', why: 'London routing across Tube/bus/Overground — either works well; TfL Go is the official app with live disruption alerts.' },
+      { name: 'Trainline', why: 'Book the Day 5 London↔Bletchley train ahead of time and get live platform info — usually cheaper and less hassle than buying at Euston.' },
+      { name: 'Google Maps — download OFFLINE areas for Normandy', why: 'Rural coverage between Bayeux, the D-Day beaches, and Mont-Saint-Michel can be spotty. Download the Normandy region for offline use before you leave London; this site itself works offline too (see the install prompt) but it isn\'t turn-by-turn navigation.' },
+      { name: 'Uber AND Bolt (both)', why: 'Coverage and pricing differ by city — Bolt is often cheaper/more available in Porto and France than Uber alone. Worth having both installed rather than picking one in advance.' },
+      { name: 'Andante Porto', why: 'Top up Porto\'s transit card directly from your phone instead of hunting for a station machine.' },
+      { name: 'An eSIM app (Airalo, Holafly, or similar)', why: 'Install and set up the eSIM profile BEFORE departure — activating it is much easier on home wifi than fumbling with it at Heathrow arrivals.' },
+      { name: 'WhatsApp', why: 'The default way small tour operators and some restaurants in France/Portugal actually communicate — useful to have installed in case Objective Normandy or a restaurant reaches out this way to confirm details.' },
+      { name: 'Your bank/card app', why: 'Check it has real-time foreign-transaction alerts and no foreign transaction fee before you go — cheaper and safer than carrying much cash across two currencies (GBP, then EUR).' }
+    ];
+    document.getElementById('essentialsApps').innerHTML = APPS.map(function (a) {
+      return '<div class="ref-card"><div class="ref-title">' + esc(a.name) + '</div><div class="ref-line">' + esc(a.why) + '</div></div>';
+    }).join('');
+
     // Before You Go — entry requirements are the single most time-sensitive
     // pre-trip action item (can block travel entirely if missed), so this
     // gets its own prominent callout above everything else on the tab
@@ -834,12 +851,30 @@
      --------------------------------------------------------- */
   (function renderTransit() {
     var content = {
-      London: 'Contactless card or phone tap works directly on the Tube, buses, and Overground — no need for an Oyster card. Black cabs can be hailed on the street; Uber/Bolt also operate widely. Heathrow Express runs every 15 min to Paddington.',
-      Normandy: 'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. A private driver or rental car is the practical way to cover these sites in a day; taxis exist in Bayeux but are sparse.',
-      Porto: 'The Andante card covers metro, bus, and some train lines. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.'
+      London: [
+        'Contactless card or phone tap works directly on the Tube, buses, and Overground — no need for an Oyster card, and it auto-caps at the daily fare. Black cabs can be hailed on the street and take contactless too; Uber/Bolt also operate widely. Heathrow Express runs every 15 min to Paddington.',
+        'Stand on the RIGHT on Tube escalators — blocking the left side (the walking lane) is a real, noticeable local irritant, especially at rush hour.',
+        'The Underground map is topological, not geographic — two "adjacent" stations can be a 15-minute walk apart above ground. Worth checking a real map before assuming a Tube ride is the fastest option for a short hop.',
+        'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
+      ],
+      Normandy: [
+        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. A private driver or rental car is the practical way to cover these sites in a day; taxis exist in Bayeux but are sparse.',
+        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 8\'s self-guided Bayeux day specifically.',
+        'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
+        'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
+      ],
+      Porto: [
+        'The Andante card covers metro, bus, and some train lines — buy and top up at metro station machines or the Andante app. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.',
+        'Meal times run later than a US traveler expects — lunch from ~12:30pm, dinner rarely starts before 7:30–8pm; showing up at 6pm may mean an empty, still-prepping restaurant.',
+        'The Elevador dos Guindais funicular is a cheap, fast way to skip the steepest Ribeira-to-upper-town climb — useful context for Day 11\'s self-guided walking day.',
+        'Vinho verde (a young, slightly sparkling white/rosé) is the everyday casual wine here — don\'t confuse it with the fortified Port being toured/tasted in Vila Nova de Gaia; they\'re unrelated styles from the same region.'
+      ]
     };
     document.getElementById('transitList').innerHTML = CITIES.map(function (c) {
-      return '<div class="ref-card"><div class="ref-title">' + esc(c) + '</div><div class="ref-line">' + esc(content[c]) + '</div></div>';
+      var tips = content[c] || [];
+      return '<div class="ref-card"><div class="ref-title">' + esc(c) + '</div>' +
+        tips.map(function (t) { return '<div class="ref-line">' + esc(t) + '</div>'; }).join('') +
+        '</div>';
     }).join('');
   })();
 
@@ -1011,6 +1046,100 @@
         '<p class="tl-name">' + esc(r.name) + ' · ' + esc(row.day.split('·').slice(0, 2).map(function (s) { return s.trim(); }).join(' · ')) + ', ' + esc(formatTime12(row.time)) + '</p>' +
         '<p class="tl-note">' + esc(RESERVATION_LABELS[platform] || 'Verify booking channel directly with the venue') +
         (r.contact && r.contact.phone ? ' · <a href="tel:' + esc(r.contact.phone) + '">' + esc(r.contact.phone) + '</a>' : '') + '</p>' +
+        '</div></li>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     BOOKING ACTIONS — everything bookable that ISN'T a restaurant:
+     museum/attraction tickets, the ferry, the private D-Day guide,
+     the Douro Valley tour. Curated, not derived from a data field
+     (Activity/Transport items have no "needs advance booking" flag
+     to key off), the same way the History entries are hand-mapped to
+     specific days rather than computed. Each entry's guidance was
+     researched per-venue (real, current policies as of this
+     writing) - NOT a blanket "book everything early" rule, because
+     the venues genuinely don't agree with each other: the Bunker is
+     MANDATORY pre-book with no walk-in option at all, Bletchley Park
+     and the Tank Museum need no advance booking whatsoever, and
+     Mont-Saint-Michel's own ticket office doesn't even RELEASE
+     tickets until about a month out - trying to book it today would
+     fail, not just be "early." Getting that last one wrong (i.e.
+     treating every venue as "book ASAP") would have been actively
+     bad advice.
+     --------------------------------------------------------- */
+  (function renderBookingActions() {
+    var el = document.getElementById('bookingActionsTimeline');
+    if (!el) return;
+    var ACTIONS = [
+      {
+        dayIdx: 3, kind: 'urgent',
+        title: 'Battle of Britain Bunker (Day 4)',
+        note: 'MANDATORY pre-book — there is no walk-in access at all; the underground bunker is only seen on a booked guided tour. Call +44 1895 238154 or email the visitor centre with your date/time/party size, or book via battleofbritainbunker.co.uk. Do this now — it isn’t about days-until-visit, it’s that the visit literally can’t happen without it.',
+      },
+      {
+        dayIdx: 1, kind: 'soon',
+        title: 'Churchill War Rooms (Day 2)',
+        note: 'This is a Sunday visit — IWM’s own guidance is to book weekend slots 1–2 months ahead to avoid a wait or a sold-out morning slot. At 60 days out you’re inside that window but shouldn’t let it slide much longer. Book at iwm.org.uk.',
+      },
+      {
+        dayIdx: 1, kind: 'soon',
+        title: 'West End theatre (Day 2 evening)',
+        note: 'The plan has an evening performance slot but no specific show chosen yet — that’s the actual action item here: pick a show, then book it. Popular shows (anything Book of Mormon/Harry Potter-tier) can sell out for a specific date even off-peak in October.',
+      },
+      {
+        dayIdx: 4, kind: 'flex',
+        title: 'Bletchley Park (Day 5)',
+        note: 'No advance booking required — same-day tickets are always available. Booking online ahead just gets a 10% discount; do it whenever, no urgency.',
+      },
+      {
+        dayIdx: 5, kind: 'flex',
+        title: 'The Tank Museum, Bovington (Day 6)',
+        note: 'No advance booking required for general admission. Online tickets are ~20% cheaper than on the door — worth doing a week or two out, but not a time-sensitive booking.',
+      },
+      {
+        dayIdx: 5, kind: 'soon',
+        title: 'Brittany Ferries overnight sailing (Day 6 night)',
+        note: 'The plan’s own text says the cabin is already booked — confirm that’s actually ticketed and paid, not just planned. If it isn’t booked yet, do it soon: fares on this route rise noticeably closer to the sailing date.',
+      },
+      {
+        dayIdx: 6, kind: 'soon',
+        title: 'Objective Normandy D-Day guide (Day 7)',
+        note: 'A small, private guide operation — confirm your date directly with them at objectivenormandy.com rather than assuming the plan’s schedule is already locked in. Small operators in Normandy can book up for October, and this is the one guided day the whole Normandy leg is built around.',
+      },
+      {
+        dayIdx: 8, kind: 'wait',
+        title: 'Mont-Saint-Michel Abbey tickets (Day 9)',
+        note: 'Counterintuitive: do NOT try to book this yet. The official abbey ticket office only releases tickets about a month before the visit date — trying now would just fail, not just be early. Set a reminder for mid-September and book then at abbaye-mont-saint-michel.fr.',
+      },
+      {
+        dayIdx: 11, kind: 'soon',
+        title: 'Quinta do Crasto Douro Valley tour (Day 12)',
+        note: 'Requires advance reservation directly with the estate (enoturismo@quintadocrasto.pt) — it’s not a walk-in tasting room. Confirm this now since the private driver for the day is already scheduled around it.',
+      },
+      {
+        dayIdx: 0, kind: 'flex',
+        title: 'Flights (all 3 legs)',
+        note: 'Flight numbers already exist in the plan, so these read as already booked — reconfirm that’s actually true. Nothing else to do until online check-in opens (typically 24–48h before each departure).',
+      },
+      {
+        dayIdx: 0, kind: 'flex',
+        title: 'Hotels (all 3 stays)',
+        note: 'All three appear booked already. Worth a call closer to arrival to reconfirm specific requests noted in the plan (high floor at the Marriott, early check-in given the overnight-flight arrival) — hotels don’t always carry these notes forward reliably from the original booking.',
+      },
+    ];
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var BADGES = {
+      urgent: 'Do this now', soon: 'Book soon', flex: 'Not urgent', wait: "Don't book yet",
+    };
+    el.innerHTML = ACTIONS.map(function (a) {
+      var visitDate = new Date(dayDateISO(a.dayIdx) + 'T00:00:00');
+      var daysUntil = Math.round((visitDate - today) / 86400000);
+      return '<li class="timeline-row tl-' + a.kind + '">' +
+        '<span class="tl-badge">' + esc(BADGES[a.kind]) + '</span>' +
+        '<div class="tl-body">' +
+        '<p class="tl-name">' + esc(a.title) + ' <span class="ref-city">visit in ' + daysUntil + ' days</span></p>' +
+        '<p class="tl-note">' + esc(a.note) + '</p>' +
         '</div></li>';
     }).join('');
   })();
