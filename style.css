@@ -463,6 +463,11 @@ img { max-width: 100%; display: block; }
 }
 .navigate-label { font-size: 11px; font-weight: 700; color: #1c2840; }
 .navigate-row .directions-group a { background: #fff; }
+.navigate-row > a[href^="tel:"], .navigate-row > a[href^="http"] {
+  font-size: 10.5px; font-weight: 600; text-decoration: none;
+  background: #fff; color: #376e76; border-radius: 4px; padding: 3px 7px; border: 1px solid #cfe0e0;
+}
+.navigate-row > a[href^="tel:"]:hover, .navigate-row > a[href^="http"]:hover { background: #eef3f3; }
 .drive-duration {
   font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; color: #376e76;
   background: #fff; border: 1px solid #cfe0e0; border-radius: 4px; padding: 2px 7px;

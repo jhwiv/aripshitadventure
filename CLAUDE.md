@@ -107,6 +107,43 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Ferry-crossing content deepened by studying a sibling ferry-heavy
+  trip site (maritimes-grandloop-v2), fixing a real rendering gap along
+  the way (2026-08-11).** User asked to check maritimesgrandloop.com for
+  patterns on what's helpful for a ferry crossing, then make sure that
+  knowledge was in this trip's data. Read the actual sibling repo
+  (`/workspace/jhwiv/maritimes-grandloop-v2`, since the live domain is
+  egress-blocked same as everywhere else) rather than guessing at the
+  pattern. What it does that this app didn't: check-in window stated as
+  its own fact, what's actually onboard (cabins/lounge/cafeteria), a
+  direct phone number as a tap-to-call link, and a "pack an essentials
+  bag, don't bury it in luggage" tip.
+  - **Found a real, two-location rendering bug while implementing this**:
+    `item.contact.phone`/`.website` were silently dropped for every
+    Transport-type item in BOTH independent render paths
+    (`renderItemHTML`'s `navigateRow` and `renderTransportQuickRef`'s
+    `navLine`) — only non-Transport items ever rendered contact info. The
+    Brittany Ferries check-in item already HAD a `contact.website`
+    populated in the data and it was invisible on the live site the whole
+    time. Separately, `booking_note` (a field on that same item) was never
+    read by ANY renderer at all — a second dead field. Fixed both render
+    paths (mirroring this file's own established "check every render
+    path" rule from the marker-titles entry below) and consolidated
+    `booking_note`'s real content into `why`, which already renders
+    everywhere, rather than wiring up a second parallel field.
+  - **Also caught a stale fact via research**: the dinner item's `why`
+    named "MV Normandie" as one of the two ships on this route — Brittany
+    Ferries retired the MV Normandie in 2025; the route is now served by
+    the MV Guillaume de Normandie and MV Mont St Michel. Fixed.
+  - Added the real customer service number (+44 330 159 7000, verified via
+    `WebSearch`, not guessed), and an honest flag that this plan implies
+    foot-passenger travel (no rental car anywhere in Normandy) rather than
+    asserting it outright — worth reconfirming at booking since it changes
+    which check-in line to use at the port.
+  - **New CSS**: `.navigate-row > a[href^="tel:"]`/`a[href^="http"]` — the
+    navigate-row previously only ever contained the directions pills and a
+    duration badge, so a bare contact link had no matching style until
+    this was added.
 - **Added "Book & Confirm" timeline + expanded local-knowledge content
   (2026-08-11), from a user-requested tour/pacing sanity check.** Three
   separate pieces of work from one request:

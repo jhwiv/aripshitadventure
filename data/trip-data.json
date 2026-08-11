@@ -714,10 +714,10 @@
           "end_time": null,
           "text": "Check in for Brittany Ferries overnight sailing, Portsmouth → Ouistreham (Caen) — boarding opens approx. 90 min before departure",
           "location": null,
-          "why": null,
+          "why": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm the exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45–23:30 departure. This plan has no rental car in Normandy — the private drivers/guide throughout this trip suggest foot-passenger travel, not a vehicle booking, but confirm that's correct when you book, since it changes which check-in line to use at the port. Pack an overnight/essentials bag (chargers, meds, pajamas, toiletries) somewhere easy to reach rather than buried in checked luggage.",
           "contact": {
-            "website": "https://www.brittany-ferries.co.uk",
-            "booking_note": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45–23:30 departure."
+            "phone": "+44 330 159 7000",
+            "website": "https://www.brittany-ferries.co.uk"
           },
           "flight": null,
           "hotel": null,
@@ -730,7 +730,7 @@
           "end_time": null,
           "text": "Dinner aboard the ferry — onboard restaurant",
           "location": null,
-          "why": "Brittany Ferries' Portsmouth–Caen ships (MV Normandie / MV Mont St Michel) both run a sit-down restaurant and a self-service option — book a table when you check in if you'd rather not queue.",
+          "why": "Brittany Ferries retired the MV Normandie in 2025; this route is now served by the MV Guillaume de Normandie and MV Mont St Michel, both running a sit-down restaurant and a self-service option — book a table when you check in if you'd rather not queue.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -742,7 +742,7 @@
           "end_time": null,
           "text": "Ferry departs Portsmouth — overnight crossing, cabin booked, approx. 8 hrs — arrives Ouistreham (Caen) approx. 07:45 local time (Day 7)",
           "location": null,
-          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally. Arrival time is computed from the stated 22:45 departure + 8hr crossing + the 1hr UK-to-France timezone shift.",
+          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally. Arrival time is computed from the stated 22:45 departure + 8hr crossing + the 1hr UK-to-France timezone shift. The booked cabin has an en-suite bathroom, TV, tea/coffee facilities, and onboard wifi (paid data bundle, not unlimited) — no need to camp out in a lounge chair.",
           "contact": null,
           "flight": null,
           "hotel": null,

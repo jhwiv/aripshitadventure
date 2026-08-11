@@ -402,12 +402,17 @@
     }
     var driveDuration = item.type === 'Transport' ? parseTransportDuration(item.text) : null;
     var durationBadge = driveDuration ? '<span class="drive-duration">⏱ ' + esc(driveDuration) + '</span>' : '';
+    // Transport items with a real contact (e.g. a ferry operator's booking
+    // line/website) previously had that contact silently dropped - the
+    // navigate-row only ever rendered directions links, never
+    // item.contact.phone/website, even when populated. Append the same
+    // phone/website treatment the non-Transport branch already gives,
+    // rather than losing real, already-present contact data.
+    var contactLinks = (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
+      (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '');
     var navigateRow = item.type === 'Transport'
-      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + '</div>'
-      : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) +
-        (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
-        (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
-        '</div>';
+      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>'
+      : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>';
     return '<div class="item">' +
       '<div class="item-icon">' + icon + '</div>' +
       '<div class="item-body">' +
@@ -827,7 +832,13 @@
         var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
         var refDuration = parseTransportDuration(item.text);
         var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
-        navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + refDurationBadge + directionsLinksHTML(query) + '</div>';
+        // Same fix as renderItemHTML's navigateRow - a Transport item's own
+        // contact.phone/website (e.g. a ferry operator) was silently
+        // dropped here too, a second independent render path with the
+        // identical gap.
+        var refContactLinks = (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
+          (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '');
+        navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + refDurationBadge + directionsLinksHTML(query) + refContactLinks + '</div>';
       }
       var refText = item.text;
       // Same overnight-flight case as the item-card renderer: item.time is
@@ -1100,7 +1111,7 @@
       {
         dayIdx: 5, kind: 'soon',
         title: 'Brittany Ferries overnight sailing (Day 6 night)',
-        note: 'The plan’s own text says the cabin is already booked — confirm that’s actually ticketed and paid, not just planned. If it isn’t booked yet, do it soon: fares on this route rise noticeably closer to the sailing date.',
+        note: 'The plan’s own text says the cabin is already booked — confirm that’s actually ticketed and paid, not just planned, and confirm foot-passenger vs. vehicle status (this plan implies foot-passenger, given no rental car anywhere in Normandy). If it isn’t booked yet, do it soon: fares on this route rise noticeably closer to the sailing date. Customer service: +44 330 159 7000.',
       },
       {
         dayIdx: 6, kind: 'soon',
