@@ -107,6 +107,55 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Full prose fact-check across the whole itinerary (2026-08-11),
+  triggered by the user asking why the Tank Museum's Enigma fabrication
+  wasn't caught earlier.** Rather than answer in the abstract, extracted
+  every `why`/`confirmation_note`/`differentiators` field in the data
+  (~35 prose fields) and triaged which contained a specific, checkable
+  factual claim vs. pure opinion/description. Verified every checkable
+  one via `WebSearch`. Most held up (Veeraswamy's 1926 founding, Bayeux
+  Cathedral's 1077 consecration, the Bayeux Tapestry Museum's Sept
+  2025–Oct 2027 closure window, the Douro's 2001 UNESCO listing, Marriott's
+  3pm standard check-in, the Thames wartime river-ferry service, and the
+  Kiln/Veeraswamy Sunday-closure claim — which cross-checks correctly
+  against their own `open_days` fields — were all confirmed accurate).
+  Three were not:
+  1. **Battle of Britain Bunker's tour schedule was fabricated, and it
+     wasn't just a trivia error — it broke the actual plan.** The item
+     claimed 5 daily tour slots (10:15, 11:30, 12:45, 14:00, 15:15). The
+     real cadence, verified via `WebSearch`, is 2 slots (10:00 and 14:00),
+     evening/weekend by special arrangement only. The existing plan had
+     the traveler arriving at 10:15 (15 min after the ONLY morning slot
+     starts) and leaving at 13:00 (an hour before the only other slot) —
+     given this venue has zero walk-in access, the itinerary as written
+     would not have let them actually see the bunker at all. Shifted the
+     whole visit 30min earlier (Underground departs 08:45, not 09:15;
+     bunker 09:50–12:00, not 10:15; return Underground 12:15, not 13:00)
+     so it actually lines up with the real 10:00 slot, corrected the `why`
+     text to state the real cadence, and updated the "Book & Confirm"
+     timeline entry to explicitly say "request the 10:00 tour." **This is
+     the second time a fabricated detail on this exact item wasn't a
+     harmless embellishment — the Enigma claim was wrong but inert, this
+     one would have caused a real, on-the-ground failure to get into the
+     venue at all.**
+  2. Bayeux War Cemetery's item attributed the 4,648 total-burials figure
+     specifically to "British and Commonwealth" graves — the real
+     Commonwealth-only count is 4,144; the rest (~500) are other
+     nationalities, mostly German war graves. Fixed to state both numbers
+     with the correct attribution.
+  3. Day 6's transport `why` claimed a same-day London↔Bovington round
+     trip would be "close to 8 hours of driving" — the real one-way drive
+     (verified two turns ago) is 2h24m–3h with traffic, so round trip is
+     realistically 4.8–6 hours. Corrected.
+  **Where the claim came from**: git-blamed the Enigma fabrication and
+  confirmed it was introduced by this session's own `30f8e04` (the
+  itinerary rebuild that added the Tank Museum in the first place) — not
+  inherited legacy content. Worth remembering for any future new content:
+  when writing a NEW specific/checkable claim (a historical fact, a named
+  connection between two things, an exact schedule), verify it in the
+  same turn it's written, rather than assuming it'll get caught later —
+  it took 6+ intervening sessions of unrelated work before anyone
+  happened to check this one.
 - **Tank Museum day fully verified (2026-08-11), found a fabricated
   history claim AND a systemic free-time miscalculation affecting 21
   items trip-wide.** User asked to verify all the Tank Museum logistics.

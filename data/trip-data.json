@@ -413,7 +413,7 @@
       "items": [
         {
           "type": "Transport",
-          "time": "09:15",
+          "time": "08:45",
           "end_time": null,
           "text": "Underground to Uxbridge (Piccadilly or Metropolitan line), then a signed 15-min walk through Dowding Park — approx. 55 min door to door",
           "location": null,
@@ -425,11 +425,11 @@
         },
         {
           "type": "Activity",
-          "time": "10:15",
-          "end_time": null,
+          "time": "09:50",
+          "end_time": "12:00",
           "text": "Battle of Britain Bunker — RAF Uxbridge's underground No. 11 Group Operations Room",
           "location": "Wren Ave, Uxbridge UB10 0GG",
-          "why": "The actual command bunker Air Vice-Marshal Park directed the Battle of Britain from in real time — the plotting table and headset positions are preserved as they were on 15 September 1940, \"Battle of Britain Day.\" Guided tours run roughly every 75 minutes (10:15, 11:30, 12:45, 2:00, 3:15); each is about an hour including a 35-minute presentation in the plotting room. Last admission 15:30.",
+          "why": "The actual command bunker Air Vice-Marshal Keith Park directed the Battle of Britain from in real time — the plotting table and headset positions are preserved as they were on 15 September 1940, \"Battle of Britain Day.\" Access is ONLY via a pre-booked guided tour (see the booking note above) — real tour cadence is 10:00 and 14:00 daily, ~45 min presentation plus the exhibition (allow 2-3 hrs total); evening/weekend slots by special arrangement only. This plan targets the 10:00 tour — arriving any later risks missing it with no way to make the 14:00 slot and still get back to London by early afternoon. Confirm the actual slot when you book (tour times can shift), since this is a firm appointment, not a flexible visit.",
           "contact": {
             "phone": "+44 1895 238154",
             "website": "https://battleofbritainbunker.co.uk"
@@ -441,7 +441,7 @@
         },
         {
           "type": "Transport",
-          "time": "13:00",
+          "time": "12:15",
           "end_time": null,
           "text": "Underground back to central London — approx. 55 min",
           "location": null,
@@ -674,7 +674,7 @@
           "end_time": null,
           "text": "Private car/rental to The Tank Museum, Bovington, Dorset — approx. 2h30m via M3/A31 (120 miles)",
           "location": null,
-          "why": "This solves the day's own logistics problem: rather than a same-day round trip from London (which would be close to 8 hours of driving for a few hours at the museum), the route continues on to the Portsmouth ferry afterward, so today's drive doubles as the start of the transfer to Normandy.",
+          "why": "This solves the day's own logistics problem: rather than a same-day round trip from London (which would be 5-6 hours of round-trip driving for a few hours at the museum), the route continues on to the Portsmouth ferry afterward, so today's drive doubles as the start of the transfer to Normandy.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -1037,7 +1037,7 @@
           "type": "Activity",
           "time": "16:00",
           "end_time": null,
-          "text": "Bayeux War Cemetery — the largest British and Commonwealth WWII cemetery in France, 4,648 graves, directly across the road from the museum",
+          "text": "Bayeux War Cemetery — the largest British and Commonwealth WWII cemetery in France — 4,144 Commonwealth graves plus roughly 500 more of other nationalities (mostly German), 4,648 burials in total, directly across the road from the museum",
           "location": "Boulevard Fabian Ware, 14400 Bayeux",
           "why": null,
           "contact": null,

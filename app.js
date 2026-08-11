@@ -1118,7 +1118,7 @@
       {
         dayIdx: 3, kind: 'urgent',
         title: 'Battle of Britain Bunker (Day 4)',
-        note: 'MANDATORY pre-book — there is no walk-in access at all; the underground bunker is only seen on a booked guided tour. Call +44 1895 238154 or email the visitor centre with your date/time/party size, or book via battleofbritainbunker.co.uk. Do this now — it isn’t about days-until-visit, it’s that the visit literally can’t happen without it.',
+        note: 'MANDATORY pre-book — there is no walk-in access at all; the underground bunker is only seen on a booked guided tour. Call +44 1895 238154 or email the visitor centre with your date/time/party size, or book via battleofbritainbunker.co.uk. Do this now — it isn’t about days-until-visit, it’s that the visit literally can’t happen without it. Request the 10:00 tour specifically — this plan is built around it; the only other daily slot is 14:00, which won’t fit the rest of the day.',
       },
       {
         dayIdx: 1, kind: 'soon',
