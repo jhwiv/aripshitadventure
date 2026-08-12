@@ -146,6 +146,31 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **The menu-popup modal shipped in the previous entry was permanently
+  visible on every page load (2026-08-11), reported directly with a
+  screenshot: a dark scrim over the whole hero and a white bar cut across
+  the bottom.** Root cause: `#menuModal` used the HTML `hidden` attribute
+  to start closed, but its CSS rule set `display: flex` unconditionally —
+  `.menu-modal-overlay { display: flex; ... }` has the same specificity as
+  the browser's own default `[hidden] { display: none }` rule, and author
+  CSS in `style.css` loads after the user-agent stylesheet, so the class
+  rule silently won the cascade regardless of the `hidden` attribute. The
+  overlay's `rgba(13,33,51,0.55)` scrim was the "screen dims"; the empty
+  `.menu-modal` div (white background, `align-items: flex-end`) with no
+  restaurant selected yet was the "white bar" at the bottom. This is
+  exactly why every OTHER show/hide element in this file (`.panel`,
+  `.local-cats`, etc.) already uses a `display:none` default +
+  `.active { display: ... }` toggle rather than the `hidden` attribute —
+  the modal broke that established convention and paid for it immediately.
+  **Fixed** by switching `#menuModal` to the same `.active`-class pattern:
+  `display: none` default, `.menu-modal-overlay.active { display: flex; }`,
+  JS now does `classList.add/remove('active')` instead of setting
+  `.hidden`, and the stray `hidden` attribute was removed from the markup
+  in `index.html`. Confirmed live via Playwright at the exact viewport/URL
+  shape from the report (`?direct=1`, narrow mobile width): computed
+  `display` is `none` with no `.active` class on load (screenshot: clean
+  hero, no scrim, no bar), `flex` after clicking a restaurant name
+  (screenshot: modal opens correctly), back to `none` after closing.
 - **Menu popups, a second backup-visibility bug, two real address/phone
   errors, and a distance-from-hotel audit (2026-08-11), from the user
   directly: "Restaurants should have menu pop up cards. I also don't see

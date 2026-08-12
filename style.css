@@ -366,10 +366,19 @@ img { max-width: 100%; display: block; }
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.04em;
   color: var(--gold); opacity: 0.75; white-space: nowrap;
 }
+/* display:none by default, .active shows it - matching the .panel/.active
+   pattern already used for the chat/local panels elsewhere in this file.
+   NOT toggled via the `hidden` attribute: a `display: flex` rule on this
+   selector has the same specificity as the browser's own `[hidden] {
+   display: none}` default and comes later in the cascade, so it silently
+   overrode `hidden` and left the overlay permanently visible - a dark
+   scrim over the whole page plus an empty white bar at the bottom
+   wherever .menu-modal's flex-end alignment put its (contentless) box. */
 .menu-modal-overlay {
   position: fixed; inset: 0; z-index: 70; background: rgba(13,33,51,0.55);
-  display: flex; align-items: flex-end; justify-content: center; padding: 0;
+  display: none; align-items: flex-end; justify-content: center; padding: 0;
 }
+.menu-modal-overlay.active { display: flex; }
 @media (min-width: 600px) {
   .menu-modal-overlay { align-items: center; padding: 20px; }
 }

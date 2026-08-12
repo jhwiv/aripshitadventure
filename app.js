@@ -1549,19 +1549,19 @@
       (contact.phone ? '<a href="tel:' + esc(contact.phone) + '">' + esc(contact.phone) + '</a>' : '') +
       (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
       '</div>';
-    menuModal.hidden = false;
+    menuModal.classList.add('active');
   }
-  function closeMenuModal() { if (menuModal) menuModal.hidden = true; }
+  function closeMenuModal() { if (menuModal) menuModal.classList.remove('active'); }
 
   document.addEventListener('click', function (e) {
     var trigger = e.target.closest && e.target.closest('.menu-trigger');
     if (trigger) { openMenuModal(trigger.getAttribute('data-restaurant')); return; }
-    if (menuModal && !menuModal.hidden) {
+    if (menuModal && menuModal.classList.contains('active')) {
       if (e.target === menuModal || (e.target.closest && e.target.closest('.menu-modal-close'))) closeMenuModal();
     }
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && menuModal && !menuModal.hidden) closeMenuModal();
+    if (e.key === 'Escape' && menuModal && menuModal.classList.contains('active')) closeMenuModal();
   });
 
   function haversineMeters(lat1, lon1, lat2, lon2) {
