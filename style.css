@@ -138,34 +138,64 @@ img { max-width: 100%; display: block; }
 }
 .countdown-badge:empty { display: none; }
 
-/* ---- Site nav — two flex-wrap rows, no horizontal scroll ---- */
+/* ---- Site nav — two flex-wrap rows, no horizontal scroll ----
+   Rebalanced 5/5 (was 4/6) so both rows actually fit on one visual line
+   at common phone widths (was silently wrapping into a 3rd line - the
+   6-chip row's last chip, "Packing", had nowhere to go). Chips carry
+   real borders + a filled active state instead of the old
+   near-invisible pale-gray-on-white treatment, and the three city chips
+   pick up their own accent color when active - matching the same
+   CITY_COLORS used for day banners/badges elsewhere in the site, so the
+   nav itself previews which color means which city before you've even
+   tapped into a day. */
 .site-nav {
-  background: #fff;
-  border-bottom: 1px solid #dcd8cf;
+  background: var(--cream);
+  border-bottom: 1px solid var(--rule);
   position: sticky;
   top: 0;
   z-index: 30;
-  padding: 6px 10px;
+  padding: 8px 10px;
+  box-shadow: 0 2px 8px rgba(13,33,51,0.06);
 }
-.nav-row { display: flex; flex-wrap: wrap; gap: 4px 6px; padding: 2px 0; }
+.nav-row { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; }
 .nav-chip {
   font-size: 11px;
-  padding: 8px 14px;
+  padding: 8px 10px;
   min-height: 34px;
   border-radius: 20px;
-  color: #5b6577;
-  background: #f8f7f3;
-  border: 1px solid transparent;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid var(--rule);
   cursor: pointer;
   white-space: nowrap;
   letter-spacing: 0.02em;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(13,33,51,0.05);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
-.nav-chip:hover { background: #eef0ec; }
+.nav-chip:hover { border-color: var(--gold-soft); background: #fffdf7; }
 .nav-chip:active { transform: scale(0.96); }
-.nav-chip.active { color: #0d2133; background: #fff; border-color: #c9a24b; font-weight: 600; }
-@media (max-width: 420px) {
-  .nav-chip { font-size: 9.5px; padding: 6px 10px; min-height: 28px; }
+.nav-chip.active {
+  color: #fff; background: var(--navy); border-color: var(--navy);
+  box-shadow: 0 3px 10px rgba(13,33,51,0.28);
+}
+/* City chips borrow their day-banner/badge color (app.js CITY_COLORS)
+   when active, so the nav's own color-coding matches the rest of the
+   site instead of every active chip defaulting to the same navy. */
+.nav-chip--london.active { background: #3f7d86; border-color: #3f7d86; box-shadow: 0 3px 10px rgba(63,125,134,0.35); }
+.nav-chip--normandy.active { background: #c9524b; border-color: #c9524b; box-shadow: 0 3px 10px rgba(201,82,75,0.35); }
+.nav-chip--porto.active { background: #c9a24b; border-color: #c9a24b; color: var(--navy); box-shadow: 0 3px 10px rgba(201,162,75,0.35); }
+/* 480px (not the old 420px) so this also covers the common large-phone
+   widths (414-430px, iPhone Plus/Pro Max and most big Android phones) -
+   at 420px the row-2 chips fell back to full desktop padding/font-size
+   right when the container was still phone-narrow, and briefly didn't
+   fit on one line again in that gap before a tablet-width container
+   gave them room on their own. */
+@media (max-width: 480px) {
+  .nav-chip { font-size: 9.5px; padding: 6px 7px; min-height: 28px; }
+}
+@media (max-width: 370px) {
+  .nav-chip { padding: 6px 6px; letter-spacing: 0; }
 }
 
 /* ---- Layout ---- */

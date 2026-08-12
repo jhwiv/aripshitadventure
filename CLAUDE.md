@@ -146,6 +146,38 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Nav tab pills redesigned for contrast/visual interest, and rebalanced
+  to actually fit on 2 rows (2026-08-11), per direct request:** the old
+  chips were pale-gray-on-white with only a thin gold outline for the
+  active state — real contrast only appeared on close inspection. Also,
+  despite the nav markup being split into two `.nav-row` divs specifically
+  to read as "two rows," the 6-chip second row didn't fit in one line at
+  any common phone width, so it silently wrapped into a 3rd visual line
+  (`Packing` spilling alone) — the two-row layout was aspirational, not
+  actually achieved on a real phone.
+  - **Contrast/visual interest**: chips now have a real border, filled
+    navy `.active` state (white text, drop shadow) instead of a
+    near-invisible border-only active state, and the three city chips
+    (London/Normandy/Porto) get their OWN accent color when active — the
+    same teal/coral/gold `CITY_COLORS` already used for day banners and
+    badges elsewhere in the site — plus a flag emoji, so the nav previews
+    which color belongs to which city before you've tapped into a day.
+  - **Fitting 2 rows**: measured actual chip pixel widths via Playwright
+    rather than guessing. Rebalanced the 4/6 split to 5/5 (moved
+    Essentials to row 1), shortened two labels that don't need their full
+    section-heading text in the nav (`Air & Hotel` → `✈️ Stay`, `Packing`
+    → `Pack` — both still show their full real heading once you tap in),
+    tightened chip padding/gap, and widened the "compact" media-query
+    breakpoint from 420px to 480px, since 420px was leaving large-phone
+    widths (414-430px, iPhone Plus/Pro Max and most big Android phones)
+    stuck with full desktop padding in a still-phone-narrow container —
+    exactly where row 2 broke again. Verified computed chip widths against
+    the real available nav width at 360/375/390/402/414/428/480/600/768px
+    — both rows fit on exactly one line each (2 total) across that whole
+    range, confirmed via Playwright screenshots at 360px (the tightest
+    real case) and 390px, plus the three city active-color states and the
+    Essentials/reference-row active state. Full 10-tab console-error sweep
+    clean.
 - **The menu-popup modal shipped in the previous entry was permanently
   visible on every page load (2026-08-11), reported directly with a
   screenshot: a dark scrim over the whole hero and a white bar cut across
