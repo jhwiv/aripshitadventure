@@ -8,6 +8,207 @@ finish a real piece of work (not a typo fix), add a short entry to the
 existing entries. Don't just say "fixed X" — say what was actually wrong and
 why, so the next session doesn't have to re-diagnose it.
 
+## ITINERARY REPLACEMENT PLAYBOOK — read this in full before swapping in a new/updated itinerary
+
+This section exists so that "the traveler has a new PDF/export for roughly
+the same trip" can be done with **minimal iteration** — reusing the mature
+app.js/style.css shell and every fix below, instead of re-discovering each
+one the hard way again. It is a mechanical index distilled from the full
+**117-commit** decisions log below (`git log --oneline | wc -l` as of
+2026-08-18) plus `jhwiv/cloudflare-worker`'s
+`docs/new-trip-site-playbook.md` and `docs/cloudflare-wiki.md`, and
+`jhwiv/trip-optimizer`'s `CLAUDE.md` (the upstream itinerary-builder this
+site's source data comes from — read that file's own 21 KNOWN FAILURE MODEs
+too if the source itinerary was built there, since a bug in the export is a
+bug in this site's input). Do not skip steps because "this trip seems
+simple" — every step here exists because skipping it once already cost real
+debugging time or a real user-visible bug on this exact project.
+
+### 0. Data ingestion — get this right first, everything downstream depends on it
+
+- **Prefer the trip-optimizer "Export as Web App" JSON over a hand-typed or
+  PDF-extracted itinerary.** It's the structured `<script id="trip-data"
+  type="application/json">` blob this site's whole schema already matches
+  (`data/trip-data.json`'s shape). A PDF requires re-extracting every date,
+  time, address, phone, and price by hand or OCR — exactly the class of
+  transcription error the HARD RULE below exists to prevent. If only a PDF
+  is available, say so explicitly and treat every extracted fact as
+  UNVERIFIED until independently checked, same as the app.js schema note
+  below already requires for prose claims.
+- **Check the real data shape before writing any accessor** — do not assume
+  a nested-object shape "because it seems like it should be one." Canonical
+  shapes are in "Trip data shape (quick reference)" below; the historical
+  reason this is called out this hard is the `day.weather` string-vs-object
+  bug (2026-08-09) that silently blanked every day's weather line.
+- Confirm what's actually changing vs. the current `data/trip-data.json`:
+  same 3 cities with different venues/schedule, a different city set
+  entirely, different traveler count/dates, etc. — this determines whether
+  step 6 (city add/remove touches 5 files) applies.
+
+### 1. Data-quality QA — run ALL of this on the NEW data before writing a line of render code
+
+Distilled from `cloudflare-worker`'s "Itinerary-data QA checklist" — this
+methodology is what actually found real defects here (a restaurant booked
+on its own closed day, a missing international transition, an impossible
+same-day transatlantic flight), not a "looks fine" skim:
+
+1. **Date/weekday check** — recompute every day's weekday from the trip
+   start date, compare against the label.
+2. **Within-day time ordering** — every item's `time` ≥ previous item's
+   `end_time`.
+3. **Flight/transfer time math against REAL timezones**, not just internal
+   arithmetic — convert to UTC using the actual airport-country/date offset
+   (check DST). Then check ROUTING PLAUSIBILITY separately: internally
+   self-consistent numbers can still describe a flight that never operates
+   that way in reality (Day 1's original EWR→LHR was a same-day daytime
+   flight — arithmetic was fine, the route is only ever flown overnight).
+4. **Night-count reconciliation from hotel check-in/check-out events**, not
+   `day.city` — a transit day's activities happen in the origin city but
+   the night is spent in the destination city's hotel.
+5. **Inter-city transition continuity** — every city change needs an actual
+   Flight/Transport item that plausibly gets the traveler there. A day that
+   just starts in the new city with no transition item is a missing-leg
+   bug (this is the single most consequential check).
+6. **Scan every object for the plan's own QC flags** — `_`-prefixed fields,
+   `closure_note`, `verify_status`. **A flag describing an intended fix
+   (e.g. "moved to Day 11") is not evidence the fix was applied — verify
+   the described change actually landed in the data.** (Antiqvvm was
+   double-booked on both Day 10 AND Day 11 this way.)
+7. **Full prose fact-check sweep — mandatory, not optional half-credit.**
+   Extract every `why`/`confirmation_note`/`differentiators`/History-tab
+   field that asserts a falsifiable claim (a date, a count, a named
+   historical connection, a tour schedule, a loyalty/consortium
+   affiliation, a "the only X in the world" superlative) and run
+   `WebSearch` on **every one**, not a sample. This is real work — the
+   2026-08-11 pass ran ~12 searches for one day's content alone — budget
+   for it. This project has shipped a fabricated Tiger 131/Enigma
+   connection, a fabricated Battle of Britain Bunker tour schedule that
+   would have blocked entry entirely, a wrong Michelin star count, and a
+   fabricated Marriott Bonvoy affiliation at a Relais & Châteaux property —
+   **loyalty/consortium claims and named historical connections are the
+   two highest-hit-rate fabrication shapes found so far**, check those
+   first. A score/QA verdict given without this sweep is incomplete, not
+   conservative — say so explicitly rather than presenting a structural-only
+   pass as if it covered content accuracy too.
+8. **Distance-from-hotel plausibility** for every restaurant/activity pick
+   — cross-check its real address (verified via `WebSearch`, not assumed)
+   against its host-city hotel's coordinates in `pins.json`. Flag (don't
+   silently accept) anything that isn't a walkable/short pivot.
+9. **Address/contact accuracy** — verify every phone/address/website via
+   `WebSearch` independently of the distance check; a wrong address can
+   still "look" plausible (Pentolina's was a neighborhood name mistaken for
+   a street; Taberninha do Manel's put it on the wrong side of the river).
+
+### 2. Rendering — reuse the shell, but audit every render path
+
+- **Grep every render/call site for a field before considering a fix (or a
+  new field's wiring) complete.** This exact bug shape has recurred at
+  least 5 times: `HotelCard` missing a `flags` prop, restaurant
+  `.why`/contact info rendering in only one of two list views, flight
+  Arrives-suffix logic fixed in one render path and not the others,
+  `transport_in` sitting populated and unrendered anywhere. One render path
+  working is not evidence every render path was checked.
+- **Grep `app.js` for every field the new data populates that the old data
+  didn't** (or vice versa) — an unrendered field can drift from reality
+  indefinitely with nothing to catch it (this is how the stale "MV
+  Normandie" ferry name and The Yeatman's fabricated Bonvoy claim both sat
+  live for a while). If a field is genuinely new, decide explicitly whether
+  it needs a render path, don't leave it silently dead.
+- **Any show/hide UI element uses the `display:none` default +
+  `.active`-class toggle pattern already established everywhere else in
+  this codebase — never the HTML `hidden` attribute.** Author CSS beats the
+  UA `[hidden]` rule on specificity when both apply; this shipped a
+  permanently-visible modal once already.
+- **Duration/free-time math**: a Transport item with no `end_time` is
+  miscounted as free time unless `parseTransportDurationMinutes()` (or
+  equivalent) derives an implied end from the item's own parsed duration.
+  `parseTransportDuration()`'s anchor-to-last-delimiter regex is
+  deliberate — matches only after the text's last `—`/`·`, to avoid
+  false-positiving on boarding-window language like "boarding opens ~90
+  min before departure."
+- **Times render 12-hour** via a `formatTime12()`-equivalent helper
+  everywhere a time appears — the source data is 24-hour.
+
+### 3. City/scope changes — touches more than the data file
+
+If the new itinerary adds or removes a city (not just swaps venues within
+the existing 3), grep the OLD city name across **all** of: `trip-data.json`,
+`pins.json`, `manifest.json`, `app.js` (`CITY_COLORS`/`CITIES`/`CITY_TZ`/
+timezone map, nav chips, map filters/legend, packing list, embassy/transit
+reference), and `index.html` (nav markup) — a city removal/addition is
+never just a data-file edit.
+
+### 4. Personal/contextual facts — never infer, always ask or leave unconfirmed
+
+Home timezone, home base, traveler count/relationship, budget tier — none
+of these should be inferred from trip logistics (a departure airport is not
+proof of home city; this shipped `America/New_York` inferred from EWR when
+the real home base was Dallas/Central). Ask directly if the new itinerary
+doesn't state it, or leave it explicitly unconfirmed rather than guessing.
+
+### 5. Photos — cannot hotlink, must be sourced from the user
+
+This sandbox's egress is blocked to every image host (Unsplash, Pexels,
+Google Maps tiles, all of it) — confirmed repeatedly, don't re-test it.
+Real photos must come from the user (upload, not paste — see
+`cloudflare-wiki.md` corrected-mistake #7 for the paste-vs-upload
+distinction and the fallback GitHub-web-upload path). Before wiring any
+supplied photo in: check for stock-service metadata strings (`strings
+photo.jpg | grep -iE "adobe|getty|shutterstock|istock|..."`) — a visible
+watermark's absence is not proof of a clean license. Resize to ~1600px wide
+/ JPEG q80 progressive before committing (source files here were 2400×1600
+at 3.3MB total; unnecessary for phone/tablet display width).
+
+### 6. Verification — this sandbox cannot reach the live site or most external hosts
+
+- `python3 -m http.server <port>` + Playwright against
+  `http://localhost:<port>/index.html?direct=1` (bypasses the
+  localStorage-gated welcome screen), with every non-localhost request
+  routed through `page.route('**://*/**', ...)` and aborted — the app
+  degrades gracefully (weather/map/chat show "unavailable").
+- Screenshot and/or `page.evaluate()` for real computed values — don't
+  infer from source code alone that a UI change works.
+- Nav is continuous-scroll with `scroll-behavior: smooth` — for fast tests
+  drive sections directly with
+  `element.scrollIntoView({behavior:'instant'})` rather than click + wait.
+- **There is no way to check the live production site from this sandbox**
+  (egress to aripshitadventure.com itself is blocked). Never say "live" or
+  "deployed" — only "pushed to `main`" and "passed local verification." Say
+  exactly which one was checked, every time.
+- Any fixed-position element (FAB, day-pill row, banner, time pill) needs
+  its bounding box checked against every OTHER fixed-position element at
+  real mobile widths (360–428px) — this has broken twice via two unrelated
+  code paths already.
+- Any colored-background/JS-toggled element needs an explicit `@media
+  print` check — colors and collapsed-state visibility that work on screen
+  can silently fail on paper.
+
+### 7. Deploy
+
+- `git fetch origin main && git rebase origin/main` immediately before
+  every push — the auto-cache-bust bot commit lands fast and a stale local
+  `main` will conflict.
+- **Any edit to `data/trip-data.json` or `data/pins.json` must be
+  re-embedded into `index.html`'s matching `<script id="trip-data">`/
+  `<script id="pins-data">` blob, or the live site won't reflect it** —
+  editing the data files alone does nothing.
+- If the new itinerary changes cities/days/schedule, `jhwiv/cloudflare-worker`'s
+  `wwii2026` `ITINERARY_SCHEDULE`/`WWII2026_ITINERARY` blob (`src/index.js`)
+  needs the matching update — via **PR**, never a direct push to `main`
+  (that repo auto-deploys to the shared production Worker every live trip
+  site's chat depends on). Verify segment contiguity (`from[i+1] ===
+  to[i]` at every city transition) before opening the PR — two real bugs
+  shipped from getting this wrong across differing UTC offsets.
+
+### 8. When done, add an entry to the Decisions & fixed bugs log below
+
+Same terse-but-specific style as the existing entries — what was actually
+wrong, why, and what the fix was, not just "updated itinerary." If this
+pass finds a NEW failure shape not already covered by sections 0–7 above,
+add it to this playbook too, not just the chronological log — the log
+records history; this section is what a future session actually reads
+first.
+
 ## What this is
 
 Static single-page trip guide for **London → Normandy → Porto**, Oct 10–22
