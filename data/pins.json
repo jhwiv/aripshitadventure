@@ -1,33 +1,34 @@
 {
-  "_note": "Best-effort coordinates from general geographic knowledge — this build environment has no live geocoding access. City-center and major-landmark pins are high confidence; Douro Valley winery and some restaurant pins are approximate. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
+  "_note": "Best-effort coordinates from general geographic knowledge — this build environment has no live geocoding access. City-center and major-landmark pins are high confidence; Douro Valley winery, the Nuremberg hotel (not yet booked), and a few other pins are approximate. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
   "cities": {
     "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
     "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
+    "Nuremberg": { "lat": 49.4521, "lng": 11.0767,  "tz": "Europe/Berlin" },
     "Porto":     { "lat": 41.1579, "lng": -8.6291,  "tz": "Europe/Lisbon" }
   },
   "hotels": {
-    "London Marriott Hotel Park Lane": { "lat": 51.5074, "lng": -0.1499, "city": "London" },
-    "Villa Lara Hôtel":                { "lat": 49.2777, "lng": -0.7042, "city": "Normandy" },
-    "The Yeatman Hotel":               { "lat": 41.1362, "lng": -8.6127, "city": "Porto" }
+    "Hotel Drei Raben": { "lat": 49.4536, "lng": 11.0765, "city": "Nuremberg", "approx": true }
   },
   "landmarks": {
-    "Clive Steps, King Charles Street, Westminster, London SW1A 2AQ":            { "lat": 51.5024, "lng": -0.1301 },
-    "Parliament Square, Westminster, London SW1P 3BD":                           { "lat": 51.5010, "lng": -0.1257 },
-    "Lambeth Road, London SE1 6HZ":                                              { "lat": 51.4963, "lng": -0.1097 },
-    "West End theatre district, London":                                        { "lat": 51.5125, "lng": -0.1300 },
-    "Wren Ave, Uxbridge UB10 0GG":                                               { "lat": 51.5423, "lng": -0.4771, "approx": true },
-    "Sherwood Drive, Bletchley, Milton Keynes MK3 6EB":                         { "lat": 51.9976, "lng": -0.7385 },
-    "Bovington, Wareham, Dorset BH20 6JG":                                       { "lat": 50.6906, "lng": -2.2231 },
-    "Sainte-Mère-Église, 50480, Normandy":                                       { "lat": 49.4088, "lng": -1.3153 },
-    "50480 Sainte-Marie-du-Mont":                                                { "lat": 49.4136, "lng": -1.1750 },
-    "14450 Cricqueville-en-Bessin":                                              { "lat": 49.3958, "lng": -0.9897 },
-    "Colleville-sur-Mer, 14710 Normandy":                                        { "lat": 49.3600, "lng": -0.8494 },
-    "Bayeux Cathedral, Bayeux, France":                                          { "lat": 49.2765, "lng": -0.7027 },
-    "Boulevard Fabian Ware, 14400 Bayeux":                                       { "lat": 49.2733, "lng": -0.7086, "approx": true },
-    "Le Mont-Saint-Michel, 50170, Normandy":                                     { "lat": 48.6361, "lng": -1.5115 },
-    "Quinta do Vallado, Vila Nova de Gaia waterfront":                           { "lat": 41.1339, "lng": -8.6119, "approx": true },
-    "Graham's Port Lodge, Vila Nova de Gaia":                                    { "lat": 41.1360, "lng": -8.6115 },
-    "Quinta do Crasto, Gouvinhas, Sabrosa (Douro Valley)":                       { "lat": 41.2140, "lng": -7.6100, "approx": true },
-    "Livraria Lello, Rua das Carmelitas 144, Porto":                             { "lat": 41.1466, "lng": -8.6146 }
+    "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.5033, "lng": -0.1195 },
+    "Clive Steps, King Charles Street, London SW1A 2AQ":                        { "lat": 51.5024, "lng": -0.1301 },
+    "Lambeth Road, London SE1 6HZ":                                             { "lat": 51.4963, "lng": -0.1097 },
+    "Departs High Street Kensington Station, Kensington High St, London W8":    { "lat": 51.5009, "lng": -0.1925 },
+    "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN":                       { "lat": 51.5423, "lng": -0.4771, "approx": true },
+    "Embankment Pier, Victoria Embankment, London WC2N 6NU":                    { "lat": 51.5074, "lng": -0.1223 },
+    "Barbican Tube Station exit, Aldersgate St, London EC1A":                   { "lat": 51.5203, "lng": -0.0977 },
+    "Bovington Camp, Wareham, Dorset BH20 6JG":                                 { "lat": 50.6906, "lng": -2.2231 },
+    "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer":           { "lat": 49.3670, "lng": -0.8480 },
+    "American Cemetery, 14710 Colleville-sur-Mer, France":                      { "lat": 49.3600, "lng": -0.8494 },
+    "Boulevard Fabian Ware, 14400 Bayeux":                                      { "lat": 49.2733, "lng": -0.7086, "approx": true },
+    "Bärenschanzstraße 72, 90429 Nürnberg, Germany":                            { "lat": 49.4587, "lng": 11.0523 },
+    "Bayernstraße 110, 90478 Nürnberg, Germany":                                { "lat": 49.4267, "lng": 11.1150 },
+    "Rathausplatz 1, 90403 Nürnberg, Germany":                                  { "lat": 49.4553, "lng": 11.0775, "approx": true },
+    "Cais da Ribeira, 4050-510 Porto, Portugal":                                { "lat": 41.1406, "lng": -8.6114 },
+    "Rua do Agro 141, 4400-281 Vila Nova de Gaia":                              { "lat": 41.1360, "lng": -8.6115 },
+    "Praca Almeida Garrett, 4000-069 Porto":                                    { "lat": 41.1456, "lng": -8.6109 },
+    "Vilarinho dos Freires, 5050-364 Peso da Regua":                            { "lat": 41.1700, "lng": -7.7900, "approx": true },
+    "Rua das Carmelitas 144, 4050-161 Porto":                                   { "lat": 41.1466, "lng": -8.6146 },
+    "Rua de Sao Filipe de Nery, 4050-546 Porto":                                { "lat": 41.1454, "lng": -8.6151 }
   }
 }

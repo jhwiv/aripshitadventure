@@ -347,6 +347,115 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Full itinerary rebuild: new 15-day PDF (Oct 12–26 2026, 14 nights),
+  Nuremberg reinstated, London days rewritten (2026-08-18), following the
+  new ITINERARY REPLACEMENT PLAYBOOK at the top of this file.** The
+  traveler supplied a fresh routesmith.ai PDF export for "roughly the same
+  trip, many changes" — extracted via `pypdf` (36 pages; the repo's
+  Cloudflare Functions `/api/flight-status` proxy isn't reachable from a
+  PDF, so times/addresses/phones came from the PDF text directly, which
+  itself already went through trip-optimizer's own Google Places
+  verification per that repo's CLAUDE.md hard rule).
+  - **Nuremberg is back** (2 nights, Day 9–11: Nuremberg Trials Memorial &
+    Courtroom 600, Documentation Center) after being dropped 2026-08-10.
+    Re-added across all 5 files the playbook's §3 says a city change
+    touches: `data/trip-data.json`, `data/pins.json` (reused the still-valid
+    city-center and two landmark coordinates from before the removal, via
+    `git show <pre-drop-commit>:data/pins.json`), `app.js`
+    (`CITY_COLORS`/`CITY_FLAGS`/`CITIES`, the separate duplicate `CITY_TZ`
+    a few hundred lines down, `LANDMARK_DISPLAY_NAMES`,
+    `guessCityForLandmark`'s substring matcher, the Essentials
+    apps/entry-requirements/embassy content, the Transit tab, the History
+    tab, the booking-actions timeline), and `index.html` (a new nav chip, a
+    new `tab-city-Nuremberg` section + `cityDays-Nuremberg` container — the
+    render target `getElementById('cityDays-' + cityName)` needs, or
+    Nuremberg's days would have silently never rendered at all — plus the
+    map filter button and legend dot). **No licensed Nuremberg photo
+    exists** — a prior `nuremberg.jpg`/Chautauqua banner collage was
+    deleted 2026-08-11 specifically for being unlicensed stock; reusing it
+    would have repeated that exact mistake, so the new Nuremberg banner
+    intentionally has no `.location-banner-img` child and falls back to the
+    container's own solid navy background instead of a broken or
+    unlicensed image. Needs a real traveler-supplied photo (upload, not a
+    hotlink) to match the other three cities.
+  - **Found and fixed a real, critical date bug the same way the playbook's
+    QA checklist is meant to catch:** the new PDF's own header claimed
+    "6+2+2+4 nights" (=14) for London/Normandy/Nuremberg/Porto, but the
+    actual day-by-day only supports 5 London nights (check-in Tue Oct 13,
+    depart Sun Oct 18 morning) — the header's own arithmetic didn't match
+    its own day sequence. Derived the real per-city counts from the actual
+    hotel check-in/check-out day indices in code (`5+2+2+4` bed-nights + 1
+    night lost to the transatlantic overnight flight = 14 total, matching
+    `days.length - 1`) rather than trusting the summary line, per this
+    file's own §1.6 rule and the precedent already set for the old
+    itinerary's "silently dropped a night" bug.
+  - **`app.js` had TWO independent hardcoded `new Date(2026, 9, 10)`
+    instances** (`renderCountdown`'s local `tripStart`, and the
+    module-level `TRIP_START` that `dayDateISO()` — used by the timezone
+    pill, the booking-actions timeline's "days until" math, and the
+    Air & Hotel date labels — is built on). Both silently would have kept
+    computing every date-relative feature two days off the real Oct 12
+    start had they not been caught; found by an explicit grep sweep for
+    any remaining `2026, 9,` / `Oct 10` / `Oct 22` literal after the data
+    swap, not assumed clean because the JSON files were already correct.
+  - **Full mandatory prose fact-check sweep (§1.7), delegated to a
+    background research agent** rather than sampled: 19 checkable claims
+    (historical facts, tour schedules, restaurant closures, Michelin
+    status) verified via WebSearch. Found and fixed 7 real errors before
+    they ever reached the data file: a garbled/misattributed Churchill
+    quote at the Battle of Britain Bunker (conflated his Aug 20 Commons
+    speech with the real Sept 15 gallery visit), a false claim that
+    Princess Diana's funeral "began" at a church on the Kensington walk
+    (the service was at Westminster Abbey; the walk's real connection is
+    to Kensington Palace, not a church), Nuremberg's Courtroom 600 wrongly
+    called "still an active courtroom today" (it stopped hosting real
+    trials in March 2020), the American Cemetery's grave count off by one
+    (9,388 → 9,389), wrong Battle of Britain Bunker hours (was "typically
+    Wed–Sun 10–5," actually open all 7 days, 10–4:30), and Kiln/Moro both
+    wrongly marked "closed Sundays" (Kiln is open all 7 days; Moro is
+    Sunday-lunch-only, not fully closed). Softened the Livraria
+    Lello/J.K. Rowling claim to note it's a popular legend Rowling has
+    publicly denied, rather than presenting it as settled fact.
+  - **Critical, booking-blocking finding the fact-check sweep surfaced as
+    a side effect, not one of the 19 claims it was sent to check:** the new
+    PDF scheduled a Bayeux Tapestry Museum visit (Day 9) — but that
+    museum is closed for renovation through October 2027, spanning this
+    entire trip. This exact fact was ALREADY known to this project (the
+    pre-Nuremberg-drop itinerary's own `introduction.differentiators` text
+    says so explicitly) — the new routesmith.ai generation simply
+    regenerated content that contradicted it. Per the HARD RULE
+    (`trip-optimizer`'s CLAUDE.md: a closed venue is BLOCKED and replaced,
+    never flagged-and-shipped), substituted the same fix already proven
+    for this project — the Battle of Normandy Memorial Museum + Bayeux War
+    Cemetery — reusing the exact verified address/phone from
+    `git show <pre-drop-commit>:data/trip-data.json` rather than
+    re-researching it, with the substitution stated explicitly in the
+    item's own `why` text so it's transparent, not silently swapped.
+  - **Distance-from-hotel audit**: flagged Pedro Lemos (Day 12) as a
+    genuine ~5–6 km taxi ride from the Ribeira VRBO, not walkable — same
+    finding this project made once before for a different Porto lodging
+    location, now re-verified against the new VRBO's neighborhood.
+  - **`menu_highlights` deliberately left empty for every new/changed
+    restaurant** rather than fabricated — the field is real, sourced-via-
+    WebSearch content per this project's own established rule ("kitchens
+    change seasonally... not a static fact"), and populating ~24 dining
+    entries' dish lists was out of scope for this pass. `app.js`'s menu
+    modal already degrades gracefully when the field is absent ("No
+    verified menu highlights for this one yet"), confirmed live rather
+    than assumed — this is a disclosed, honest gap, not a silently dropped
+    feature.
+  - Confirmed live via Playwright against a fresh `python3 -m http.server`
+    (not just JSON validation): all 15 days render, the Nuremberg tab shows
+    real content (not a blank/broken section), the map renders Nuremberg's
+    purple markers and route-overview line, the print stylesheet reads
+    cleanly, the Air & Hotel flight cards show the correct (new) dates and
+    the expected "not checked against a live schedule" warning (no
+    Cloudflare Functions runtime under plain `http.server`, matching this
+    file's own documented expectation), a menu popup opens correctly in
+    its honest no-highlights state, and zero `pageerror` events across a
+    10-tab sweep. `data/trip-data.json`/`data/pins.json` re-embedded into
+    `index.html`'s matching `<script>` tags per this file's own hard rule;
+    `data/trip-data.min.json` regenerated to match.
 - **Nav tab pills redesigned for contrast/visual interest, and rebalanced
   to actually fit on 2 rows (2026-08-11), per direct request:** the old
   chips were pale-gray-on-white with only a thin gold outline for the

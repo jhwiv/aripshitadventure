@@ -1,6 +1,6 @@
 # Arip Shit Adventure
 
-Trip guide for **London → Normandy → Porto**, Oct 10–22 2026 (12 nights, 2 adults).
+Trip guide for **London → Normandy → Nuremberg → Porto**, Oct 12–26 2026 (14 nights, 2 adults).
 
 Static site, no build step, deployed via Cloudflare Pages. Content originates from the
 verified itinerary export (`data/trip-data.json` — the same structured JSON embedded in
