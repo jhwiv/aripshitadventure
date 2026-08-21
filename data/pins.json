@@ -1,13 +1,9 @@
 {
-  "_note": "Best-effort coordinates from general geographic knowledge — this build environment has no live geocoding access. City-center and major-landmark pins are high confidence; Douro Valley winery, the Nuremberg hotel (not yet booked), and a few other pins are approximate. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
+  "_note": "Best-effort coordinates from general geographic knowledge — this build environment has no live geocoding access. City-center and major-landmark pins are high confidence; Douro Valley winery and a few other pins are approximate. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
   "cities": {
     "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
     "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
-    "Nuremberg": { "lat": 49.4521, "lng": 11.0767,  "tz": "Europe/Berlin" },
     "Porto":     { "lat": 41.1579, "lng": -8.6291,  "tz": "Europe/Lisbon" }
-  },
-  "hotels": {
-    "Hotel Drei Raben": { "lat": 49.4536, "lng": 11.0765, "city": "Nuremberg", "approx": true }
   },
   "landmarks": {
     "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.5033, "lng": -0.1195 },
@@ -20,10 +16,9 @@
     "Bovington Camp, Wareham, Dorset BH20 6JG":                                 { "lat": 50.6906, "lng": -2.2231 },
     "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer":           { "lat": 49.3670, "lng": -0.8480 },
     "American Cemetery, 14710 Colleville-sur-Mer, France":                      { "lat": 49.3600, "lng": -0.8494 },
+    "Bayeux Cathedral, Bayeux, France":                                         { "lat": 49.2765, "lng": -0.7027 },
     "Boulevard Fabian Ware, 14400 Bayeux":                                      { "lat": 49.2733, "lng": -0.7086, "approx": true },
-    "Bärenschanzstraße 72, 90429 Nürnberg, Germany":                            { "lat": 49.4587, "lng": 11.0523 },
-    "Bayernstraße 110, 90478 Nürnberg, Germany":                                { "lat": 49.4267, "lng": 11.1150 },
-    "Rathausplatz 1, 90403 Nürnberg, Germany":                                  { "lat": 49.4553, "lng": 11.0775, "approx": true },
+    "Le Mont-Saint-Michel, 50170, Normandy":                                    { "lat": 48.6361, "lng": -1.5115 },
     "Cais da Ribeira, 4050-510 Porto, Portugal":                                { "lat": 41.1406, "lng": -8.6114 },
     "Rua do Agro 141, 4400-281 Vila Nova de Gaia":                              { "lat": 41.1360, "lng": -8.6115 },
     "Praca Almeida Garrett, 4000-069 Porto":                                    { "lat": 41.1456, "lng": -8.6109 },

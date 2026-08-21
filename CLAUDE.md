@@ -347,6 +347,92 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Nuremberg dropped again, overnight ferry restored, 3 real Normandy
+  nights restored (2026-08-21) — direct traveler correction of the
+  2026-08-18 rebuild below, same day it shipped.** The traveler reported
+  three problems in one message against the live site: "Old link still has
+  Nuremberg / Also shows ferry as late in day rather than overnight and
+  only 2 days in Normandy which should be 3. Still want to arrive Porto on
+  Thursday 10/22." Rather than assume the first complaint was a caching
+  artifact, asked a clarifying question first — the traveler confirmed
+  directly: **"Nuremberg shouldn't be there."** It should never have been
+  re-added; the 2026-08-18 rebuild trusted the uploaded PDF's contents over
+  what the traveler actually wanted, and this is the fix for that class of
+  mistake, not just this one trip.
+  - **Removed Nuremberg entirely** (not merged into another city, not kept
+    as an optional day — gone), across every file the playbook's §3 says a
+    city change touches: `data/trip-data.json` (regenerated from the
+    `build_trip_data.py`/`assemble.py` generator scripts, not hand-edited),
+    `data/pins.json`, `data/trip-data.min.json` (regenerated to match),
+    `app.js` (`CITY_COLORS`/`CITY_FLAGS`/`CITIES`, the duplicate `CITY_TZ`,
+    `LANDMARK_DISPLAY_NAMES`, `guessCityForLandmark`, the Essentials
+    apps/entry-requirements/embassy content, the Transit tab, the History
+    tab, and the booking-actions `ACTIONS` array — the Nuremberg-hotel-choice
+    and Courtroom-600-confirmation-call entries removed outright, not
+    repointed), `index.html` (nav chip, the entire `tab-city-Nuremberg`
+    section + `cityDays-Nuremberg` container, map filter button + legend
+    dot, title/meta description/welcome screen, packing list content), and
+    `style.css` (`.nav-chip--nuremberg.active`). Mont-Saint-Michel — the
+    real Day 10 stop Nuremberg had displaced — is back in the History tab,
+    the Transit tab's Normandy tips, and the packing list's footwear/layers
+    guidance.
+  - **Restored the overnight ferry and fixed the resulting night-count
+    math.** The 2026-08-18 rebuild's Day 7 had the Portsmouth–Ouistreham
+    crossing landing in the same evening ("late in day"); the actual
+    Brittany Ferries service on this route is an overnight sailing
+    (departs 22:45, docks ~07:45 the next morning, cabin booked) — restored
+    as a real transit night belonging to no city, exactly like the
+    transatlantic flight night the previous entry already establishes as
+    precedent. With Nuremberg gone and the ferry genuinely overnight, the
+    3 Normandy touring days the traveler asked for (Day 8 D-Day sites +
+    evening Normandy check-in, Day 9 self-guided Bayeux, Day 10
+    Mont-Saint-Michel) fit the calendar with no other day shifted — reused
+    the pre-Nuremberg, already-verified Bayeux and Mont-Saint-Michel content
+    from `git log` history rather than re-researching it. Day 11 flies
+    Normandy→Porto via Paris CDG (reusing the old verified Air France
+    CDG–OPO routing) and still lands the traveler in Porto on Thursday
+    Oct 22, exactly as required. Verified with a corrected QA script that
+    derives nights from actual hotel check-in/check-out events (not a
+    summary header line, per this file's own established rule): London 5 +
+    Normandy 3 + Porto 4 = 12 bed-nights, +1 overnight-flight night +1
+    overnight-ferry night = 14 total, matching `days.length - 1`.
+  - **A judgment call, not a literal instruction follow:** the traveler's
+    second answer, given in response to a since-superseded question, was
+    "Start Tank Museum day a day earlier" — but with Nuremberg removed, the
+    calendar already fits every stated constraint (overnight ferry, 3
+    Normandy nights, Porto arrival Thu 10/22) without shifting the Tank
+    Museum day off Oct 18. Kept it on Oct 18 rather than force a shift the
+    math no longer requires; flagged this explicitly to the traveler rather
+    than silently picking one interpretation.
+  - **Found and fixed a bug the first rebuild introduced and never
+    caught:** every restaurant's `verify_url` in `build_trip_data.py`'s `R()`
+    helper had the destination string `"London → Normandy → Nuremberg →
+    Porto"` hardcoded into the Google Maps search query — meaning removing
+    Nuremberg from the visible data didn't remove it from ~20 embedded
+    verify-on-Maps links until this was caught by a post-re-embed grep
+    sweep of the rendered `index.html`, not by reading the generator script
+    in isolation. Fixed at the source (the generator), then regenerated,
+    not patched in the output.
+  - Bumped `sw.js`'s `CACHE_NAME` (`v3` → `v4`) alongside this content
+    change, per the existing convention from the previous entry's cache-bust
+    fix.
+  - Verified via Playwright against a local static server (not
+    just source-reading): nav chips, the Normandy tab's banner text ("3
+    nights · Day 7–Day 11"), zero remaining "Nuremberg" anywhere in the
+    rendered page body, the map filters/legend, the packing list, the
+    History tab, the booking-actions timeline, and the Normandy day-by-day
+    content (ferry + Mont-Saint-Michel present) all confirmed live. No
+    egress to the actual routesmith.ai/aripshitadventure.com domains exists
+    in this sandbox — this is local-dev verification only, not a
+    production check; that distinction is called out explicitly per this
+    file's own Verification discipline section.
+  - **`cloudflare-worker`'s companion `wwii2026` chat data (PR #5,
+    `claude/aripshitadventure-review-8k14kt`) still needs the same
+    Nuremberg-removal resync** — `ITINERARY_SCHEDULE.wwii2026`,
+    `WWII_ITINERARY`, and `buildPrompt`'s trip-description text all still
+    reflect the Nuremberg-inclusive 17-day build as of this entry. Tracked
+    as the next step, not yet done.
+
 - **Full itinerary rebuild: new 15-day PDF (Oct 12–26 2026, 14 nights),
   Nuremberg reinstated, London days rewritten (2026-08-18), following the
   new ITINERARY REPLACEMENT PLAYBOOK at the top of this file.** The

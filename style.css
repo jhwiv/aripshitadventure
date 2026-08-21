@@ -184,7 +184,6 @@ img { max-width: 100%; display: block; }
    site instead of every active chip defaulting to the same navy. */
 .nav-chip--london.active { background: #3f7d86; border-color: #3f7d86; box-shadow: 0 3px 10px rgba(63,125,134,0.35); }
 .nav-chip--normandy.active { background: #c9524b; border-color: #c9524b; box-shadow: 0 3px 10px rgba(201,82,75,0.35); }
-.nav-chip--nuremberg.active { background: #6b5b95; border-color: #6b5b95; box-shadow: 0 3px 10px rgba(107,91,149,0.35); }
 .nav-chip--porto.active { background: #c9a24b; border-color: #c9a24b; color: var(--navy); box-shadow: 0 3px 10px rgba(201,162,75,0.35); }
 /* 480px (not the old 420px) so this also covers the common large-phone
    widths (414-430px, iPhone Plus/Pro Max and most big Android phones) -

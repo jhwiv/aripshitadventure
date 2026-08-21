@@ -1,6 +1,6 @@
 {
-  "destination": "London → Normandy → Nuremberg → Porto",
-  "meta": "Mon Oct 12 – Mon Oct 26, 2026 · 14 nights · 2 adults · Cultural WWII history & Port wine country · 5 London + 2 Normandy + 2 Nuremberg + 4 Porto nights (plus 1 overnight-flight night not attributed to any city)",
+  "destination": "London → Normandy → Porto",
+  "meta": "Mon Oct 12 – Mon Oct 26, 2026 · 14 nights · 2 adults · Cultural WWII history & Port wine country · 5 London + 3 Normandy + 4 Porto nights (plus 1 overnight-flight night and 1 overnight-ferry night not attributed to any city)",
   "cities": [
     {
       "name": "London",
@@ -12,19 +12,11 @@
     },
     {
       "name": "Normandy",
-      "nights": 2,
-      "days_range": "Day 7–Day 9",
-      "focus": "Tank Museum Bovington, D-Day beaches (Omaha, American Cemetery), Battle of Normandy Memorial Museum & British War Cemetery",
+      "nights": 3,
+      "days_range": "Day 7–Day 11",
+      "focus": "Tank Museum Bovington, D-Day beaches (Omaha, American Cemetery), self-guided Bayeux, Mont-Saint-Michel",
       "stay": "Normandy VRBO or boutique hotel (traveler to book), Bayeux area",
-      "transport_in": "Drive London→Bovington (Tank Museum)→Portsmouth–Caen ferry or Eurotunnel to Bayeux — arrive ~8–9 PM"
-    },
-    {
-      "name": "Nuremberg",
-      "nights": 2,
-      "days_range": "Day 9–Day 11",
-      "focus": "Nuremberg Trials Memorial & Courtroom 600, Documentation Center Nazi Party Rally Grounds",
-      "stay": "Hotel Drei Raben (or Sorat Hotel Saxx Nürnberg — traveler to confirm), Altstadt",
-      "transport_in": "Drive Bayeux→Nuremberg via Reims/Metz — ~9h 15min, 920 km"
+      "transport_in": "Drive London→Bovington (Tank Museum)→Portsmouth, overnight Brittany Ferries crossing to Ouistreham (Caen) — approx. 8 hrs, cabin booked"
     },
     {
       "name": "Porto",
@@ -32,12 +24,12 @@
       "days_range": "Day 11–Day 15",
       "focus": "Port cellars (Graham's), Douro wine country (Quinta do Vallado), Ribeira, Livraria Lello, Clérigos Tower",
       "stay": "Porto VRBO rental, Ribeira district",
-      "transport_in": "Fly NUE→OPO via FRA · TAP TP1094 · ~3h 15m · then private driver to VRBO"
+      "transport_in": "Private driver to Paris CDG (~2h45m) · Fly CDG→OPO nonstop · Air France · then private driver to VRBO"
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain, Normandy, and Germany before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a Thames river cruise, before a long day at the Tank Museum in Bovington carries the trip into Normandy. Two days based in Bayeux cover the American D-Day beaches, a Battle of Normandy museum morning, and the drive continues east into Germany for two days in Nuremberg — Courtroom 600, where the International Military Tribunal tried Göring, Speer, and Hess, and the Documentation Center at the former Nazi Party Rally Grounds. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell dinner at The Yeatman — a deliberate exhale after the weight of history.",
-    "differentiators": "London is lodged in a VRBO rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues straight on into Normandy. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Nuremberg was reinstated into this rebuild at the traveler's request, with the Documentation Center scheduled the afternoon AFTER Courtroom 600 — reckoning before ideology, in that order. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell dinner at The Yeatman are earned grace notes after eight days of history."
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a Thames river cruise, before a long day at the Tank Museum in Bovington carries the trip into Normandy via an overnight Channel ferry. Three days based in Bayeux cover the American D-Day beaches, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel, before the drive continues to Paris for the flight south. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell dinner at The Yeatman — a deliberate exhale after the weight of history.",
+    "differentiators": "London is lodged in a VRBO rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell dinner at The Yeatman are earned grace notes after eight days of history."
   },
   "days": [
     {
@@ -206,7 +198,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Hoppers%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Hoppers%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -269,7 +261,7 @@
               "sat"
             ],
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Cinnamon%20Club%20Westminster%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Cinnamon%20Club%20Westminster%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -359,7 +351,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Smoking%20Goat%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Smoking%20Goat%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -421,7 +413,7 @@
               "sat"
             ],
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Regency%20Cafe%20Pimlico%20/%20Westminster%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Regency%20Cafe%20Pimlico%20/%20Westminster%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -511,7 +503,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Ledbury%20Notting%20Hill%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Ledbury%20Notting%20Hill%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -599,7 +591,7 @@
               "sun"
             ],
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Dishoom%20King%27s%20Cross%20King%27s%20Cross%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Dishoom%20King%27s%20Cross%20King%27s%20Cross%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -661,7 +653,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Kiln%20Soho%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -765,7 +757,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Anchor%20Bankside%20Southwark%2C%20near%20Borough%20Market%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Anchor%20Bankside%20Southwark%2C%20near%20Borough%20Market%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -857,22 +849,34 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Moro%20Exmouth%20Market%2C%20Clerkenwell%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Moro%20Exmouth%20Market%2C%20Clerkenwell%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
     },
     {
-      "label": "Day 7 · Sun Oct 18 · Tank Museum & Onward to Normandy",
-      "city": "Normandy",
-      "headline": "Tiger tanks and Churchill's at Bovington, then drive into Normandy",
+      "label": "Day 7 · Sun Oct 18 · Tank Museum & Overnight Ferry to Normandy",
+      "city": "London",
+      "headline": "Bovington's Tiger 131, then an overnight Channel crossing straight into Normandy",
       "weather": "High 57°F / low 46°F · mostly cloudy with 50% rain risk — bring layers & umbrella",
       "items": [
+        {
+          "type": "Hotel",
+          "time": "07:00",
+          "end_time": null,
+          "text": "Check out of VRBO rental",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
         {
           "type": "Transport",
           "time": "07:30",
           "end_time": null,
-          "text": "Pick up rental car and depart VRBO for Bovington",
+          "text": "Pick up rental car and depart for Bovington",
           "location": null,
           "why": "Rental car pickup location TBD — book a larger vehicle for comfort on long drive. Route: M3 -> A303 -> A35 to Bovington — 2h 30min, ~140 miles",
           "contact": null,
@@ -942,17 +946,32 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Bovington%20Tank%20Museum%20Cafe%20On-site%20at%20Tank%20Museum%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Bovington%20Tank%20Museum%20Cafe%20On-site%20at%20Tank%20Museum%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
           "type": "Transport",
-          "time": "13:45",
+          "time": "14:15",
           "end_time": null,
-          "text": "Drive to Normandy via Portsmouth–Caen ferry or Eurotunnel",
+          "text": "Drive Bovington to Portsmouth International Port — approx. 1h20m via A35/A31 (65 miles)",
           "location": null,
-          "why": "Option 1: Drive to Portsmouth (1h 15min), ferry to Caen/Ouistreham (6h crossing, Brittany Ferries), then 45min to Bayeux. Option 2: Drive to Folkestone (3h 15min), Eurotunnel to Calais (35min), drive 3h to Bayeux. Book ferry/tunnel in advance. Arrive Normandy lodging ~8–9 PM.",
+          "why": null,
           "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Check in for Brittany Ferries overnight sailing, Portsmouth -> Ouistreham (Caen) — boarding opens approx. 90 min before departure",
+          "location": null,
+          "why": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm the exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45-23:30 departure. This plan has no rental car in Normandy — the private drivers/guide throughout this trip suggest foot-passenger travel, not a vehicle booking, but confirm that's correct when you book, since it changes which check-in line to use at the port. Pack an overnight/essentials bag (chargers, meds, pajamas, toiletries) somewhere easy to reach rather than buried in checked luggage.",
+          "contact": {
+            "phone": "+44 330 159 7000",
+            "website": "https://www.brittany-ferries.co.uk"
+          },
           "flight": null,
           "hotel": null,
           "restaurant": null
@@ -961,76 +980,58 @@
           "type": "Dinner",
           "time": "20:00",
           "end_time": null,
-          "text": "Late arrival dinner near Normandy lodging",
+          "text": "Dinner aboard the ferry — onboard restaurant",
           "location": null,
-          "why": null,
+          "why": "Brittany Ferries retired the MV Normandie in 2025; this route is now served by the MV Guillaume de Normandie and MV Mont St Michel, both running a sit-down restaurant and a self-service option — book a table when you check in if you'd rather not queue.",
           "contact": null,
           "flight": null,
           "hotel": null,
-          "restaurant": {
-            "name": "Le Pommier",
-            "neighborhood": "Bayeux town center",
-            "cuisine": "Norman French",
-            "price_range": "$$",
-            "why": "Norman French bistro in central Bayeux — an easy late-arrival dinner.",
-            "contact": {
-              "address": "38 Rue des Cuisiniers, 14400 Bayeux, France",
-              "phone": "+33 2 31 21 52 10"
-            },
-            "reservation": {
-              "platform": "phone",
-              "phone": "+33 2 31 21 52 10"
-            },
-            "open_days": [
-              "mon",
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat",
-              "sun"
-            ],
-            "backup": {
-              "name": "La Rapiere",
-              "neighborhood": "Bayeux",
-              "cuisine": "Norman French",
-              "price_range": "$$",
-              "why": "Alternative Norman French bistro in Bayeux.",
-              "contact": {},
-              "reservation": {
-                "platform": "phone"
-              }
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Pommier%20Bayeux%20town%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
+          "restaurant": null
         },
         {
-          "type": "Hotel",
-          "time": "21:00",
+          "type": "Transport",
+          "time": "22:45",
           "end_time": null,
-          "text": "Check in to Normandy lodging (Bayeux area)",
+          "text": "Ferry departs Portsmouth — overnight crossing, cabin booked, approx. 8 hrs — arrives Ouistreham (Caen) approx. 07:45 local time (Day 8)",
           "location": null,
-          "why": null,
+          "why": "Verify the exact overnight departure time for this specific date when booking — schedules shift seasonally. Arrival time is computed from the stated 22:45 departure + 8hr crossing + the 1hr UK-to-France timezone shift. The booked cabin has an en-suite bathroom, TV, tea/coffee facilities, and onboard wifi (paid data bundle, not unlimited) — no need to camp out in a lounge chair.",
           "contact": null,
           "flight": null,
-          "hotel": {
-            "name": "Normandy VRBO or boutique hotel (traveler to book)",
-            "address": "Bayeux area, France",
-            "phone": null,
-            "website": null,
-            "confirmation_note": "Not yet booked. Check-in details TBD — late arrival expected ~9 PM. Notify lodging of late check-in once chosen."
-          },
+          "hotel": null,
           "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 8 · Mon Oct 19 · Normandy D-Day Sites",
+      "label": "Day 8 · Mon Oct 19 · American Sector — Omaha & the Cemetery",
       "city": "Normandy",
-      "headline": "Omaha Beach at dawn, then Pointe du Hoc and the American Cemetery",
+      "headline": "Ferry docks at dawn, then Omaha Beach and the American Cemetery",
       "weather": "High 60°F / low 48°F · partly cloudy with 30% rain risk — breezy on the coast",
       "items": [
+        {
+          "type": "Transport",
+          "time": "07:45",
+          "end_time": null,
+          "text": "Ferry docks at Ouistreham (Caen) — French time (clocks forward 1h from UK)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "08:05",
+          "end_time": null,
+          "text": "Drive Ouistreham to the Omaha Beach area — approx. 45 min",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
         {
           "type": "Activity",
           "time": "08:30",
@@ -1093,7 +1094,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Creperie%20du%20Vieux%20Chateau%20Grandcamp-Maisy%20harbor%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Creperie%20du%20Vieux%20Chateau%20Grandcamp-Maisy%20harbor%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -1110,6 +1111,18 @@
             "hours": "Daily 9 AM–5 PM (summer until 6 PM); closed Dec 25 & Jan 1",
             "price": "Free"
           },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:00",
+          "end_time": null,
+          "text": "Drive to Bayeux — approx. 20 min",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
@@ -1153,31 +1166,97 @@
               "neighborhood": "Bayeux",
               "cuisine": "Norman French",
               "price_range": "$$",
-              "why": "Alternative Bayeux bistro, already the Day 7 dinner spot — fine as a repeat backup only.",
+              "why": "Alternative Bayeux bistro.",
               "contact": {},
               "reservation": {
                 "platform": "phone"
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d%27Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d%27Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
+        },
+        {
+          "type": "Hotel",
+          "time": "21:30",
+          "end_time": null,
+          "text": "Check in to Normandy lodging (Bayeux area)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Normandy VRBO or boutique hotel (traveler to book)",
+            "address": "Bayeux area, France",
+            "phone": null,
+            "website": null,
+            "confirmation_note": "Not yet booked. Confirm early check-in or luggage drop with host once chosen — the traveler is out touring most of the day and won't check in until evening."
+          },
+          "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 9 · Tue Oct 20 · Normandy to Nuremberg",
-      "city": "Nuremberg",
-      "headline": "Bayeux museum morning, then a long drive east to Nuremberg",
-      "weather": "High 62°F / low 49°F · partly cloudy, dry — good travel day",
+      "label": "Day 9 · Tue Oct 20 · Self-Guided Bayeux",
+      "city": "Normandy",
+      "headline": "The cathedral, the old town, and the largest Commonwealth WWII cemetery in France",
+      "weather": "High 62°F / low 49°F · partly cloudy, dry",
       "items": [
         {
+          "type": "Note",
+          "time": "09:30",
+          "end_time": null,
+          "text": "Leisurely morning, hotel breakfast",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
           "type": "Activity",
-          "time": "09:00",
-          "end_time": "10:00",
+          "time": "10:30",
+          "end_time": null,
+          "text": "Self-guided walk — Bayeux old town, half-timbered houses and water mills along the Aure river",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "11:30",
+          "end_time": null,
+          "text": "Bayeux Cathedral (Cathédrale Notre-Dame de Bayeux) — self-guided",
+          "location": "Bayeux Cathedral, Bayeux, France",
+          "why": "Consecrated 1077, the original home of the Bayeux Tapestry for nearly 700 years before it moved to a dedicated museum.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Note",
+          "time": "13:00",
+          "end_time": null,
+          "text": "Lunch in the town center",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "14:30",
+          "end_time": "16:00",
           "text": "Musée Mémorial de la Bataille de Normandie (Battle of Normandy Memorial Museum) — self-guided",
           "location": "Boulevard Fabian Ware, 14400 Bayeux",
-          "why": "NOTE: the Bayeux Tapestry Museum is closed for renovation (Sept 2025–Oct 2027) and will not be open during this trip — this museum, covering the Battle of Normandy itself, is the substitute for a Bayeux museum morning. Real uniforms, vehicles, and a diorama of the full campaign.",
+          "why": "NOTE: the Bayeux Tapestry Museum is closed for renovation (Sept 2025–Oct 2027) and will not be open during this trip — this museum, covering the Battle of Normandy itself, is the substitute for a Bayeux museum day. Real uniforms, vehicles, and a diorama of the full campaign.",
           "contact": {
             "phone": "+33 2 31 51 46 90"
           },
@@ -1187,9 +1266,9 @@
         },
         {
           "type": "Activity",
-          "time": "10:00",
-          "end_time": "10:30",
-          "text": "Bayeux War Cemetery — the largest British and Commonwealth WWII cemetery in France, directly across the road from the museum",
+          "time": "16:00",
+          "end_time": null,
+          "text": "Bayeux War Cemetery — the largest British and Commonwealth WWII cemetery in France — 4,144 Commonwealth graves plus roughly 500 more of other nationalities (mostly German), 4,648 burials in total, directly across the road from the museum",
           "location": "Boulevard Fabian Ware, 14400 Bayeux",
           "why": null,
           "contact": null,
@@ -1198,233 +1277,117 @@
           "restaurant": null
         },
         {
-          "type": "Transport",
-          "time": "11:00",
-          "end_time": null,
-          "text": "Depart Bayeux for Nuremberg",
-          "location": null,
-          "why": "Drive route: A13 -> A26 -> A4 via Reims -> A6 -> A5 into Germany -> A3 to Nuremberg. ~9h 15min, 920 km. Break in Reims or Metz for lunch. Arrive Nuremberg ~8–9 PM. Alternative: return rental to Caen, fly to Nuremberg (no direct; typically via Paris CDG or Munich) — check flight times.",
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Lunch",
-          "time": "14:00",
-          "end_time": null,
-          "text": "Lunch stop en route (Reims or Metz suggested)",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": {
-            "name": "Le Boulingrin",
-            "neighborhood": "Reims center (if stopping in Reims)",
-            "cuisine": "French brasserie",
-            "price_range": "$$",
-            "why": "Historic Reims brasserie — a natural highway-break lunch if the route passes through Reims.",
-            "contact": {
-              "address": "48 Rue de Mars, 51100 Reims, France",
-              "phone": "+33 3 26 40 96 22"
-            },
-            "reservation": {
-              "platform": "phone",
-              "phone": "+33 3 26 40 96 22"
-            },
-            "open_days": [
-              "mon",
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat",
-              "sun"
-            ],
-            "backup": {
-              "name": "Autoroute rest stop",
-              "neighborhood": "En route",
-              "cuisine": "French motorway cafe",
-              "price_range": "$",
-              "why": "Fallback if the timing doesn't allow a Reims detour.",
-              "contact": {},
-              "reservation": {
-                "platform": "walkin"
-              }
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Boulingrin%20Reims%20center%20%28if%20stopping%20in%20Reims%29%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
-        },
-        {
-          "type": "Hotel",
-          "time": "20:30",
-          "end_time": null,
-          "text": "Check in to Nuremberg hotel (late arrival)",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": {
-            "name": "Hotel Drei Raben (or Sorat Hotel Saxx Nürnberg — not yet chosen)",
-            "address": "Altstadt, Nuremberg, Germany",
-            "phone": "+49 911 274380",
-            "website": "https://www.hotel-drei-raben.de",
-            "check_in_time": "15:00",
-            "confirmation_note": "Two hotel options given by the planner, neither booked yet — confirm which one before finalizing. Contact info shown here is for Hotel Drei Raben specifically; Sorat Hotel Saxx Nürnberg's own contact details haven't been looked up since it isn't chosen. Notify hotel of late check-in ~8:30 PM. Park rental car at hotel or nearby garage."
-          },
-          "restaurant": null
-        },
-        {
           "type": "Dinner",
-          "time": "21:00",
+          "time": "19:30",
           "end_time": null,
-          "text": "Late casual dinner near Nuremberg hotel",
+          "text": "Dinner at L'Angle Saint Laurent",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "Bratwursthäusle bei St. Sebald",
-            "neighborhood": "Altstadt, near Sebalduskirche",
-            "cuisine": "Franconian German",
-            "price_range": "$$",
-            "why": "Wood-fired Nuremberg bratwurst institution in the Altstadt — an easy, casual late-arrival dinner.",
+            "name": "L'Angle Saint Laurent",
+            "neighborhood": "Bayeux",
+            "cuisine": "Modern French",
+            "price_range": "$$$",
+            "why": "Chef-driven seasonal plates in a cozy stone dining room. The scallop carpaccio and Normandy cheese cart are standouts.",
             "contact": {
-              "address": "Rathausplatz 1, 90403 Nürnberg, Germany",
-              "phone": "+49 911 227695",
-              "website": "https://www.bratwursthaeusle.de"
-            },
-            "reservation": {
-              "platform": "walkin"
-            },
-            "open_days": [
-              "mon",
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat",
-              "sun"
-            ],
-            "backup": {
-              "name": "Albrecht Dürer Stube",
-              "neighborhood": "Altstadt",
-              "cuisine": "Franconian German",
-              "price_range": "$$",
-              "why": "Alternative traditional Franconian restaurant in the Altstadt.",
-              "contact": {},
-              "reservation": {
-                "platform": "walkin"
-              }
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Bratwursth%C3%A4usle%20bei%20St.%20Sebald%20Altstadt%2C%20near%20Sebalduskirche%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
-          }
-        }
-      ]
-    },
-    {
-      "label": "Day 10 · Wed Oct 21 · Nuremberg: Trials Courthouse & Documentation Center",
-      "city": "Nuremberg",
-      "headline": "Courtroom 600, where the architects of the Holocaust stood trial",
-      "weather": "High 58°F / low 44°F · partly cloudy, chance of light rain",
-      "items": [
-        {
-          "type": "Activity",
-          "time": "09:00",
-          "end_time": "11:00",
-          "text": "Nuremberg Trials Memorial & Courtroom 600",
-          "location": "Bärenschanzstraße 72, 90429 Nürnberg, Germany",
-          "why": "The actual courtroom where Göring, Speer, and Hess were tried (Nov 1945–Oct 1946) by the International Military Tribunal — it continued as a working Bavarian courtroom for ordinary cases until March 2020, when it was folded permanently into the museum exhibit and stopped hosting real trials.",
-          "contact": {
-            "phone": "+49 911 3217 9372",
-            "website": "https://www.memorium-nuremberg.de",
-            "booking_note": "No advance booking required except for groups. CRITICAL: Call +49 911 3217 9372 one to two days before your visit to confirm Courtroom 600 is open Wednesday Oct 21 — the memorial can only confirm this closer to the date, and this itinerary could not independently verify whether a weekday visit is as reliable as a Saturday one.",
-            "hours": "Wed–Mon 10 AM–6 PM; closed Tuesdays",
-            "price": "€7.50/adult; audio guide included"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Transport",
-          "time": "11:30",
-          "end_time": null,
-          "text": "Tram back to Altstadt (Tram 9 to Hauptmarkt)",
-          "location": null,
-          "why": "Tram 9 from Sielstrasse stop near the Trials Memorial to Hauptmarkt — ~20 min",
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null
-        },
-        {
-          "type": "Lunch",
-          "time": "12:30",
-          "end_time": null,
-          "text": "Lunch at Zum Gulden Stern",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": {
-            "name": "Zum Gulden Stern",
-            "neighborhood": "Altstadt, near Weissgerbergasse",
-            "cuisine": "Franconian German",
-            "price_range": "$$",
-            "why": "Traditional Franconian restaurant in the Altstadt.",
-            "contact": {
-              "address": "Zirkelschmiedsgasse 26, 90402 Nürnberg, Germany",
-              "phone": "+49 911 2059288",
-              "website": "https://www.bratwurst-stern.de"
+              "address": "2 Rue des Bouchers, 14400 Bayeux, France",
+              "phone": "+33 2 31 92 03 01",
+              "hours": "Wed–Sun 12:00–1:30 PM, 7:00–9:00 PM"
             },
             "reservation": {
               "platform": "phone",
-              "phone": "+49 911 2059288"
+              "phone": "+33 2 31 92 03 01"
             },
             "open_days": [
-              "mon",
-              "tue",
               "wed",
               "thu",
               "fri",
               "sat",
               "sun"
             ],
+            "closure_note": "Closed Mon-Tue — this Tuesday booking needs a different night or a backup; flagged for the traveler to confirm.",
             "backup": {
-              "name": "Bratwurst Röslein",
-              "neighborhood": "Altstadt",
-              "cuisine": "Franconian German",
+              "name": "Le Lion d'Or",
+              "neighborhood": "Bayeux center",
+              "cuisine": "French bistro",
               "price_range": "$$",
-              "why": "Alternative Altstadt Franconian restaurant.",
+              "why": "Historic coaching inn with a fireplace and a menu built around Norman cider and Calvados — already the Day 8 dinner spot, fine as a repeat backup.",
               "contact": {},
               "reservation": {
                 "platform": "phone"
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Zum%20Gulden%20Stern%20Altstadt%2C%20near%20Weissgerbergasse%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=L%27Angle%20Saint%20Laurent%20Bayeux%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
+        }
+      ]
+    },
+    {
+      "label": "Day 10 · Wed Oct 21 · Mont-Saint-Michel",
+      "city": "Normandy",
+      "headline": "The tidal abbey — a day trip from Bayeux",
+      "weather": "High 58°F / low 44°F · partly cloudy, breezy on the causeway",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "08:30",
+          "end_time": null,
+          "text": "Drive Bayeux to Mont-Saint-Michel — approx. 1h25m (76 miles)",
+          "location": null,
+          "why": "Leave early to beat the day-trip buses from Paris — the village and abbey get crowded by late morning.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
         },
         {
           "type": "Activity",
-          "time": "14:30",
-          "end_time": "17:00",
-          "text": "Documentation Center Nazi Party Rally Grounds",
-          "location": "Bayernstraße 110, 90478 Nürnberg, Germany",
-          "why": "The unfinished Congress Hall Albert Speer designed to hold 50,000 — now a museum on Nazi ideology, propaganda, and the machinery of the rallies.",
-          "contact": {
-            "phone": "+49 911 231 5666",
-            "website": "https://www.museen.nuernberg.de/dokuzentrum/",
-            "booking_note": "No advance booking required. Tram 8 from Hauptbahnhof to Doku-Zentrum stop. Allow 2.5–3 hours.",
-            "hours": "Mon–Fri 9 AM–6 PM, Sat–Sun 10 AM–6 PM",
-            "price": "€7/adult; audio guide €4"
-          },
+          "time": "10:00",
+          "end_time": null,
+          "text": "Mont-Saint-Michel village — self-guided walk up the Grande Rue to the abbey entrance",
+          "location": "Le Mont-Saint-Michel, 50170, Normandy",
+          "why": "One of the most recognizable silhouettes in France — a tidal island abbey with over 1,000 years of history.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Note",
+          "time": "12:30",
+          "end_time": null,
+          "text": "Lunch in the village, or bring a picnic for the mainland dike viewpoint — village restaurants are priced for the tourist crush",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Activity",
+          "time": "14:00",
+          "end_time": "16:00",
+          "text": "Abbey interior and ramparts — self-guided, audio guide available on-site",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "16:30",
+          "end_time": null,
+          "text": "Drive back to Bayeux — approx. 1h25m",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
@@ -1433,95 +1396,121 @@
           "type": "Dinner",
           "time": "19:30",
           "end_time": null,
-          "text": "Dinner at Essigbrätlein",
+          "text": "Dinner at Le Lion d'Or",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "Essigbrätlein",
-            "neighborhood": "Weinmarkt, Altstadt",
-            "cuisine": "Modern German, Michelin 2-star",
-            "price_range": "$$$$",
-            "why": "Two-Michelin-star modern German tasting menu (plus a Michelin Green Star) in one of Germany's oldest restaurant buildings.",
+            "name": "Le Lion d'Or",
+            "neighborhood": "Bayeux center",
+            "cuisine": "French bistro",
+            "price_range": "$$",
+            "why": "Historic coaching inn with a fireplace and a menu built around Norman cider and Calvados.",
             "contact": {
-              "address": "Weinmarkt 3, 90403 Nürnberg, Germany",
-              "phone": "+49 911 225131",
-              "website": "https://www.essigbraetlein.de",
-              "hours": "Wed–Sat, closed Sun–Tue"
+              "address": "71 Rue Saint-Jean, 14400 Bayeux, France",
+              "phone": "+33 2 31 92 06 90",
+              "website": "https://www.liondor-bayeux.fr"
             },
             "reservation": {
               "platform": "phone",
-              "phone": "+49 911 225131"
+              "phone": "+33 2 31 92 06 90"
             },
             "open_days": [
+              "mon",
+              "tue",
               "wed",
               "thu",
               "fri",
-              "sat"
+              "sat",
+              "sun"
             ],
             "backup": {
-              "name": "Waidwerk",
-              "neighborhood": "Altstadt",
-              "cuisine": "Modern German, game-focused",
-              "price_range": "$$$",
-              "why": "Alternative modern German fine dining in the Altstadt.",
+              "name": "Le Pommier",
+              "neighborhood": "Bayeux",
+              "cuisine": "Norman French",
+              "price_range": "$$",
+              "why": "Alternative Bayeux bistro.",
               "contact": {},
               "reservation": {
                 "platform": "phone"
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Essigbr%C3%A4tlein%20Weinmarkt%2C%20Altstadt%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Le%20Lion%20d%27Or%20Bayeux%20center%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
+        },
+        {
+          "type": "Hotel",
+          "time": "22:00",
+          "end_time": null,
+          "text": "Overnight — last Normandy night",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Normandy VRBO or boutique hotel (traveler to book)",
+            "address": "Bayeux area, France",
+            "phone": null,
+            "website": null
+          },
+          "restaurant": null
         }
       ]
     },
     {
-      "label": "Day 11 · Thu Oct 22 · Porto Arrival",
+      "label": "Day 11 · Thu Oct 22 · Fly to Porto",
       "city": "Porto",
-      "headline": "Settle into Porto with a sunset waterfront walk along the Douro",
+      "headline": "Drive to Paris, fly south to port wine country",
       "weather": "High 72°F / low 57°F · partly cloudy, chance of light evening rain",
       "items": [
         {
-          "type": "Transport",
-          "time": "07:00",
-          "end_time": "07:25",
-          "text": "Private driver from Nuremberg hotel to Nuremberg Airport (NUE)",
+          "type": "Hotel",
+          "time": "08:00",
+          "end_time": null,
+          "text": "Check out of Normandy lodging",
           "location": null,
-          "why": "Hotel concierge arranges — confirm night before",
-          "contact": {
-            "phone": "+49 911 93700"
-          },
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null
+        },
+        {
+          "type": "Transport",
+          "time": "08:30",
+          "end_time": null,
+          "text": "Private driver to Paris CDG — approx. 2h45m via A13",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null
         },
         {
           "type": "Flight",
-          "time": "09:45",
+          "time": "13:00",
           "end_time": null,
-          "text": "Fly Nuremberg -> Porto via Frankfurt or Munich",
+          "text": "Fly Paris CDG to Porto (CDG -> OPO) — nonstop",
           "location": null,
-          "why": "TAP via Frankfurt or Lufthansa via Munich are typical routing options. Direct seasonal service may exist; check TAP and Ryanair.",
+          "why": null,
           "contact": {
-            "website": null
+            "website": "https://www.airfrance.com"
           },
           "flight": {
-            "carrier": "TAP Air Portugal",
-            "flight_number": "TP1094",
-            "from_airport": "NUE",
+            "carrier": "Air France",
+            "flight_number": null,
+            "from_airport": "CDG",
             "to_airport": "OPO",
-            "depart_time": "09:45",
-            "arrive_time": "12:35",
-            "duration": "3h 15m",
-            "nonstop": false,
-            "connection": "FRA",
+            "depart_time": "13:00",
+            "arrive_time": "14:20",
+            "duration": "2h 20m",
+            "nonstop": true,
             "cabin": "Economy",
-            "aircraft": "Airbus A320",
-            "confirmation_note": "No direct flights — connects via Frankfurt (or Munich on Lufthansa). Flight number is the scheduled operating flight — confirm at booking; schedules change.",
-            "_originalFlightNumber": "TP1094",
+            "confirmation_note": "Air France runs the only true nonstop CDG–OPO service, several times weekly, out of Terminal 2F. Portugal is 1 hour behind mainland France, hence the short apparent flight time on the clock. Verify flight number, exact time and equipment at booking — schedules change.",
             "_modelEstimatedFlightNumber": true
           },
           "hotel": null,
@@ -1529,7 +1518,7 @@
         },
         {
           "type": "Transport",
-          "time": "13:15",
+          "time": "15:35",
           "end_time": null,
           "text": "Private driver from Porto Airport (OPO) to VRBO — 30 min via A20",
           "location": null,
@@ -1543,7 +1532,7 @@
         },
         {
           "type": "Hotel",
-          "time": "14:00",
+          "time": "16:05",
           "end_time": null,
           "text": "Check in to Porto VRBO rental",
           "location": null,
@@ -1562,8 +1551,8 @@
         },
         {
           "type": "Activity",
-          "time": "16:00",
-          "end_time": "18:00",
+          "time": "17:00",
+          "end_time": "18:30",
           "text": "Explore the Ribeira waterfront and Ponte Luis I — walk at your own pace",
           "location": "Cais da Ribeira, 4050-510 Porto, Portugal",
           "why": "The UNESCO-listed Ribeira is Porto's postcard — tile-fronted townhouses, riverside cafes, and the double-decker Dom Luís I bridge.",
@@ -1621,7 +1610,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cantinho%20do%20Avillez%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -1696,7 +1685,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Antunes%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Antunes%20Ribeira%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -1762,7 +1751,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Pedro%20Lemos%20Foz%20do%20Douro%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -1850,7 +1839,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=DOC%20Folgosa%2C%20Douro%20Valley%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=DOC%20Folgosa%2C%20Douro%20Valley%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -1911,7 +1900,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=O%20Paparico%20Fontainhas%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=O%20Paparico%20Fontainhas%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]
@@ -1985,7 +1974,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Santiago%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Santiago%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         },
         {
@@ -2052,7 +2041,7 @@
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Yeatman%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Nuremberg%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=The%20Yeatman%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           }
         }
       ]

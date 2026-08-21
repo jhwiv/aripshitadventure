@@ -23,7 +23,7 @@
 // need to be live or fail, and already degrade gracefully ("Weather
 // unavailable" etc.) when offline.
 
-const CACHE_NAME = 'trip-cache-v3';
+const CACHE_NAME = 'trip-cache-v4';
 const ALWAYS_PRECACHE = [
   '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',

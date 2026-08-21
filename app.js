@@ -8,9 +8,9 @@
   // this trip is registered there under the "wwii2026" site key.
   var CHAT_API = 'https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026';
 
-  var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Nuremberg: '#6b5b95', Porto: '#c9a24b' };
-  var CITY_FLAGS = { London: '🇬🇧', Normandy: '🇫🇷', Nuremberg: '🇩🇪', Porto: '🇵🇹' };
-  var CITIES = ['London', 'Normandy', 'Nuremberg', 'Porto'];
+  var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Porto: '#c9a24b' };
+  var CITY_FLAGS = { London: '🇬🇧', Normandy: '🇫🇷', Porto: '🇵🇹' };
+  var CITIES = ['London', 'Normandy', 'Porto'];
 
   // Hero photo carousel — one of these is picked at random on every page
   // load (see renderHeroPhoto below). Neither zurich-pwa nor
@@ -36,10 +36,9 @@
   // PINS.landmarks is keyed by full street address (needed for accurate
   // coordinates), but showing that raw key as a display name/title reads as
   // confusing or meaningless for anything whose street name isn't itself
-  // recognizable - "St. Andrew's Road" (Battle of Britain Bunker),
-  // "Bärenschanzstraße 72" (Nuremberg Trials Memorial), or "Boulevard Fabian
-  // Ware" (the Battle of Normandy Memorial Museum). A plain
-  // `loc.split(',')[0]` happens to work when the street name IS the venue
+  // recognizable - "St. Andrew's Road" (Battle of Britain Bunker), or
+  // "Boulevard Fabian Ware" (the Battle of Normandy Memorial Museum). A
+  // plain `loc.split(',')[0]` happens to work when the street name IS the venue
   // (e.g. "Livraria Lello, Rua..." -> "Livraria Lello"), which is why this
   // went unnoticed for the entries that already read fine - it's not a
   // regression from any one rebuild, it's an inherent gap in that heuristic
@@ -59,9 +58,7 @@
     'Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer': 'Omaha Beach',
     'American Cemetery, 14710 Colleville-sur-Mer, France': 'Normandy American Cemetery',
     'Boulevard Fabian Ware, 14400 Bayeux': 'Musée Mémorial de la Bataille de Normandie & British War Cemetery',
-    'Bärenschanzstraße 72, 90429 Nürnberg, Germany': 'Nuremberg Trials Memorial & Courtroom 600',
-    'Bayernstraße 110, 90478 Nürnberg, Germany': 'Documentation Center Nazi Party Rally Grounds',
-    'Rathausplatz 1, 90403 Nürnberg, Germany': 'Bratwursthäusle bei St. Sebald',
+    'Le Mont-Saint-Michel, 50170, Normandy': 'Mont-Saint-Michel',
     'Cais da Ribeira, 4050-510 Porto, Portugal': 'Ribeira Waterfront',
     "Rua do Agro 141, 4400-281 Vila Nova de Gaia": "Graham's Port Lodge",
     'Praca Almeida Garrett, 4000-069 Porto': 'São Bento Station',
@@ -357,12 +354,13 @@
   // Ground truth is the actual day count (N days = N-1 nights), NOT a sum of
   // cities[].nights - a city's own nights entry only covers nights actually
   // spent THERE, so a night spent in transit (e.g. this trip's overnight
-  // EWR-LHR flight, which belongs to no city) is real trip time that
-  // a naive sum silently drops. Summing cities[].nights here gives 13
-  // (5 London + 2 Normandy + 2 Nuremberg + 4 Porto), while the trip is
-  // genuinely 14 nights (days.length - 1) - the missing one is the
-  // overnight-flight night, which the hero's own meta line spells out
-  // explicitly.
+  // EWR-LHR flight, or the overnight Portsmouth-Ouistreham ferry, neither of
+  // which belongs to any city) is real trip time that a naive sum silently
+  // drops. Summing cities[].nights here gives 12
+  // (5 London + 3 Normandy + 4 Porto), while the trip is
+  // genuinely 14 nights (days.length - 1) - the missing two are the
+  // overnight-flight night and the overnight-ferry night, which the hero's
+  // own meta line spells out explicitly.
   var totalTripNights = (TRIP.days || []).length ? (TRIP.days.length - 1) : 0;
   var tripNightsTotalEl = document.getElementById('tripNightsTotal');
   if (tripNightsTotalEl) tripNightsTotalEl.textContent = totalTripNights;
@@ -879,29 +877,28 @@
 
     var general = {
       'Currency': 'UK: Pound sterling (GBP). France/Portugal: Euro (EUR). Contactless cards are widely accepted in all three countries.',
-      'Power outlets': 'UK uses Type G plugs (230V). France, Germany, and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Nuremberg/Porto and vice versa.',
-      'Emergency number': 'UK: 999 or 112. France, Germany, Portugal: 112 (EU-wide emergency number works in all three).',
-      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France: service is usually included, round up or leave small change. Germany: round up or add ~5-10%, told to the server directly rather than left on the table. Portugal: not expected, rounding up is appreciated.',
-      'Health & water': 'Tap water is safe to drink in London, Normandy, Nuremberg, and Porto. No special vaccinations are required for typical US travelers to the UK, France, Germany, or Portugal — check with your doctor or a travel clinic if you have specific health needs. Pharmacies (marked with a green cross) can handle minor ailments without a doctor visit.',
-      'Travel insurance': 'None of these four countries have a reciprocal healthcare agreement with the US — a travel insurance policy covering medical care, evacuation, and trip interruption is strongly recommended for a trip this length.',
-      'Staying connected': 'An eSIM covering the UK + EU roaming zone (e.g. Airalo, Holafly, or your carrier\'s international day-pass) is the simplest way to have data in all four countries without swapping physical SIM cards. Hotel and cafe wifi is also widely available.'
+      'Power outlets': 'UK uses Type G plugs (230V). France and Portugal use Type C/E/F plugs (230V) — a UK adapter will NOT work in Normandy/Porto and vice versa.',
+      'Emergency number': 'UK: 999 or 112. France, Portugal: 112 (EU-wide emergency number works in both).',
+      'Tipping': 'UK: not obligatory, 10-12.5% if no service charge added. France: service is usually included, round up or leave small change. Portugal: not expected, rounding up is appreciated.',
+      'Health & water': 'Tap water is safe to drink in London, Normandy, and Porto. No special vaccinations are required for typical US travelers to the UK, France, or Portugal — check with your doctor or a travel clinic if you have specific health needs. Pharmacies (marked with a green cross) can handle minor ailments without a doctor visit.',
+      'Travel insurance': 'None of these three countries have a reciprocal healthcare agreement with the US — a travel insurance policy covering medical care, evacuation, and trip interruption is strongly recommended for a trip this length.',
+      'Staying connected': 'An eSIM covering the UK + EU roaming zone (e.g. Airalo, Holafly, or your carrier\'s international day-pass) is the simplest way to have data in all three countries without swapping physical SIM cards. Hotel and cafe wifi is also widely available.'
     };
     document.getElementById('essentialsGeneral').innerHTML = Object.keys(general).map(function (k) {
       return '<div class="ref-card"><div class="ref-title">' + esc(k) + '</div><div class="ref-line">' + esc(general[k]) + '</div></div>';
     }).join('');
 
-    // Each entry ties to a SPECIFIC moment on this itinerary (the Bayeux→
-    // Nuremberg drive, the Nuremberg tram rides, the Andante top-up) —
+    // Each entry ties to a SPECIFIC moment on this itinerary (the overnight
+    // ferry, the rural Normandy driving days, the Andante top-up) —
     // deliberately not a generic "useful apps abroad" list.
     var APPS = [
       { name: 'Citymapper or TfL Go', why: 'London routing across Tube/bus/Overground — either works well; TfL Go is the official app with live disruption alerts.' },
-      { name: 'Google Maps — download OFFLINE areas for Normandy and the Bayeux→Nuremberg drive', why: 'Rural coverage between Bayeux, the D-Day beaches, and the long A13/A26/A4/A6/A5/A3 drive into Germany can be spotty. Download the regions for offline use before you leave London; this site itself works offline too (see the install prompt) but it isn\'t turn-by-turn navigation.' },
-      { name: 'VAG Nürnberg (or DB Navigator)', why: 'Nuremberg\'s tram/U-Bahn app for the Tram 9 and Tram 8 rides between the Altstadt, the Trials Memorial, and the Documentation Center.' },
+      { name: 'Google Maps — download OFFLINE areas for Normandy', why: 'Rural coverage between Bayeux, the D-Day beaches, and Mont-Saint-Michel can be spotty. Download the Normandy region for offline use before you leave London; this site itself works offline too (see the install prompt) but it isn\'t turn-by-turn navigation.' },
       { name: 'Uber AND Bolt (both)', why: 'Coverage and pricing differ by city — Bolt is often cheaper/more available in Porto and France than Uber alone. Worth having both installed rather than picking one in advance.' },
       { name: 'Andante Porto', why: 'Top up Porto\'s transit card directly from your phone instead of hunting for a station machine.' },
       { name: 'An eSIM app (Airalo, Holafly, or similar)', why: 'Install and set up the eSIM profile BEFORE departure — activating it is much easier on home wifi than fumbling with it at Heathrow arrivals.' },
-      { name: 'WhatsApp', why: 'The default way small tour operators and some restaurants in France/Germany/Portugal actually communicate — useful to have installed in case a driver or restaurant reaches out this way to confirm details.' },
-      { name: 'Your bank/card app', why: 'Check it has real-time foreign-transaction alerts and no foreign transaction fee before you go — cheaper and safer than carrying much cash across three currencies (GBP, then EUR).' }
+      { name: 'WhatsApp', why: 'The default way small tour operators and some restaurants in France/Portugal actually communicate — useful to have installed in case a driver or restaurant reaches out this way to confirm details.' },
+      { name: 'Your bank/card app', why: 'Check it has real-time foreign-transaction alerts and no foreign transaction fee before you go — cheaper and safer than carrying much cash across two currencies (GBP, then EUR).' }
     ];
     document.getElementById('essentialsApps').innerHTML = APPS.map(function (a) {
       return '<div class="ref-card"><div class="ref-title">' + esc(a.name) + '</div><div class="ref-line">' + esc(a.why) + '</div></div>';
@@ -915,7 +912,7 @@
       '<div class="byg-card">' +
       '<div class="byg-title">⚠ Before You Go — Entry Requirements</div>' +
       '<div class="byg-line"><strong>UK (London):</strong> US citizens need an Electronic Travel Authorisation (ETA) approved before flying in — apply online well ahead of departure. This is separate from, and in addition to, your passport.</div>' +
-      '<div class="byg-line"><strong>EU (Normandy, Nuremberg, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
+      '<div class="byg-line"><strong>EU (Normandy, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
       '<div class="byg-line"><strong>Passport:</strong> Valid at least 6 months past the Oct 26, 2026 return date (already on the packing list) and issued within the last 10 years for Schengen entry.</div>' +
       '<div class="byg-line">Requirements and processing times change — verify the current rules directly (gov.uk for the UK ETA, the official EU ETIAS site) close to departure rather than relying on this note alone.</div>' +
       '</div>';
@@ -924,7 +921,6 @@
     var embassies = [
       { city: 'London', name: 'U.S. Embassy London', note: 'Covers the UK leg directly.' },
       { city: 'Normandy', name: 'U.S. Embassy Paris', note: 'Nearest major U.S. diplomatic post to Normandy.' },
-      { city: 'Nuremberg', name: 'U.S. Consulate General Munich', note: 'Covers Bavaria, including Nuremberg.' },
       { city: 'Porto', name: 'U.S. Embassy Lisbon', note: 'Nearest major U.S. diplomatic post to Porto.' }
     ];
     document.getElementById('essentialsEmbassy').innerHTML = embassies.map(function (e) {
@@ -1006,16 +1002,10 @@
         'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
       ],
       Normandy: [
-        'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. A rental car is the practical way to cover these sites; taxis exist in Bayeux but are sparse.',
-        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 9\'s Bayeux museum morning specifically.',
+        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. A private driver or rental car is the practical way to cover these sites in a day; taxis exist in Bayeux but are sparse.',
+        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 9\'s self-guided Bayeux day specifically.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
-        'Fuel up before the long Bayeux→Nuremberg drive on Day 9 — French autoroute service stations are frequent, but plan a fill-up before crossing into Germany regardless.'
-      ],
-      Nuremberg: [
-        'The Altstadt (old town) is compact and walkable; trams (VAG network) cover the longer hops to the Trials Memorial (Tram 9) and the Documentation Center (Tram 8) — a single or day ticket works across tram/U-Bahn/bus.',
-        'Jaywalking is taken seriously — Germans generally wait for the pedestrian signal even with no traffic in sight; crossing against a red "Ampelmann" in front of others can draw a pointed look.',
-        'Shops are largely closed on Sundays (a legal restriction, not a preference) — plan any shopping for Saturday or a weekday.',
-        'Cash is still more commonly expected than in London or Porto, especially at small Franconian restaurants and market stalls — carry some euros alongside a card.'
+        'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
       ],
       Porto: [
         'The Andante card covers metro, bus, and some train lines — buy and top up at metro station machines or the Andante app. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.',
@@ -1038,12 +1028,13 @@
      --------------------------------------------------------- */
   (function renderHistory() {
     // One entry per major stop rather than one per city - a 14-night trip
-    // built around 8 distinct WWII sites across three countries reads thin
-    // at 4 entries. Each is tagged with the day it corresponds to on THIS
-    // itinerary (cross-checked against the real trip-data.json, not
-    // guessed) so it reads as context for a specific day, not a detached
-    // encyclopedia list. Historical claims here were verified via WebSearch
-    // as part of the mandatory prose fact-check sweep (see CLAUDE.md).
+    // built around 6 distinct WWII sites (plus Mont-Saint-Michel, a major
+    // non-WWII historical stop) reads thin at 4 entries. Each is tagged
+    // with the day it corresponds to on THIS itinerary (cross-checked
+    // against the real trip-data.json, not guessed) so it reads as
+    // context for a specific day, not a detached encyclopedia list.
+    // Historical claims here were verified via WebSearch as part of the
+    // mandatory prose fact-check sweep (see CLAUDE.md).
     var entries = [
       { day: 'Day 3', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
       { day: 'Day 4', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip.' },
@@ -1051,8 +1042,7 @@
       { day: 'Day 7', title: 'Armored warfare & The Tank Museum', body: 'Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
       { day: 'Day 8', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today, and it sits on this day’s self-drive route. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing.' },
       { day: 'Day 9', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England — though the museum housing it is closed for renovation through October 2027, so it isn’t part of this visit.)' },
-      { day: 'Day 10', title: 'The Nuremberg Trials & Courtroom 600', body: 'Room 600 of the Nuremberg Palace of Justice hosted the International Military Tribunal (Nov 1945–Oct 1946), where Hermann Göring, Albert Speer, Rudolf Hess, and 21 other senior Nazi officials were tried for war crimes and crimes against humanity — the first trials of their kind. The room continued as a working Bavarian courtroom for ordinary cases for decades afterward, but stopped hosting real trials in March 2020, when it was folded permanently into the Memorium museum exhibit.' },
-      { day: 'Day 10', title: 'The Nazi Party Rally Grounds & Documentation Center', body: 'From 1933–1938, Nuremberg hosted the NSDAP’s annual party rallies on these grounds — mass propaganda spectacles captured in Leni Riefenstahl’s "Triumph of the Will." The Congress Hall, modeled on Rome’s Colosseum and designed by Albert Speer to hold 50,000, was never finished; it now houses the Documentation Center, a museum on the machinery of Nazi ideology and propaganda built directly into the unfinished structure.' },
+      { day: 'Day 10', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
       { day: 'Days 12–13', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
@@ -1211,23 +1201,17 @@
 
   /* ---------------------------------------------------------
      BOOKING ACTIONS — everything bookable that ISN'T a restaurant:
-     lodging (VRBOs, the Nuremberg hotel choice), museum/attraction
-     tickets, the rental car, the ferry/Eurotunnel choice, the Douro
-     Valley tour, and one thing that's a phone call, not a booking.
-     Curated, not derived from a data field (Activity/Transport items
-     have no "needs advance booking" flag to key off), the same way
-     the History entries are hand-mapped to specific days rather than
-     computed. Each entry's guidance was researched per-venue (real,
-     current policies as of this writing) - NOT a blanket "book
-     everything early" rule, because the venues genuinely don't agree
-     with each other: the Battle of Britain Bunker is MANDATORY
-     pre-book with no walk-in option at all, the Tank Museum needs no
-     advance booking whatsoever, and Nuremberg's Courtroom 600 isn't
-     bookable in advance at all - it needs a confirmation PHONE CALL
-     1-2 days before the visit, since court sessions can close it
-     unpredictably. Getting that last one wrong (treating it as a
-     normal "book ahead" item, or skipping it because there's nothing
-     to actually book) would have been actively bad advice.
+     lodging (VRBOs), museum/attraction tickets, the rental car, the
+     overnight ferry, and the Douro Valley tour. Curated, not derived
+     from a data field (Activity/Transport items have no "needs
+     advance booking" flag to key off), the same way the History
+     entries are hand-mapped to specific days rather than computed.
+     Each entry's guidance was researched per-venue (real, current
+     policies as of this writing) - NOT a blanket "book everything
+     early" rule, because the venues genuinely don't agree with each
+     other: the Battle of Britain Bunker is MANDATORY pre-book with no
+     walk-in option at all, the Tank Museum needs no advance booking
+     whatsoever.
      --------------------------------------------------------- */
   (function renderBookingActions() {
     var el = document.getElementById('bookingActionsTimeline');
@@ -1261,27 +1245,17 @@
       {
         dayIdx: 6, kind: 'soon',
         title: 'Rental car pickup (Day 7 morning)',
-        note: 'Pickup location not yet chosen. Book a larger vehicle for comfort — the Bovington→Normandy→Nuremberg leg is several long driving days in a row. Reserve soon; larger-vehicle availability tightens closer to the date.',
+        note: 'Pickup location not yet chosen. Book a larger vehicle for comfort — the Bovington→Portsmouth leg, then the Bayeux-based Normandy touring days, are several long driving days in a row. Reserve soon; larger-vehicle availability tightens closer to the date.',
       },
       {
-        dayIdx: 6, kind: 'soon',
-        title: 'Portsmouth–Caen ferry or Eurotunnel (Day 7 afternoon)',
-        note: 'Neither is booked yet, and the plan hasn\'t picked one: Brittany Ferries Portsmouth→Caen/Ouistreham (6h crossing) or Eurotunnel Folkestone→Calais (35 min, then a 3h drive to Bayeux). Book whichever is chosen in advance — fares on both rise closer to the date.',
+        dayIdx: 6, kind: 'urgent',
+        title: 'Overnight Brittany Ferries crossing — book the cabin (Day 7 night)',
+        note: 'Portsmouth→Ouistreham (Caen), departs 10:45 PM arrives ~7:45 AM, approx. 8 hrs. Book a cabin, not just a seat, for an overnight sailing — cabins sell out ahead of the crossing date. +44 330 159 7000 or brittany-ferries.co.uk.',
       },
       {
-        dayIdx: 6, kind: 'soon',
-        title: 'Normandy lodging (Day 7 check-in, Bayeux area)',
-        note: 'Not booked yet — VRBO or boutique hotel, traveler\'s choice. Late arrival expected ~9 PM; notify the host/hotel of the late check-in once booked.',
-      },
-      {
-        dayIdx: 8, kind: 'soon',
-        title: 'Nuremberg hotel — pick one (Day 9 check-in)',
-        note: 'Two options on the table, neither booked: Hotel Drei Raben (+49 911 274380, hotel-drei-raben.de) or Sorat Hotel Saxx Nürnberg. Pick one and book — late arrival expected ~8:30 PM.',
-      },
-      {
-        dayIdx: 9, kind: 'urgent',
-        title: 'Confirm Courtroom 600 is open (Day 10, call 1–2 days ahead)',
-        note: 'CRITICAL and easy to forget because it\'s a call, not a booking: Courtroom 600 closes unpredictably when a real court session is scheduled. Call the Memorium Nürnberger Prozesse at +49 911 3217 9372 one to two days before Wednesday Oct 21 to confirm it\'s open for tours that day. Set a reminder for ~Oct 19–20 — this itinerary could not independently confirm whether a weekday visit is as reliable as a Saturday one, so don\'t skip the call.',
+        dayIdx: 7, kind: 'soon',
+        title: 'Normandy lodging (Day 8 check-in, Bayeux area)',
+        note: 'Not booked yet — VRBO or boutique hotel, traveler\'s choice, 3 nights (Oct 19–22). Late arrival expected ~9:30 PM after the ferry docks and a full day of D-Day sites; notify the host/hotel of the late check-in once booked.',
       },
       {
         dayIdx: 10, kind: 'urgent',
@@ -1449,7 +1423,6 @@
     var l = loc.toLowerCase();
     if (l.indexOf('london') !== -1 || /sw1|se1|wc1|wc2|ec1|ec3|west end|uxbridge|bletchley|bovington|dorset/.test(l)) return 'London';
     if (l.indexOf('normandy') !== -1 || l.indexOf('caen') !== -1 || l.indexOf('cricqueville') !== -1 || l.indexOf('sainte-marie') !== -1 || l.indexOf('sainte-mère') !== -1 || l.indexOf('bayeux') !== -1 || l.indexOf('mont-saint-michel') !== -1 || l.indexOf('colleville') !== -1) return 'Normandy';
-    if (l.indexOf('nuremberg') !== -1 || l.indexOf('nürnberg') !== -1) return 'Nuremberg';
     if (l.indexOf('porto') !== -1 || l.indexOf('gaia') !== -1 || l.indexOf('douro') !== -1 || l.indexOf('sabrosa') !== -1 || l.indexOf('regua') !== -1) return 'Porto';
     return 'London';
   }
@@ -1782,7 +1755,6 @@
     var CITY_TZ = {
       London: { tz: 'Europe/London', flag: '🇬🇧' },
       Normandy: { tz: 'Europe/Paris', flag: '🇫🇷' },
-      Nuremberg: { tz: 'Europe/Berlin', flag: '🇩🇪' },
       Porto: { tz: 'Europe/Lisbon', flag: '🇵🇹' }
     };
     var HOME_TZ = 'America/Chicago'; // traveler's actual home base is Dallas, TX (Central), not the EWR departure city
