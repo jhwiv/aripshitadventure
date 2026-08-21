@@ -347,6 +347,65 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **London lodging updated from an unbooked placeholder to a real Airbnb
+  listing, sourced from the traveler's own email, not guessed
+  (2026-08-21).** Asked to "look through my email and find updated lodging
+  for the trip and update the app," with the travelers identified as
+  Jonathan and Benjamin Ripchick. Searched the connected Gmail account and
+  found two real signals from Jonathan (`jrippy1971@gmail.com`), both sent
+  the same evening: a shared Airbnb room link ("Rental unit in Greater
+  London · ★4.64 · 2 bedrooms · 3 beds · 1 bath", listing id
+  `1301482252564927308`) and a matching Airbnb co-traveler trip invite
+  ("Join my trip to Greater London") — together, a real signal that this
+  replaces the earlier "VRBO rental (traveler to book)" placeholder.
+  - **What was NOT in the email, and was NOT guessed:** the exact street
+    address, the host name, and the price. Airbnb never exposes those in a
+    shared-listing email before booking, and this sandbox's egress policy
+    blocks `airbnb.com` outright (confirmed via `WebFetch`, not assumed) —
+    so there was no way to independently verify them. Per this file's own
+    HARD RULE (never emit an address/phone/price that hasn't been verified
+    against an external source), the hotel object's `address` and `phone`
+    are left `null`, `website` is set to the canonical (tracking-param
+    stripped) listing URL from the email, and `confirmation_note` explains
+    exactly what is and isn't confirmed and tells the traveler to get the
+    real address from Jonathan directly.
+  - Every generic "VRBO" reference tied to the London leg was updated to
+    "Airbnb" for consistency — the Day 2 check-in/Day 7 check-out items,
+    four other same-day item texts that referred back to "the VRBO"
+    informally, the city-card `stay`/`transport_in` fields, the
+    introduction's `differentiators` text, and the booking-actions
+    timeline entry (re-titled "confirm address" rather than "not booked
+    yet," since it now clearly is booked, just not fully documented here).
+  - **Porto lodging: found a signal but deliberately did NOT act on it as
+    a replacement.** The same email search also turned up "Join my trip to
+    Porto" (an Airbnb co-traveler trip invite, cc'ing a second address)
+    sent the same evening — but unlike London, it carried no listing link
+    or any other detail. The existing plan already has a specific,
+    PDF-sourced Porto VRBO with an address and phone number ("VRBO
+    confirmation in hand"). Overwriting that with "Airbnb, details
+    unknown" on the strength of a bare trip-invite email would have been a
+    guess, not a finding — this file's own personal/contextual-facts rule
+    is "never infer, always ask or leave unconfirmed." Left the existing
+    VRBO data intact and added an explicit `FLAG:` note (in both the Day
+    11 check-in and Day 15 check-out hotel objects, plus the
+    booking-actions entry, re-titled "confirm which property") surfacing
+    the ambiguity for the traveler to resolve, rather than picking a side.
+  - Normandy: no new lodging email found at all (searched broadly for
+    Bayeux/Normandy/Caen alongside Jonathan's address); left untouched.
+  - Verified live via Playwright against a local static server: the
+    London Airbnb details render correctly in the city tab, the Air &
+    Hotel tab's hotel table, and the condensed city cards; the
+    booking-actions timeline shows the reworded London and Porto entries;
+    zero console errors; the stale placeholder hotel name
+    ("VRBO rental (traveler to book)") no longer appears anywhere for
+    London.
+  - Did not touch anything outside lodging, per the task's scope — even
+    though the same email search surfaced three now-CONFIRMED London
+    Walks tour reservations (Disastrous London walk, Thames cruise,
+    Kensington Royal Village tour) that the booking-actions timeline still
+    lists as "book soon," left for a separate pass since the traveler
+    asked specifically about lodging.
+
 - **Nuremberg dropped again, overnight ferry restored, 3 real Normandy
   nights restored (2026-08-21) — direct traveler correction of the
   2026-08-18 rebuild below, same day it shipped.** The traveler reported

@@ -7,8 +7,8 @@
       "nights": 5,
       "days_range": "Day 1–Day 7",
       "focus": "WWII history — Churchill War Rooms, Imperial War Museum, Battle of Britain Bunker, West End shows (Phantom, Hamilton), Thames",
-      "stay": "VRBO rental (traveler to book — Marylebone, South Kensington, or Bloomsbury suggested)",
-      "transport_in": "Fly EWR→LHR · 7h 15m nonstop · United UA940 · then Heathrow Express + Tube/Uber to VRBO"
+      "stay": "Airbnb rental unit, Greater London (2 bedrooms, 3 beds, 1 bath, ★4.64) — exact address not yet confirmed",
+      "transport_in": "Fly EWR→LHR · 7h 15m nonstop · United UA940 · then Heathrow Express + Tube/Uber to Airbnb"
     },
     {
       "name": "Normandy",
@@ -23,13 +23,13 @@
       "nights": 4,
       "days_range": "Day 11–Day 15",
       "focus": "Port cellars (Graham's), Douro wine country (Quinta do Vallado), Ribeira, Livraria Lello, Clérigos Tower",
-      "stay": "Porto VRBO rental, Ribeira district",
+      "stay": "Porto lodging — Jonathan started an Airbnb trip for this leg (Aug 21, 2026) but no specific listing has been shared yet; not yet confirmed",
       "transport_in": "Private driver to Paris CDG (~2h45m) · Fly CDG→OPO nonstop · Air France · then private driver to VRBO"
     }
   ],
   "introduction": {
     "arc": "This itinerary threads WWII history across Britain and Normandy before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a Thames river cruise, before a long day at the Tank Museum in Bovington carries the trip into Normandy via an overnight Channel ferry. Three days based in Bayeux cover the American D-Day beaches, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel, before the drive continues to Paris for the flight south. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell dinner at The Yeatman — a deliberate exhale after the weight of history.",
-    "differentiators": "London is lodged in a VRBO rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell dinner at The Yeatman are earned grace notes after eight days of history."
+    "differentiators": "London is lodged in an Airbnb rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell dinner at The Yeatman are earned grace notes after eight days of history."
   },
   "days": [
     {
@@ -72,7 +72,7 @@
     {
       "label": "Day 2 · Tue Oct 13 · Arrive London",
       "city": "London",
-      "headline": "Settle into the VRBO, then golden-hour spin on the London Eye",
+      "headline": "Settle into the Airbnb, then golden-hour spin on the London Eye",
       "weather": "High 59°F / low 48°F · partly cloudy with occasional drizzle risk",
       "items": [
         {
@@ -91,7 +91,7 @@
           "type": "Transport",
           "time": "11:00",
           "end_time": null,
-          "text": "Heathrow Express to Paddington, then Tube or Uber to VRBO — 60–75 min total",
+          "text": "Heathrow Express to Paddington, then Tube or Uber to the Airbnb — 60–75 min total",
           "location": null,
           "why": null,
           "contact": {
@@ -107,18 +107,18 @@
           "type": "Hotel",
           "time": "12:30",
           "end_time": null,
-          "text": "Check in to VRBO rental — location TBD by traveler",
+          "text": "Check in to Airbnb rental — Greater London",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "VRBO rental (traveler to book)",
+            "name": "Airbnb rental unit, Greater London (2 bedrooms, 3 beds, 1 bath, ★4.64)",
             "address": null,
             "phone": null,
-            "website": null,
+            "website": "https://www.airbnb.com/rooms/1301482252564927308",
             "check_in_time": "15:00",
-            "confirmation_note": "Not yet booked. Confirm early check-in or luggage drop with host once chosen. Suggested neighborhoods: Marylebone (walkable to West End, Regent's Park), South Kensington (museum quarter, quiet), or Bloomsbury (British Museum nearby, literary vibe)."
+            "confirmation_note": "Jonathan shared this Airbnb listing and sent a co-traveler trip invite by email on Aug 21, 2026 — appears to be the booked London lodging, replacing the earlier placeholder VRBO. Exact street address and price were not included in the email and could not be independently verified (no live access to airbnb.com from this session). Confirm the exact address and booking/payment status directly with Jonathan before relying on this for check-in."
           },
           "restaurant": null
         },
@@ -298,7 +298,7 @@
           "type": "Note",
           "time": "18:00",
           "end_time": null,
-          "text": "Free evening — rest at VRBO or explore Soho",
+          "text": "Free evening — rest at the Airbnb or explore Soho",
           "location": null,
           "why": null,
           "contact": null,
@@ -450,7 +450,7 @@
           "type": "Note",
           "time": "16:30",
           "end_time": null,
-          "text": "Free afternoon — return to VRBO or explore Kensington Gardens",
+          "text": "Free afternoon — return to the Airbnb or explore Kensington Gardens",
           "location": null,
           "why": null,
           "contact": null,
@@ -598,7 +598,7 @@
           "type": "Note",
           "time": "15:00",
           "end_time": null,
-          "text": "Return to VRBO, rest before evening",
+          "text": "Return to the Airbnb, rest before evening",
           "location": null,
           "why": null,
           "contact": null,
@@ -864,7 +864,7 @@
           "type": "Hotel",
           "time": "07:00",
           "end_time": null,
-          "text": "Check out of VRBO rental",
+          "text": "Check out of Airbnb rental",
           "location": null,
           "why": null,
           "contact": null,
@@ -1545,7 +1545,7 @@
             "phone": "+351 22 339 8000",
             "website": null,
             "check_in_time": "14:00",
-            "confirmation_note": "VRBO confirmation in hand — verify access instructions day before arrival."
+            "confirmation_note": "VRBO confirmation in hand — verify access instructions day before arrival. FLAG: Jonathan sent a 'Join my trip to Porto' Airbnb co-traveler invite by email on Aug 21, 2026 with no specific listing attached — unclear whether this is separate trip coordination or signals the Porto lodging is changing to an Airbnb. No new address/listing was shared, so this VRBO entry has not been overwritten. Confirm directly with Jonathan which property is actually booked before relying on this."
           },
           "restaurant": null
         },
@@ -2067,7 +2067,7 @@
             "phone": "+351 22 339 8000",
             "website": null,
             "check_out_time": "11:00",
-            "confirmation_note": "Arrange key drop-off with host night before."
+            "confirmation_note": "Arrange key drop-off with host night before. FLAG: see Day 11 check-in note — an unconfirmed Airbnb trip invite for Porto was sent Aug 21, 2026; confirm which property is actually booked."
           },
           "restaurant": null
         },

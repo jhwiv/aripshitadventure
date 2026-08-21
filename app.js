@@ -1218,9 +1218,9 @@
     if (!el) return;
     var ACTIONS = [
       {
-        dayIdx: 1, kind: 'urgent',
-        title: 'London VRBO (Day 2 check-in)',
-        note: 'Not booked yet — this is a real gap, not a formality. 5 nights, Oct 13–18. Suggested neighborhoods: Marylebone (walkable to West End, Regent\'s Park), South Kensington (museum quarter, quiet), or Bloomsbury (British Museum nearby, literary vibe). Once booked, confirm early check-in or luggage drop with the host given the overnight-flight arrival.',
+        dayIdx: 1, kind: 'soon',
+        title: 'London Airbnb (Day 2 check-in) — confirm address',
+        note: 'Jonathan shared an Airbnb listing and sent a co-traveler trip invite by email (2 bedrooms, 3 beds, 1 bath, ★4.64, Greater London) — appears to be the booked lodging for the 5 nights Oct 13–18, but the exact address wasn\'t in the email. Get the confirmed address and check-in instructions from Jonathan before departure, and confirm early check-in or luggage drop given the overnight-flight arrival.',
       },
       {
         dayIdx: 2, kind: 'urgent',
@@ -1259,8 +1259,8 @@
       },
       {
         dayIdx: 10, kind: 'urgent',
-        title: 'Porto VRBO (Day 11 check-in)',
-        note: 'Not booked yet. 4 nights, Oct 22–26. Ribeira or Miragaia suggested — walking distance to the port cellars in Vila Nova de Gaia.',
+        title: 'Porto lodging — confirm which property (Day 11 check-in)',
+        note: 'The plan carries a VRBO confirmation for Ribeira (4 nights, Oct 22–26), but Jonathan sent a separate, unconfirmed \'Join my trip to Porto\' Airbnb invite by email on Aug 21, 2026 with no listing attached — unclear if the Porto lodging is changing. Confirm which property is actually booked with Jonathan before the trip.',
       },
       {
         dayIdx: 12, kind: 'soon',
