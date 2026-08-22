@@ -15,7 +15,7 @@
       "nights": 3,
       "days_range": "Day 7–Day 11",
       "focus": "Tank Museum Bovington, D-Day beaches (Omaha, American Cemetery), self-guided Bayeux, Mont-Saint-Michel",
-      "stay": "Normandy VRBO or boutique hotel (traveler to book), Bayeux area",
+      "stay": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno), 4 Rue Franche",
       "transport_in": "Drive London→Bovington (Tank Museum)→Portsmouth, overnight Brittany Ferries crossing to Ouistreham (Caen) — approx. 8 hrs, cabin booked"
     },
     {
@@ -1180,17 +1180,18 @@
           "type": "Hotel",
           "time": "21:30",
           "end_time": null,
-          "text": "Check in to Normandy lodging (Bayeux area)",
+          "text": "Check in to Home in Bayeux (Airbnb)",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "Normandy VRBO or boutique hotel (traveler to book)",
-            "address": "Bayeux area, France",
+            "name": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)",
+            "address": "4 Rue Franche, Bayeux, France",
             "phone": null,
             "website": null,
-            "confirmation_note": "Not yet booked. Confirm early check-in or luggage drop with host once chosen — the traveler is out touring most of the day and won't check in until evening."
+            "check_in_time": "17:00",
+            "confirmation_note": "Confirmed Airbnb booking (per traveler's Airbnb app screenshot) — check-in from 5:00 PM, but the plan has the traveler touring most of the day and not arriving until 9:30 PM. Message host Bruno ahead of arrival to confirm late self-check-in / lockbox instructions."
           },
           "restaurant": null
         }
@@ -1451,8 +1452,8 @@
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "Normandy VRBO or boutique hotel (traveler to book)",
-            "address": "Bayeux area, France",
+            "name": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)",
+            "address": "4 Rue Franche, Bayeux, France",
             "phone": null,
             "website": null
           },
@@ -1470,12 +1471,19 @@
           "type": "Hotel",
           "time": "08:00",
           "end_time": null,
-          "text": "Check out of Normandy lodging",
+          "text": "Check out of Home in Bayeux (Airbnb)",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
-          "hotel": null,
+          "hotel": {
+            "name": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)",
+            "address": "4 Rue Franche, Bayeux, France",
+            "phone": null,
+            "website": null,
+            "check_out_time": "12:00",
+            "confirmation_note": "Official checkout is 12:00 PM, but the traveler is leaving well before that (~8:00 AM) to make the 13:00 CDG-OPO flight — leaving early is fine, no host coordination needed for an early (vs. late) departure."
+          },
           "restaurant": null
         },
         {

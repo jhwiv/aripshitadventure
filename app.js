@@ -1254,8 +1254,8 @@
       },
       {
         dayIdx: 7, kind: 'soon',
-        title: 'Normandy lodging (Day 8 check-in, Bayeux area)',
-        note: 'Not booked yet — VRBO or boutique hotel, traveler\'s choice, 3 nights (Oct 19–22). Late arrival expected ~9:30 PM after the ferry docks and a full day of D-Day sites; notify the host/hotel of the late check-in once booked.',
+        title: 'Normandy Airbnb — message host about late arrival (Day 8 check-in)',
+        note: 'Booked — "Home in Bayeux," 4 Rue Franche, hosted by Bruno, 3 nights (check-in Mon Oct 19 5:00 PM, checkout Thu Oct 22 12:00 PM). Late arrival expected ~9:30 PM after the ferry docks and a full day of D-Day sites — message Bruno ahead of time to confirm self-check-in/lockbox instructions for that late.',
       },
       {
         dayIdx: 10, kind: 'urgent',

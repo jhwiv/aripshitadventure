@@ -347,6 +347,48 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Real Normandy Airbnb booking added from a traveler-supplied screenshot
+  (2026-08-22), replacing the last remaining lodging placeholder.** The
+  traveler shared a screenshot of the Airbnb app's own reservation screen
+  — "Home in Bayeux," hosted by Bruno, check-in Mon Oct 19 5:00 PM,
+  checkout Thu Oct 22 12:00 PM, address "4 Rue Franche," description
+  "Furnished 3* apartment with cathedral view" — and asked to "add the
+  appropriate night." This is a first-party screenshot of the actual
+  booking record, a stronger source than the prior pass's forwarded
+  emails, so every fact on it was taken as fact (name, host, address,
+  check-in/checkout times) rather than re-flagged as unconfirmed.
+  - **Night math checked before writing anything, not assumed:** Oct 19
+    check-in → Oct 22 checkout is exactly 3 nights, matching the existing
+    Day 8/9/10 Normandy stay structure precisely — no day shifting needed,
+    just filling in the real property on the three touchpoints (Day 8
+    check-in item, Day 10 "last Normandy night" reminder, Day 11 checkout
+    item).
+  - **Found and reconciled a real, if harmless, time gap:** the plan's
+    checkout item is at 08:00 AM (to leave enough buffer for the 2h45m
+    drive to Paris CDG before a 13:00 flight), but the Airbnb's actual
+    checkout deadline is 12:00 PM. Checked whether this was a conflict —
+    it isn't: a checkout time is a "no later than" bound, not a required
+    departure time, so leaving 4 hours early needs no host coordination.
+    Recorded both facts in the checkout item's `confirmation_note` rather
+    than silently using only one and hiding the discrepancy.
+  - Updated all three Day 8/10/11 `hotel` objects, the Normandy city card
+    `stay` field, and the booking-actions timeline entry (retitled to
+    "message host about late arrival" now that the property itself is
+    confirmed — the 9:30 PM arrival vs. 5:00 PM check-in-start gap is the
+    one real remaining action).
+  - Verified live via Playwright: "Home in Bayeux," the host name, and the
+    address all render correctly in the Air & Hotel tab and the condensed
+    city card; no stale "traveler to book" placeholder text remains
+    anywhere for Normandy; the derived night count (via the same
+    hotel-event QA script used throughout this file's history) is still
+    exactly 3 Normandy nights. Noted for the record, not fixed as part of
+    this pass: the day-by-day city-tab Hotel item card shows only
+    `item.text` (e.g. "Check in to Home in Bayeux (Airbnb)"), not
+    `item.hotel.address`/host inline — this matches how every hotel item
+    on this site has always rendered (full details live in the Air &
+    Hotel tab and city summary card, confirmed still true here), not a
+    regression introduced by this change.
+
 - **"Take email info as canonical" (2026-08-22) — follow-up to the lodging
   pass below, resolving the Porto ambiguity that pass deliberately left
   open, plus a render-path audit gap found while acting on it.**
