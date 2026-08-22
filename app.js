@@ -50,10 +50,10 @@
     'Riverside Building, County Hall, London SE1 7PB': 'London Eye',
     'Clive Steps, King Charles Street, London SW1A 2AQ': 'Churchill War Rooms',
     'Lambeth Road, London SE1 6HZ': 'Imperial War Museum London',
-    'Departs High Street Kensington Station, Kensington High St, London W8': 'Kensington Royal Village Walk (departs High St Kensington)',
+    'High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)': 'Kensington Royal Village Walk (departs High St Kensington)',
     "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN": 'Battle of Britain Bunker',
-    'Embankment Pier, Victoria Embankment, London WC2N 6NU': 'Thames River Cruise (Embankment Pier)',
-    'Barbican Tube Station exit, Aldersgate St, London EC1A': 'Disastrous London Walk (departs Barbican)',
+    'Embankment Underground station, London (river exit)': "Thames Sightseeing, Brunel's River Walk (departs Embankment)",
+    'Barbican Underground station, London': 'Disastrous London Walk (departs Barbican)',
     'Bovington Camp, Wareham, Dorset BH20 6JG': 'The Tank Museum, Bovington',
     'Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer': 'Omaha Beach',
     'American Cemetery, 14710 Colleville-sur-Mer, France': 'Normandy American Cemetery',
@@ -1220,7 +1220,7 @@
       {
         dayIdx: 1, kind: 'soon',
         title: 'London Airbnb (Day 2 check-in) — confirm address',
-        note: 'Jonathan shared an Airbnb listing and sent a co-traveler trip invite by email (2 bedrooms, 3 beds, 1 bath, ★4.64, Greater London) — appears to be the booked lodging for the 5 nights Oct 13–18, but the exact address wasn\'t in the email. Get the confirmed address and check-in instructions from Jonathan before departure, and confirm early check-in or luggage drop given the overnight-flight arrival.',
+        note: 'Booked via Airbnb — Jonathan shared the listing and a co-traveler trip invite by email (2 bedrooms, 3 beds, 1 bath, ★4.64, Greater London) for the 5 nights Oct 13–18. The exact address wasn\'t in the email itself, so get it plus check-in instructions from Jonathan before departure, and confirm early check-in or luggage drop given the overnight-flight arrival.',
       },
       {
         dayIdx: 2, kind: 'urgent',
@@ -1259,8 +1259,8 @@
       },
       {
         dayIdx: 10, kind: 'urgent',
-        title: 'Porto lodging — confirm which property (Day 11 check-in)',
-        note: 'The plan carries a VRBO confirmation for Ribeira (4 nights, Oct 22–26), but Jonathan sent a separate, unconfirmed \'Join my trip to Porto\' Airbnb invite by email on Aug 21, 2026 with no listing attached — unclear if the Porto lodging is changing. Confirm which property is actually booked with Jonathan before the trip.',
+        title: 'Porto Airbnb — get the listing (Day 11 check-in)',
+        note: 'Booked via Airbnb — Jonathan sent a co-traveler trip invite by email on Aug 21, 2026 for the 4 nights Oct 22–26, replacing the earlier VRBO placeholder. No specific listing or address was attached to the invite, so get the actual property and check-in instructions from Jonathan before the trip.',
       },
       {
         dayIdx: 12, kind: 'soon',

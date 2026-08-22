@@ -7,7 +7,7 @@
       "nights": 5,
       "days_range": "Day 1–Day 7",
       "focus": "WWII history — Churchill War Rooms, Imperial War Museum, Battle of Britain Bunker, West End shows (Phantom, Hamilton), Thames",
-      "stay": "Airbnb rental unit, Greater London (2 bedrooms, 3 beds, 1 bath, ★4.64) — exact address not yet confirmed",
+      "stay": "Airbnb rental unit, Greater London (2 bedrooms, 3 beds, 1 bath, ★4.64) — booked; exact address pending from Jonathan",
       "transport_in": "Fly EWR→LHR · 7h 15m nonstop · United UA940 · then Heathrow Express + Tube/Uber to Airbnb"
     },
     {
@@ -23,12 +23,12 @@
       "nights": 4,
       "days_range": "Day 11–Day 15",
       "focus": "Port cellars (Graham's), Douro wine country (Quinta do Vallado), Ribeira, Livraria Lello, Clérigos Tower",
-      "stay": "Porto lodging — Jonathan started an Airbnb trip for this leg (Aug 21, 2026) but no specific listing has been shared yet; not yet confirmed",
-      "transport_in": "Private driver to Paris CDG (~2h45m) · Fly CDG→OPO nonstop · Air France · then private driver to VRBO"
+      "stay": "Airbnb rental, Porto (booked via Jonathan's Aug 21, 2026 email; specific listing/address not yet shared)",
+      "transport_in": "Private driver to Paris CDG (~2h45m) · Fly CDG→OPO nonstop · Air France · then private driver to Airbnb"
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain and Normandy before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a Thames river cruise, before a long day at the Tank Museum in Bovington carries the trip into Normandy via an overnight Channel ferry. Three days based in Bayeux cover the American D-Day beaches, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel, before the drive continues to Paris for the flight south. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell dinner at The Yeatman — a deliberate exhale after the weight of history.",
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a guided Thames walking tour, before a long day at the Tank Museum in Bovington carries the trip into Normandy via an overnight Channel ferry. Three days based in Bayeux cover the American D-Day beaches, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel, before the drive continues to Paris for the flight south. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell dinner at The Yeatman — a deliberate exhale after the weight of history.",
     "differentiators": "London is lodged in an Airbnb rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell dinner at The Yeatman are earned grace notes after eight days of history."
   },
   "days": [
@@ -118,7 +118,7 @@
             "phone": null,
             "website": "https://www.airbnb.com/rooms/1301482252564927308",
             "check_in_time": "15:00",
-            "confirmation_note": "Jonathan shared this Airbnb listing and sent a co-traveler trip invite by email on Aug 21, 2026 — appears to be the booked London lodging, replacing the earlier placeholder VRBO. Exact street address and price were not included in the email and could not be independently verified (no live access to airbnb.com from this session). Confirm the exact address and booking/payment status directly with Jonathan before relying on this for check-in."
+            "confirmation_note": "Booked via Airbnb, per Jonathan's shared listing and co-traveler trip invite by email on Aug 21, 2026 — replaces the earlier placeholder VRBO. Exact street address and price were not included in the email and could not be independently verified (no live access to airbnb.com from this session). Get the exact address and check-in instructions directly from Jonathan before departure."
           },
           "restaurant": null
         },
@@ -432,15 +432,15 @@
           "type": "Activity",
           "time": "14:00",
           "end_time": "16:00",
-          "text": "London Walks: Kensington Royal Village walking tour",
-          "location": "Departs High Street Kensington Station, Kensington High St, London W8",
-          "why": "A guided ramble through one of London's most elegant neighborhoods — palace gates, hidden mews, and the streets around Kensington Palace where royal-watchers gathered after Princess Diana's death in 1997. (The funeral service itself was at Westminster Abbey, not a Kensington church — the walk's connection is to the palace and the public mourning, not the service.) London Walks guides are the gold standard.",
+          "text": "London Walks: Kensington Royal Village walking tour — RESERVED",
+          "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
+          "why": "A guided ramble through one of London's most elegant neighborhoods — palace gates, hidden mews, and the streets around Kensington Palace where royal-watchers gathered after Princess Diana's death in 1997. (The funeral service itself was at Westminster Abbey, not a Kensington church — the walk's connection is to the palace and the public mourning, not the service.) London Walks guides are the gold standard. RESERVED: confirmed by email 2026-08-21, Walk ID 110, 2 attendees — meet by the Wasabi restaurant at the end of the shopping arcade linking High St Kensington station to the High Street, 5 min before start.",
           "contact": {
             "phone": "+44 20 7624 3978",
             "website": "https://www.walks.com",
-            "booking_note": "No reservation — just show up at the station exit 5 min before start. Bring cash.",
-            "hours": "Thursdays 2 PM (also offered Saturdays 2 PM) — confirmed current schedule",
-            "price": "£15/adult cash at start (no advance booking)"
+            "booking_note": "Reservation confirmed by email (Aug 21, 2026) for 2 attendees, Walk ID 110. Meet at the exact spot above 5 min before start.",
+            "hours": "2:00 PM, 15/10/2026 (confirmed booking)",
+            "price": "£15/adult cash at start (per London Walks standard pricing — exact price not restated in the confirmation email)"
           },
           "flight": null,
           "hotel": null,
@@ -698,15 +698,15 @@
           "type": "Activity",
           "time": "10:00",
           "end_time": "11:30",
-          "text": "Thames sightseeing river cruise from Embankment Pier",
-          "location": "Embankment Pier, Victoria Embankment, London WC2N 6NU",
-          "why": "The river is London's spine — you'll see the Tower, the Globe, the Shard, and Greenwich from the only angle that makes the city's layered history snap into focus.",
+          "text": "London Walks: Thames Sightseeing, Brunel's River Walk — RESERVED",
+          "location": "Embankment Underground station, London (river exit)",
+          "why": "A guided walk along the Thames tracing Brunel's river engineering and the history of the working river — a walking tour, not a boat ride, despite the name. RESERVED: confirmed by email 2026-08-21, Walk ID 3315, 2 attendees — meet at Embankment Underground station's river exit, 5 min before start.",
           "contact": {
-            "phone": "+44 20 7740 0400",
-            "website": "https://www.citycruises.com",
-            "booking_note": "Book online for 10% discount; hop-on/hop-off tickets available.",
-            "hours": "Daily 10:00 AM–6:00 PM; frequent departures every 30–40 min",
-            "price": "£16–20/adult"
+            "phone": "+44 20 7624 3978",
+            "website": "https://www.walks.com",
+            "booking_note": "Reservation confirmed by email (Aug 21, 2026) for 2 attendees, Walk ID 3315. This replaces an earlier placeholder City Cruises boat-tour entry — the traveler's actual booking is this London Walks guided walk, not a boat cruise. Meet at the exact spot above 5 min before start.",
+            "hours": "10:00 AM, 17/10/2026 (confirmed booking)",
+            "price": "Cash at start, per London Walks standard pricing — exact price not restated in the confirmation email"
           },
           "flight": null,
           "hotel": null,
@@ -776,15 +776,15 @@
           "type": "Activity",
           "time": "14:30",
           "end_time": "16:30",
-          "text": "London Walks: Disastrous London walk departing Barbican Station",
-          "location": "Barbican Tube Station exit, Aldersgate St, London EC1A",
-          "why": "The Great Fire, plague, Blitz bombing sites, and architectural calamities — a darkly witty romp through London's resilience.",
+          "text": "London Walks: Disastrous London walk departing Barbican Station — RESERVED",
+          "location": "Barbican Underground station, London",
+          "why": "The Great Fire, plague, Blitz bombing sites, and architectural calamities — a darkly witty romp through London's resilience. RESERVED: confirmed by email 2026-08-21, Walk ID 430, 2 attendees — meet at the Barbican Underground station exit, 5 min before start.",
           "contact": {
             "phone": "+44 20 7624 3978",
             "website": "https://www.walks.com",
-            "booking_note": "No reservation needed — just show up at Barbican Station exit 5 min before start time.",
-            "hours": "Saturdays at 2:30 PM year-round",
-            "price": "£12/adult, cash only at start of walk"
+            "booking_note": "Reservation confirmed by email (Aug 21, 2026) for 2 attendees, Walk ID 430. Meet at the station exit 5 min before start.",
+            "hours": "2:30 PM, 17/10/2026 (confirmed booking)",
+            "price": "£12/adult, cash at start (per London Walks standard pricing — exact price not restated in the confirmation email)"
           },
           "flight": null,
           "hotel": null,
@@ -1520,7 +1520,7 @@
           "type": "Transport",
           "time": "15:35",
           "end_time": null,
-          "text": "Private driver from Porto Airport (OPO) to VRBO — 30 min via A20",
+          "text": "Private driver from Porto Airport (OPO) to Airbnb — 30 min via A20",
           "location": null,
           "why": "Book via hotel concierge or GetYourGuide",
           "contact": {
@@ -1534,18 +1534,18 @@
           "type": "Hotel",
           "time": "16:05",
           "end_time": null,
-          "text": "Check in to Porto VRBO rental",
+          "text": "Check in to Porto Airbnb",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "Porto VRBO rental",
-            "address": "Ribeira district, Porto",
-            "phone": "+351 22 339 8000",
+            "name": "Porto Airbnb (specific listing not yet shared)",
+            "address": null,
+            "phone": null,
             "website": null,
             "check_in_time": "14:00",
-            "confirmation_note": "VRBO confirmation in hand — verify access instructions day before arrival. FLAG: Jonathan sent a 'Join my trip to Porto' Airbnb co-traveler invite by email on Aug 21, 2026 with no specific listing attached — unclear whether this is separate trip coordination or signals the Porto lodging is changing to an Airbnb. No new address/listing was shared, so this VRBO entry has not been overwritten. Confirm directly with Jonathan which property is actually booked before relying on this."
+            "confirmation_note": "Jonathan sent a 'Join my trip to Porto' Airbnb co-traveler invite by email on Aug 21, 2026, which supersedes the earlier VRBO placeholder — the Porto leg is now booked via Airbnb, per the traveler's own email. No specific listing, address, or price was included in that email, and airbnb.com is unreachable from this session to verify, so those fields are left blank rather than guessed. Get the exact address and check-in instructions from Jonathan before departure."
           },
           "restaurant": null
         },
@@ -1721,7 +1721,7 @@
             "neighborhood": "Foz do Douro",
             "cuisine": "Portuguese fine dining",
             "price_range": "$$$$",
-            "why": "One-Michelin-star tasting menu in a renovated Foz townhouse. Not walkable from the Ribeira VRBO — Foz do Douro is roughly 5–6 km out; plan for a taxi/Uber both ways.",
+            "why": "One-Michelin-star tasting menu in a renovated Foz townhouse. Not walkable from central Porto — Foz do Douro is roughly 5–6 km out; plan for a taxi/Uber both ways.",
             "contact": {
               "address": "Rua do Padre Luis Cabral 974, 4150-459 Porto",
               "phone": "+351 22 011 5986",
@@ -2056,18 +2056,18 @@
           "type": "Hotel",
           "time": "09:30",
           "end_time": null,
-          "text": "Check out of Porto VRBO",
+          "text": "Check out of Porto Airbnb",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "Porto VRBO rental",
-            "address": "Ribeira district, Porto",
-            "phone": "+351 22 339 8000",
+            "name": "Porto Airbnb (specific listing not yet shared)",
+            "address": null,
+            "phone": null,
             "website": null,
             "check_out_time": "11:00",
-            "confirmation_note": "Arrange key drop-off with host night before. FLAG: see Day 11 check-in note — an unconfirmed Airbnb trip invite for Porto was sent Aug 21, 2026; confirm which property is actually booked."
+            "confirmation_note": "See Day 11 check-in note — booked via Airbnb per Jonathan's Aug 21, 2026 email; get exact address and check-out/key-drop instructions from Jonathan before the trip."
           },
           "restaurant": null
         },
@@ -2075,7 +2075,7 @@
           "type": "Transport",
           "time": "10:00",
           "end_time": null,
-          "text": "Private driver from VRBO to Porto Airport (OPO) — 30 min via A20",
+          "text": "Private driver from Airbnb to Porto Airport (OPO) — 30 min via A20",
           "location": null,
           "why": "Same driver as arrival; confirm pickup time night before",
           "contact": {

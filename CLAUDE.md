@@ -347,6 +347,83 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **"Take email info as canonical" (2026-08-22) — follow-up to the lodging
+  pass below, resolving the Porto ambiguity that pass deliberately left
+  open, plus a render-path audit gap found while acting on it.**
+  1. **Porto lodging: the ambiguous "ambiguous, flag it" note from the
+     prior pass was replaced with a firm decision, per direct instruction.**
+     The bare "Join my trip to Porto" Airbnb invite (no listing attached)
+     now supersedes the PDF-sourced VRBO confirmation outright — both Day
+     11 check-in and Day 15 check-out `hotel` objects were changed from
+     `"Porto VRBO rental"` (with a specific-looking but now-superseded
+     address/phone) to `"Porto Airbnb (specific listing not yet shared)"`
+     with `address`/`phone` left `null`, since no listing was actually
+     shared and this session still cannot reach airbnb.com to find one.
+     The city card, booking-actions timeline entry, and a stray "Ribeira
+     VRBO" mention in the Pedro Lemos restaurant's `why` text were all
+     updated to match. Same treatment applied to London's hedged "appears
+     to be the booked lodging" language — firmed up to a direct statement,
+     consistent with treating the email as the source of truth rather than
+     a possible signal.
+  2. **Re-read the three forwarded London Walks confirmation emails in
+     full** (previously only skimmed as "now-confirmed tour bookings" and
+     explicitly left for a separate pass) — each contained real reservation
+     data the prior pass hadn't extracted: exact meeting points, attendee
+     counts, and a numeric Walk ID (Kensington Royal Village: ID 110, 2pm
+     15/10; Thames: ID 3315, 10am 17/10; Disastrous London: ID 430, 2:30pm
+     17/10). **One of the three was a bigger find than "now confirmed": the
+     existing Day 6 10am item was a generic City Cruises boat-cruise
+     placeholder, but Jonathan's actual reservation is for a London Walks
+     GUIDED WALKING TOUR** ("Thames Sightseeing, Brunel's River Walk") —
+     a different activity, not just a different booking status for the
+     same one. Replaced the City Cruises entry outright rather than
+     patching it. All three items' `location` fields were updated to the
+     email's exact meeting points, and `pins.json`/`LANDMARK_DISPLAY_NAMES`
+     (`app.js`) keys were renamed to match — both are keyed by exact string
+     match against `item.location`, so a location text change with no
+     matching key rename would have silently dropped the map pin, the
+     established failure pattern this file's playbook already warns about.
+  3. **Render-path audit gap, found while verifying the walk-ID text
+     actually appeared on screen (the file's own Verification Discipline
+     rule) rather than assuming a data field renders because a similar one
+     does:** `contact.booking_note`, `contact.hours`, and `contact.price`
+     are written into `trip-data.json` by the generator but **`app.js`
+     never reads any of the three for a generic Activity item** — confirmed
+     by grep (`booking_note` has zero matches in `app.js`) and by reading
+     `renderItemHTML` directly (only `item.contact.phone`/`.website` render
+     as links; `item.location` is used only to build the directions-link
+     search query, never shown as visible text). The first draft of this
+     fix put the Walk ID/confirmation status in exactly those three dead
+     fields — it would have been invisible on the live page despite being
+     "in the data," the identical failure shape this file's KNOWN FAILURE
+     MODE history (trip-optimizer's CLAUDE.md, same pattern) documents
+     repeatedly. Fixed by folding the essential facts (RESERVED status,
+     Walk ID, meeting point) into `item.why`, which **is** rendered
+     (`renderItemHTML`'s `item-why` div) — confirmed by re-running the
+     Playwright check and watching `hasWalkID` flip from `false` to `true`
+     against the live page, not assumed fixed from the code change alone.
+     `contact.booking_note`/`hours`/`price` were left populated in the data
+     (harmless, just currently unused) rather than deleted, since a future
+     render-path change could pick them up.
+  4. A first version of the `why` addition also editorialized about the
+     edit itself ("Replaces an earlier placeholder City Cruises boat-tour
+     entry") — appropriate for this decisions log, not for text a traveler
+     reads mid-trip. Trimmed to only the traveler-relevant facts before
+     shipping.
+
+  Verified live via Playwright against a local static server (fresh
+  instance, not reused from the prior pass): all three walks show
+  "— RESERVED" in the visible item title and their Walk ID/meeting-point
+  detail in the visible `why` text; no stale "City Cruises" text remains;
+  the Porto Airbnb (not VRBO) name/notes render in the city tab, Air &
+  Hotel tab, and booking-actions timeline; the map tab renders without
+  error with the three renamed landmark keys. Confirmed all three renamed
+  `location` strings have matching `pins.json` entries (Python cross-check
+  against the live `trip-data.json`), and that the only unmatched
+  locations (two London theatre addresses, one Normandy cemetery address
+  variant) are pre-existing gaps unrelated to this pass, not new
+  regressions — checked before writing this entry, not assumed clean.
+
 - **London lodging updated from an unbooked placeholder to a real Airbnb
   listing, sourced from the traveler's own email, not guessed
   (2026-08-21).** Asked to "look through my email and find updated lodging
