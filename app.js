@@ -1269,8 +1269,8 @@
       },
       {
         dayIdx: 12, kind: 'soon',
-        title: 'The Yeatman farewell dinner (Day 14, 8:00 PM)',
-        note: 'Call +351 22 013 3100 to reserve — a Michelin-recognized dining room on the last night deserves an advance booking, not a walk-in gamble.',
+        title: '1828 Steakhouse farewell dinner (Day 14, 8:00 PM)',
+        note: 'Call +351 22 012 1200 to reserve — a river-view table on the last night deserves an advance booking, not a walk-in gamble.',
       },
       {
         dayIdx: 0, kind: 'flex',

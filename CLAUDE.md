@@ -347,6 +347,81 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **All 16 non-simple restaurants replaced with real, verified simple
+  options for a finicky 20-year-old eater (2026-08-22).** Asked to change
+  out restaurants across the trip to suit a picky 20-year-old who likes
+  pasta, meat, and bread — not complex multi-component tasting-style
+  entrees or unfamiliar/spicy cuisines. Reviewed all 21 restaurant slots
+  in the plan and identified 16 that didn't fit the profile: Indian
+  (Cinnamon Club, Dishoom), Thai (Smoking Goat, Kiln), Spanish-Moorish
+  fusion (Moro), three Michelin-starred/tasting-menu venues (The Ledbury,
+  Pedro Lemos, The Yeatman), seafood-forward (Antunes), and several
+  chef-driven contemporary Portuguese spots (Cantinho do Avillez, DOC, and
+  — after actually checking their real menus rather than assuming — Le
+  Lion d'Or and O Paparico too, both genuinely composed/plated French and
+  traditional cuisine, not simple). 5 slots were already a good fit
+  (Regency Cafe, The Anchor Bankside, Bovington Tank Museum Cafe, La
+  Creperie du Vieux Chateau, Cafe Santiago) and were left untouched.
+  - **Delegated the actual restaurant research to a background agent**
+    rather than guessing plausible-sounding names — this app's hard rule
+    is no fabricated venue names/addresses/phones, and finding 16 real,
+    currently-operating, verified alternatives across 3 countries in one
+    pass would have been a huge inline context cost. The agent was given
+    the exact meal slot, the day's geographic/logistics constraint (e.g.
+    "near Westminster, traveler visits Churchill War Rooms that morning"),
+    and instructed to verify each pick via WebSearch (not just propose a
+    name), with a real backup for each.
+  - **The agent was also asked to evaluate two borderline picks (Le Lion
+    d'Or, O Paparico) rather than assume "French"/"traditional" means
+    simple** — it checked their actual menus and found both genuinely
+    fine-dining/composed (duckling in cocoa sauce, foie gras with a
+    peach tatin; a sealed-envelope surprise tasting menu), so both were
+    replaced too, not kept on a surface-level cuisine-label assumption.
+  - **Fixed a real, pre-existing bug found in the process, not
+    introduced by this pass:** the original L'Angle Saint Laurent entry
+    (Day 9 dinner) already carried its own `closure_note` flagging that
+    the restaurant is closed Mon–Tue while the trip visits on a Tuesday —
+    an unresolved conflict baked into the plan since the original PDF
+    import. Its replacement (Le Volet Qui Penche) is confirmed open that
+    Tuesday, closing the gap as a side effect of finding a simpler
+    restaurant, not a separate fix.
+  - **Cross-checked every new pick's `open_days` against the actual
+    scheduled weekday, programmatically, before shipping** — computed
+    each day's real day-of-week from its calendar date and confirmed no
+    restaurant is scheduled on a day it's marked closed (the same class
+    of bug the Le Lion d'Or/Tuesday case above already showed can hide in
+    this data). Zero conflicts found across all 16 replacements.
+  - Also fixed several ripple effects the swap created: the Day 5 label
+    named "Kiln Dinner" specifically (now generic "Dinner"), the trip's
+    `arc`/`differentiators` intro text described a "farewell dinner at
+    The Yeatman" (now the actual new restaurant), the packing list's
+    dinner-outfit section specifically named The Ledbury and Pedro Lemos
+    as "the two dressiest dinners" requiring smart-casual (now reflects
+    that literally every dinner on the trip is simple/smart-casual, since
+    there is no longer a standout fine-dining night), and one
+    booking-actions timeline entry still referenced "The Yeatman farewell
+    dinner" with its old phone number.
+  - **One judgment call, surfaced rather than silently applied:** the Day
+    5 dinner (Kiln) was originally marked "(user-requested)" in its own
+    item text — a signal someone had specifically asked for it. Replaced
+    it anyway per the current direct instruction to simplify every
+    restaurant, but flagging this explicitly since it overrides an
+    earlier explicit preference rather than a generic pick.
+  - One replacement (Tasca da Quinta, Day 13 lunch, Douro Valley) carries
+    a genuine data-confidence gap the research agent flagged rather than
+    guessed past: its exact address wasn't fully consistent across
+    sources, and no phone number could be confirmed. Recorded honestly via
+    `closure_note` telling the traveler to call ahead and confirm, rather
+    than presenting an unverified address as fact, per this file's
+    verify-or-strip rule — with a fully-confirmed backup (Castas e Pratos)
+    listed alongside it.
+  - Verified live via Playwright: all 16 new restaurant names render
+    correctly in the Meals & Reservations list, the day-by-day city tabs,
+    and (where applicable) the booking-actions timeline; all 13 old names
+    (including both former "Le Lion d'Or" instances) are completely gone
+    from the rendered page; the 5 kept restaurants are still present and
+    unchanged; zero console errors.
+
 - **Real Normandy Airbnb booking added from a traveler-supplied screenshot
   (2026-08-22), replacing the last remaining lodging placeholder.** The
   traveler shared a screenshot of the Airbnb app's own reservation screen
