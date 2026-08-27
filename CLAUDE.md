@@ -347,6 +347,88 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Transfer/travel-time display rebuilt around a structured `duration_min`
+  field, fixing a real "free time" mislabeling bug found during a live
+  investigation, not a guess (2026-08-22).** Told the traveler wasn't
+  finding transfer/travel-time info easy to understand and asked to
+  "study and come back with thoughts" before implementing anything —
+  loaded the actual live site (not just the code) via Playwright and
+  traced exactly where the confusion came from, per this file's own
+  Verification Discipline rule.
+  - **Root cause:** every transfer's duration lived only in freeform prose
+    (`item.text`), extracted by `parseTransportDuration()` — a regex
+    ANCHORED to the segment right after the text's LAST `—`/`·` separator.
+    Anything that didn't fit that exact shape got no duration at all, with
+    no fallback and no visible error.
+  - **Two concrete, screenshot-verified bugs this caused, not just a vague
+    "hard to read":**
+    1. The overnight Portsmouth→Ouistreham ferry — the single longest and
+       most consequential transfer in the whole itinerary — showed **no
+       duration anywhere**. Its text is `"...approx. 8 hrs — arrives...
+       (Day 8)"`; the "8 hrs" sits between two dashes, not after the LAST
+       one, so the regex silently missed it despite the number being
+       right there in the bolded item title.
+    2. **Real transit time was being mislabeled as "free time."** The
+       Bovington drive's actual 2h30m duration lived only in the item's
+       `why` text, never in `text` itself — so with no badge AND no parsed
+       duration, the free-time gap detector (which reads the SAME
+       regex-parsed value to compute where an item "ends") treated the
+       drive as instantaneous and rendered **"Free time (~2.5 hrs,
+       unscheduled)"** directly after it. The traveler would have been
+       told they had nothing to do for 2.5 hours while actually driving to
+       Dorset. Confirmed via Playwright screenshot before touching any
+       code, and reproduced a second, independent instance of the same bug
+       shape on the Douro Valley return drive ("2h via N222…" → "Free time
+       (~4 hrs)" that was actually 2 hours driving + 2 hours real free
+       time, conflated into one wrong number).
+    3. Secondary issues found in the same pass: a multi-leg transfer
+       ("50 min ... then 15 min walk") only ever captured the FIRST
+       number, silently dropping the second; "2h" shorthand (no "m"
+       suffix, no "hr"/"hour" word) wasn't recognized by the regex at all;
+       and the Condensed tab — very likely the first thing anyone actually
+       looks at — showed **zero** duration information anywhere, since all
+       the badge logic lived only in the day-tab render path.
+  - **Fix (`app.js` + `build_trip_data.py`):** added a real `duration_min`
+    field (minutes, an integer) to every Transport item with a known
+    duration — 19 items, each value pulled from a number ALREADY present
+    in that item's own `text` or `why` field (never a new estimate; the
+    Barbican Tube hop and the Bovington drive both already stated their
+    real duration in `why`, just never in the field anything read). New
+    helpers `transportDurationMinutesOf()`/`transportDurationBadgeOf()`
+    prefer `duration_min` when present, falling back to the old
+    text-parsing regex only for anything that predates the field — not a
+    breaking change, a preferred-source upgrade. Fixed in THREE
+    independent render paths that had each grown their own copy of the
+    same regex call (`renderItemHTML`'s badge, the free-time gap
+    calculator, and a third "reference card" path near the bottom of the
+    file) — the third one would have kept the exact same bug alive even
+    after the first two were fixed, had it not been grepped for
+    specifically.
+  - **New: a day-level "on the move ~Xh Ym today" chip** (`dayTransitSummary()`),
+    shown on both the day-tab view (next to the weather chip) and the
+    Condensed view (next to the day label), summing every Transport leg's
+    `duration_min` plus every Flight leg's own `flight.duration` for that
+    day — so a multi-leg travel day (drive + overnight ferry; private
+    driver + flight + private driver) doesn't require mentally adding up
+    several separate badges scattered down the page. Only counts legs with
+    a KNOWN duration (a floor, never a guess dressed up as complete), and
+    only shows when the total is ≥60 min or there are 2+ transit legs, so
+    a single 15-minute tube hop doesn't get a chip of its own.
+  - **Condensed view gained duration badges for the first time** — every
+    Transport/Flight row now shows its duration inline, matching what the
+    day-tab cards already did, closing the gap on what's likely the app's
+    most-viewed screen.
+  - Verified live via Playwright, re-checking the EXACT same two bugs
+    found during the investigation: the ferry now shows "⏱ 8h", the
+    Bovington drive shows "⏱ 2h 30m" AND the false "Free time (~2.5 hrs)"
+    card after it is completely gone (Tank Museum now follows directly);
+    same for the Douro return drive (now "⏱ 2h", no more false "~4 hrs"
+    free-time card); the RAF Uxbridge multi-leg transfer now shows the
+    full "⏱ 1h 5m" (50+15, not just 50); Condensed shows 22 duration
+    badges and 9 day-level transit chips, up from zero of either; a
+    full-site smoke test across every tab found zero NaN/negative
+    durations and zero console errors.
+
 - **All 16 non-simple restaurants replaced with real, verified simple
   options for a finicky 20-year-old eater (2026-08-22).** Asked to change
   out restaurants across the trip to suit a picky 20-year-old who likes

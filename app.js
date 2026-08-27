@@ -250,6 +250,80 @@
     return null;
   }
 
+  // Converts a clean duration string ("7h 15m", "8h", "45 min") straight to
+  // minutes, with NO text-position anchoring - unlike parseTransportDuration
+  // above, this doesn't need to find a duration hiding in a sentence, because
+  // the caller already has the duration in isolation (item.duration_min's
+  // source data, or a flight's own `duration` field). Used by the day-level
+  // transit-time summary so a Flight leg's real duration (already a clean
+  // field, not sentence prose) counts toward the same total as a Transport
+  // leg's duration_min.
+  function durationStrToMinutes(s) {
+    if (!s) return null;
+    var hm = s.match(/^(\d+)\s*h\s*(\d*)\s*m?$/i);
+    if (hm) return parseInt(hm[1], 10) * 60 + (hm[2] ? parseInt(hm[2], 10) : 0);
+    var minsOnly = s.match(/^(\d+)\s*(?:min|mins|minutes)$/i);
+    if (minsOnly) return parseInt(minsOnly[1], 10);
+    return null;
+  }
+
+  // Formats a minute count back into the same "Xh Ym" / "X min" shape the
+  // rest of the UI already uses for durations, so a structured duration_min
+  // value renders identically to the old text-parsed badges.
+  function formatDurationMin(min) {
+    if (min == null) return null;
+    if (min < 60) return min + ' min';
+    var h = Math.floor(min / 60), m = min % 60;
+    return m ? h + 'h ' + m + 'm' : h + 'h';
+  }
+
+  // A Transport item's real duration should always come from duration_min
+  // when the data has it (set explicitly in the generator, not guessed) -
+  // parseTransportDuration/Minutes are the fallback for any item that
+  // predates this field or was added without it, not the primary path.
+  // This is the fix for a real bug: several transfers had their duration
+  // stated only in a sentence shape the old anchored regex couldn't find
+  // (a duration sitting between two " — " separators, not after the last
+  // one - the overnight ferry's "approx. 8 hrs" was invisible this way),
+  // or split across two clauses ("50 min ... then 15 min walk", where only
+  // the first number was ever picked up), or had NO badge-visible duration
+  // at all despite the real number sitting in the item's own `why` field
+  // (the Bovington drive) - which then caused the free-time detector below
+  // to mislabel a real 2.5-hour drive as "Free time (~2.5 hrs, unscheduled)".
+  function transportDurationMinutesOf(item) {
+    if (item.duration_min != null) return item.duration_min;
+    return parseTransportDurationMinutes(item.text);
+  }
+  function transportDurationBadgeOf(item) {
+    if (item.duration_min != null) return formatDurationMin(item.duration_min);
+    return parseTransportDuration(item.text);
+  }
+
+  // Sums a day's real time-in-transit (every Transport leg's duration_min,
+  // plus every Flight leg's own `flight.duration`) into one "on the move"
+  // total, so a multi-leg travel day (a drive + an overnight ferry, or a
+  // private driver + a flight + another private driver) doesn't require the
+  // reader to mentally add up several separate badges scattered down the
+  // page themselves. Counts only items with a KNOWN duration - never
+  // estimates a missing one, so the total is a floor, not a guess dressed
+  // up as complete. Returns null when there's nothing to show (no transit
+  // items, or none with a known duration) so callers can skip the chip
+  // entirely rather than showing "0 min".
+  function dayTransitSummary(day) {
+    var totalMin = 0, legs = 0, hasAny = false;
+    (day.items || []).forEach(function (item) {
+      if (item.type === 'Transport') {
+        var m = transportDurationMinutesOf(item);
+        if (m != null) { totalMin += m; legs++; hasAny = true; }
+      } else if (item.type === 'Flight' && item.flight && item.flight.duration) {
+        var fm = durationStrToMinutes(item.flight.duration);
+        if (fm != null) { totalMin += fm; legs++; hasAny = true; }
+      }
+    });
+    if (!hasAny || legs < 1) return null;
+    return { totalMin: totalMin, legs: legs, label: formatDurationMin(totalMin) };
+  }
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
@@ -522,7 +596,7 @@
     if (item._locationUnverified) {
       flightWarn += '<div class="flight-warn">⚠ ' + esc(item._locationUnverified) + '</div>';
     }
-    var driveDuration = item.type === 'Transport' ? parseTransportDuration(item.text) : null;
+    var driveDuration = item.type === 'Transport' ? transportDurationBadgeOf(item) : null;
     var durationBadge = driveDuration ? '<span class="drive-duration">⏱ ' + esc(driveDuration) + '</span>' : '';
     // Transport items with a real contact (e.g. a ferry operator's booking
     // line/website) previously had that contact silently dropped - the
@@ -675,6 +749,14 @@
     var weatherLine = (typeof day.weather === 'string' && day.weather) || '';
     var advisory = weatherAdvisory(weatherLine);
     var wx = parseWeatherLine(weatherLine);
+    // Shown only when the day has real, add-up-able transit time - a single
+    // 15-minute tube hop isn't worth a chip, but a day that's a drive plus
+    // an overnight ferry, or a private driver plus a flight plus another
+    // private driver, is easy to under-read one leg at a time scrolling
+    // past several separate item cards. totalMin is a floor (only counts
+    // legs with a KNOWN duration), so this never overstates the day.
+    var transit = dayTransitSummary(day);
+    var showTransitChip = transit && (transit.totalMin >= 60 || transit.legs >= 2);
     // Day banner: a thin navy divider per day, matching the real
     // .day-banner pattern (eyebrow "DAY N" + the date) - sits right above
     // each day's own content, same as it does directly under the location
@@ -698,7 +780,12 @@
           '</div>' +
         '</div>' :
         (weatherLine ? '<div class="day-block-weather">' + esc(weatherLine) +
-          (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') + '</div>' : ''));
+          (advisory ? '<p class="weather-tip">' + esc(advisory) + '</p>' : '') + '</div>' : '')) +
+      (showTransitChip ?
+        '<div class="transit-chip">' +
+          '<span class="transit-chip-icon">🧭</span>' +
+          '<span class="transit-chip-label">On the move ~' + esc(transit.label) + ' today</span>' +
+        '</div>' : '');
     var items = day.items || [];
     items.forEach(function (item, i) {
       html += renderItemHTML(item, day);
@@ -713,7 +800,7 @@
       // a stated "2h30m" drive showed as "~2.8 hrs free time" right after
       // it, when the real gap to the next item was ~15 minutes).
       var flightArrive = item.type === 'Flight' && item.flight ? toMinutes(item.flight.arrive_time) : null;
-      var transportDurationMin = item.type === 'Transport' ? parseTransportDurationMinutes(item.text) : null;
+      var transportDurationMin = item.type === 'Transport' ? transportDurationMinutesOf(item) : null;
       var transportEnd = transportDurationMin != null ? toMinutes(item.time) + transportDurationMin : null;
       var thisEnd = toMinutes(item.end_time) || flightArrive || transportEnd || toMinutes(item.time);
       var next = items[i + 1];
@@ -786,10 +873,13 @@
       // looking at" cue while scrolling a long, all-days-at-once list - city
       // tabs already split this apart, but Condensed deliberately shows
       // everything back to back with nothing else marking the boundary.
+      var condTransit = dayTransitSummary(day);
+      var showCondTransitChip = condTransit && (condTransit.totalMin >= 60 || condTransit.legs >= 2);
       html += '<div class="cond-day" style="border-left-color:' + color + '">' +
         '<div class="cond-day-head">' +
           (flag ? '<span class="cond-day-flag">' + flag + '</span>' : '') +
           '<span class="cond-day-label">' + esc(day.label) + '</span>' +
+          (showCondTransitChip ? '<span class="cond-transit-chip">🧭 ~' + esc(condTransit.label) + '</span>' : '') +
         '</div>' +
         // The headline already exists on every day (it's the same one-line
         // "what this day is about" shown at the top of the day-tab card) but
@@ -806,11 +896,20 @@
           ? 'Arrives ' + formatTime12(item.time)
           : formatTime12(item.time);
         var icon = ITEM_ICONS[item.type] || '•';
+        // Condensed previously showed zero duration information for any
+        // transfer - just the raw sentence, exactly like the day-tab cards
+        // did before this fix, and Condensed is very likely the first place
+        // someone scans for "how long is this leg" since it's the app's
+        // default landing tab.
+        var condDuration = item.type === 'Transport' ? transportDurationBadgeOf(item)
+          : (item.type === 'Flight' && item.flight && item.flight.duration) ? item.flight.duration
+          : null;
+        var condDurationBadge = condDuration ? ' <span class="cond-duration">⏱ ' + esc(condDuration) + '</span>' : '';
         html += '<div class="cond-row">' +
           '<div class="cond-row-icon">' + icon + '</div>' +
           '<div class="cond-row-body">' +
             '<span class="cond-time">' + esc(condTimeLabel) + '</span>' +
-            esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag +
+            esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + condDurationBadge +
           '</div>' +
         '</div>';
       });
@@ -963,7 +1062,7 @@
       if (item.type === 'Transport') {
         var dest = parseTransportDestination(item.text, row.day);
         var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
-        var refDuration = parseTransportDuration(item.text);
+        var refDuration = transportDurationBadgeOf(item);
         var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
         // Same fix as renderItemHTML's navigateRow - a Transport item's own
         // contact.phone/website (e.g. a ferry operator) was silently
