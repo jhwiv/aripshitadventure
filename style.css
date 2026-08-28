@@ -5,6 +5,14 @@
   --navy: #0d2133; --navy2: #091b2a; --gold: #c9a24b; --gold-dim: #a8894a;
   --gold-soft: #dcc48a; --cream: #f8f7f3; --steel: #5b6577; --ink: #1c2840;
   --paper: #fff; --rule: #dcd8cf;
+  /* Real height of #stickyTop (nav + day-tabs bar), set from app.js on
+     load/resize - it swings a lot across widths (measured 177.5px to
+     271.5px between 320px and 1024px, since both the nav chips and the
+     day-tab-cards wrap into a different number of rows at different
+     breakpoints), so no single hardcoded scroll-margin-top clears it
+     everywhere. The 112px fallback matches the pre-sticky-group value,
+     in case JS hasn't run yet. */
+  --sticky-clearance: 112px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -254,7 +262,7 @@ img { max-width: 100%; display: block; }
    longer shows/hides sections on click - it smooth-scrolls to them, and
    a scroll-spy (app.js) highlights whichever one is currently in view.
    scroll-margin-top keeps a clicked-to section clear of the sticky nav. */
-.tab-section { display: block; scroll-margin-top: 96px; }
+.tab-section { display: block; scroll-margin-top: var(--sticky-clearance, 96px); }
 @media (prefers-reduced-motion: reduce) {
   .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card {
     transition: none;
@@ -313,16 +321,26 @@ img { max-width: 100%; display: block; }
 
 /* ---- Day banner (small navy marker, one per day - the accent color
    piece of the real pattern; kept deliberately thin so it reads as a
-   divider, not another oversized color block). ---- */
-.day-banner {
+   divider, not another oversized color block).
+   .section-banner shares the exact same navy/gold-accent treatment for
+   the FIRST heading of every non-city tab (Essentials/Transit/History/
+   Map/Air & Hotel/Packing) and a new lead-in banner for Condensed - the
+   three city tabs already land on their own big .location-banner (photo
+   + flag + city name), so they don't need this. Kept as a distinct class
+   (not just reused .day-banner) for semantic clarity even though the
+   rules are shared, and sized a step larger since it's a whole tab's
+   title, not a single day's marker. ---- */
+.day-banner, .section-banner {
   background: var(--navy);
   padding: 18px 24px;
   text-align: center;
   position: relative;
   overflow: hidden;
   margin: 0 -20px; width: calc(100% + 40px);
+  scroll-margin-top: var(--sticky-clearance, 112px);
 }
-.day-banner::before {
+.section-banner { margin-bottom: 20px; }
+.day-banner::before, .section-banner::before {
   content: ""; display: block; width: 40px; height: 2px;
   background: var(--gold); margin: 0 auto 10px;
 }
@@ -331,11 +349,12 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--gold); margin-bottom: 4px;
 }
-.day-banner-title {
+.day-banner-title, .section-banner-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(16px, 4vw, 20px); font-weight: 700;
   color: #fff; line-height: 1.2;
 }
+.section-banner-title { font-size: clamp(20px, 5vw, 26px); }
 /* Once a real city photo URL is supplied, add per-city rules like:
    .banner[data-city="London"] { background: url('LONDON_PHOTO_URL') center/cover no-repeat; }
    .banner[data-city="London"] .banner-scene { display: none; }
@@ -806,11 +825,11 @@ img { max-width: 100%; display: block; }
      "print background graphics" off, the common default) would show white
      text on a white page - unreadable. Same light-on-white treatment as
      the hero, just above. */
-  .location-banner, .day-banner { background: none !important; height: auto; margin: 0 0 8px; padding: 4px 0; }
+  .location-banner, .day-banner, .section-banner { background: none !important; height: auto; margin: 0 0 8px; padding: 4px 0; }
   .location-banner-img { display: none; }
-  .location-banner-city, .day-banner-title { color: #1c2840; }
+  .location-banner-city, .day-banner-title, .section-banner-title { color: #1c2840; }
   .location-banner-sub, .day-banner-eyebrow { color: #5b6577; }
-  .day-banner::before { background: #c9a24b; }
+  .day-banner::before, .section-banner::before { background: #c9a24b; }
   /* .wx-chip's expanded detail is a JS-toggled absolute popover, invisible
      by default (aria-expanded="false") - print has no click interaction to
      reveal it, so left alone the weather detail + advisory tip would
