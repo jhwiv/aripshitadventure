@@ -2716,110 +2716,35 @@ function dismissWelcome() {
   ]
 }</script>
 <script id="pins-data" type="application/json">{
-  "_note": "Landmark and hotel coordinates verified via TomTom geocoding/POI search (2026-08-28) where a confident match was found — city-center pins and two landmarks TomTom could not resolve to a specific point (County Hall, the High Street Kensington station meet-up spot) keep their original best-effort estimate, cross-checked against TomTom's nearest street-level result where available. Douro Valley entries stay flagged 'approx' — TomTom resolved the named venue but wineries/villages don't have a single exact door-front coordinate the way a street address does. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
+  "_note": "Landmark and hotel coordinates verified via TomTom geocoding/POI search (2026-08-28, County Hall and the Kensington meet-up point corrected 2026-08-28b once the TomTom connector reconnected — see CLAUDE.md) where a confident match was found — city-center pins keep their original best-effort estimate since a city center has no single correct point. Douro Valley entries stay flagged 'approx' — TomTom resolved the named venue but wineries/villages don't have a single exact door-front coordinate the way a street address does. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
   "cities": {
-    "London": {
-      "lat": 51.5074,
-      "lng": -0.1278,
-      "tz": "Europe/London"
-    },
-    "Normandy": {
-      "lat": 49.2764,
-      "lng": -0.7024,
-      "tz": "Europe/Paris"
-    },
-    "Porto": {
-      "lat": 41.1579,
-      "lng": -8.6291,
-      "tz": "Europe/Lisbon"
-    }
+    "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
+    "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
+    "Porto":     { "lat": 41.1579, "lng": -8.6291,  "tz": "Europe/Lisbon" }
   },
   "hotels": {
-    "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)": {
-      "lat": 49.27733,
-      "lng": -0.7042,
-      "city": "Normandy"
-    }
+    "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)": { "lat": 49.27733, "lng": -0.7042, "city": "Normandy" }
   },
   "landmarks": {
-    "Riverside Building, County Hall, London SE1 7PB": {
-      "lat": 51.5033,
-      "lng": -0.1195
-    },
-    "Clive Steps, King Charles Street, London SW1A 2AQ": {
-      "lat": 51.5022,
-      "lng": -0.12935
-    },
-    "Lambeth Road, London SE1 6HZ": {
-      "lat": 51.496286,
-      "lng": -0.108597
-    },
-    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": {
-      "lat": 51.5009,
-      "lng": -0.1925
-    },
-    "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN": {
-      "lat": 51.540943,
-      "lng": -0.464943
-    },
-    "Embankment Underground station, London (river exit)": {
-      "lat": 51.50722,
-      "lng": -0.122227
-    },
-    "Barbican Underground station, London": {
-      "lat": 51.5202,
-      "lng": -0.0977
-    },
-    "Bovington Camp, Wareham, Dorset BH20 6JG": {
-      "lat": 50.694992,
-      "lng": -2.24312
-    },
-    "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer": {
-      "lat": 49.3606,
-      "lng": -0.8422,
-      "approx": true
-    },
-    "American Cemetery, 14710 Colleville-sur-Mer, France": {
-      "lat": 49.358627,
-      "lng": -0.854686
-    },
-    "Bayeux Cathedral, Bayeux, France": {
-      "lat": 49.2755,
-      "lng": -0.7035
-    },
-    "Boulevard Fabian Ware, 14400 Bayeux": {
-      "lat": 49.273468,
-      "lng": -0.711394
-    },
-    "Le Mont-Saint-Michel, 50170, Normandy": {
-      "lat": 48.6358791,
-      "lng": -1.5096205
-    },
-    "Cais da Ribeira, 4050-510 Porto, Portugal": {
-      "lat": 41.140607,
-      "lng": -8.6114067
-    },
-    "Rua do Agro 141, 4400-281 Vila Nova de Gaia": {
-      "lat": 41.13763,
-      "lng": -8.62367
-    },
-    "Praca Almeida Garrett, 4000-069 Porto": {
-      "lat": 41.145556,
-      "lng": -8.610667
-    },
-    "Vilarinho dos Freires, 5050-364 Peso da Regua": {
-      "lat": 41.1656,
-      "lng": -7.7881,
-      "approx": true
-    },
-    "Rua das Carmelitas 144, 4050-161 Porto": {
-      "lat": 41.14682,
-      "lng": -8.61488
-    },
-    "Rua de Sao Filipe de Nery, 4050-546 Porto": {
-      "lat": 41.1457,
-      "lng": -8.6146
-    }
+    "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.500967, "lng": -0.119132 },
+    "Clive Steps, King Charles Street, London SW1A 2AQ":                        { "lat": 51.5022, "lng": -0.12935 },
+    "Lambeth Road, London SE1 6HZ":                                             { "lat": 51.496286, "lng": -0.108597 },
+    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": { "lat": 51.50092, "lng": -0.192908 },
+    "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN":                       { "lat": 51.540943, "lng": -0.464943 },
+    "Embankment Underground station, London (river exit)":                     { "lat": 51.50722, "lng": -0.122227 },
+    "Barbican Underground station, London":                                    { "lat": 51.5202, "lng": -0.0977 },
+    "Bovington Camp, Wareham, Dorset BH20 6JG":                                 { "lat": 50.694992, "lng": -2.24312 },
+    "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer":           { "lat": 49.3606, "lng": -0.8422, "approx": true },
+    "American Cemetery, 14710 Colleville-sur-Mer, France":                      { "lat": 49.358627, "lng": -0.854686 },
+    "Bayeux Cathedral, Bayeux, France":                                         { "lat": 49.2755, "lng": -0.7035 },
+    "Boulevard Fabian Ware, 14400 Bayeux":                                      { "lat": 49.273468, "lng": -0.711394 },
+    "Le Mont-Saint-Michel, 50170, Normandy":                                    { "lat": 48.6358791, "lng": -1.5096205 },
+    "Cais da Ribeira, 4050-510 Porto, Portugal":                                { "lat": 41.140607, "lng": -8.6114067 },
+    "Rua do Agro 141, 4400-281 Vila Nova de Gaia":                              { "lat": 41.13763, "lng": -8.62367 },
+    "Praca Almeida Garrett, 4000-069 Porto":                                    { "lat": 41.145556, "lng": -8.610667 },
+    "Vilarinho dos Freires, 5050-364 Peso da Regua":                            { "lat": 41.1656, "lng": -7.7881, "approx": true },
+    "Rua das Carmelitas 144, 4050-161 Porto":                                   { "lat": 41.14682, "lng": -8.61488 },
+    "Rua de Sao Filipe de Nery, 4050-546 Porto":                                { "lat": 41.1457, "lng": -8.6146 }
   }
 }</script>
 

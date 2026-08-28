@@ -456,6 +456,49 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **TomTom MCP connector came back online mid-session and was used to close
+  out the two landmark pins the prior pass (below) had left as
+  unresolved best-effort estimates (2026-08-28b).** User: "update where we
+  left off and get tomtom back online." The connector was still connecting
+  at session start; once its tools loaded, re-ran `tomtom-fuzzy-search` on
+  the two landmarks the prior pass explicitly flagged as un-resolvable
+  (County Hall, the High Street Kensington Wasabi meet-up point) rather
+  than assuming the earlier "couldn't be resolved" verdict was final —
+  **a leaner query string succeeded where the prior pass's query didn't**,
+  the actual root cause both times: `"Riverside Building County Hall"`
+  (too many terms, biased toward an unrelated "Riverside Building
+  Supplies" in Essex 60km away) failed, but the shorter `"County Hall
+  London"` matched the real POI (`freeformAddress` `252 Westminster
+  Bridge Road, ... SE1 7PB` — the exact postcode already in this site's
+  own data) ~260m from the prior estimate, at [51.500967, -0.119132].
+  Likewise `"Wasabi High Street Kensington"` returned a confirmed real
+  "Wasabi" POI (with phone/url) at [51.50092, -0.192908], only ~28m from
+  the prior estimate but now backed by an actual named-venue match instead
+  of a generic estimate. **Lesson for a future pass that hits a TomTom
+  "no confident match" wall: retry with a shorter/leaner query before
+  concluding the venue can't be resolved** — a multi-clause query
+  (venue name + landmark name + descriptive phrase all concatenated) can
+  fail where just the venue's common name succeeds, same general shape as
+  the fuzzy-search-vs-plain-geocode lesson already in the playbook's
+  section 9, one level down. Updated `data/pins.json` (both coordinates +
+  the `_note` caveat, which no longer needs to disclaim these two) and
+  re-embedded into `index.html`'s `pins-data` script block via the same
+  regex-based reembed approach as prior passes (not hand-edited — avoids
+  transcription drift between the two copies). County Hall's own hotel
+  entries, Douro Valley `approx` flags, and everything else from the prior
+  pass were left untouched — this was a narrow continuation of exactly the
+  one open item that pass flagged, not a re-audit. Verified live via a
+  Node-based Playwright run (this session's `python3` had no `playwright`
+  module installed, unlike prior sessions — used the Node install at
+  `/opt/node22` against the prebuilt Chromium at
+  `/opt/pw-browsers/chromium-1194` instead) against a fresh
+  `python3 -m http.server`: the embedded `pins-data` blob matches
+  `data/pins.json` byte-for-byte (parsed-JSON equality), the Map tab
+  renders 21 Leaflet elements (20 markers + 1 overview route line, same
+  count as the prior pass), and zero real console/page errors (only the
+  expected aborted-external-request and `/api/flight-status` 404 noise
+  this file's Verification Discipline section already documents as
+  normal under plain `http.server`).
 - **`pins.json`'s map coordinates upgraded from hand-estimated "best-effort...
   no live geocoding access" to real TomTom-geocoded/POI-verified values, and
   a new `PINS.hotels` entry added for the Bayeux stay (2026-08-28).** User:

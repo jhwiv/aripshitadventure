@@ -1,5 +1,5 @@
 {
-  "_note": "Landmark and hotel coordinates verified via TomTom geocoding/POI search (2026-08-28) where a confident match was found — city-center pins and two landmarks TomTom could not resolve to a specific point (County Hall, the High Street Kensington station meet-up spot) keep their original best-effort estimate, cross-checked against TomTom's nearest street-level result where available. Douro Valley entries stay flagged 'approx' — TomTom resolved the named venue but wineries/villages don't have a single exact door-front coordinate the way a street address does. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
+  "_note": "Landmark and hotel coordinates verified via TomTom geocoding/POI search (2026-08-28, County Hall and the Kensington meet-up point corrected 2026-08-28b once the TomTom connector reconnected — see CLAUDE.md) where a confident match was found — city-center pins keep their original best-effort estimate since a city center has no single correct point. Douro Valley entries stay flagged 'approx' — TomTom resolved the named venue but wineries/villages don't have a single exact door-front coordinate the way a street address does. The 'Directions' links always use a Google Maps text search (not these coordinates), so navigation is accurate even where a pin is approximate.",
   "cities": {
     "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
     "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
@@ -9,10 +9,10 @@
     "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)": { "lat": 49.27733, "lng": -0.7042, "city": "Normandy" }
   },
   "landmarks": {
-    "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.5033, "lng": -0.1195 },
+    "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.500967, "lng": -0.119132 },
     "Clive Steps, King Charles Street, London SW1A 2AQ":                        { "lat": 51.5022, "lng": -0.12935 },
     "Lambeth Road, London SE1 6HZ":                                             { "lat": 51.496286, "lng": -0.108597 },
-    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": { "lat": 51.5009, "lng": -0.1925 },
+    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": { "lat": 51.50092, "lng": -0.192908 },
     "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN":                       { "lat": 51.540943, "lng": -0.464943 },
     "Embankment Underground station, London (river exit)":                     { "lat": 51.50722, "lng": -0.122227 },
     "Barbican Underground station, London":                                    { "lat": 51.5202, "lng": -0.0977 },
