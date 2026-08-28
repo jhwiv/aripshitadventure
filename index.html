@@ -163,6 +163,7 @@ function dismissWelcome() {
 
   <!-- ===================== CONDENSED ===================== -->
   <section class="tab-section active" id="tab-condensed">
+    <div class="section-banner"><div class="section-banner-title">Condensed</div></div>
     <div class="section-heading">Trip Overview</div>
     <p class="section-note">Bar length = each city's share of the trip's <span id="tripNightsTotal"></span> nights. Tap a card for the hotel, transport, and highlights.</p>
     <div class="city-cards" id="cityCards"></div>
@@ -241,7 +242,7 @@ function dismissWelcome() {
 
   <!-- ===================== ESSENTIALS ===================== -->
   <section class="tab-section" id="tab-essentials">
-    <div class="section-heading">Essentials</div>
+    <div class="section-banner"><div class="section-banner-title">Essentials</div></div>
     <div id="beforeYouGo"></div>
     <div class="section-heading" style="margin-top:28px;">Hotels</div>
     <div id="essentialsHotels"></div>
@@ -258,6 +259,7 @@ function dismissWelcome() {
 
   <!-- ===================== TRANSIT ===================== -->
   <section class="tab-section" id="tab-transit">
+    <div class="section-banner"><div class="section-banner-title">Transit</div></div>
     <div class="section-heading">Transport Quick Reference</div>
     <p class="ai-note">Every transfer/flight from the plan itself, in order — departure time and duration where the plan states one.</p>
     <div id="transportQuickRef"></div>
@@ -269,14 +271,14 @@ function dismissWelcome() {
 
   <!-- ===================== HISTORY ===================== -->
   <section class="tab-section" id="tab-history">
-    <div class="section-heading">History</div>
+    <div class="section-banner"><div class="section-banner-title">History</div></div>
     <p class="ai-note">AI-authored general historical context, not independently verified — treat as background reading, not fact-checked citation. One entry per major stop, tagged to the day it's relevant to.</p>
     <div id="historyList"></div>
   </section>
 
   <!-- ===================== MAP ===================== -->
   <section class="tab-section" id="tab-map">
-    <div class="section-heading">Itinerary Map</div>
+    <div class="section-banner"><div class="section-banner-title">Itinerary Map</div></div>
     <div class="map-filters" id="mapFilters">
       <button class="map-filter-btn active" data-city="all">All</button>
       <button class="map-filter-btn" data-city="London">London</button>
@@ -293,7 +295,7 @@ function dismissWelcome() {
 
   <!-- ===================== AIR & HOTEL ===================== -->
   <section class="tab-section" id="tab-airhotel">
-    <div class="section-heading">Air &amp; Hotel</div>
+    <div class="section-banner"><div class="section-banner-title">Air &amp; Hotel</div></div>
     <div id="flightTable"></div>
     <div class="section-heading" style="margin-top:28px;">Hotels</div>
     <div id="hotelTable"></div>
@@ -301,7 +303,7 @@ function dismissWelcome() {
 
   <!-- ===================== PACKING (from travel-app-components/packing-list-v2) ===================== -->
   <section class="tab-section" id="tab-packing">
-    <div class="section-heading">Packing List</div>
+    <div class="section-banner"><div class="section-banner-title">Packing List</div></div>
     <p class="ai-note">AI-drafted from the itinerary's actual mix (cool October UK/France, milder Porto, D-Day beach terrain and the Mont-Saint-Michel village walk, long driving days in Normandy, simple smart-casual dinners throughout, a Douro Valley vineyard day, a UK-to-EU plug change) — general packing guidance, not a verified checklist.</p>
 
     <p class="pack-actions">

@@ -456,6 +456,171 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **CARTO's map tiles started requiring a signup-gated API key, silently
+  watermarking every tile "API KEY REQUIRED" (2026-08-28i) — an external
+  service change, not something this session's edits caused.** User
+  reported the live Map tab showing an API-key error and asked "when did
+  that happen and how did you not tell me." Checked `git log -S` on the
+  tile URL (`basemaps.cartocdn.com/light_all/...`) — unchanged since
+  `eca4ff9`, well before this session, ruling out a regression from any
+  recent edit. `WebSearch` confirmed the real cause: CARTO began requiring
+  a free-but-signup-gated API key for these basemap tiles sometime in
+  2026, watermarking unauthenticated requests instead of just erroring.
+  This sandbox's egress is blocked to CARTO (and every other external
+  host) per this file's own Verification Discipline section, so there was
+  no way to have caught this proactively by re-testing the live tile
+  fetch — it could only surface via an actual browser hitting the real
+  internet, i.e. the traveler's own report. Fixed by switching to
+  OpenStreetMap's own standard tile server
+  (`{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`), which stays genuinely
+  keyless/signup-free — avoids depending on an account this project has
+  no way to provision automatically, and avoids the same "silently starts
+  requiring a key" risk recurring with a *different* provider. Verified
+  locally that `L.tileLayer` initializes with the new URL/attribution and
+  the Map tab renders with zero console errors (this sandbox still can't
+  fetch real external tiles to confirm imagery renders — that part still
+  needs a real-browser check, same limitation as every prior map-related
+  fix in this log).
+- **Sticky-group scroll-margin regression: EVERY anchor jump (day tabs,
+  per-city day pills, and all 10 top nav chips) was landing with its
+  target's banner up to ~103px hidden behind the sticky nav+day-tabs
+  group, on top of the day-banner-position bug fixed just below
+  (2026-08-28h).** Found while verifying the new tab banners (next entry)
+  visually — a screenshot of the Transit tab showed only a sliver of the
+  new navy banner peeking out beneath the sticky group instead of the
+  whole banner. Root cause: `.tab-section`/`.day-banner`/`.section-banner`
+  all had hardcoded `scroll-margin-top` values (96px/112px) set back when
+  the nav was the ONLY sticky element (~90-100px tall) — once the
+  2026-08-28d entry below made `#stickyTop` (nav + day-tabs bar) stick
+  together as one group, that group's real height grew to 177.5px–271.5px
+  depending on viewport width (measured across 320-1024px; both the nav
+  chips AND the day-tab-cards wrap into a different number of rows at
+  different breakpoints), and nothing updated the scroll-margin values to
+  match. A `getBoundingClientRect()` + `elementFromPoint()` check proved
+  the day-8 banner really was painted-over, not just visually
+  hard-to-notice: at 390px width the banner's box (top 112px, bottom
+  198px) sat entirely inside the sticky group's box (bottom 199.5px), and
+  `document.elementFromPoint()` at a coordinate inside that region
+  returned `#dayTabsRow`, not the banner. **The reason this wasn't
+  visually obvious in an earlier verification screenshot for the
+  day-banner fix**: `.day-block-label` (a separate, always-rendered small
+  teal-text element a few lines into `.day-block`, showing the same
+  `day.label` text as the hidden banner's eyebrow+title) happened to
+  repeat almost the same words just below the hidden region, reading as
+  "yes, the banner text is there" on a casual look, when the actual navy
+  `.day-banner` box was fully covered the whole time. **Lesson: when a
+  visual check depends on reading rendered TEXT to confirm an element is
+  visible, confirm it's the actual target element's text, not a
+  similarly-worded sibling nearby** - `elementFromPoint`/bounding-box math
+  catches this class of false-positive that eyeballing a screenshot does
+  not. Fixed by making the clearance dynamic instead of another guessed
+  constant: a new `--sticky-clearance` CSS custom property (`:root` in
+  `style.css`, 112px fallback) that `.tab-section`/`.day-banner`/
+  `.section-banner`'s `scroll-margin-top` all reference, set from
+  `#stickyTop`'s real `getBoundingClientRect().height` (+12px buffer) by
+  a new `setupStickyClearance()` in `app.js` on load, on
+  `document.fonts.ready` (a monospace-font swap can itself change how the
+  day-tab-cards wrap), and on debounced resize. Verified live via
+  Playwright at 320/340/360/390/428/600/768px - zero overlap between the
+  sticky group's bottom edge and every one of the 10 tabs' landing banner
+  at every width tested (previously up to 103px of overlap at some
+  widths), and zero console errors.
+- **New large navy "section banner" (matching the existing day-banner
+  visual language) added as the landing element for the 7 non-city top
+  nav tabs; the London/Normandy/Porto city tabs already had this via
+  their own `.location-banner` and were left alone (2026-08-28g).** User:
+  "the start of the transit tab says city transit in smaller unremarkable
+  font. it should be a banner for each of the tab headings." Every
+  non-city tab (Condensed/Essentials/Transit/History/Map/Air & Hotel/
+  Packing) previously led with a plain `.section-heading` - small
+  uppercase teal text, the same style used for every OTHER subsection
+  heading further down the same tab, so a nav-chip jump didn't read as
+  landing on anything more significant than any other subheading. Added
+  `.section-banner`/`.section-banner-title` (`style.css`) - the exact
+  same navy-background/gold-accent-line treatment as `.day-banner`, kept
+  as a distinct class for semantic clarity even though the CSS rules are
+  shared, sized a step larger (`clamp(20px,5vw,26px)` vs the day-banner's
+  `clamp(16px,4vw,20px)`) since it represents a whole tab, not one day.
+  **Banner text choice**: for tabs whose FIRST existing heading already
+  read as the tab's own title (Essentials, History, Air & Hotel →
+  "Air & Hotel", Packing → "Packing List", Map → "Itinerary Map"),
+  replaced that heading with the banner (no duplication) - deliberately
+  used the fuller existing heading text rather than the abbreviated nav
+  chip label (e.g. "Air & Hotel" not "✈️ Stay"), matching the SAME
+  chip-abbreviates/content-stays-full convention this file's own
+  2026-08-11 nav-chip-redesign entry already established for those two
+  chips specifically. For tabs whose first heading was a genuine
+  sub-section label rather than the tab's title (Condensed's own first
+  heading is "Trip Overview", Transit's is "Transport Quick Reference"),
+  ADDED a new banner ("Condensed"/"Transit") above the existing heading
+  rather than replacing it - both stay, since neither was redundant with
+  the new banner. Also extended the print-media override rule (which
+  already forced `.day-banner`/`.location-banner` to a light-on-white
+  treatment so a printed page isn't white-on-white) to cover
+  `.section-banner` too, same reasoning. Landing-position correctness for
+  all 10 tabs is covered by the sticky-clearance fix above (found and
+  fixed in the same pass, while visually verifying this feature).
+- **Redundant "Reservation Timeline" section removed from the Condensed
+  tab (2026-08-28e).** User: "it was redundant so remove it." Every
+  restaurant reservation it listed (name, day, platform badge, phone) was
+  already shown in the "Meals & Reservations" list directly above it in
+  the same tab (`renderMeals`/`restaurantCardHTML`, added back in the
+  2026-08-11 field-wiring pass) — the timeline was the same data restated
+  as a second, date-sorted list with no information the first list didn't
+  already have. Removed `renderReservationTimeline()` from `app.js` and
+  the heading/intro-paragraph/`<ul id="reservationTimeline">` markup from
+  `index.html`. **Did NOT touch** the separate "Book & Confirm — Tours,
+  Tickets & Transport" timeline (`renderBookingActions`, added 2026-08-11)
+  — different content (tours/tickets/transport bookings, not restaurants)
+  that happens to reuse the same `.timeline-row`/`.tl-*` CSS classes the
+  removed section used, so those classes stay in `style.css` since
+  Book & Confirm still needs them; confirmed via grep before removing
+  anything that no CSS was going to end up orphaned. Verified live via
+  Playwright: "Reservation Timeline" no longer appears anywhere in the
+  rendered page's text, Book & Confirm still renders its 12 rows
+  unaffected, and the day-tabs bar (unrelated to this change, checked only
+  because it shipped in the same session) still renders correctly.
+- **Jumping to a day (day-tabs bar or the per-city pill nav) landed one
+  element too late, skipping past that day's own navy "DAY N · date"
+  banner (2026-08-28f).** User: "when i jump to a day, the landing should
+  start with the banner for that day." Root cause: `renderDayBlockHTML`
+  (`app.js`) renders each day as `dayBanner + '<div class="day-block"
+  id="day-N">...'` — two SIBLING elements, banner first — but `id="day-N"`
+  (the anchor both `.day-jump-pill` and the day-tabs bar's `.day-tab-card`
+  link to) was on `.day-block`, the element AFTER the banner, not the
+  banner itself. A jump landed with the banner already scrolled past,
+  showing weather/the first item card as the top of the screen instead.
+  Fixed by moving `id="day-N"` onto `.day-banner` (and its matching
+  `scroll-margin-top: 112px`, copied from `.day-block`'s existing value so
+  the landing position doesn't shift) — `.day-block` no longer carries an
+  id since nothing else in the codebase read it (confirmed via grep: no
+  `:target` CSS rules, no other `getElementById('day-' ...)` call sites).
+  Verified live via Playwright: exactly one `#day-8` element in the DOM
+  (no duplicate-id bug from the move), and clicking Day 8's tab card from
+  20,000px deep in the page lands `.day-banner`'s top at 112px — directly
+  below the sticky nav+day-tabs group, with the "DAY 8 · MON OCT 19 ·
+  AMERICAN SECTOR..." banner as the first visible thing, not scrolled
+  past.
+- **Redundant "Reservation Timeline" section removed from the Condensed
+  tab (2026-08-28e).** User: "it was redundant so remove it." Every
+  restaurant reservation it listed (name, day, platform badge, phone) was
+  already shown in the "Meals & Reservations" list directly above it in
+  the same tab (`renderMeals`/`restaurantCardHTML`, added back in the
+  2026-08-11 field-wiring pass) — the timeline was the same data restated
+  as a second, date-sorted list with no information the first list didn't
+  already have. Removed `renderReservationTimeline()` from `app.js` and
+  the heading/intro-paragraph/`<ul id="reservationTimeline">` markup from
+  `index.html`. **Did NOT touch** the separate "Book & Confirm — Tours,
+  Tickets & Transport" timeline (`renderBookingActions`, added 2026-08-11)
+  — different content (tours/tickets/transport bookings, not restaurants)
+  that happens to reuse the same `.timeline-row`/`.tl-*` CSS classes the
+  removed section used, so those classes stay in `style.css` since
+  Book & Confirm still needs them; confirmed via grep before removing
+  anything that no CSS was going to end up orphaned. Verified live via
+  Playwright: "Reservation Timeline" no longer appears anywhere in the
+  rendered page's text, Book & Confirm still renders its 12 rows
+  unaffected, and the day-tabs bar (unrelated to this change, checked only
+  because it shipped in the same session) still renders correctly.
 - **Day tabs bar made sticky, on direct request, by wrapping it with
   .site-nav in one shared sticky group instead of positioning it
   independently (2026-08-28d).** Follow-up to the day-tabs bar just below:

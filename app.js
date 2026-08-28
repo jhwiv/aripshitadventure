@@ -423,15 +423,17 @@
      Built from TRIP.days (not hand-typed) so it stays correct if the
      itinerary's day count/city assignment ever changes. Cards are plain
      <a href="#day-N"> anchors - the sitewide `scroll-behavior: smooth`
-     (style.css) plus .day-block's own scroll-margin-top handle the
-     smooth-scroll-and-clear-the-sticky-nav behavior with no JS needed,
-     same approach the existing per-city .day-jump-pill row already uses.
-     Deliberately kept in normal document flow (not fixed/sticky) - a
-     fixed-position pill row is the exact thing that collided with the
-     bottom FAB stack on mobile earlier in this project's history (see
-     CLAUDE.md's decisions log), so this scrolls away with the page
-     instead of staying pinned. flex-wrap lets it wrap into as many rows
-     as needed at any width rather than ever hiding a day behind an
+     (style.css) plus the day-banner's own scroll-margin-top (below)
+     handle the smooth-scroll-and-clear-the-sticky-group behavior with no
+     JS scroll code needed, same approach the existing per-city
+     .day-jump-pill row already uses. Deliberately kept in normal
+     document flow (not independently fixed/sticky) - a fixed-position
+     pill row is the exact thing that collided with the bottom FAB stack
+     on mobile earlier in this project's history (see CLAUDE.md's
+     decisions log). It's part of #stickyTop (index.html) alongside
+     .site-nav, so it scrolls away with the page as one unit with the nav,
+     never independently. flex-wrap lets it wrap into as many rows as
+     needed at any width rather than ever hiding a day behind an
      overflow-x scroll. */
   (function renderDayTabsBar() {
     var wrap = document.getElementById('dayTabsRow');
@@ -447,6 +449,35 @@
         '<span class="day-tab-num">' + n + '</span>' +
       '</a>';
     }).join('');
+  })();
+
+  /* ---------------------------------------------------------
+     STICKY CLEARANCE — #stickyTop's real rendered height (nav + day-tabs
+     bar) swings a lot across widths: measured 177.5px at 768-1024px up to
+     271.5px at 320px, since both the nav chips and the day-tab-cards wrap
+     into a different number of rows at different breakpoints. No single
+     hardcoded scroll-margin-top could clear every case, so this measures
+     the actual box on load/resize/font-load and writes it to a CSS var
+     (--sticky-clearance, style.css :root) that .tab-section/.day-banner/
+     .section-banner's own scroll-margin-top all reference - a jump
+     landing exactly at the sticky group's real bottom edge regardless of
+     how many rows either piece wrapped into on that device.
+     --------------------------------------------------------- */
+  (function setupStickyClearance() {
+    var stickyEl = document.getElementById('stickyTop');
+    if (!stickyEl) return;
+    var resizeTimer = null;
+    function measure() {
+      var h = stickyEl.getBoundingClientRect().height;
+      if (h > 0) document.documentElement.style.setProperty('--sticky-clearance', (h + 12) + 'px');
+    }
+    measure();
+    window.addEventListener('load', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(measure, 150);
+    }, { passive: true });
   })();
 
   /* ---------------------------------------------------------
@@ -834,11 +865,16 @@
     // each day's own content, same as it does directly under the location
     // banner for a city's first day in the confirmed real reference.
     var labelParts = (day.label || '').split('·').map(function (s) { return s.trim(); });
-    var dayBanner = '<div class="day-banner">' +
+    // id="day-N" lives on the banner (not .day-block below) so that jumping
+    // to a day via the day-tabs bar / per-city pill nav lands with the
+    // banner itself as the first thing in view, not scrolled past it -
+    // .day-block starts right after the banner, so an id there landed one
+    // element too late.
+    var dayBanner = '<div class="day-banner" id="day-' + dayNum + '">' +
       '<div class="day-banner-eyebrow">' + esc((labelParts[0] || '').toUpperCase()) + '</div>' +
       '<div class="day-banner-title">' + esc(labelParts[1] || '') + '</div>' +
       '</div>';
-    var html = dayBanner + '<div class="day-block" id="day-' + dayNum + '">' +
+    var html = dayBanner + '<div class="day-block">' +
       '<div class="day-block-label">' + esc(day.label) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
       (wx ?
@@ -1485,8 +1521,14 @@
     if (!mapEl || typeof L === 'undefined') return;
 
     mapInstance = L.map('itineraryMap', { scrollWheelZoom: false }).setView([48.5, 2.5], 5);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap, © CARTO',
+    // CARTO's basemaps.cartocdn.com tiles started requiring a (free, but
+    // signup-gated) API key sometime in 2026, watermarking unauthenticated
+    // requests "API KEY REQUIRED" instead of just erroring - switched to
+    // OpenStreetMap's own standard tile server, which stays genuinely
+    // keyless/signup-free, to avoid depending on an account this project
+    // has no way to provision automatically.
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
       maxZoom: 19
     }).addTo(mapInstance);
 
