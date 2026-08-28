@@ -16,18 +16,21 @@ live site won't reflect it.** `data/trip-data.min.json` is a minified mirror of
 
 - Day-by-day itinerary rendered from the `trip-data` JSON embedded in `index.html` (sourced from `data/trip-data.json`)
 - Live weather per city (Open-Meteo, free/keyless) — `data/pins.json` holds city coordinates
-- Interactive map (Leaflet + free CartoDB tiles, vendored locally in `vendor/leaflet/` — no CDN dependency, no API key)
+- Interactive map (Leaflet, vendored locally in `vendor/leaflet/` — no CDN dependency; tiles from OpenStreetMap's standard tile server, free and keyless. Previously used CartoDB's basemap tiles, which started requiring a signup-gated API key in 2026 and were watermarking unauthenticated requests "API KEY REQUIRED" — switched to OSM to stay genuinely keyless.)
 - Location-aware local search (OpenStreetMap Overpass API — coffee/food/drinks/pharmacy near you or the city you're viewing)
 - AI trip concierge chat — streams from the `wwii2026` route on the shared `jhwiv/cloudflare-worker` project (same worker that backs zurich-weekend.com), which itself calls Cloudflare Workers AI + Open-Meteo + Overpass server-side
 
 ## Coordinate accuracy
 
-`data/pins.json` has a `_note` field: coordinates are best-effort from general geographic
-knowledge (no live geocoding was available when this was built). City-center and major-landmark
-pins are high confidence; a few Douro Valley/restaurant pins are marked `"approx": true`.
-Every "Directions" link uses a Google Maps **text search** (not these coordinates), so
-turn-by-turn navigation is accurate regardless of pin precision — verify anything you're
-booking against, don't rely on the map pin alone.
+`data/pins.json` has a `_note` field with the current status. As of 2026-08-28, landmark and
+hotel coordinates are verified via real TomTom geocoding/POI search (not the original
+hand-estimated "general geographic knowledge" pass this started with — see `CLAUDE.md`'s
+decisions log for the two-pass history). City-center pins are still a best-effort estimate
+(a city center has no single correct point), and a few Douro Valley entries stay flagged
+`"approx": true` (a winery/village doesn't have one exact door-front coordinate the way a
+street address does). Every "Directions" link uses a Google Maps **text search** (not these
+coordinates), so turn-by-turn navigation is accurate regardless of pin precision — verify
+anything you're booking against, don't rely on the map pin alone.
 
 ## Local dev
 
