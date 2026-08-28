@@ -456,6 +456,23 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **README.md's Features and Coordinate-accuracy sections were stale
+  against the two fixes just above (2026-08-28j).** User: "update wiki
+  and readme." This repo has no wiki (checked - no wiki file, no
+  `docs/*wiki*`), so treated that half of the ask as covered by keeping
+  this decisions log current (see the very next entry down, and the
+  standing instruction at the top of this file) and focused README.md on
+  its own real drift: the Features list still said the map used "CartoDB
+  tiles... no API key" - the exact claim that had just stopped being true
+  (see the CARTO entry below) - and the Coordinate-accuracy section still
+  described `pins.json` as hand-estimated with "no live geocoding
+  access," predating the 2026-08-28 TomTom geocoding pass by two weeks'
+  worth of entries. Neither was caught earlier because nothing in this
+  project's workflow re-reads README.md against the current code state
+  unless something prompts it directly, unlike CLAUDE.md's decisions log
+  which gets a forced touch on every real change. Fixed both sections to
+  match current reality and pointed the coordinate-accuracy section at
+  this log for the fuller history instead of restating it.
 - **CARTO's map tiles started requiring a signup-gated API key, silently
   watermarking every tile "API KEY REQUIRED" (2026-08-28i) — an external
   service change, not something this session's edits caused.** User
