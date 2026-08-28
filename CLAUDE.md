@@ -425,6 +425,46 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Three restaurants had a "Call to reserve" badge with no actual phone
+  number behind it (no link, no walk-in label) + brand-colored reservation
+  icons replaced the plain text-only badges (2026-08-28).** User reported
+  "Some restaurants don't say walk in only and don't have links to make
+  reservations" — traced to `R()` calls (and two hand-built backup dicts)
+  where `platform="phone"` but the phone value was `None`/absent, so
+  `restaurantCardHTML`'s `reserveHref` fallback chain (`reservation.url` →
+  `reservation.phone` → `contact.phone`) resolved to `null` while the badge
+  label still said "Call to reserve" — a broken, misleading state, not the
+  honest "Walk-in only" the user was expecting to see instead. Found by
+  scripting a check across all 21 primary + backup restaurants for
+  "platform isn't walkin AND no url/phone anywhere," not by eyeballing.
+  Three real numbers found via `WebSearch`, each cross-checked against 2+
+  independent sources: **Tasca da Quinta** (Douro Valley, primary booking)
+  +351 918 754 102; **Mio Restaurant & Bar** (Westminster, a backup) +44 20
+  7222 0058, also confirmed closed Sat–Sun (its `why` text updated from a
+  hedge to the actual confirmed hours); **Spaghetti House, Kensington High
+  St** (a backup) +44 20 7937 8961, confirmed NOT on OpenTable despite an
+  OpenTable-branded listing page existing for it (their own site is
+  phone/website-only) — a reminder that a platform's own SEO page for a
+  restaurant isn't proof of an active bookable listing. Also added
+  brand-colored reservation-platform badges (`RESERVATION_ICON_SVG`/
+  `RESERVATION_MONOGRAM`/`RESERVATION_BRAND_COLOR`/`reservationBadgeHTML()`
+  in `app.js`, near `RESERVATION_LABELS`) so each platform is visually
+  distinct instead of one uniform teal pill: TheFork gets a real fork glyph
+  (matches its actual green-circle-fork logo, confirmed via design-press
+  coverage of the 2023 rebrand — not a generic pick), Yelp uses the real
+  official simple-icons SVG (the one logo-asset host this sandbox could
+  actually reach), and OpenTable/Resy/SevenRooms/Tock render as a
+  colored-initial monogram in the platform's real, WebSearch-confirmed
+  brand color rather than a guessed exact logo shape (this sandbox's
+  egress is blocked to every brand-asset/logo CDN, same constraint
+  CLAUDE.md's photo-sourcing section already documents for images — see
+  that entry for the general pattern). Wired into both consumers of
+  `RESERVATION_LABELS` (`restaurantCardHTML`'s `.meal-badge` and
+  `renderReservationTimeline`'s `.tl-note`), not just one. Verified live
+  via Playwright: all 21 restaurant badges render with an icon, zero rows
+  have neither a working reserve link nor a "Walk-in only" label, and the
+  existing free-time/transit-chip smoke check (12 legitimate free-time
+  cards, 9 transit chips, unchanged) confirms nothing else regressed.
 - **Two reservation-link corrections (Trattoria Brutto → Resy, Zizzi
   Victoria → OpenTable) + a forward-looking playbook update, no itinerary
   content touched (2026-08-28).** User explicitly required "don't change

@@ -275,10 +275,14 @@
               "neighborhood": "Westminster",
               "cuisine": "Italian, Pizza",
               "price_range": "££",
-              "why": "Simple pizza/pasta menu, same neighborhood — confirm weekend hours before relying on it.",
-              "contact": {},
+              "why": "Simple pizza/pasta menu, same neighborhood — closed Sat–Sun, so only a fallback for a weekday visit.",
+              "contact": {
+                "phone": "+44 20 7222 0058",
+                "address": "58 Great Peter Street, Westminster, London SW1P 2HD"
+              },
               "reservation": {
-                "platform": "phone"
+                "platform": "phone",
+                "phone": "+44 20 7222 0058"
               }
             },
             "verify_status": "verify_before_booking",
@@ -531,9 +535,13 @@
               "cuisine": "Italian",
               "price_range": "££",
               "why": "Long-running simple pasta/pizza chain, same neighborhood — call ahead to confirm current hours.",
-              "contact": {},
+              "contact": {
+                "phone": "+44 20 7937 8961",
+                "address": "9 Kensington High Street, London W8 5NP"
+              },
               "reservation": {
-                "platform": "phone"
+                "platform": "phone",
+                "phone": "+44 20 7937 8961"
               }
             },
             "verify_status": "verify_before_booking",
@@ -1930,11 +1938,11 @@
             "why": "Small, simple tasca menu — grilled meats and pork ribs, near the Douro Museum. Very small; reservation recommended given the tour's timing.",
             "contact": {
               "address": "Rua do Marquês de Pombal 42 R/C, 5050-282 Peso da Régua",
-              "phone": null
+              "phone": "+351 918 754 102"
             },
             "reservation": {
               "platform": "phone",
-              "phone": null
+              "phone": "+351 918 754 102"
             },
             "open_days": [
               "tue",
@@ -1943,7 +1951,7 @@
               "fri",
               "sat"
             ],
-            "closure_note": "Address re-confirmed in a second, independent research pass (matches what was originally recorded, with a fuller postal code). Closed Sunday and Monday — this Saturday lunch booking is fine. No phone number could be found from any source — call via the venue's Google/TheFork listing or confirm in person on arrival day.",
+            "closure_note": "Address re-confirmed in a second, independent research pass (matches what was originally recorded, with a fuller postal code). Closed Sunday and Monday — this Saturday lunch booking is fine.",
             "backup": {
               "name": "Castas e Pratos",
               "neighborhood": "Peso da Régua, Douro Valley",
