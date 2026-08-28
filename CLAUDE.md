@@ -456,6 +456,162 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Day tabs bar made sticky, on direct request, by wrapping it with
+  .site-nav in one shared sticky group instead of positioning it
+  independently (2026-08-28d).** Follow-up to the day-tabs bar just below:
+  user asked for the bar to stay pinned while scrolling. The naive fix —
+  giving `.day-tabs-wrap` its own `position: sticky; top: 0` right below
+  `.site-nav`'s existing `position: sticky; top: 0` — would have stacked
+  both elements at the same spot once both were "stuck," overlapping each
+  other, since `.site-nav`'s rendered height isn't a fixed constant (it
+  changes across the 480px/370px chip-sizing breakpoints already in
+  `style.css`) and a hardcoded `top: <navHeight>px` offset would drift out
+  of sync with it. Fixed by introducing a `.sticky-top` wrapper
+  (`index.html`) around BOTH `.site-nav` and `.day-tabs-wrap`, moving
+  `position: sticky; top: 0; z-index: 30` onto the wrapper alone — the two
+  children stay in normal document flow relative to each other inside it,
+  so the group sticks as one unit and stacks itself correctly regardless
+  of either child's height, no manual pixel math required.
+  - Checked this against the exact FAB-collision failure mode this file
+    has flagged twice already (see the "Fixed-position mobile elements
+    collided more than once" entry) before shipping: that bug was a
+    BOTTOM-fixed pill row colliding with the bottom-left `.fab-row`/
+    `#time-pill` (both `position: fixed` at the bottom). This new sticky
+    group is anchored at the TOP, so it's geometrically nowhere near
+    either — confirmed via Playwright at 360–768px widths, scrolled deep
+    into the page (`window.scrollTo(0, 8000)`), that the sticky group's
+    bounding box never overlaps `.fab-row`'s.
+  - **Testing note for a future pass**: a synthetic `element.click()`
+    fired via `page.evaluate()` on a day-tab-card anchor intermittently
+    failed to trigger the browser's native hash-navigation + smooth-scroll
+    in headless Chromium after a prior `window.scrollTo()` call (scroll
+    position stayed frozen at the pre-click value even though
+    `location.hash` updated) — a real Playwright `page.click()` (actual
+    pointer-event simulation) worked correctly every time at every width
+    tested. If a future verification pass sees a click "not scrolling"
+    that looks like a real bug, try a real `page.click()` before
+    concluding the app itself is broken — this cost real debugging time
+    here for something that turned out to be a test-harness quirk, not an
+    app bug.
+  - Swapped `.day-tabs-wrap`'s `border-bottom` for a `box-shadow` (moved
+    down from `.site-nav`, which already used the same technique) since
+    it's now the bottom edge of the whole sticky group, not a standalone
+    block — needs its own visual "cap" the same way `.site-nav` always
+    did.
+  - Verified live via Playwright at 360/390/414/428/768px: the sticky
+    group (nav + day tabs, ~178–200px tall depending on width) stays
+    pinned at `top: 0` after scrolling thousands of pixels into the page,
+    never overlaps `.fab-row`, and a real click on a day card while
+    scrolled deep into a *different* day's content (e.g. clicking Day 11
+    while sitting in Day 3's section) correctly lands that day just below
+    the sticky group (~112px, matching `.day-block`'s own
+    `scroll-margin-top`) every time.
+- **New global "Jump to a day" tabs bar — one card per day (Day N + that
+  day's city flag), directly under the site nav, all 15 visible in
+  wrapped rows with no overflow scroll (2026-08-28c).** User: "I want day
+  numbered tabs in rows so that the user can click to a specific day...
+  code the day numbered card with the associated country flag... make
+  sure the day tabs are all visible in rows." The existing `.day-jump-nav`
+  pill row (`app.js`) already did "click to jump to a day," but only
+  *within* one city's own tab (e.g. London's tab only jump-lists Day
+  1–7) — every pill there shares the same city, so a flag on each would
+  have been redundant, and reaching Day 12 (Porto) still meant first
+  picking the Porto nav-chip. What was actually being asked for was a
+  single top-level bar covering all 15 days across all 3 cities at once,
+  each card distinguishing its city via flag/color, so any day is one tap
+  away regardless of which section is currently in view.
+  - **New markup** (`index.html`): `<div class="day-tabs-wrap">` with a
+    "JUMP TO A DAY" label and an empty `<div id="dayTabsRow">`, placed
+    right after `</nav>` and before `<main>` — visible immediately on
+    page load, before any tab content.
+  - **New render function** (`app.js`, `renderDayTabsBar`, called once on
+    load next to the nav scroll-spy setup): builds one `<a
+    href="#day-N">` card per `TRIP.days[]` entry — global day number
+    (1–15, matching the numbering `renderDayBlockHTML` already assigns)
+    + that day's `CITY_FLAGS[day.city]`, generated from data rather than
+    hand-typed so it stays correct if the itinerary's day count ever
+    changes again (this project's day count alone has changed at least 4
+    times in its history — see the entries below). Deliberately reuses
+    the *existing* `#day-N` anchor IDs the per-city day blocks already
+    have — no new IDs, no JS scroll-handler needed: the sitewide `html {
+    scroll-behavior: smooth }` plus `.day-block`'s own
+    `scroll-margin-top` already do the smooth-scroll-and-clear-the-nav
+    work, same zero-JS approach the older per-city pill row already
+    proved out.
+  - **Deliberately NOT `position: sticky`/`fixed`.** A fixed-position day
+    pill row is the *exact* thing that once collided with the bottom FAB
+    stack badly enough to make "Day 1" completely unreachable on mobile
+    (see the "Fixed-position mobile elements collided more than once"
+    entry below) — this bar scrolls away with the page instead, same fix
+    already established for that failure mode. `flex-wrap` on the row
+    (not `overflow-x: auto`) is what actually satisfies "all visible in
+    rows" — every card gets its own row slot at any width instead of any
+    day ever being scrollable-off-screen.
+  - Cards get a 3px top border in the day's `CITY_COLORS` value (same
+    teal/coral/gold already used for nav-chip active states, day banners,
+    Condensed's left-border accent) so the bar previews which color means
+    which city, consistent with the rest of the site's existing color
+    language, without needing a legend.
+  - Added `.day-tabs-wrap`/`.day-tab-card` to the print media query's
+    hide list (alongside `.day-jump-nav`) and to the
+    `prefers-reduced-motion` transition-suppression list — both existing
+    conventions this file's own history called out as easy to forget for
+    a new interactive element.
+  - Verified live via Playwright at 360/390/414/428/768px: exactly 15
+    cards render at every width, wrap into 2 rows on phone widths (1 row
+    at 768px), zero cards overflow the row's own bounding box, zero
+    horizontal scroll on the row, first card is Day 1 🇬🇧 / last is Day 15
+    🇵🇹 (matches the current no-Nuremberg 5 London + 3 Normandy + 4 Porto
+    itinerary), clicking the Day 8 card scrolls `#day-8` to just below the
+    sticky nav (~112px, matching `.day-block`'s own scroll-margin), print
+    media correctly computes `display: none` on the new wrap, and zero
+    real console/page errors (only the expected aborted-external-request
+    and `/api/flight-status` 404 noise this file's Verification
+    Discipline section already documents as normal under plain
+    `http.server`).
+- **TomTom MCP connector came back online mid-session and was used to close
+  out the two landmark pins the prior pass (below) had left as
+  unresolved best-effort estimates (2026-08-28b).** User: "update where we
+  left off and get tomtom back online." The connector was still connecting
+  at session start; once its tools loaded, re-ran `tomtom-fuzzy-search` on
+  the two landmarks the prior pass explicitly flagged as un-resolvable
+  (County Hall, the High Street Kensington Wasabi meet-up point) rather
+  than assuming the earlier "couldn't be resolved" verdict was final —
+  **a leaner query string succeeded where the prior pass's query didn't**,
+  the actual root cause both times: `"Riverside Building County Hall"`
+  (too many terms, biased toward an unrelated "Riverside Building
+  Supplies" in Essex 60km away) failed, but the shorter `"County Hall
+  London"` matched the real POI (`freeformAddress` `252 Westminster
+  Bridge Road, ... SE1 7PB` — the exact postcode already in this site's
+  own data) ~260m from the prior estimate, at [51.500967, -0.119132].
+  Likewise `"Wasabi High Street Kensington"` returned a confirmed real
+  "Wasabi" POI (with phone/url) at [51.50092, -0.192908], only ~28m from
+  the prior estimate but now backed by an actual named-venue match instead
+  of a generic estimate. **Lesson for a future pass that hits a TomTom
+  "no confident match" wall: retry with a shorter/leaner query before
+  concluding the venue can't be resolved** — a multi-clause query
+  (venue name + landmark name + descriptive phrase all concatenated) can
+  fail where just the venue's common name succeeds, same general shape as
+  the fuzzy-search-vs-plain-geocode lesson already in the playbook's
+  section 9, one level down. Updated `data/pins.json` (both coordinates +
+  the `_note` caveat, which no longer needs to disclaim these two) and
+  re-embedded into `index.html`'s `pins-data` script block via the same
+  regex-based reembed approach as prior passes (not hand-edited — avoids
+  transcription drift between the two copies). County Hall's own hotel
+  entries, Douro Valley `approx` flags, and everything else from the prior
+  pass were left untouched — this was a narrow continuation of exactly the
+  one open item that pass flagged, not a re-audit. Verified live via a
+  Node-based Playwright run (this session's `python3` had no `playwright`
+  module installed, unlike prior sessions — used the Node install at
+  `/opt/node22` against the prebuilt Chromium at
+  `/opt/pw-browsers/chromium-1194` instead) against a fresh
+  `python3 -m http.server`: the embedded `pins-data` blob matches
+  `data/pins.json` byte-for-byte (parsed-JSON equality), the Map tab
+  renders 21 Leaflet elements (20 markers + 1 overview route line, same
+  count as the prior pass), and zero real console/page errors (only the
+  expected aborted-external-request and `/api/flight-status` 404 noise
+  this file's Verification Discipline section already documents as
+  normal under plain `http.server`).
 - **`pins.json`'s map coordinates upgraded from hand-estimated "best-effort...
   no live geocoding access" to real TomTom-geocoded/POI-verified values, and
   a new `PINS.hotels` entry added for the Bayeux stay (2026-08-28).** User:
