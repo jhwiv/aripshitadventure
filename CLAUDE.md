@@ -98,6 +98,30 @@ same-day transatlantic flight), not a "looks fine" skim:
    `WebSearch` independently of the distance check; a wrong address can
    still "look" plausible (Pentolina's was a neighborhood name mistaken for
    a street; Taberninha do Manel's put it on the wrong side of the river).
+10. **Venue existence is its own check, separate from cuisine/price fit.**
+    A restaurant swapped in purely for matching cuisine/simplicity/price can
+    still not exist — "does this fit the brief" and "is this a real,
+    open business" are different questions and passing the first proves
+    nothing about the second (2026-08-24: La Creperie du Vieux Chateau, a
+    perfectly on-brief pick, doesn't appear to be a real venue; found only
+    because a dedicated research pass specifically searched for the
+    business's existence, not its menu). Search for the venue by name +
+    address and confirm an independent source (review site, local press,
+    the platform's own listing) shows it operating, before checking
+    anything else about it.
+11. **Reservation-platform links — verify per venue, don't assume by
+    country.** Confirm via `WebSearch` (or a live platform check) that a
+    restaurant is actually listed on the platform before writing a
+    `res_url` — never guess a URL slug or assume a platform based on
+    region. As a prior only (not a substitute for checking): OpenTable and
+    Resy both have real UK presence, TheFork dominates France/Portugal,
+    Resy's footprint outside the US/UK is negligible — but this project has
+    already found a real exception (Zizzi Victoria, 2026-08-24: assumed
+    "not on OpenTable" by an earlier pass, actually listed) in the
+    direction the prior would have predicted correctly, so treat the prior
+    as a place to look first, not a reason to skip looking. A restaurant
+    with no confirmed platform listing gets `platform="phone"` (or
+    `"walkin"` if it doesn't take reservations) — never a fabricated link.
 
 ### 2. Rendering — reuse the shell, but audit every render path
 
@@ -119,13 +143,19 @@ same-day transatlantic flight), not a "looks fine" skim:
   this codebase — never the HTML `hidden` attribute.** Author CSS beats the
   UA `[hidden]` rule on specificity when both apply; this shipped a
   permanently-visible modal once already.
-- **Duration/free-time math**: a Transport item with no `end_time` is
-  miscounted as free time unless `parseTransportDurationMinutes()` (or
-  equivalent) derives an implied end from the item's own parsed duration.
-  `parseTransportDuration()`'s anchor-to-last-delimiter regex is
-  deliberate — matches only after the text's last `—`/`·`, to avoid
-  false-positiving on boarding-window language like "boarding opens ~90
-  min before departure."
+- **Duration/free-time math**: give every new Transport item a real
+  `item.duration_min` (integer minutes) in the generator — this is now the
+  primary source `transportDurationMinutesOf()`/`transportDurationBadgeOf()`/
+  `dayTransitSummary()` read, and it's what the free-time-gap detector uses
+  to compute `thisEnd` when `end_time` is absent. The older
+  `parseTransportDuration()` text regex (anchored to the segment after the
+  text's last `—`/`·`) still exists as a fallback only, and is a known trap:
+  it silently misses any duration phrased earlier in the sentence or spread
+  across a multi-leg description (2026-08-24: a real ferry's "approx. 8 hrs"
+  and a real multi-leg walk's total both went uncounted this way, causing
+  false "Free time (~X hrs, unscheduled)" cards on real drive/transit time).
+  A prose-only duration on a new Transport item is a bug waiting to
+  reproduce this, not a style choice — set `duration_min` every time.
 - **Times render 12-hour** via a `formatTime12()`-equivalent helper
   everywhere a time appears — the source data is 24-hour.
 
@@ -200,7 +230,52 @@ at 3.3MB total; unnecessary for phone/tablet display width).
   to[i]` at every city transition) before opening the PR — two real bugs
   shipped from getting this wrong across differing UTC offsets.
 
-### 8. When done, add an entry to the Decisions & fixed bugs log below
+### 8. Editorial commentary belongs in the decisions log, never in traveler-facing text
+
+When a venue is replaced, the new venue's `why`/`closure_note` field must
+describe ONLY facts a traveler needs (what it is, why it fits, hours/access
+notes) — never "replaces X" / "the old pick was closed" / "a research pass
+confirmed the previous choice doesn't exist." **This has already recurred
+twice on this exact project** (both restaurant-replacement passes,
+2026-08-2x) despite being caught and fixed the first time — writing the
+lesson down once was not enough to stop it happening again. Before
+finalizing any replacement, re-read every field you wrote for the new venue
+and ask "would a traveler reading this on their phone need this sentence,"
+not "is this sentence true" — true-but-irrelevant meta-commentary about the
+edit itself is the failure mode, and it hides inside otherwise-plausible
+descriptive text rather than announcing itself. Grep the rendered page for
+the OLD venue's name after any replacement — if it still appears, it's
+almost always quoted inside the new venue's own description, not a leftover
+duplicate booking.
+
+### 9. Available MCP connectors — what's actually useful for this project
+
+Checked directly, not assumed, as of 2026-08-24 — re-verify before relying
+on any of these again, connector capabilities change:
+
+- **Resy** (`display_resy_restaurant_availabilities_app`) — requires a real
+  Google Places ID as input, which nothing in this sandbox can look up
+  (no Places API access here). Not usable for wiring reservation links from
+  this environment; a Resy link still has to be found and verified via
+  plain `WebSearch` instead.
+- **Uber** (`get_estimates_between_two_locations_claude`) — immediate/live
+  rides only, cannot price or plan for a future travel date. Not useful for
+  pre-trip transfer-cost estimates.
+- **Cloudflare Developer Platform** connector covers D1/KV/R2/Workers/
+  Hyperdrive — it does **not** cover Cloudflare Pages, which is what this
+  site and its deploy actually run on. Don't reach for it expecting Pages
+  project/deployment visibility.
+- **Tripadvisor** (`search_hotels`/`hotel_details`/`compare_hotels`) — real
+  hotel data, usable for lodging research/verification if a future trip
+  needs it.
+- **Civitatis**, **Viator** — tour/activity search and booking-adjacent
+  data; usable for activity research on a future trip, not used this
+  session because this trip's activities were already sourced.
+- Plain `WebSearch` remains the actual workhorse for every fact-check in
+  section 1 above (venue existence, reservation platform, address/phone,
+  prose claims) — none of the connectors above replace it.
+
+### 10. When done, add an entry to the Decisions & fixed bugs log below
 
 Same terse-but-specific style as the existing entries — what was actually
 wrong, why, and what the fix was, not just "updated itinerary." If this
@@ -326,11 +401,14 @@ to work with, rather than guessing from what's visually described.
 
 `day`: `label`, `city`, `headline`, `weather`, `items[]`.
 `item`: `type`, `time`, `end_time`, `text`, `location`, `why`, `contact`,
-`flight`, `hotel`, `restaurant`. A restaurant/hotel's name is one level down
-(`item.restaurant.name` / `item.hotel.name`); an Activity/Transport/Note item's
-only display text is `item.text`. Check `data/trip-data.json` directly before
-assuming a field exists — don't guess a shape from what "seems like it should
-be there."
+`flight`, `hotel`, `restaurant`, `duration_min` (integer minutes; Transport
+items only — see playbook section 2). A restaurant/hotel's name is one level
+down (`item.restaurant.name` / `item.hotel.name`); an Activity/Transport/Note
+item's only display text is `item.text`. `restaurant.reservation`:
+`{platform, phone|url}` — `platform` is one of `resy`/`opentable`/`tock`/
+`thefork`/`sevenrooms`/`yelp`/`phone`/`walkin` (`RESERVATION_LABELS` in
+`app.js`). Check `data/trip-data.json` directly before assuming a field
+exists — don't guess a shape from what "seems like it should be there."
 
 ## Flight data
 
@@ -347,6 +425,28 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Two reservation-link corrections (Trattoria Brutto → Resy, Zizzi
+  Victoria → OpenTable) + a forward-looking playbook update, no itinerary
+  content touched (2026-08-28).** User explicitly required "don't change
+  any of the itinerary" this pass. `WebSearch` found a genuine Resy listing
+  for Trattoria Brutto (`resy.com/cities/london-england/venues/brutto`,
+  confirmed via multiple independent sources including a Resy blog
+  feature) — previously wired to a guessed/lower-confidence OpenTable URL.
+  Also found, incidental to that check, that Zizzi (Victoria) IS on
+  OpenTable (`opentable.co.uk/r/zizzi-victoria`) — the prior full
+  reservation-sweep pass had marked it `platform="phone"` on a "not on
+  OpenTable" finding that a direct re-check didn't confirm. Both are pure
+  `reservation` field edits in `build_trip_data.py`'s `R()` calls; re-ran
+  the full generator → assemble → qa_check2 (night counts unchanged:
+  London 5 / Normandy 3 / Porto 4) → reembed pipeline, then a Playwright
+  pass confirming both new badges/links render and no stale/duplicate
+  restaurant names or closure conflicts were introduced. Also used this
+  pass to write up the session's recurring lesson shapes (venue-existence
+  as its own check, reservation-platform verification, the `duration_min`
+  field, editorial-commentary leakage, MCP connector capabilities) into the
+  playbook above (sections 1, 2, 8, 9) rather than leaving them only in
+  this chronological log — see the playbook's own section 10 note on why
+  that distinction matters for a future session.
 - **Real OpenTable/Resy/TheFork/SevenRooms reservation links added across
   all 21 restaurants, plus a full open-day verification sweep that caught
   two real problems — one restaurant that doesn't appear to exist, one
