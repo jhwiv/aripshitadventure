@@ -271,6 +271,37 @@ on any of these again, connector capabilities change:
 - **Civitatis**, **Viator** — tour/activity search and booking-adjacent
   data; usable for activity research on a future trip, not used this
   session because this trip's activities were already sourced.
+- **DirectBooker** (`hotel-search`/`hotel-details`/`hotel-lookup-*`) —
+  checked directly against this trip's actual lodging, 2026-08-28: **all
+  three stays on this trip are Airbnb rentals, not hotels**, so this
+  connector has no inventory for any of them and wasn't used to touch
+  lodging data. It's a real option for a FUTURE trip that books hotels, or
+  if this trip's lodging ever needs a hotel-backup search — but that would
+  be changing what's actually booked, so only do it if explicitly asked,
+  never proactively (Porto's stay is still an unconfirmed placeholder —
+  see the Decisions log — and DirectBooker doesn't fill that gap either;
+  it can only search bookable hotel inventory, not resolve which Airbnb
+  listing a traveler already reserved).
+- **TomTom Maps** (`tomtom-geocode`/`tomtom-fuzzy-search`/`tomtom-poi-search`/
+  `tomtom-routing`) — genuinely useful, used 2026-08-28 to replace
+  `pins.json`'s self-admitted "best-effort... from general geographic
+  knowledge, no live geocoding access" coordinates with real geocoded ones.
+  **Important lesson from that pass: `tomtom-geocode` (plain address
+  search) is unreliable for a landmark-style address** (e.g. "Riverside
+  Building, County Hall, London SE1 7PB" geocoded to a wrong postcode
+  entirely, matching generic street text instead of the actual landmark) —
+  `tomtom-fuzzy-search` with the venue's actual NAME plus a `position` bias
+  toward the existing approximate coordinate reliably returns the real,
+  named POI (with a matching phone/official URL to cross-check) instead.
+  Always search by name first for anything that's a named place, not just
+  a street address. `tomtom-routing` is available and not yet used here —
+  the Map tab's city-to-city line is honestly labeled "straight-line, not
+  an actual driving path" specifically because no routing API was
+  available when that comment was written; a real multi-modal trip (drive
+  + cross-Channel ferry + flight) is not a clean fit for a single car-only
+  routing call, so this wasn't attempted this pass — worth revisiting if a
+  future session has real lodging coordinates for every leg and time to
+  verify a mixed-mode route makes sense before rendering it as authoritative.
 - Plain `WebSearch` remains the actual workhorse for every fact-check in
   section 1 above (venue existence, reservation platform, address/phone,
   prose claims) — none of the connectors above replace it.
@@ -425,6 +456,44 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **`pins.json`'s map coordinates upgraded from hand-estimated "best-effort...
+  no live geocoding access" to real TomTom-geocoded/POI-verified values, and
+  a new `PINS.hotels` entry added for the Bayeux stay (2026-08-28).** User:
+  "Tomtom and direct booker now connected. Use as necessary to improve ux."
+  Investigated both against this trip's real data before touching anything.
+  **DirectBooker doesn't apply**: all three lodgings on this trip
+  (`data/trip-data.json`) are Airbnb rentals, not hotels — DirectBooker's
+  hotel-search/lookup tools have no inventory for any of them, so it wasn't
+  used (documented in the playbook, section 9, rather than forced into a use
+  it doesn't fit). **TomTom did apply, concretely**: `pins.json`'s own `_note`
+  field already admitted its coordinates were "best-effort... from general
+  geographic knowledge — this build environment has no live geocoding
+  access," and `PINS.hotels` (read by both the Map tab's marker loop and
+  `resolveDayHotelName`'s fallback) had never had a single entry in it.
+  Geocoded all 19 landmark pins plus the Bayeux Airbnb's real address (`4 Rue
+  Franche, Bayeux` — the only one of the three lodgings with a known street
+  address). Plain `tomtom-geocode` on the landmark address strings alone
+  produced several outright wrong matches (County Hall resolved to a
+  different SE1 postcode entirely; Churchill War Rooms/Imperial War
+  Museum/Battle of Britain Bunker didn't resolve to the actual venue at all)
+  — switched to `tomtom-fuzzy-search` on the venue's real NAME with a
+  `position` bias toward the old estimate, which returned the correct named
+  POI (cross-checked via matching phone number/official URL) for all but two
+  landmarks. Real, meaningful corrections: the Tank Museum pin moved ~1.4 km,
+  Graham's Port Lodge moved ~1 km, the Battle of Britain Bunker moved ~850 m
+  — all were previously placed noticeably off from the real venue. Two
+  landmarks (County Hall; the High Street Kensington station meet-up point)
+  couldn't be resolved to a better point by either method and were left
+  unchanged, cross-checked as already close to TomTom's nearest street-level
+  result. Douro Valley entries (Quinta do Vallado, the Vilarinho dos Freires
+  area) stay flagged `approx` — TomTom resolved the named venue but a winery
+  estate doesn't have one exact door-front coordinate the way a street
+  address does. Verified live via Playwright: the Map tab renders with no
+  new console errors and the marker count increases by exactly one (the new
+  Bayeux hotel pin) with the updated `pins-data` blob confirmed present in
+  the actual rendered page, not just the source file. No itinerary
+  schedule/venue content touched — this is exactly the "helpful data... ok"
+  category from the prior turn's instruction, not a schedule change.
 - **Three restaurants had a "Call to reserve" badge with no actual phone
   number behind it (no link, no walk-in label) + brand-colored reservation
   icons replaced the plain text-only badges (2026-08-28).** User reported
