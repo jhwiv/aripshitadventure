@@ -417,6 +417,39 @@
   window.addEventListener('scroll', onScroll, { passive: true });
 
   /* ---------------------------------------------------------
+     DAY TABS BAR — one card per day (global day number + that day's
+     city flag), always visible near the top of the page so a specific
+     day is reachable in one tap without first picking a city nav-chip.
+     Built from TRIP.days (not hand-typed) so it stays correct if the
+     itinerary's day count/city assignment ever changes. Cards are plain
+     <a href="#day-N"> anchors - the sitewide `scroll-behavior: smooth`
+     (style.css) plus .day-block's own scroll-margin-top handle the
+     smooth-scroll-and-clear-the-sticky-nav behavior with no JS needed,
+     same approach the existing per-city .day-jump-pill row already uses.
+     Deliberately kept in normal document flow (not fixed/sticky) - a
+     fixed-position pill row is the exact thing that collided with the
+     bottom FAB stack on mobile earlier in this project's history (see
+     CLAUDE.md's decisions log), so this scrolls away with the page
+     instead of staying pinned. flex-wrap lets it wrap into as many rows
+     as needed at any width rather than ever hiding a day behind an
+     overflow-x scroll. */
+  (function renderDayTabsBar() {
+    var wrap = document.getElementById('dayTabsRow');
+    if (!wrap || !TRIP.days || !TRIP.days.length) return;
+    wrap.innerHTML = TRIP.days.map(function (day, idx) {
+      var n = idx + 1;
+      var flag = CITY_FLAGS[day.city] || '';
+      var color = CITY_COLORS[day.city] || '#8a8f98';
+      var label = 'Day ' + n + (day.city ? ' — ' + day.city : '');
+      return '<a href="#day-' + n + '" class="day-tab-card" style="--day-tab-color:' + color + '" ' +
+        'aria-label="Jump to ' + esc(label) + '" title="' + esc(label) + '">' +
+        (flag ? '<span class="day-tab-flag" aria-hidden="true">' + flag + '</span>' : '') +
+        '<span class="day-tab-num">' + n + '</span>' +
+      '</a>';
+    }).join('');
+  })();
+
+  /* ---------------------------------------------------------
      HERO
      --------------------------------------------------------- */
   document.getElementById('heroRoute').textContent = TRIP.destination;

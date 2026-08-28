@@ -198,6 +198,49 @@ img { max-width: 100%; display: block; }
   .nav-chip { padding: 6px 6px; letter-spacing: 0; }
 }
 
+/* ---- Day tabs bar — one numbered card per day (global Day N + that
+   day's city flag), directly under the site nav so any day is one tap
+   away regardless of which city tab is currently in view. flex-wrap
+   (not overflow-x scroll) guarantees every day card stays visible in
+   its own row rather than hiding any of them off-screen; deliberately
+   NOT position:sticky/fixed - a fixed pill row is exactly what collided
+   with the bottom FAB stack on mobile earlier in this project (see
+   CLAUDE.md), so this one scrolls away with the page like the existing
+   per-city .day-jump-nav already does safely. ---- */
+.day-tabs-wrap {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 10px 12px;
+}
+.day-tabs-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--steel); font-weight: 700; margin-bottom: 6px; padding: 0 2px;
+}
+.day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.day-tab-card {
+  --day-tab-color: var(--gold);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1px;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-top: 3px solid var(--day-tab-color);
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+.day-tab-card:hover { background: #fffdf7; border-color: var(--gold-soft); box-shadow: 0 2px 6px rgba(13,33,51,0.12); }
+.day-tab-card:active { transform: scale(0.94); }
+.day-tab-flag { font-size: 12px; line-height: 1; }
+.day-tab-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; line-height: 1; }
+@media (max-width: 480px) {
+  .day-tab-card { width: 34px; height: 34px; border-radius: 8px; }
+  .day-tab-flag { font-size: 10px; }
+  .day-tab-num { font-size: 11px; }
+}
+
 /* ---- Layout ---- */
 .container { max-width: 760px; margin: 0 auto; padding: 20px 20px 40px; }
 /* Continuous scroll (matches zurich-pwa's real architecture - confirmed
@@ -208,7 +251,7 @@ img { max-width: 100%; display: block; }
    scroll-margin-top keeps a clicked-to section clear of the sticky nav. */
 .tab-section { display: block; scroll-margin-top: 96px; }
 @media (prefers-reduced-motion: reduce) {
-  .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill {
+  .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card {
     transition: none;
   }
 }
@@ -748,7 +791,7 @@ img { max-width: 100%; display: block; }
 @media print {
   .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill,
   #itineraryMap, .hero-photo,
-  .day-jump-nav, .countdown-badge { display: none !important; }
+  .day-jump-nav, .day-tabs-wrap, .countdown-badge { display: none !important; }
   .hero { background: none !important; min-height: 0; color: #1c2840; padding: 12px 0; }
   .hero-overlay { display: none; }
   .hero .eyebrow, .hero .meta { color: #5b6577; }

@@ -456,6 +456,69 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **New global "Jump to a day" tabs bar — one card per day (Day N + that
+  day's city flag), directly under the site nav, all 15 visible in
+  wrapped rows with no overflow scroll (2026-08-28c).** User: "I want day
+  numbered tabs in rows so that the user can click to a specific day...
+  code the day numbered card with the associated country flag... make
+  sure the day tabs are all visible in rows." The existing `.day-jump-nav`
+  pill row (`app.js`) already did "click to jump to a day," but only
+  *within* one city's own tab (e.g. London's tab only jump-lists Day
+  1–7) — every pill there shares the same city, so a flag on each would
+  have been redundant, and reaching Day 12 (Porto) still meant first
+  picking the Porto nav-chip. What was actually being asked for was a
+  single top-level bar covering all 15 days across all 3 cities at once,
+  each card distinguishing its city via flag/color, so any day is one tap
+  away regardless of which section is currently in view.
+  - **New markup** (`index.html`): `<div class="day-tabs-wrap">` with a
+    "JUMP TO A DAY" label and an empty `<div id="dayTabsRow">`, placed
+    right after `</nav>` and before `<main>` — visible immediately on
+    page load, before any tab content.
+  - **New render function** (`app.js`, `renderDayTabsBar`, called once on
+    load next to the nav scroll-spy setup): builds one `<a
+    href="#day-N">` card per `TRIP.days[]` entry — global day number
+    (1–15, matching the numbering `renderDayBlockHTML` already assigns)
+    + that day's `CITY_FLAGS[day.city]`, generated from data rather than
+    hand-typed so it stays correct if the itinerary's day count ever
+    changes again (this project's day count alone has changed at least 4
+    times in its history — see the entries below). Deliberately reuses
+    the *existing* `#day-N` anchor IDs the per-city day blocks already
+    have — no new IDs, no JS scroll-handler needed: the sitewide `html {
+    scroll-behavior: smooth }` plus `.day-block`'s own
+    `scroll-margin-top` already do the smooth-scroll-and-clear-the-nav
+    work, same zero-JS approach the older per-city pill row already
+    proved out.
+  - **Deliberately NOT `position: sticky`/`fixed`.** A fixed-position day
+    pill row is the *exact* thing that once collided with the bottom FAB
+    stack badly enough to make "Day 1" completely unreachable on mobile
+    (see the "Fixed-position mobile elements collided more than once"
+    entry below) — this bar scrolls away with the page instead, same fix
+    already established for that failure mode. `flex-wrap` on the row
+    (not `overflow-x: auto`) is what actually satisfies "all visible in
+    rows" — every card gets its own row slot at any width instead of any
+    day ever being scrollable-off-screen.
+  - Cards get a 3px top border in the day's `CITY_COLORS` value (same
+    teal/coral/gold already used for nav-chip active states, day banners,
+    Condensed's left-border accent) so the bar previews which color means
+    which city, consistent with the rest of the site's existing color
+    language, without needing a legend.
+  - Added `.day-tabs-wrap`/`.day-tab-card` to the print media query's
+    hide list (alongside `.day-jump-nav`) and to the
+    `prefers-reduced-motion` transition-suppression list — both existing
+    conventions this file's own history called out as easy to forget for
+    a new interactive element.
+  - Verified live via Playwright at 360/390/414/428/768px: exactly 15
+    cards render at every width, wrap into 2 rows on phone widths (1 row
+    at 768px), zero cards overflow the row's own bounding box, zero
+    horizontal scroll on the row, first card is Day 1 🇬🇧 / last is Day 15
+    🇵🇹 (matches the current no-Nuremberg 5 London + 3 Normandy + 4 Porto
+    itinerary), clicking the Day 8 card scrolls `#day-8` to just below the
+    sticky nav (~112px, matching `.day-block`'s own scroll-margin), print
+    media correctly computes `display: none` on the new wrap, and zero
+    real console/page errors (only the expected aborted-external-request
+    and `/api/flight-status` 404 noise this file's Verification
+    Discipline section already documents as normal under plain
+    `http.server`).
 - **TomTom MCP connector came back online mid-session and was used to close
   out the two landmark pins the prior pass (below) had left as
   unresolved best-effort estimates (2026-08-28b).** User: "update where we
