@@ -456,6 +456,56 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Day tabs bar made sticky, on direct request, by wrapping it with
+  .site-nav in one shared sticky group instead of positioning it
+  independently (2026-08-28d).** Follow-up to the day-tabs bar just below:
+  user asked for the bar to stay pinned while scrolling. The naive fix —
+  giving `.day-tabs-wrap` its own `position: sticky; top: 0` right below
+  `.site-nav`'s existing `position: sticky; top: 0` — would have stacked
+  both elements at the same spot once both were "stuck," overlapping each
+  other, since `.site-nav`'s rendered height isn't a fixed constant (it
+  changes across the 480px/370px chip-sizing breakpoints already in
+  `style.css`) and a hardcoded `top: <navHeight>px` offset would drift out
+  of sync with it. Fixed by introducing a `.sticky-top` wrapper
+  (`index.html`) around BOTH `.site-nav` and `.day-tabs-wrap`, moving
+  `position: sticky; top: 0; z-index: 30` onto the wrapper alone — the two
+  children stay in normal document flow relative to each other inside it,
+  so the group sticks as one unit and stacks itself correctly regardless
+  of either child's height, no manual pixel math required.
+  - Checked this against the exact FAB-collision failure mode this file
+    has flagged twice already (see the "Fixed-position mobile elements
+    collided more than once" entry) before shipping: that bug was a
+    BOTTOM-fixed pill row colliding with the bottom-left `.fab-row`/
+    `#time-pill` (both `position: fixed` at the bottom). This new sticky
+    group is anchored at the TOP, so it's geometrically nowhere near
+    either — confirmed via Playwright at 360–768px widths, scrolled deep
+    into the page (`window.scrollTo(0, 8000)`), that the sticky group's
+    bounding box never overlaps `.fab-row`'s.
+  - **Testing note for a future pass**: a synthetic `element.click()`
+    fired via `page.evaluate()` on a day-tab-card anchor intermittently
+    failed to trigger the browser's native hash-navigation + smooth-scroll
+    in headless Chromium after a prior `window.scrollTo()` call (scroll
+    position stayed frozen at the pre-click value even though
+    `location.hash` updated) — a real Playwright `page.click()` (actual
+    pointer-event simulation) worked correctly every time at every width
+    tested. If a future verification pass sees a click "not scrolling"
+    that looks like a real bug, try a real `page.click()` before
+    concluding the app itself is broken — this cost real debugging time
+    here for something that turned out to be a test-harness quirk, not an
+    app bug.
+  - Swapped `.day-tabs-wrap`'s `border-bottom` for a `box-shadow` (moved
+    down from `.site-nav`, which already used the same technique) since
+    it's now the bottom edge of the whole sticky group, not a standalone
+    block — needs its own visual "cap" the same way `.site-nav` always
+    did.
+  - Verified live via Playwright at 360/390/414/428/768px: the sticky
+    group (nav + day tabs, ~178–200px tall depending on width) stays
+    pinned at `top: 0` after scrolling thousands of pixels into the page,
+    never overlaps `.fab-row`, and a real click on a day card while
+    scrolled deep into a *different* day's content (e.g. clicking Day 11
+    while sitting in Day 3's section) correctly lands that day just below
+    the sticky group (~112px, matching `.day-block`'s own
+    `scroll-margin-top`) every time.
 - **New global "Jump to a day" tabs bar — one card per day (Day N + that
   day's city flag), directly under the site nav, all 15 visible in
   wrapped rows with no overflow scroll (2026-08-28c).** User: "I want day
