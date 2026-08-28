@@ -75,6 +75,8 @@
     opentable: 'Book via OpenTable',
     tock: 'Book via Tock',
     yelp: 'Book via Yelp',
+    thefork: 'Book via TheFork',
+    sevenrooms: 'Book via SevenRooms',
     phone: 'Call to reserve',
     walkin: 'Walk-in only'
   };

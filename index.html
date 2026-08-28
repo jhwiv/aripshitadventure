@@ -636,8 +636,8 @@ function dismissWelcome() {
               "hours": "Mon–Thu 12–3 PM & 5–10:30 PM, Fri 12–3 PM & 5–11 PM, Sat 12–11 PM, Sun 11:45 AM–8 PM"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+44 20 3441 6996"
+              "platform": "opentable",
+              "url": "https://www.opentable.co.uk/r/blacklock-soho-london-2"
             },
             "open_days": [
               "mon",
@@ -714,8 +714,8 @@ function dismissWelcome() {
               "hours": "Mon–Fri 12–3 PM & 6–11 PM, Sat 6–11 PM, Sun closed"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+44 20 3268 1077"
+              "platform": "opentable",
+              "url": "https://www.opentable.co.uk/osteria-dell-angolo"
             },
             "open_days": [
               "mon",
@@ -809,8 +809,8 @@ function dismissWelcome() {
               "hours": "Mon–Sat 12–3 PM & 5–11 PM, Sun 12–3 PM & 5–9:30 PM"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+44 20 7734 2223"
+              "platform": "sevenrooms",
+              "url": "https://www.sevenrooms.com/reservations/boccadilupo"
             },
             "open_days": [
               "mon",
@@ -968,8 +968,8 @@ function dismissWelcome() {
               "hours": "Daily 12–10:30 PM"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+44 20 7792 1066"
+              "platform": "thefork",
+              "url": "https://www.thefork.co.uk/restaurant/essenza-r816833"
             },
             "open_days": [
               "mon",
@@ -1071,7 +1071,8 @@ function dismissWelcome() {
               "hours": "Mon–Fri 7 AM–9:30 PM, Sat–Sun 8 AM–9:30 PM"
             },
             "reservation": {
-              "platform": "walkin"
+              "platform": "opentable",
+              "url": "https://www.opentable.co.uk/r/spagnoletti-london-1"
             },
             "open_days": [
               "mon",
@@ -1327,8 +1328,8 @@ function dismissWelcome() {
               "hours": "Tue–Sat 12–2:30 PM & 5:30–10:30 PM; closed Sun–Mon"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+44 20 4537 0928"
+              "platform": "opentable",
+              "url": "https://www.opentable.co.uk/r/trattoria-brutto-london"
             },
             "open_days": [
               "tue",
@@ -1549,7 +1550,7 @@ function dismissWelcome() {
         {
           "type": "Activity",
           "time": "08:30",
-          "end_time": "13:30",
+          "end_time": "13:00",
           "text": "Omaha Beach & D-Day landing sites (self-guided or private guide)",
           "location": "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer",
           "why": "The sand, the bluffs, the bunkers — standing on Omaha at low tide is the closest you'll come to understanding June 6, 1944.",
@@ -1567,49 +1568,53 @@ function dismissWelcome() {
         },
         {
           "type": "Lunch",
-          "time": "14:00",
+          "time": "13:15",
           "end_time": null,
-          "text": "Lunch at La Creperie du Vieux Chateau",
+          "text": "Lunch at Les Flots Bleus",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "La Creperie du Vieux Chateau",
+            "name": "Les Flots Bleus",
             "neighborhood": "Grandcamp-Maisy harbor",
-            "cuisine": "Crepes, Norman French",
+            "cuisine": "French, Burgers",
             "price_range": "$",
-            "why": "Harborside crêperie in Grandcamp-Maisy, a natural lunch stop between the beaches and the Cemetery.",
+            "why": "Harborside spot in Grandcamp-Maisy, a natural lunch stop between the beaches and the Cemetery. Monday lunch service is 12:00–2:00 PM only (no Monday dinner) — arrive by ~1:15 PM to allow a full hour before close.",
             "contact": {
-              "address": "1 Quai Crampon, 14450 Grandcamp-Maisy, France",
-              "phone": "+33 2 31 22 61 44"
+              "address": "66 Quai Crampon, 14450 Grandcamp-Maisy, France",
+              "phone": "09 72 91 03 25",
+              "website": "https://lesflotsbleus.restaurant",
+              "hours": "Mon 12:00–2:00 PM (lunch only); Tue–Wed closed; Thu–Sun 7:00–9:00 PM (dinner only)"
             },
             "reservation": {
-              "platform": "walkin"
+              "platform": "phone",
+              "phone": "09 72 91 03 25"
             },
             "open_days": [
               "mon",
-              "tue",
-              "wed",
               "thu",
               "fri",
               "sat",
               "sun"
             ],
+            "closure_note": "Confirmed open for this Monday's lunch service (12:00–2:00 PM) — the only day of the week this venue serves lunch at all, so there is no flexibility to move this booking later in the week.",
             "backup": {
-              "name": "Le Conquest",
+              "name": "L'Aristide",
               "neighborhood": "Grandcamp-Maisy",
-              "cuisine": "Seafood, Norman French",
+              "cuisine": "Crêperie",
               "price_range": "$",
-              "why": "Seafood alternative in the same harbor town.",
-              "contact": {},
+              "why": "A real, 36-year family-run crêperie in the same village (86 Rue Aristide Briand) — closer in spirit to the original crepe pick. Sources disagree on its exact weekly hours; call 02 31 51 80 78 ahead rather than walking in unannounced.",
+              "contact": {
+                "phone": "02 31 51 80 78"
+              },
               "reservation": {
-                "platform": "walkin"
+                "platform": "phone"
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=La%20Creperie%20du%20Vieux%20Chateau%20Grandcamp-Maisy%20harbor%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Les%20Flots%20Bleus%20Grandcamp-Maisy%20harbor%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           },
           "duration_min": null
         },
@@ -2219,8 +2224,8 @@ function dismissWelcome() {
               "hours": "Daily, roughly 12–3pm & 7pm–midnight (confirm exact midday close before relying on it)"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+351 22 205 5071"
+              "platform": "opentable",
+              "url": "https://www.opentable.com/r/pizzaiolo-clerigos-porto"
             },
             "open_days": [
               "mon",
@@ -2290,8 +2295,8 @@ function dismissWelcome() {
               "hours": "Fri 12:30–3pm & 7:30pm–midnight"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+351 918 280 080"
+              "platform": "thefork",
+              "url": "https://www.thefork.com/restaurant/kob-by-olivier-porto-r462453"
             },
             "open_days": [
               "mon",
@@ -2379,7 +2384,7 @@ function dismissWelcome() {
             "price_range": "$$",
             "why": "Small, simple tasca menu — grilled meats and pork ribs, near the Douro Museum. Very small; reservation recommended given the tour's timing.",
             "contact": {
-              "address": "Rua Marques de Pombal 42, Peso da Régua",
+              "address": "Rua do Marquês de Pombal 42 R/C, 5050-282 Peso da Régua",
               "phone": null
             },
             "reservation": {
@@ -2387,15 +2392,13 @@ function dismissWelcome() {
               "phone": null
             },
             "open_days": [
-              "mon",
               "tue",
               "wed",
               "thu",
               "fri",
-              "sat",
-              "sun"
+              "sat"
             ],
-            "closure_note": "This restaurant's exact address wasn't fully consistent across sources during research — call ahead to confirm before the trip, and note the phone number is not yet confirmed either.",
+            "closure_note": "Address re-confirmed in a second, independent research pass (matches what was originally recorded, with a fuller postal code). Closed Sunday and Monday — this Saturday lunch booking is fine. No phone number could be found from any source — call via the venue's Google/TheFork listing or confirm in person on arrival day.",
             "backup": {
               "name": "Castas e Pratos",
               "neighborhood": "Peso da Régua, Douro Valley",
@@ -2512,22 +2515,22 @@ function dismissWelcome() {
           "type": "Lunch",
           "time": "13:00",
           "end_time": null,
-          "text": "Lunch at Cafe Santiago",
+          "text": "Lunch at Francesinhas Al Forno da Baixa",
           "location": null,
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": {
-            "name": "Cafe Santiago",
+            "name": "Francesinhas Al Forno da Baixa",
             "neighborhood": "Baixa",
             "cuisine": "Portuguese casual",
             "price_range": "$",
-            "why": "Casual Porto institution, known for francesinha.",
+            "why": "Casual Baixa spot specializing in francesinha, including a vegan option — confirmed open Sundays.",
             "contact": {
-              "address": "Rua de Passos Manuel 226, 4000-382 Porto",
-              "phone": "+351 22 205 5797",
-              "hours": "Daily 12–11pm"
+              "address": "Rua do Almada 160, 4050-031 Porto",
+              "phone": "+351 912 551 855",
+              "hours": "Daily 12:00–3:00 PM & 7:00 PM–4:00 AM"
             },
             "reservation": {
               "platform": "walkin"
@@ -2541,6 +2544,7 @@ function dismissWelcome() {
               "sat",
               "sun"
             ],
+            "closure_note": "Confirmed open Sundays (daily hours, no closed day).",
             "backup": {
               "name": "Mercado do Bolhao",
               "neighborhood": "Baixa",
@@ -2553,7 +2557,7 @@ function dismissWelcome() {
               }
             },
             "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Cafe%20Santiago%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Francesinhas%20Al%20Forno%20da%20Baixa%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
           },
           "duration_min": null
         },
@@ -2598,8 +2602,8 @@ function dismissWelcome() {
               "hours": "Tue–Sun 12–11pm (weekday lunch availability varies — confirm ahead)"
             },
             "reservation": {
-              "platform": "phone",
-              "phone": "+351 22 012 1200"
+              "platform": "thefork",
+              "url": "https://www.thefork.com/restaurant/1828-r739174"
             },
             "open_days": [
               "tue",

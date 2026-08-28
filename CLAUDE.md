@@ -347,6 +347,83 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Real OpenTable/Resy/TheFork/SevenRooms reservation links added across
+  all 21 restaurants, plus a full open-day verification sweep that caught
+  two real problems — one restaurant that doesn't appear to exist, one
+  confirmed closed on its scheduled night (2026-08-22).** Asked to add
+  real reservation-service links and confirm every restaurant is open on
+  its scheduled night. Delegated the research to a background agent
+  (21 venues × verifying a real online-booking presence + cross-checking
+  posted hours against the exact scheduled date, not a guess) — this
+  app's hard rule is no fabricated URLs, so every link had to be
+  independently found on the actual platform, not pattern-guessed
+  (`opentable.com/r/<slug>` is easy to invent and would silently 404).
+  - **Two real problems surfaced, not hypothetical risk:**
+    1. **"La Creperie du Vieux Chateau" (Day 8 lunch, Grandcamp-Maisy) —
+       could not be verified to exist at its stated address** (1 Quai
+       Crampon) in any directory (Pages Jaunes, TripAdvisor, Mappy). This
+       entry had survived every prior fact-check pass in this file's
+       history untouched, because nothing had specifically tried to
+       confirm the VENUE ITSELF exists, only its cuisine/price/simplicity
+       fit. Replaced with **Les Flots Bleus** (66 Quai Crampon, a few
+       doors down on the same harbor quay) — independently confirmed via
+       four+ corroborating sources (Yelp, Mappy, Petit Futé, the venue's
+       own site). Its Monday lunch window is narrow (12:00–2:00 PM only,
+       no Monday dinner at all), so the Omaha Beach activity's `end_time`
+       was pulled 30 min earlier (13:30→13:00) and lunch moved 45 min
+       earlier (14:00→13:15) to land comfortably inside that window rather
+       than arriving at the edge of closing time.
+    2. **Cafe Santiago (Day 14 lunch) — confirmed CLOSED SUNDAYS** per the
+       venue's own site, and Day 14 falls on a Sunday. Replaced with
+       **Francesinhas Al Forno da Baixa** (Rua do Almada 160) — same
+       francesinha-focused, walk-in-casual concept, confirmed open daily
+       including Sundays, in the same Baixa neighborhood.
+  - **9 restaurants got real reservation-platform links** (verified by
+    actually finding the listing, not guessing a URL pattern): OpenTable
+    for Blacklock Soho, Osteria dell'Angolo, Spagnoletti, Trattoria Brutto,
+    A Pizzaiolo Clérigos; TheFork for Essenza, KOB by Olivier, 1828
+    Steakhouse; SevenRooms for Bocca di Lupo. Added `thefork` and
+    `sevenrooms` to `RESERVATION_LABELS` (`app.js`) — previously only
+    resy/opentable/tock/yelp/phone/walkin existed, and TheFork specifically
+    is the dominant reservation platform in France and Portugal, where
+    over half this trip's restaurants are.
+  - **12 restaurants confirmed as genuinely phone/walk-in only** — no
+    online booking presence exists for them anywhere, which is itself a
+    real, useful finding (not a gap in the research): Regency Cafe, Zizzi
+    Victoria, The Anchor Bankside, Bovington Tank Museum Cafe, both
+    Bayeux dinners (Le Moulin de la Galette, Le Volet Qui Penche), Pizza
+    Sam, Ribeira Square, Tasca da Quinta, Adega São Nicolau, and both new
+    replacements (Les Flots Bleus, Francesinhas Al Forno da Baixa).
+    **Explicitly did NOT link a same-named-adjacent restaurant found for
+    Adega São Nicolau** — the research turned up a similarly-named but
+    confirmed-DIFFERENT restaurant on TheFork; attaching that link would
+    have sent the traveler to book the wrong table, so it was left
+    phone-only instead, exactly the caution this file's hard rule exists
+    for.
+  - **A lesson from the last restaurant-swap pass applied again before
+    shipping, not after being caught by a test:** the first draft of both
+    replacement restaurants' `why` text editorialized about the swap
+    itself ("Replaces Cafe Santiago, which a research pass confirmed is
+    closed..."). Caught by my own verification script (which specifically
+    checks the OLD name is gone from the rendered page) still finding the
+    old names — because they were quoted inside the NEW restaurant's own
+    description. Trimmed to only traveler-relevant facts before shipping,
+    same fix already documented in the prior restaurant-swap entry for the
+    identical mistake shape.
+  - **Full open-day cross-check re-run across all 21 restaurants** (not
+    just the 2 replaced ones) — computed each day's actual weekday from
+    its calendar date and confirmed every single restaurant's `open_days`
+    includes the day it's actually scheduled for. Zero conflicts, run
+    programmatically before writing this entry, not eyeballed.
+  - Verified live via Playwright: all 20 restaurants with a phone or URL
+    show a working "Reserve" link (the 21st, Tasca da Quinta, correctly
+    shows none — no phone number was found from any source, an honest gap
+    rather than a fabricated one); reservation badges read "Book via
+    OpenTable"/"Book via TheFork"/"Book via SevenRooms"/"Call to
+    reserve"/"Walk-in only" correctly per restaurant; zero console errors;
+    re-confirmed after trimming the why-text that neither replaced
+    restaurant's old name appears anywhere on the rendered page.
+
 - **Transfer/travel-time display rebuilt around a structured `duration_min`
   field, fixing a real "free time" mislabeling bug found during a live
   investigation, not a guess (2026-08-22).** Told the traveler wasn't
