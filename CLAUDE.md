@@ -456,6 +456,76 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **26 missing walk/drive/transit legs added across 11 days — a systemic
+  gap, not an isolated miss (2026-08-29).** User reported one concrete
+  case (hotel → Churchill War Rooms had no time estimate, "no way to know
+  when to leave to be on time"), but asked to "make a logical decision
+  where walk or drive or transport times belong" — read as a request to
+  audit the whole trip, not patch the one example. Wrote a script to walk
+  every day's `items[]` and flag any Activity/Lunch/Dinner/Breakfast whose
+  immediately preceding item wasn't a Transport/Flight — this is the same
+  "every transition needs a real leg" principle the playbook's QA
+  checklist (§1.5) already applies to INTER-city transitions, just run
+  intra-day/intra-city here for the first time. Found ~26 real gaps across
+  11 days (London Days 2-6, Normandy Days 8-9, Porto Days 11-14, Douro
+  Day 13) — every single non-city-tab day except the two travel days
+  (7, 15, already dense with transport) and the fully-guided Mont-Saint-
+  Michel day had at least one.
+  - **Two tiers of confidence, kept honestly distinct.** For a gap between
+    two KNOWN addresses (`item.location` or `item.restaurant.contact.
+    address` — most legs), gave a real estimate grounded in actual
+    geography: short same-neighborhood walks reasoned from known
+    postcodes/distances (e.g. Churchill War Rooms to Marsham Street,
+    both Westminster, ~8 min), and the two genuinely non-obvious
+    longer/cross-town ones checked via `WebSearch` rather than guessed —
+    Grandcamp-Maisy to the American Cemetery (10.7mi/19min, confirmed via
+    rome2rio) and the Porto/Gaia river crossing at Graham's Port Lodge
+    (steep uphill walk "would probably be a pain" per visitor reports;
+    labeled as a taxi-recommended ~25min walk or ~10min rideshare
+    alternative, not just a flat number). For the 8 legs starting FROM
+    the London or Porto Airbnb, the exact address is still unconfirmed
+    (see the two lodging entries below) — rather than fabricate a false-
+    precision number against an address that doesn't exist yet, gave a
+    real range (e.g. "15-25 min by Tube or taxi from most Central London
+    postcodes") with an explicit `why` caveat that it needs refining once
+    the address lands. This is a genuine, disclosed gap, not a shortcut -
+    a traveler still gets an actionable buffer to plan around today,
+    which is what was actually asked for, without this app asserting a
+    fact it can't back up.
+  - **Two self-caught misses in my own first pass**, found by re-running
+    the same gap-detection script after the first batch of inserts rather
+    than assuming one pass was complete: Day 8's Omaha Beach → Les Flots
+    Bleus lunch leg (Colleville-sur-Mer to Grandcamp-Maisy, ~19 min - the
+    REVERSE direction of the cemetery leg I'd already added, easy to miss
+    since I'd mentally filed that route as "handled") and Day 14's
+    Clérigos Tower → 1828 Steakhouse dinner (crossing to Vila Nova de Gaia
+    for the farewell dinner, ~20 min) - a case where I'd written the leg
+    into this file's own working notes but the insertion script itself
+    never got the entry. **Lesson: after a batch data edit meant to close
+    every instance of a pattern, re-run the SAME detection query against
+    the result — don't assume the fix set is complete just because it was
+    planned as complete.**
+  - **Deliberately left unaddressed** (verified each is a real exception,
+    not an oversight): Day 6's Embankment→Bankside lunch (the walking TOUR
+    itself covers this ground, it's a river walk ending near Bankside -
+    adding a separate transport leg would double-count movement already
+    inside the guided activity); Day 7's Tank Museum lunch ("at the Tank
+    Museum cafe" - same venue); Day 9's self-guided-walk→Cathedral (the
+    walk's own text already routes through town to the cathedral) and
+    museum→cemetery (item text already says "directly across the road");
+    Day 10's lunch→abbey-interior (same Mont-Saint-Michel site, single
+    guided/self-guided visit); Day 11's Ribeira-waterfront→dinner (Ribeira
+    Square IS the waterfront, same spot).
+  - Regenerated `data/trip-data.min.json` to match and re-embedded into
+    `index.html`'s `trip-data` script block per this file's own hard rule.
+    Verified live via Playwright: embedded data matches the source file
+    exactly, zero day-ordering violations (`item.time` still ascending
+    within every day after the inserts), the Churchill War Rooms day now
+    opens with a real 9:35 AM transport card instead of jumping straight
+    to the 10:00 AM activity, the Day 12 Porto/Gaia crossing renders with
+    its taxi-recommended note, zero malformed/NaN duration badges
+    anywhere on the site, and a full 10-tab console-error sweep came back
+    clean.
 - **README.md's Features and Coordinate-accuracy sections were stale
   against the two fixes just above (2026-08-28j).** User: "update wiki
   and readme." This repo has no wiki (checked - no wiki file, no
