@@ -456,6 +456,38 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Day 15 UA145 arrival time off by 2 hours — a pure arithmetic
+  inconsistency, not a real-world fact question (2026-08-31).** Found while
+  auditing this trip's two flight numbers against reality at the user's
+  request (a parallel check was underway on `trip-optimizer` after a real
+  fabricated-flight-number bug turned up there). `flight.depart_time`
+  (12:35 OPO) + `flight.duration` ("8h 25m") and `flight.arrive_time`
+  ("15:00") didn't agree with each other — 12:35 + 8h25m is 21:00 UTC,
+  which is 17:00 America/New_York on Oct 26, 2026 (Portugal already off
+  WEST for the season, the US still on EDT until Nov 1), not the claimed
+  15:00. The claimed depart+arrive pair only adds up to a 6h25m flight,
+  contradicting the 8h25m stated two fields over in the same object.
+  Verified with Python's `zoneinfo` against the trip's real dates (Day 1 =
+  Mon Oct 12, 2026, confirmed via `datetime` — the only near-future year
+  where that weekday lines up) rather than eyeballing it, the same
+  discipline this file already demands for the walk/drive leg estimates
+  below. Fixed `arrive_time` to `17:00` in all three places the data lives
+  (`data/trip-data.json`, `data/trip-data.min.json`, and the copy embedded
+  in `index.html`'s `#trip-data` script block) — see the Trip data shape
+  section above for why all three need editing together. Separately
+  confirmed both flight numbers are real and correctly assigned to their
+  claimed routes: UA940 does fly EWR→LHR and UA145 does fly OPO→EWR (via
+  live web search, not assumed) — this was specifically the class of bug
+  found on `trip-optimizer` that prompted the check, and it did NOT recur
+  here; only the independent time-math error did. **Pattern to watch for:**
+  this app has no equivalent of `trip-optimizer`'s `src/dateFacts.js`
+  computed-date-table machinery — every date/time fact here was written by
+  hand or by a one-off script, so nothing structurally prevents a
+  depart+duration+arrive triple from silently disagreeing the way
+  `trip-optimizer`'s own KNOWN FAILURE MODE history already documents
+  repeatedly for that app. Worth a full sweep of every flight in this data
+  for the same self-consistency check, not just the two spot-checked here.
+
 - **26 missing walk/drive/transit legs added across 11 days — a systemic
   gap, not an isolated miss (2026-08-29).** User reported one concrete
   case (hotel → Churchill War Rooms had no time estimate, "no way to know
