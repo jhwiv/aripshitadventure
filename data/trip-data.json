@@ -2581,7 +2581,7 @@
             "from_airport": "OPO",
             "to_airport": "EWR",
             "depart_time": "12:35",
-            "arrive_time": "15:00",
+            "arrive_time": "17:00",
             "duration": "8h 25m",
             "nonstop": true,
             "cabin": "Economy",
