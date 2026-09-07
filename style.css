@@ -60,7 +60,17 @@ h1, h2, h3, .display { font-family: 'Playfair Display', Georgia, serif; }
 }
 .welcome-card-label{ font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px; }
 .welcome-features{ display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px; }
-.welcome-feature{ display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:8px;background:rgba(255,255,255,.05); }
+.welcome-feature{
+  display:flex;align-items:center;gap:6px;padding:7px 8px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid transparent;
+  color:inherit;font:inherit;text-align:left;width:100%;cursor:pointer;
+  -webkit-appearance:none;appearance:none;transition:background .15s ease,border-color .15s ease,transform .15s ease;
+}
+.welcome-feature:hover,.welcome-feature:focus-visible{
+  background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28);
+}
+.welcome-feature:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.welcome-feature:active{transform:scale(.97)}
 .welcome-feature-icon{font-size:15px;flex-shrink:0}
 .welcome-feature-name{ font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:600; }
 .welcome-install-row{ display:flex;gap:8px;margin-bottom:10px; }
@@ -263,8 +273,10 @@ img { max-width: 100%; display: block; }
    a scroll-spy (app.js) highlights whichever one is currently in view.
    scroll-margin-top keeps a clicked-to section clear of the sticky nav. */
 .tab-section { display: block; scroll-margin-top: var(--sticky-clearance, 96px); }
+#meals, #cityCards { scroll-margin-top: var(--sticky-clearance, 112px); }
 @media (prefers-reduced-motion: reduce) {
-  .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card {
+  .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card,
+  .welcome-feature {
     transition: none;
   }
 }

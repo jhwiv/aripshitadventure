@@ -456,6 +456,8 @@ check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
 
+- **Welcome "What's Inside" tiles looked tappable but did nothing — deep-linked each one to an existing section (2026-09-07).** Home/welcome feature chips (Map, Weather, Meals, Concierge, Navigate, Packing) were inert `<div>`s sitting next to a "Start Exploring" button, so travelers couldn't tell whether the tiles were previews or the real entry. Every destination already existed (no new routes): Map → `#tab-map`, Weather → `#cityCards` (live city-weather widgets on Condensed), Meals → new `#meals` id on the existing Meals & Reservations heading, Concierge → `#fabChat` click (opens `#chatPanel` once `body.welcomed` unhides FABs), Navigate → `#tab-transit`, Packing → `#tab-packing`. Tiles are now `<button type="button">`s with hover/focus/active affordance; `dismissWelcome(dest)` dismisses the overlay and instant-scrolls (or opens chat) so the landing is waiting when the fade finishes. "Start Exploring" / Skip stay dest-less and still land at the top. Mid-section targets (`#meals`, `#cityCards`) got `--sticky-clearance` scroll-margin so they don't hide under the sticky nav+day-tabs group.
+
 - **Day 15 UA145 arrival time off by 2 hours — a pure arithmetic
   inconsistency, not a real-world fact question (2026-08-31).** Found while
   auditing this trip's two flight numbers against reality at the user's

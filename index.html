@@ -47,12 +47,24 @@
   <div class="welcome-card">
     <div class="welcome-card-label">What's Inside</div>
     <div class="welcome-features">
-      <div class="welcome-feature"><span class="welcome-feature-icon">🗺</span><span class="welcome-feature-name">Map</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">☀️</span><span class="welcome-feature-name">Weather</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🍽</span><span class="welcome-feature-name">Meals</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">💬</span><span class="welcome-feature-name">Concierge</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🧭</span><span class="welcome-feature-name">Navigate</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🎒</span><span class="welcome-feature-name">Packing</span></div>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-map')" aria-label="Open the itinerary map">
+        <span class="welcome-feature-icon" aria-hidden="true">🗺</span><span class="welcome-feature-name">Map</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('cityCards')" aria-label="Open trip overview and live weather">
+        <span class="welcome-feature-icon" aria-hidden="true">☀️</span><span class="welcome-feature-name">Weather</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('meals')" aria-label="Open meals and reservations">
+        <span class="welcome-feature-icon" aria-hidden="true">🍽</span><span class="welcome-feature-name">Meals</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('chat')" aria-label="Open the trip concierge">
+        <span class="welcome-feature-icon" aria-hidden="true">💬</span><span class="welcome-feature-name">Concierge</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-transit')" aria-label="Open transit and navigation">
+        <span class="welcome-feature-icon" aria-hidden="true">🧭</span><span class="welcome-feature-name">Navigate</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-packing')" aria-label="Open the packing list">
+        <span class="welcome-feature-icon" aria-hidden="true">🎒</span><span class="welcome-feature-name">Packing</span>
+      </button>
     </div>
   </div>
 
@@ -95,7 +107,7 @@
   }
   document.body.style.overflow = 'hidden';
 })();
-function dismissWelcome() {
+function dismissWelcome(dest) {
   var ws = document.getElementById('welcome-screen');
   if (!ws) return;
   localStorage.setItem('aripshitadventure-welcomed', '1');
@@ -103,6 +115,29 @@ function dismissWelcome() {
   document.body.classList.add('welcomed');
   document.body.style.overflow = '';
   setTimeout(function(){ ws.style.display = 'none'; }, 600);
+  if (!dest) return;
+  // Chat panel lives under the welcome overlay (z-index 99999). Opening it
+  // during the fade would hide it behind navy until the overlay is gone.
+  if (dest === 'chat') {
+    setTimeout(function () {
+      var fab = document.getElementById('fabChat');
+      if (fab) fab.click();
+    }, 600);
+    return;
+  }
+  // Section jumps happen now, under the fading overlay, so the destination
+  // is waiting when the welcome screen finishes — not a second scroll from
+  // the hero after 600ms.
+  requestAnimationFrame(function () {
+    var el = document.getElementById(dest);
+    if (!el) return;
+    var tabId = dest.indexOf('tab-') === 0 ? dest : 'tab-condensed';
+    var chips = document.querySelectorAll('.nav-chip');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.toggle('active', chips[i].getAttribute('data-target') === tabId);
+    }
+    el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
 }
 </script>
 
@@ -180,7 +215,7 @@ function dismissWelcome() {
       reservations are confirmation-tracked, so verify/book each one before
       the trip rather than treating any of them as already secured.
     </div>
-    <div class="section-heading" style="margin-top:24px;">Meals &amp; Reservations</div>
+    <div class="section-heading" id="meals" style="margin-top:24px;">Meals &amp; Reservations</div>
     <div id="mealsList"></div>
 
     <div class="section-heading" style="margin-top:32px;">Book &amp; Confirm — Tours, Tickets &amp; Transport</div>
