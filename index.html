@@ -125,18 +125,27 @@ function dismissWelcome(dest) {
     }, 600);
     return;
   }
-  // Section jumps happen now, under the fading overlay, so the destination
-  // is waiting when the welcome screen finishes — not a second scroll from
-  // the hero after 600ms.
+  // Instant jump under the fading overlay so the destination is waiting
+  // when welcome finishes — not a second smooth-scroll from the hero.
+  // Must go through scrollToSection so navTapLock keeps the chip on the
+  // real landing (spy still uses a 96px line; sticky group is ~200px).
   requestAnimationFrame(function () {
+    if (dest.indexOf('tab-') === 0 && typeof window.scrollToSection === 'function') {
+      window.scrollToSection(dest, 'instant');
+      return;
+    }
     var el = document.getElementById(dest);
     if (!el) return;
-    var tabId = dest.indexOf('tab-') === 0 ? dest : 'tab-condensed';
-    var chips = document.querySelectorAll('.nav-chip');
-    for (var i = 0; i < chips.length; i++) {
-      chips[i].classList.toggle('active', chips[i].getAttribute('data-target') === tabId);
+    if (typeof window.scrollToSection === 'function') {
+      window.scrollToSection('tab-condensed', 'instant');
     }
     el.scrollIntoView({ behavior: 'instant', block: 'start' });
+    // Live weather widgets live inside the city-card bodies, which start
+    // collapsed. Open the first card so tapping Weather actually shows weather.
+    if (dest === 'cityCards') {
+      var card = el.querySelector('.city-card');
+      if (card && !card.classList.contains('expanded')) card.click();
+    }
   });
 }
 </script>
@@ -210,13 +219,15 @@ function dismissWelcome(dest) {
     <div class="section-heading" style="margin-top:32px;">Condensed Itinerary</div>
     <div id="condensedList"></div>
 
+    <div id="meals">
     <div class="meals-banner">
       Booking channel shown below is from the plan itself — none of these
       reservations are confirmation-tracked, so verify/book each one before
       the trip rather than treating any of them as already secured.
     </div>
-    <div class="section-heading" id="meals" style="margin-top:24px;">Meals &amp; Reservations</div>
+    <div class="section-heading" style="margin-top:24px;">Meals &amp; Reservations</div>
     <div id="mealsList"></div>
+    </div>
 
     <div class="section-heading" style="margin-top:32px;">Book &amp; Confirm — Tours, Tickets &amp; Transport</div>
     <p class="timeline-intro">Everything on the plan that isn't a restaurant but
