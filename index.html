@@ -47,12 +47,24 @@
   <div class="welcome-card">
     <div class="welcome-card-label">What's Inside</div>
     <div class="welcome-features">
-      <div class="welcome-feature"><span class="welcome-feature-icon">🗺</span><span class="welcome-feature-name">Map</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">☀️</span><span class="welcome-feature-name">Weather</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🍽</span><span class="welcome-feature-name">Meals</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">💬</span><span class="welcome-feature-name">Concierge</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🧭</span><span class="welcome-feature-name">Navigate</span></div>
-      <div class="welcome-feature"><span class="welcome-feature-icon">🎒</span><span class="welcome-feature-name">Packing</span></div>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-map')" aria-label="Open the itinerary map">
+        <span class="welcome-feature-icon" aria-hidden="true">🗺</span><span class="welcome-feature-name">Map</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('cityCards')" aria-label="Open trip overview and live weather">
+        <span class="welcome-feature-icon" aria-hidden="true">☀️</span><span class="welcome-feature-name">Weather</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('meals')" aria-label="Open meals and reservations">
+        <span class="welcome-feature-icon" aria-hidden="true">🍽</span><span class="welcome-feature-name">Meals</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('chat')" aria-label="Open the trip concierge">
+        <span class="welcome-feature-icon" aria-hidden="true">💬</span><span class="welcome-feature-name">Concierge</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-transit')" aria-label="Open transit and navigation">
+        <span class="welcome-feature-icon" aria-hidden="true">🧭</span><span class="welcome-feature-name">Navigate</span>
+      </button>
+      <button type="button" class="welcome-feature" onclick="dismissWelcome('tab-packing')" aria-label="Open the packing list">
+        <span class="welcome-feature-icon" aria-hidden="true">🎒</span><span class="welcome-feature-name">Packing</span>
+      </button>
     </div>
   </div>
 
@@ -95,7 +107,7 @@
   }
   document.body.style.overflow = 'hidden';
 })();
-function dismissWelcome() {
+function dismissWelcome(dest) {
   var ws = document.getElementById('welcome-screen');
   if (!ws) return;
   localStorage.setItem('aripshitadventure-welcomed', '1');
@@ -103,6 +115,38 @@ function dismissWelcome() {
   document.body.classList.add('welcomed');
   document.body.style.overflow = '';
   setTimeout(function(){ ws.style.display = 'none'; }, 600);
+  if (!dest) return;
+  // Chat panel lives under the welcome overlay (z-index 99999). Opening it
+  // during the fade would hide it behind navy until the overlay is gone.
+  if (dest === 'chat') {
+    setTimeout(function () {
+      var fab = document.getElementById('fabChat');
+      if (fab) fab.click();
+    }, 600);
+    return;
+  }
+  // Instant jump under the fading overlay so the destination is waiting
+  // when welcome finishes — not a second smooth-scroll from the hero.
+  // Must go through scrollToSection so navTapLock keeps the chip on the
+  // real landing (spy still uses a 96px line; sticky group is ~200px).
+  requestAnimationFrame(function () {
+    if (dest.indexOf('tab-') === 0 && typeof window.scrollToSection === 'function') {
+      window.scrollToSection(dest, 'instant');
+      return;
+    }
+    var el = document.getElementById(dest);
+    if (!el) return;
+    if (typeof window.scrollToSection === 'function') {
+      window.scrollToSection('tab-condensed', 'instant');
+    }
+    el.scrollIntoView({ behavior: 'instant', block: 'start' });
+    // Live weather widgets live inside the city-card bodies, which start
+    // collapsed. Open the first card so tapping Weather actually shows weather.
+    if (dest === 'cityCards') {
+      var card = el.querySelector('.city-card');
+      if (card && !card.classList.contains('expanded')) card.click();
+    }
+  });
 }
 </script>
 
@@ -175,6 +219,7 @@ function dismissWelcome() {
     <div class="section-heading" style="margin-top:32px;">Condensed Itinerary</div>
     <div id="condensedList"></div>
 
+    <div id="meals">
     <div class="meals-banner">
       Booking channel shown below is from the plan itself — none of these
       reservations are confirmation-tracked, so verify/book each one before
@@ -182,6 +227,7 @@ function dismissWelcome() {
     </div>
     <div class="section-heading" style="margin-top:24px;">Meals &amp; Reservations</div>
     <div id="mealsList"></div>
+    </div>
 
     <div class="section-heading" style="margin-top:32px;">Book &amp; Confirm — Tours, Tickets &amp; Transport</div>
     <p class="timeline-intro">Everything on the plan that isn't a restaurant but

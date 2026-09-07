@@ -383,7 +383,7 @@
   var navTapLock = false;
   var navTapTimer = null;
 
-  function scrollToSection(targetId) {
+  function scrollToSection(targetId, behavior) {
     var el = document.getElementById(targetId);
     if (!el) return;
     navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === targetId); });
@@ -394,8 +394,13 @@
     // the just-clicked chip - otherwise a fast scroll-spy tick mid-animation
     // can flicker the highlight back to whatever section is passing by.
     navTapTimer = setTimeout(function () { navTapLock = false; }, 1000);
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
   }
+  // Welcome-screen feature tiles (index.html dismissWelcome) jump after
+  // the overlay is dismissed. They need the same chip + navTapLock path
+  // as a nav-chip click, but instant — a raw scrollIntoView leaves the
+  // spy on the previous section (spy line is 96px; sticky group is ~200px).
+  window.scrollToSection = scrollToSection;
 
   navChips.forEach(function (chip) {
     chip.addEventListener('click', function () { scrollToSection(chip.dataset.target); });
