@@ -23,10 +23,17 @@
 // need to be live or fail, and already degrade gracefully ("Weather
 // unavailable" etc.) when offline.
 
-const CACHE_NAME = 'trip-cache-v4';
+const CACHE_NAME = 'trip-cache-v5';
 const ALWAYS_PRECACHE = [
   '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',
+];
+const IMAGE_PRECACHE = [
+  '/images/banner-london.jpg',
+  '/images/banner-normandy.jpg',
+  '/images/banner-porto.jpg',
+  '/images/hero-02-london-night.jpg',
+  '/images/hero-03-normandy.jpg',
 ];
 
 self.addEventListener('install', function (event) {
@@ -55,6 +62,12 @@ self.addEventListener('install', function (event) {
           if (/^https?:\/\//.test(u)) continue; // skip fonts.googleapis.com etc - third-party, not ours to cache
           urls.add(u.startsWith('/') ? u : '/' + u);
         }
+        const imgRe = /url\(['"]?(\/?images\/[^'")\s]+)['"]?\)/g;
+        while ((m = imgRe.exec(html))) {
+          const u = m[1];
+          urls.add(u.startsWith('/') ? u : '/' + u);
+        }
+        IMAGE_PRECACHE.forEach(function (u) { urls.add(u); });
         await Promise.all(Array.from(urls).map(function (u) {
           return fetch(u, { cache: 'no-store' }).then(function (r) {
             if (r.ok) return cache.put(u, r);
@@ -89,12 +102,18 @@ self.addEventListener('fetch', function (event) {
 
   event.respondWith(
     fetch(req).then(function (res) {
+      if (!res.ok) return res;
       var resClone = res.clone();
       caches.open(CACHE_NAME).then(function (cache) { cache.put(req, resClone); });
       return res;
     }).catch(function () {
       return caches.match(req).then(function (cached) {
-        return cached || caches.match('/index.html') || caches.match('/');
+        if (cached) return cached;
+        var path = url.pathname;
+        if (/\.(js|css|png|jpe?g|gif|webp|svg|woff2?|json|map)$/i.test(path)) {
+          return new Response('', { status: 504, statusText: 'offline' });
+        }
+        return caches.match('/index.html') || caches.match('/');
       });
     })
   );

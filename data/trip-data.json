@@ -16,7 +16,7 @@
       "days_range": "Day 7–Day 11",
       "focus": "Tank Museum Bovington, D-Day beaches (Omaha, American Cemetery), self-guided Bayeux, Mont-Saint-Michel",
       "stay": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno), 4 Rue Franche",
-      "transport_in": "Drive London→Bovington (Tank Museum)→Portsmouth, overnight Brittany Ferries crossing to Ouistreham (Caen) — approx. 8 hrs, cabin booked"
+      "transport_in": "Drive London→Bovington (Tank Museum)→Portsmouth, drop the UK rental at the port, overnight Brittany Ferries foot-passenger crossing to Ouistreham (Caen) — approx. 8 hrs, cabin booked"
     },
     {
       "name": "Porto",
@@ -29,7 +29,7 @@
   ],
   "introduction": {
     "arc": "This itinerary threads WWII history across Britain and Normandy before closing on Portugal's wine country. London goes deep on the war-history stops — Churchill's underground Map Room, the Imperial War Museum, the real Battle of Britain command bunker at Uxbridge — alongside two West End shows (Phantom of the Opera, Hamilton) and a guided Thames walking tour, before a long day at the Tank Museum in Bovington carries the trip into Normandy via an overnight Channel ferry. Three days based in Bayeux cover the American D-Day beaches, a self-guided day in Bayeux itself, and a full-day trip to Mont-Saint-Michel, before the drive continues to Paris for the flight south. Porto closes the arc: four days of port lodges, the Ribeira waterfront, a Douro Valley vineyard lunch, and a farewell steakhouse dinner overlooking the Douro — a deliberate exhale after the weight of history.",
-    "differentiators": "London is lodged in an Airbnb rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027 and would not have been open during this trip at all. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell steakhouse dinner are earned grace notes after eight days of history. Restaurants across all three legs were deliberately kept simple — pasta, grilled meat, pizza, bread — rather than composed tasting-menu plates, to suit a picky younger traveler on the trip."
+    "differentiators": "London is lodged in an Airbnb rather than a hotel, and paced deliberately light — one or two things a day, with real free evenings built in rather than back-to-back bookings. The Tank Museum day solves its own logistics: rather than a wasted round trip from London, the drive continues on to Portsmouth for an overnight ferry, turning what could have been a wasted travel day into the actual transfer to Normandy — arriving Ouistreham at dawn with the whole day still ahead for the American Sector tour. The Bayeux day substitutes the Battle of Normandy Memorial Museum and the British War Cemetery for the Bayeux Tapestry Museum, which is closed for renovation through October 2027. The tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during this trip’s London days — worth a look there if you want to see it; the Bayeux museum housing it remains closed. Porto is not a tack-on: the cellar tour at Graham's, the vineyard lunch in the Douro, and the farewell steakhouse dinner are earned grace notes after eight days of history. Restaurants across all three legs were deliberately kept simple — pasta, grilled meat, pizza, bread — rather than composed tasting-menu plates, to suit a picky younger traveler on the trip."
   },
   "days": [
     {
@@ -60,7 +60,7 @@
             "nonstop": true,
             "cabin": "Economy",
             "aircraft": "Boeing 767-300ER",
-            "confirmation_note": "Flight number is the scheduled operating flight — confirm at booking. Book directly on united.com for MileagePlus upgrade options (Polaris business typically 60–85K miles one-way) or PlusPoints if 1K.",
+            "confirmation_note": "Flight number is the scheduled operating flight — confirm at booking. Book directly on united.com for MileagePlus upgrade options (Polaris business typically 60–85K miles one-way) or PlusPoints if 1K — published operating flight, not a confirmed ticket in this guide.",
             "_originalFlightNumber": "UA940",
             "_modelEstimatedFlightNumber": true
           },
@@ -858,9 +858,9 @@
       ]
     },
     {
-      "label": "Day 6 · Sat Oct 17 · Thames Cruise & Disastrous London Walk",
+      "label": "Day 6 · Sat Oct 17 · Thames Walk & Disastrous London Walk",
       "city": "London",
-      "headline": "Thames from Embankment, then walk Barbican's disaster sites",
+      "headline": "Thames from Embankment on foot, then walk Barbican's disaster sites",
       "weather": "High 59°F / low 47°F · partly cloudy with 40% chance of light showers",
       "items": [
         {
@@ -886,7 +886,7 @@
           "contact": {
             "phone": "+44 20 7624 3978",
             "website": "https://www.walks.com",
-            "booking_note": "Reservation confirmed by email (Aug 21, 2026) for 2 attendees, Walk ID 3315. This replaces an earlier placeholder City Cruises boat-tour entry — the traveler's actual booking is this London Walks guided walk, not a boat cruise. Meet at the exact spot above 5 min before start.",
+            "booking_note": "Reservation confirmed by email (Aug 21, 2026) for 2 attendees, Walk ID 3315. Meet at Embankment Underground station's river exit 5 min before start.",
             "hours": "10:00 AM, 17/10/2026 (confirmed booking)",
             "price": "Cash at start, per London Walks standard pricing — exact price not restated in the confirmation email"
           },
@@ -1078,9 +1078,9 @@
           "type": "Transport",
           "time": "07:30",
           "end_time": null,
-          "text": "Pick up rental car and depart for Bovington",
+          "text": "Pick up rental car (one-way London → Portsmouth drop-off) and depart for Bovington",
           "location": null,
-          "why": "Rental car pickup location TBD — book a larger vehicle for comfort on long drive. Route: M3 -> A303 -> A35 to Bovington — 2h 30min, ~140 miles",
+          "why": "UK one-way rental for this day only — drop the car at Portsmouth International Port before the evening ferry. Do not take it aboard and do not plan to drive it in Normandy (those days are a private driver/guide). Book a larger vehicle for the Bovington drive. Route: M3 → A303 → A35 to Bovington — 2h 30min, ~140 miles. Pickup location TBD.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -1160,7 +1160,7 @@
           "end_time": null,
           "text": "Drive Bovington to Portsmouth International Port — approx. 1h20m via A35/A31 (65 miles)",
           "location": null,
-          "why": null,
+          "why": "One-way UK rental still in play for this leg — next stop is the Portsmouth port drop-off, then the ferry as foot passengers.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -1169,11 +1169,24 @@
         },
         {
           "type": "Transport",
+          "time": "15:45",
+          "end_time": "16:15",
+          "text": "Drop off rental car at Portsmouth International Port — one-way London→Portsmouth; then walk to the ferry terminal as a foot passenger",
+          "location": "Portsmouth International Port, Portsmouth PO2 8SP",
+          "why": "UK one-way rental for the Tank Museum day only. Hand the car back here before ferry check-in. Do not take it aboard — the overnight crossing is foot-passenger, and Normandy days use a private driver/guide.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 30
+        },
+        {
+          "type": "Transport",
           "time": "18:30",
           "end_time": null,
           "text": "Check in for Brittany Ferries overnight sailing, Portsmouth -> Ouistreham (Caen) — boarding opens approx. 90 min before departure",
           "location": null,
-          "why": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm the exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45-23:30 departure. This plan has no rental car in Normandy — the private drivers/guide throughout this trip suggest foot-passenger travel, not a vehicle booking, but confirm that's correct when you book, since it changes which check-in line to use at the port. Pack an overnight/essentials bag (chargers, meds, pajamas, toiletries) somewhere easy to reach rather than buried in checked luggage.",
+          "why": "Book a cabin in advance for the overnight crossing — cabins sell out closer to sailing date. Confirm the exact departure time for this date; Brittany Ferries runs one overnight sailing daily on this route, typically 22:45-23:30 departure. The UK rental is dropped at Portsmouth before check-in — book this sailing as foot passengers (different product and check-in line from a vehicle crossing). Normandy touring is a private driver/guide, not this car. Pack an overnight/essentials bag (chargers, meds, pajamas, toiletries) somewhere easy to reach rather than buried in checked luggage.",
           "contact": {
             "phone": "+44 330 159 7000",
             "website": "https://www.brittany-ferries.co.uk"
@@ -1826,7 +1839,7 @@
             "duration": "2h 20m",
             "nonstop": true,
             "cabin": "Economy",
-            "confirmation_note": "Air France runs the only true nonstop CDG–OPO service, several times weekly, out of Terminal 2F. Portugal is 1 hour behind mainland France, hence the short apparent flight time on the clock. Verify flight number, exact time and equipment at booking — schedules change.",
+            "confirmation_note": "Air France operates the only true nonstop CDG–OPO service, out of Terminal 2F. Flight number is not yet booked — confirm the ident, time, and equipment with Air France when you ticket. Published midday CDG–OPO around this date is typically AF1528 ~14:10–15:30 through 24 Oct 2026; the 13:00/14:20 times here are a planning placeholder. Portugal is 1 hour behind mainland France, hence the short apparent clock time.",
             "_modelEstimatedFlightNumber": true
           },
           "hotel": null,
@@ -2586,7 +2599,7 @@
             "nonstop": true,
             "cabin": "Economy",
             "aircraft": "Boeing 767-300ER",
-            "confirmation_note": "Flight number is the scheduled operating flight — confirm at booking.",
+            "confirmation_note": "Flight number is the scheduled operating flight — confirm at booking — published operating flight, not a confirmed ticket in this guide.",
             "_originalFlightNumber": "UA145",
             "_modelEstimatedFlightNumber": true
           },

@@ -272,7 +272,7 @@ img { max-width: 100%; display: block; }
    longer shows/hides sections on click - it smooth-scrolls to them, and
    a scroll-spy (app.js) highlights whichever one is currently in view.
    scroll-margin-top keeps a clicked-to section clear of the sticky nav. */
-.tab-section { display: block; scroll-margin-top: var(--sticky-clearance, 96px); }
+.tab-section { display: block; scroll-margin-top: var(--sticky-clearance, 112px); }
 #meals, #cityCards { scroll-margin-top: var(--sticky-clearance, 112px); }
 @media (prefers-reduced-motion: reduce) {
   .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card,
@@ -558,7 +558,7 @@ img { max-width: 100%; display: block; }
 .tl-note { font-size: 12.5px; color: #5b6577; margin: 0; line-height: 1.5; }
 
 /* ---- Day items (used inside city tabs) ---- */
-.day-block { padding: 24px 0; border-bottom: 1px solid #dcd8cf; scroll-margin-top: 112px; }
+.day-block { padding: 24px 0; border-bottom: 1px solid #dcd8cf; scroll-margin-top: var(--sticky-clearance, 112px); }
 
 /* ---- Day quick-jump nav (top of each city tab) ---- */
 .day-jump-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
@@ -679,6 +679,12 @@ img { max-width: 100%; display: block; }
 .ref-line { font-size: 13px; color: #333; margin-top: 3px; }
 .ref-line.ai-note { margin-top: 6px; }
 .flight-warn { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; font-size: 12px; padding: 6px 10px; border-radius: 6px; margin: 6px 0; }
+.flight-badge-unverified {
+  display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px;
+  background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  vertical-align: middle;
+}
 .flight-status { font-size: 11.5px; color: #656d7c; font-style: italic; }
 .flight-status-ok { color: #166534; font-style: normal; font-weight: 600; }
 .flight-status-warn { color: #b91c1c; font-style: normal; }
