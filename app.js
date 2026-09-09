@@ -137,6 +137,28 @@
     return h12 + ':' + m + ' ' + ampm;
   }
 
+  // Booking-trust copy for every flight surface. UA940 / UA145 are real
+  // published operating flights; CDG→OPO is Air France with no ident yet.
+  // None of the three is a confirmed ticket in this guide — never imply
+  // they are while a warning says otherwise.
+  function flightNumberLabel(f) {
+    if (!f) return 'TBD';
+    return f.flight_number || 'number pending';
+  }
+  function flightIsUnverified(f) {
+    return !!(f && (f._modelEstimatedFlightNumber || !f.flight_number));
+  }
+  function flightTrustBadgeHTML(f) {
+    if (!f) return '';
+    if (!f.flight_number) {
+      return '<div class="flight-warn">Unverified / confirm with airline — ' +
+        esc(f.carrier || 'Airline') + ' ' + esc(f.from_airport || '') + '→' + esc(f.to_airport || '') +
+        ', flight number not yet booked.</div>';
+    }
+    return '<div class="flight-warn">Unverified / confirm with airline — published operating flight (' +
+      esc(f.carrier || '') + ' ' + esc(f.flight_number) + '), not a confirmed ticket.</div>';
+  }
+
   // check_in_time/check_out_time live on two DIFFERENT Hotel items per stay
   // (the arrival item carries check_in_time, the departure item carries
   // check_out_time) - both render paths that build hotelsByName already
@@ -188,8 +210,8 @@
       restaurantDetailLines(b) +
       (b.why ? '<div class="meal-meta">' + esc(b.why) + '</div>' : '') +
       '<div class="item-links">' + directionsLinksHTML(b.name) +
-      ((b.contact || {}).phone ? '<a href="tel:' + esc(b.contact.phone) + '">' + esc(b.contact.phone) + '</a>' : '') +
-      ((b.contact || {}).website ? '<a href="' + esc(b.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      ((b.contact || {}).phone && telHref(b.contact.phone) ? '<a' + hrefAttr('tel:' + b.contact.phone) + '>' + esc(b.contact.phone) + '</a>' : '') +
+      ((b.contact || {}).website && safeHref(b.contact.website) ? '<a' + hrefAttr(b.contact.website) + ' target="_blank" rel="noopener">Website</a>' : '') +
       '</div></div>' : '';
     return '<div class="meal-top"><span class="meal-name">' + menuTriggerHTML(r.name) + '</span>' +
       '<span class="meal-badge meal-badge-' + esc(platform || 'none') + '">' + reservationBadgeHTML(platform) + '</span></div>' +
@@ -202,8 +224,8 @@
       (r.why ? '<div class="meal-meta">' + esc(r.why) + '</div>' : '') +
       '<div class="item-links">' +
       directionsLinksHTML(r.name) +
-      (reserveHref ? '<a href="' + esc(reserveHref) + '" target="_blank" rel="noopener">Reserve</a>' : '') +
-      (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      (reserveHref && safeHref(reserveHref) ? '<a' + hrefAttr(reserveHref) + ' target="_blank" rel="noopener">Reserve</a>' : '') +
+      (contact.website && safeHref(contact.website) ? '<a' + hrefAttr(contact.website) + ' target="_blank" rel="noopener">Website</a>' : '') +
       '</div>' +
       backupBlock;
   }
@@ -364,7 +386,32 @@
   }
 
   function esc(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Allowlist for href attributes — never interpolate a JSON/model URL
+  // straight into href even after esc(), so javascript:/data: and quote
+  // breakouts cannot become an attribute. Used for restaurant websites,
+  // reservation links, and chat markdown URLs.
+  function safeHref(url) {
+    if (url == null || url === '') return '';
+    var u = String(url).trim();
+    if (/[\x00-\x1f\x7f]/.test(u)) return '';
+    if (!/^(https?:\/\/|tel:|mailto:)/i.test(u)) return '';
+    return esc(u);
+  }
+  function telHref(phone) {
+    if (!phone) return '';
+    return safeHref('tel:' + String(phone).trim());
+  }
+  function hrefAttr(url) {
+    var h = safeHref(url);
+    return h ? ' href="' + h + '"' : '';
   }
 
   /* ---------------------------------------------------------
@@ -377,49 +424,146 @@
      whatever section the user has actually scrolled to, unprompted -
      exactly the "tabs auto-advance as you scroll" behavior the real
      site has and this build's earlier click-only tab system did not.
+
+     Spy offset is the REAL sticky-group height (--sticky-clearance), not
+     a leftover 96px from when only the nav was sticky. Chip + hash update
+     after the scroll settles so a Jump-to-Day-15 landing (short last day,
+     banner parked just under the sticky group) does not flash Transit as
+     the "active" tab mid-animation. Day jumps map to their parent city
+     tab-section (unique IDs: #tab-city-Porto, #day-15) rather than
+     leftover .tab-section.active markup.
      --------------------------------------------------------- */
   var navChips = Array.prototype.slice.call(document.querySelectorAll('.nav-chip'));
   var tabSections = Array.prototype.slice.call(document.querySelectorAll('.tab-section'));
   var navTapLock = false;
   var navTapTimer = null;
+  var spyTimer = null;
+  var lastActiveSection = tabSections.length ? tabSections[0].id : null;
+  var lastViewedCity = 'London';
+
+  function stickyClearancePx() {
+    var raw = getComputedStyle(document.documentElement).getPropertyValue('--sticky-clearance').trim();
+    var n = parseFloat(raw);
+    if (!(n > 0)) {
+      var stickyEl = document.getElementById('stickyTop');
+      n = stickyEl ? stickyEl.getBoundingClientRect().height + 12 : 112;
+    }
+    return n;
+  }
+  function cityFromSectionId(id) {
+    if (id && id.indexOf('tab-city-') === 0) return id.slice('tab-city-'.length);
+    return null;
+  }
+  function sectionIdForDayNum(n) {
+    var day = TRIP.days && TRIP.days[n - 1];
+    return day && day.city ? 'tab-city-' + day.city : null;
+  }
+  function parentSectionId(el) {
+    var s = el && el.closest && el.closest('.tab-section');
+    return s ? s.id : null;
+  }
+  function setActiveChip(sectionId) {
+    if (!sectionId) return;
+    lastActiveSection = sectionId;
+    var city = cityFromSectionId(sectionId);
+    if (city) lastViewedCity = city;
+    navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === sectionId); });
+  }
+  function setHashAfterSettle(hashId) {
+    if (!hashId) return;
+    var next = '#' + hashId;
+    if (location.hash !== next) {
+      if (history.replaceState) history.replaceState(null, '', next);
+      else location.hash = hashId;
+    }
+  }
+  function scrollToElement(el, behavior, after) {
+    var instant = behavior === 'instant' || behavior === 'auto';
+    var top = el.getBoundingClientRect().top + window.pageYOffset - stickyClearancePx();
+    if (top < 0) top = 0;
+    navTapLock = true;
+    clearTimeout(navTapTimer);
+    clearTimeout(spyTimer);
+    window.scrollTo({ top: top, behavior: instant ? 'auto' : 'smooth' });
+    function done() {
+      navTapLock = false;
+      if (after) after();
+    }
+    if (instant) { done(); return; }
+    var idleTicks = 0;
+    var lastY = window.pageYOffset;
+    var poll = setInterval(function () {
+      var y = window.pageYOffset;
+      if (Math.abs(y - lastY) < 1) idleTicks += 1;
+      else idleTicks = 0;
+      lastY = y;
+      if (idleTicks >= 4) {
+        clearInterval(poll);
+        done();
+      }
+    }, 50);
+    navTapTimer = setTimeout(function () {
+      clearInterval(poll);
+      done();
+    }, 1600);
+  }
 
   function scrollToSection(targetId, behavior) {
     var el = document.getElementById(targetId);
     if (!el) return;
-    navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === targetId); });
-    lastActiveSection = targetId;
-    navTapLock = true;
-    clearTimeout(navTapTimer);
-    // Give the smooth scroll time to finish before scroll-spy can override
-    // the just-clicked chip - otherwise a fast scroll-spy tick mid-animation
-    // can flicker the highlight back to whatever section is passing by.
-    navTapTimer = setTimeout(function () { navTapLock = false; }, 1000);
-    el.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+    scrollToElement(el, behavior, function () {
+      var sectionId = parentSectionId(el) || targetId;
+      setActiveChip(sectionId);
+      setHashAfterSettle(targetId);
+    });
   }
   // Welcome-screen feature tiles (index.html dismissWelcome) jump after
   // the overlay is dismissed. They need the same chip + navTapLock path
   // as a nav-chip click, but instant — a raw scrollIntoView leaves the
-  // spy on the previous section (spy line is 96px; sticky group is ~200px).
+  // spy on the previous section (spy line used to be 96px; sticky group
+  // is ~200px).
   window.scrollToSection = scrollToSection;
 
   navChips.forEach(function (chip) {
     chip.addEventListener('click', function () { scrollToSection(chip.dataset.target); });
   });
 
-  var lastActiveSection = tabSections.length ? tabSections[0].id : null;
-  function onScroll() {
+  function applyScrollSpy() {
     if (navTapLock) return;
-    var navH = 96; // clearance below the sticky nav
+    var navH = stickyClearancePx();
     var active = lastActiveSection;
     tabSections.forEach(function (s) {
-      if (s.getBoundingClientRect().top <= navH) active = s.id;
+      if (s.getBoundingClientRect().top <= navH + 1) active = s.id;
     });
-    if (active && active !== lastActiveSection) {
-      lastActiveSection = active;
-      navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === active); });
-    }
+    if (active && active !== lastActiveSection) setActiveChip(active);
+  }
+  function onScroll() {
+    if (navTapLock) return;
+    clearTimeout(spyTimer);
+    spyTimer = setTimeout(applyScrollSpy, 140);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Day-tab cards and per-city pills are <a href="#day-N"> (unique IDs on
+  // .day-banner). Intercept so we scroll with the real sticky offset and
+  // only then set the city chip + hash — native hash jump + a 96px spy
+  // landed a short Day 15 under the sticky group and highlighted Transit.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a.day-tab-card, a.day-jump-pill');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var m = href.match(/^#day-(\d+)$/);
+    if (!m) return;
+    e.preventDefault();
+    var dayId = 'day-' + m[1];
+    var el = document.getElementById(dayId);
+    if (!el) return;
+    var sectionId = parentSectionId(el) || sectionIdForDayNum(parseInt(m[1], 10));
+    scrollToElement(el, 'smooth', function () {
+      setActiveChip(sectionId);
+      setHashAfterSettle(dayId);
+    });
+  });
 
   /* ---------------------------------------------------------
      DAY TABS BAR — one card per day (global day number + that day's
@@ -483,6 +627,28 @@
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(measure, 150);
     }, { passive: true });
+  })();
+
+  // If the URL already has #day-N or #tab-*, land with the real sticky
+  // offset and the matching city/section chip once layout is known.
+  (function restoreHashLanding() {
+    function go() {
+      var id = (location.hash || '').replace(/^#/, '');
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      var instant = 'instant';
+      scrollToElement(el, instant, function () {
+        var sectionId = parentSectionId(el) || id;
+        if (id.indexOf('day-') === 0) {
+          var n = parseInt(id.slice(4), 10);
+          sectionId = parentSectionId(el) || sectionIdForDayNum(n) || sectionId;
+        }
+        setActiveChip(sectionId);
+      });
+    }
+    if (document.readyState === 'complete') setTimeout(go, 0);
+    else window.addEventListener('load', go);
   })();
 
   /* ---------------------------------------------------------
@@ -624,9 +790,6 @@
     return bits;
   }
 
-  // The user is driving themselves, not hiring a private driver - the
-  // source plan's wording assumed a chauffeur service that was never
-  // requested. Swap the framing at render time (data itself is untouched).
   // Which hotel is actually being slept at THIS specific day. day.city is
   // NOT reliable for this on a transit day (it reflects where the day's
   // activities happen, not where the night is spent - documented failure
@@ -697,8 +860,8 @@
       } else if (f.arrive_time) {
         timeLine += ' · Arrives ' + esc(formatTime12(f.arrive_time));
       }
-      if (f._modelEstimatedFlightNumber) {
-        flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
+      if (f._modelEstimatedFlightNumber || !f.flight_number) {
+        flightWarn = flightTrustBadgeHTML(f);
       }
     }
     if (item._locationUnverified) {
@@ -712,8 +875,8 @@
     // item.contact.phone/website, even when populated. Append the same
     // phone/website treatment the non-Transport branch already gives,
     // rather than losing real, already-present contact data.
-    var contactLinks = (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
-      (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '');
+    var contactLinks = (item.contact && item.contact.phone && telHref(item.contact.phone) ? '<a' + hrefAttr('tel:' + item.contact.phone) + '>' + esc(item.contact.phone) + '</a>' : '') +
+      (item.contact && item.contact.website && safeHref(item.contact.website) ? '<a' + hrefAttr(item.contact.website) + ' target="_blank" rel="noopener">Website</a>' : '');
     var navigateRow = item.type === 'Transport'
       ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>'
       : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>';
@@ -1001,8 +1164,8 @@
         (day.headline ? '<div class="cond-day-headline">' + esc(day.headline) + '</div>' : '');
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
-        var unverifiedTag = (item.type === 'Flight' && item.flight && item.flight._modelEstimatedFlightNumber)
-          ? ' <span class="cond-warn">⚠ unverified schedule</span>'
+        var unverifiedTag = (item.type === 'Flight' && item.flight && (item.flight._modelEstimatedFlightNumber || !item.flight.flight_number))
+          ? ' <span class="cond-warn">⚠ Unverified / confirm with airline</span>'
           : (item._locationUnverified ? ' <span class="cond-warn">⚠ unverified</span>' : '');
         var condText = item.text;
         var condTimeLabel = (item.type === 'Flight' && item.flight && item.flight.depart_time && item.flight.depart_time !== item.time)
@@ -1080,8 +1243,8 @@
       var h = hotelsByName[name];
       return '<div class="ref-card"><div class="ref-title">' + esc(name) + '</div>' +
         (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
-        (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
-        (h.website ? '<div class="ref-line"><a href="' + esc(h.website) + '" target="_blank" rel="noopener">Website</a></div>' : '') +
+        (h.phone && telHref(h.phone) ? '<div class="ref-line"><a' + hrefAttr('tel:' + h.phone) + '>' + esc(h.phone) + '</a></div>' : '') +
+        (h.website && safeHref(h.website) ? '<div class="ref-line"><a' + hrefAttr(h.website) + ' target="_blank" rel="noopener">Website</a></div>' : '') +
         hotelCheckTimesLine(h) +
         (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
         '</div>';
@@ -1124,8 +1287,8 @@
       '<div class="byg-card">' +
       '<div class="byg-title">⚠ Before You Go — Entry Requirements</div>' +
       '<div class="byg-line"><strong>UK (London):</strong> US citizens need an Electronic Travel Authorisation (ETA) approved before flying in — apply online well ahead of departure. This is separate from, and in addition to, your passport.</div>' +
-      '<div class="byg-line"><strong>EU (Normandy, Porto):</strong> The EU\'s ETIAS travel authorization has been repeatedly delayed but is expected to apply to US visa-exempt travelers by the time frame of this trip — check current status and apply if required before departure.</div>' +
-      '<div class="byg-line"><strong>Passport:</strong> Valid at least 6 months past the Oct 26, 2026 return date (already on the packing list) and issued within the last 10 years for Schengen entry.</div>' +
+      '<div class="byg-line"><strong>EU (Normandy, Porto):</strong> ETIAS is not in force as of mid-2026. The official EU site (travel-europe.europa.eu/etias) currently collects no applications and has dropped a launch date; reporting points to 2027. US travelers do not need to apply for this October 2026 trip — re-check that official page close to departure in case that changes.</div>' +
+      '<div class="byg-line"><strong>Passport:</strong> Schengen law is validity of 3 months past the Oct 26, 2026 exit; many airlines still want 6 months (the packing-list line is that airline buffer). Issued within the last 10 years.</div>' +
       '<div class="byg-line">Requirements and processing times change — verify the current rules directly (gov.uk for the UK ETA, the official EU ETIAS site) close to departure rather than relying on this note alone.</div>' +
       '</div>';
 
@@ -1167,8 +1330,8 @@
         var f = item.flight;
         flightLine = '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
           (f.duration ? ' · ' + esc(f.duration) : '') + (f.nonstop ? ' · Nonstop' : '') + '</div>';
-        if (f._modelEstimatedFlightNumber) {
-          flightWarn = '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>';
+        if (f._modelEstimatedFlightNumber || !f.flight_number) {
+          flightWarn = flightTrustBadgeHTML(f);
         }
       }
       var navLine = '';
@@ -1181,8 +1344,8 @@
         // contact.phone/website (e.g. a ferry operator) was silently
         // dropped here too, a second independent render path with the
         // identical gap.
-        var refContactLinks = (item.contact && item.contact.phone ? '<a href="tel:' + esc(item.contact.phone) + '">' + esc(item.contact.phone) + '</a>' : '') +
-          (item.contact && item.contact.website ? '<a href="' + esc(item.contact.website) + '" target="_blank" rel="noopener">Website</a>' : '');
+        var refContactLinks = (item.contact && item.contact.phone && telHref(item.contact.phone) ? '<a' + hrefAttr('tel:' + item.contact.phone) + '>' + esc(item.contact.phone) + '</a>' : '') +
+          (item.contact && item.contact.website && safeHref(item.contact.website) ? '<a' + hrefAttr(item.contact.website) + ' target="_blank" rel="noopener">Website</a>' : '');
         navLine = '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + refDurationBadge + directionsLinksHTML(query) + refContactLinks + '</div>';
       }
       var refText = item.text;
@@ -1214,7 +1377,7 @@
         'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
       ],
       Normandy: [
-        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. A private driver or rental car is the practical way to cover these sites in a day; taxis exist in Bayeux but are sparse.',
+        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. This trip uses a private driver/guide for those days, not the Day 7 UK rental (that car is dropped in Portsmouth before the foot-passenger ferry). Taxis exist in Bayeux but are sparse.',
         'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 9\'s self-guided Bayeux day specifically.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
         'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
@@ -1252,8 +1415,8 @@
       { day: 'Day 4', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip.' },
       { day: 'Day 5', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain. Churchill visited the gallery here on September 15, 1940 — the raid’s climax, still marked today as “Battle of Britain Day.”' },
       { day: 'Day 7', title: 'Armored warfare & The Tank Museum', body: 'Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
-      { day: 'Day 8', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today, and it sits on this day’s self-drive route. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing.' },
-      { day: 'Day 9', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England — though the museum housing it is closed for renovation through October 2027, so it isn’t part of this visit.)' },
+      { day: 'Day 8', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today, and it sits on this day’s guided / private-driver route. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing.' },
+      { day: 'Day 9', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
       { day: 'Day 10', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
       { day: 'Days 12–13', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
@@ -1272,9 +1435,15 @@
      --------------------------------------------------------- */
   var TRIP_START = new Date(2026, 9, 12); // Oct 12 2026, confirmed against day labels
   function dayDateISO(dayIndex) {
-    var d = new Date(TRIP_START);
-    d.setDate(d.getDate() + dayIndex);
-    return d.toISOString().slice(0, 10);
+    // Local Y-M-D — never toISOString().slice(0,10). new Date(y,m,d) is
+    // local midnight; toISOString() is UTC, so on BST (UK through 25 Oct
+    // 2026) that returns the previous calendar date and poisons
+    // flight-status ?date= plus "visit in N days".
+    var d = new Date(TRIP_START.getFullYear(), TRIP_START.getMonth(), TRIP_START.getDate() + dayIndex);
+    var y = d.getFullYear();
+    var m = d.getMonth() + 1;
+    var day = d.getDate();
+    return y + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
   }
 
   (function renderAirHotel() {
@@ -1293,10 +1462,15 @@
 
     document.getElementById('flightTable').innerHTML = flights.map(function (row, i) {
       var f = row.f;
-      var unverified = !!f._modelEstimatedFlightNumber;
+      var unverified = flightIsUnverified(f);
+      var statusId = 'fstatus-' + i;
+      var statusLine = f.flight_number
+        ? '<div class="ref-line flight-status" id="' + statusId + '">Checking published schedule…</div>'
+        : '<div class="ref-line flight-status flight-status-warn" id="' + statusId + '">No flight number to check — confirm with Air France before ticketing.</div>';
       return '<div class="ref-card">' +
-        '<div class="ref-title">' + esc(f.carrier || '') + ' · ' + esc(f.flight_number || 'TBD') + '</div>' +
-        (unverified ? '<div class="flight-warn">⚠ Flight number/time not checked against a live schedule — confirm with the airline before booking.</div>' : '') +
+        '<div class="ref-title">' + esc(f.carrier || '') + ' · ' + esc(flightNumberLabel(f)) +
+        (unverified ? ' <span class="flight-badge-unverified">Unverified / confirm with airline</span>' : '') + '</div>' +
+        (unverified ? flightTrustBadgeHTML(f) : '') +
         '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
         (f.depart_time ? ' · Departs ' + esc(formatTime12(f.depart_time)) : '') + (f.arrive_time ? ' · Arrives ' + esc(formatTime12(f.arrive_time)) : '') + '</div>' +
         (f.duration ? '<div class="ref-line">' + esc(f.duration) + (f.nonstop ? ' · Nonstop' : '') + '</div>' : '') +
@@ -1310,7 +1484,7 @@
             (l.access ? '<br><span class="ai-note">Access: ' + esc(l.access) + '</span>' : '') +
             (l.notes ? '<br><span class="ai-note">' + esc(l.notes) + '</span>' : '') + '</div>';
         }).join('') : '') +
-        '<div class="ref-line flight-status" id="fstatus-' + i + '">Checking live schedule…</div>' +
+        statusLine +
         '</div>';
     }).join('') || '<p class="ai-note">No flights in this plan.</p>';
 
@@ -1321,7 +1495,13 @@
     flights.forEach(function (row, i) {
       var f = row.f;
       var el = document.getElementById('fstatus-' + i);
-      if (!f.flight_number || !el) return;
+      if (!f.flight_number || !el) {
+        if (el && !f.flight_number) {
+          el.textContent = 'No flight number to check — confirm with Air France before ticketing.';
+          el.classList.add('flight-status-warn');
+        }
+        return;
+      }
       var qs = 'ident=' + encodeURIComponent(f.flight_number) + '&date=' + dayDateISO(row.dayIndex);
       if (f.from_airport) qs += '&origin=' + encodeURIComponent(f.from_airport);
       if (f.to_airport) qs += '&destination=' + encodeURIComponent(f.to_airport);
@@ -1332,10 +1512,10 @@
           // this is the normal, expected case for a trip booked weeks/months
           // ahead, not a failure. Say so plainly instead of the generic
           // "could not verify" warning, which reads like something's wrong.
-          el.textContent = 'Live tracking opens closer to departure (not yet available this far out).';
+          el.textContent = 'Published schedule check opens closer to departure (not a ticket confirmation).';
           el.classList.add('flight-status-pending');
         } else if (data && data.ok && data.status && data.status !== 'Unknown') {
-          el.textContent = '✓ Live status: ' + data.status + (data.scheduledOut ? ' · scheduled ' + data.scheduledOut : '');
+          el.textContent = 'Published schedule: ' + data.status + (data.scheduledOut ? ' · scheduled ' + data.scheduledOut : '') + ' — still confirm the ticket with the airline.';
           el.classList.add('flight-status-ok');
         } else {
           el.textContent = '⚠ Could not verify this flight against a live schedule.';
@@ -1351,7 +1531,7 @@
       var h = hotelsByName[name];
       return '<div class="ref-card"><div class="ref-title">' + esc(name) + ' <span class="ref-city">' + esc(h.city || '') + '</span></div>' +
         (h.address ? '<div class="ref-line">' + esc(h.address) + '</div>' : '') +
-        (h.phone ? '<div class="ref-line"><a href="tel:' + esc(h.phone) + '">' + esc(h.phone) + '</a></div>' : '') +
+        (h.phone && telHref(h.phone) ? '<div class="ref-line"><a' + hrefAttr('tel:' + h.phone) + '>' + esc(h.phone) + '</a></div>' : '') +
         (h.room_type ? '<div class="ref-line">' + esc(h.room_type) + '</div>' : '') +
         hotelCheckTimesLine(h) +
         (h.confirmation_note ? '<div class="ref-line ai-note">' + esc(h.confirmation_note) + '</div>' : '') +
@@ -1369,8 +1549,9 @@
      Each entry's guidance was researched per-venue (real, current
      policies as of this writing) - NOT a blanket "book everything
      early" rule, because the venues genuinely don't agree with each
-     other: the Battle of Britain Bunker is MANDATORY pre-book with no
-     walk-in option at all, the Tank Museum needs no advance booking
+     other: the Battle of Britain Bunker is guided-tour only (book ahead
+     strongly advised; limited walk-up sometimes exists), the Tank Museum
+     needs no advance booking
      whatsoever.
      --------------------------------------------------------- */
   (function renderBookingActions() {
@@ -1395,7 +1576,7 @@
       {
         dayIdx: 4, kind: 'urgent',
         title: 'Battle of Britain Bunker (Day 5)',
-        note: 'MANDATORY pre-book — there is no walk-in access at all; the underground bunker is only seen on a booked guided tour, slots limited to 20 people, tours every 45–60 min. Call +44 1895 238154 or book via battleofbritainbunker.co.uk, 7–14 days ahead. Photo ID required at the gate. Note: the venue is open all 7 days, 10 AM–4:30 PM (last admission 3:30 PM) — not the Wed–Sun-only schedule sometimes assumed.',
+        note: 'Guided-tour only — book ahead strongly advised (October slots can sell out). Limited same-day tickets are sometimes sold at the desk, but do not count on a walk-up. Call +44 1895 238154 or book via battleofbritainbunker.co.uk, 7–14 days ahead. Tours last about 60 minutes. Open all 7 days, 10 AM–4:30 PM (last admission 3:30 PM). Request the 10:00 morning tour to match this day’s plan.',
       },
       {
         dayIdx: 4, kind: 'urgent',
@@ -1404,13 +1585,13 @@
       },
       {
         dayIdx: 6, kind: 'soon',
-        title: 'Rental car pickup (Day 7 morning)',
-        note: 'Pickup location not yet chosen. Book a larger vehicle for comfort — the Bovington→Portsmouth leg, then the Bayeux-based Normandy touring days, are several long driving days in a row. Reserve soon; larger-vehicle availability tightens closer to the date.',
+        title: 'Rental car — one-way London → Portsmouth drop-off (Day 7)',
+        note: 'UK one-way only: pick up in London, drive Bovington → Portsmouth, drop at Portsmouth International Port BEFORE the ferry. Do not book this car onto the crossing and do not plan to drive it in Normandy (those days are a private driver/guide). Pickup location TBD — reserve a larger vehicle soon; one-way availability tightens closer to the date.',
       },
       {
         dayIdx: 6, kind: 'urgent',
         title: 'Overnight Brittany Ferries crossing — book the cabin (Day 7 night)',
-        note: 'Portsmouth→Ouistreham (Caen), departs 10:45 PM arrives ~7:45 AM, approx. 8 hrs. Book a cabin, not just a seat, for an overnight sailing — cabins sell out ahead of the crossing date. +44 330 159 7000 or brittany-ferries.co.uk.',
+        note: 'Portsmouth→Ouistreham (Caen), departs 10:45 PM arrives ~7:45 AM, approx. 8 hrs. Book a FOOT-PASSENGER cabin, not a vehicle crossing — the UK rental is dropped at Portsmouth first. Cabins sell out ahead of the sailing date. +44 330 159 7000 or brittany-ferries.co.uk.',
       },
       {
         dayIdx: 7, kind: 'soon',
@@ -1435,7 +1616,7 @@
       {
         dayIdx: 0, kind: 'flex',
         title: 'Flights (all 3 legs)',
-        note: 'Flight numbers (UA940, TP1094, UA145) are the planner\'s scheduled-operating-flight guess, not a confirmed booking — verify the actual flight number, times, and equipment when you book. Nothing else to do until online check-in opens (typically 24–48h before each departure).',
+        note: 'None of these are confirmed tickets in this guide. EWR→LHR is published as United UA940; OPO→EWR as United UA145; CDG→OPO is Air France with the flight number still pending — confirm ident and time with Air France when you ticket. Verify number, times, and equipment when you book. Nothing else to do until online check-in opens (typically 24–48h before each departure).',
       },
     ];
     var today = new Date(); today.setHours(0, 0, 0, 0);
@@ -1649,13 +1830,23 @@
     });
   }
 
-  function currentCityCoords() {
-    // Whichever city tab is currently active; otherwise default to London.
-    var activeSection = document.querySelector('.tab-section.active');
-    if (activeSection && activeSection.id.indexOf('tab-city-') === 0) {
-      var city = activeSection.id.replace('tab-city-', '');
-      if (PINS.cities[city]) return PINS.cities[city];
+  function viewedCityName() {
+    var fromSection = cityFromSectionId(lastActiveSection);
+    if (fromSection) return fromSection;
+    var chip = document.querySelector('.nav-chip.active');
+    if (chip) {
+      var fromChip = cityFromSectionId(chip.dataset.target);
+      if (fromChip) return fromChip;
     }
+    return lastViewedCity || 'London';
+  }
+  function currentCityCoords() {
+    // City the traveler is actually looking at (scroll-spy / last nav chip),
+    // NOT leftover .tab-section.active — after the continuous-scroll rebuild
+    // every section is display:block and only Condensed kept that class, so
+    // GPS-denied Nearby always returned London, including on the Porto tab.
+    var city = viewedCityName();
+    if (city && PINS.cities[city]) return PINS.cities[city];
     return PINS.cities.London;
   }
 
@@ -1721,8 +1912,8 @@
           '<p class="menu-modal-caveat">Based on published reviews and the restaurant’s own site — kitchens change seasonally, so confirm before booking.</p>'
         : '<p class="ai-note">No verified menu highlights for this one yet — check their website or call ahead.</p>') +
       '<div class="item-links">' + directionsLinksHTML(r.name) +
-      (contact.phone ? '<a href="tel:' + esc(contact.phone) + '">' + esc(contact.phone) + '</a>' : '') +
-      (contact.website ? '<a href="' + esc(contact.website) + '" target="_blank" rel="noopener">Website</a>' : '') +
+      (contact.phone && telHref(contact.phone) ? '<a' + hrefAttr('tel:' + contact.phone) + '>' + esc(contact.phone) + '</a>' : '') +
+      (contact.website && safeHref(contact.website) ? '<a' + hrefAttr(contact.website) + ' target="_blank" rel="noopener">Website</a>' : '') +
       '</div>';
     menuModal.classList.add('active');
   }
@@ -1750,8 +1941,12 @@
   async function runLocalSearch(categories) {
     localResults.textContent = 'Searching nearby…';
     var pos = lastKnownPosition || await getPosition();
+    var cityName = viewedCityName();
     var center = pos || currentCityCoords();
     var query = '[out:json][timeout:8];(node["amenity"~"' + categories + '"]["name"](around:800,' + center.lat + ',' + center.lng + '););out body 20;';
+    var cityNote = (!pos && cityName)
+      ? '<p class="ai-note">GPS off — searching near ' + esc(cityName) + ' (the city tab you\'re viewing).</p>'
+      : '';
     try {
       var res = await fetch('https://overpass-api.de/api/interpreter', {
         method: 'POST',
@@ -1773,10 +1968,10 @@
         .slice(0, 10);
 
       if (!places.length) {
-        localResults.textContent = 'No results nearby — try Google Maps directly.';
+        localResults.innerHTML = cityNote + 'No results nearby — try Google Maps directly.';
         return;
       }
-      localResults.innerHTML = places.map(function (p) {
+      localResults.innerHTML = cityNote + places.map(function (p) {
         var mins = Math.round((p.dist * 1.4) / 67);
         return '<div class="local-result">' +
           '<div class="name">' + esc(p.name) + '</div>' +
@@ -1813,8 +2008,19 @@
   }
 
   function linkify(text) {
-    var escaped = esc(text);
-    return escaped.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    var s = String(text == null ? '' : text);
+    var re = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+    var out = '', last = 0, m;
+    while ((m = re.exec(s))) {
+      out += esc(s.slice(last, m.index));
+      var href = safeHref(m[2]);
+      out += href
+        ? '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + '</a>'
+        : esc(m[1]);
+      last = m.index + m[0].length;
+    }
+    out += esc(s.slice(last));
+    return out;
   }
 
   async function sendChat() {
@@ -1849,7 +2055,7 @@
           lng: pos ? pos.lng : null,
           gpsStatus: pos ? 'granted' : null,
           localTime: new Date().toISOString(),
-          activeTab: (document.querySelector('.tab-section.active') || {}).id || 'itinerary'
+          activeTab: lastActiveSection || 'itinerary'
         })
       });
 
