@@ -158,6 +158,31 @@ same-day transatlantic flight), not a "looks fine" skim:
   reproduce this, not a style choice — set `duration_min` every time.
 - **Times render 12-hour** via a `formatTime12()`-equivalent helper
   everywhere a time appears — the source data is 24-hour.
+- **Hardcoded parallel itinerary — grep it after every JSON change.** Book &
+  Confirm (`ACTIONS` in `app.js`), History `entries`, Essentials (ETIAS /
+  passport), packing copy in `index.html`, and the chat Worker `wwii2026`
+  blob are **not** derived from `trip-data.json`. A data-file fix can leave
+  the traveler-facing timeline still listing a wrong flight number or a
+  dropped logistics story. 2026-09-09 review (`REVIEW.md`): `ACTIONS` still
+  listed TP1094 (TAP LIS→Valencia) for the CDG→OPO Air France leg whose
+  `flight_number` is null; Day 7 still said "pick up rental car" in JSON +
+  ACTIONS while the same day's ferry `why` said foot-passenger / no rental
+  car in Normandy; Day 6 label still said "Thames Cruise" after the item
+  became a London Walks walking tour. Treat those surfaces as a second
+  itinerary that must be diffed against the JSON, not as "UI chrome."
+- **`dayDateISO()` must not use `toISOString().slice(0,10)`.**
+  `new Date(y, m, d)` is local midnight; `.toISOString()` is UTC. On BST
+  (UK still on it through 25 Oct 2026) that returns the **previous calendar
+  date**. Used for flight-status `date=`, ACTIONS "visit in N days", and
+  the time-pill zone table. Format local Y-M-D (or a fixed table from the
+  day labels). Found 2026-09-09; this sandbox is UTC so it will not
+  reproduce here — test in `Europe/London`.
+- **Do not read `.tab-section.active` for "the city/tab you're viewing."**
+  After the continuous-scroll rebuild every section is `display:block`;
+  only `#tab-condensed` still has class `active` in markup, and scroll-spy
+  toggles `.nav-chip.active`, not the section. Local-search fallback and
+  chat `activeTab` both always report London / condensed when GPS is
+  denied (2026-09-09). Drive from the spy chip / `lastActiveSection`.
 
 ### 3. City/scope changes — touches more than the data file
 
@@ -455,6 +480,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Code-level QA / peer review of this PWA (not trip-optimizer) — docs-only, 2026-09-09.** Full pass in `REVIEW.md`. Structural half: weekday labels all match Oct 12–26 2026; city-card nights still correctly use `days.length-1`; restaurant `open_days` vs scheduled weekday still clean; embeds still equal `data/*.json`. Content half (mandatory WebSearch sweep, not a sample) found real traveler-facing errors that structure cannot see: Book & Confirm still lists **TP1094** (TAP LIS→Valencia) for the CDG→OPO Air France leg whose `flight_number` is null; Day 7 still tells you to **pick up a rental car** and, on the same day, that this plan has **no rental car / foot-passenger ferry**, with no Portsmouth drop-off item; Essentials still says ETIAS is “expected to apply” by Oct 2026 after the official site removed that date (Jul 2026, likely 2027). Also: `dayDateISO()` uses `toISOString().slice(0,10)` so UK/EU local midnight becomes the previous UTC date (flight-status + “visit in N days”); local-search “city you're viewing” still reads leftover `.tab-section.active` (only Condensed has it); Day 6 label still says “Thames Cruise”; Bayeux Tapestry is on loan at the British Museum during the London days and History doesn't say so. New failure shapes written into playbook §2 (parallel itinerary / UTC-sliced dates / leftover `.tab-section.active`), not just this log. No app-code changes this pass — report only.
 
 - **Welcome "What's Inside" tiles looked tappable but did nothing — deep-linked each one to an existing section (2026-09-07).** Home/welcome feature chips (Map, Weather, Meals, Concierge, Navigate, Packing) were inert `<div>`s sitting next to a "Start Exploring" button, so travelers couldn't tell whether the tiles were previews or the real entry. Every destination already existed (no new routes): Map → `#tab-map`, Weather → `#cityCards` (live city-weather widgets on Condensed), Meals → new `#meals` wrapper around the existing Meals & Reservations heading + list, Concierge → `#fabChat` click (opens `#chatPanel` once `body.welcomed` unhides FABs), Navigate → `#tab-transit`, Packing → `#tab-packing`. Tiles are now `<button type="button">`s with hover/focus/active affordance; `dismissWelcome(dest)` dismisses the overlay and, for tab dests, clicks the existing nav chip (reuses `scrollToSection`'s navTapLock — a raw `scrollIntoView` left the chip highlight on the previous section because scroll-spy uses a 96px line while the sticky group is ~200px and the banner sits in that gap). Mid-section dests instant-scroll and mark Condensed active; Weather also expands the first city card so the live forecast isn't hidden in a collapsed accordion. Concierge waits out the 600ms overlay fade before clicking `#fabChat` so the panel isn't hidden behind z-index 99999. "Start Exploring" / Skip stay dest-less and still land at the top. Mid-section targets (`#meals`, `#cityCards`) got `--sticky-clearance` scroll-margin so they don't hide under the sticky nav+day-tabs group.
 
