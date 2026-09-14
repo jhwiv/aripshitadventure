@@ -424,8 +424,9 @@ def day4(weather):
             ),
             I(
                 "Transport",
-                "12:30",
+                "12:00",
                 "To High Street Kensington: walk 9 min to St. James’s Park; Circle westbound via Victoria, 5 stops",
+                end_time="14:00",
                 location="High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
                 duration_min=9,
                 why="Jon’s routing. duration_min is the 9-minute walk only; Circle-line running time was not given.",
@@ -456,8 +457,8 @@ def day4(weather):
             ),
             I(
                 "Dinner",
-                "19:00",
-                "Dinner TBD — Jon did not name a Thursday restaurant",
+                "16:00",
+                "Dinner TBD — Jon did not name a Thursday restaurant or time",
                 why="Leave this open. Do not reuse an old leftover booking as if it were Thursday dinner.",
             ),
         ],

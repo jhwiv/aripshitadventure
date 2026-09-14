@@ -361,8 +361,8 @@
         },
         {
           "type": "Transport",
-          "time": "12:30",
-          "end_time": null,
+          "time": "12:00",
+          "end_time": "14:00",
           "text": "To High Street Kensington: walk 9 min to St. James’s Park; Circle westbound via Victoria, 5 stops",
           "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
           "why": "Jon’s routing. duration_min is the 9-minute walk only; Circle-line running time was not given.",
@@ -405,9 +405,9 @@
         },
         {
           "type": "Dinner",
-          "time": "19:00",
+          "time": "16:00",
           "end_time": null,
-          "text": "Dinner TBD — Jon did not name a Thursday restaurant",
+          "text": "Dinner TBD — Jon did not name a Thursday restaurant or time",
           "location": null,
           "why": "Leave this open. Do not reuse an old leftover booking as if it were Thursday dinner.",
           "contact": null,
