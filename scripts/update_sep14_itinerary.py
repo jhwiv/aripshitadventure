@@ -226,8 +226,8 @@ def day2(weather):
             I(
                 "Transport",
                 "07:00",
-                "Transfer Heathrow to 53 Greek Street — method not specified",
-                why="Jon listed the address but not how to get there from LHR. Confirm Tube / Elizabeth line / taxi with Jon.",
+                "Transfer Heathrow to 53 Greek Street — method and time not specified",
+                why="Jon listed the address but not how or when to get there from LHR. This card is sequenced after the 5:50 AM landing, not a departure time Jon gave. Confirm Tube / Elizabeth line / taxi with Jon.",
                 location=LONDON_ADDR,
             ),
             I(
@@ -277,16 +277,17 @@ def day3(weather):
                 "Transport",
                 "09:30",
                 "53 Greek St → Imperial War Museum: 12 min walk to Piccadilly Circus; Bakerloo southbound to Lambeth North, 4 stops; 9 min walk to the museum",
-                why="Routing from Jon’s 2026-09-14 day-plan email. Tube running time between stops was not given.",
+                end_time="12:00",
+                why="Jon’s 9:30 AM–12:00 PM block is this journey, not a 9:30 gallery start. Tube running time between stops was not given.",
                 location="Lambeth Road, London SE1 6HZ",
             ),
             I(
                 "Activity",
                 "09:30",
-                "Imperial War Museum — 9:30 AM–12:00 PM window from Jon",
+                "Imperial War Museum — morning destination (9:30–12:00 is the journey from Greek St)",
                 end_time="12:00",
                 location="Lambeth Road, London SE1 6HZ",
-                why="Free museum; no ticket required for general admission. Jon blocked 9:30 AM–12:00 PM including transit from Soho.",
+                why="Free museum; no ticket required for general admission. Jon timed 9:30–12:00 as 53 Greek St → IWM, including transit — not a 9:30 door time at the galleries.",
                 contact={
                     "website": "https://www.iwm.org.uk/visits/iwm-london",
                     "booking_note": "General admission is free. Allow time for the WWII and Holocaust galleries.",
@@ -323,12 +324,12 @@ def day3(weather):
                 "Walk to Funky Noodle — Jon: 3 min from 53 Greek St",
                 location="103 Charing Cross Road, London WC2H 0DT",
                 duration_min=3,
-                why="Jon said 3 minutes from 53 Greek St. The restaurant’s own address is 103 Charing Cross Road (around the corner from Greek Street), not on Greek Street itself.",
+                why="Jon said 3 minutes from 53 Greek St. The restaurant’s own address is 103 Charing Cross Road (around the corner from Greek Street), not on Greek Street itself. Jon did not give a dinner start; this card is sequenced before the 6:45 PM theatre walk.",
             ),
             I(
                 "Dinner",
                 "18:00",
-                "Dinner at Funky Noodle — 3 min walk from 53 Greek St",
+                "Dinner at Funky Noodle — 3 min from 53 Greek St. Eat before the 6:45 PM walk (Jon did not give a dinner start)",
                 restaurant={
                     "name": "Funky Noodle",
                     "neighborhood": "Soho / Charing Cross Road",
@@ -560,8 +561,8 @@ def day7(weather):
             ),
             I(
                 "Hotel",
-                "18:30",
-                "ORY hotel night of Oct 18 — TBD",
+                "17:35",
+                "ORY hotel night of Oct 18 — TBD (after BA8137 lands 5:35 PM)",
                 why="Jon: “ORY hotel 10/18/26 — TBD.” Do not invent a property, address, or transfer from ORY.",
                 hotel={
                     "name": ORY_HOTEL,
@@ -657,9 +658,9 @@ def day11(weather):
             ),
             I(
                 "Transport",
-                "12:30",
-                "Bayeux → Paris Orly (ORY) — method and duration not specified",
-                why="Needed to make TP455 at 4:50 PM. Do not invent a driver, train, or drive time.",
+                "12:00",
+                "Bayeux → Paris Orly (ORY) — method, duration, and departure time not specified",
+                why="Needed to make TP455 at 4:50 PM. Jon did not give a driver, train, or departure clock. This card is sequenced after the 12:00 PM checkout, not a time he specified.",
             ),
             I(
                 "Flight",

@@ -532,7 +532,7 @@ function dismissWelcome(dest) {
   ],
   "introduction": {
     "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho. Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Other London days are still high-level ideas only (Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington maybe overnight). Sunday Oct 18 flies Heathrow to Paris Orly (BA8137); the Orly hotel that night is TBD. Three nights in Bayeux cover the American Sector tour with Objective Normandy, a self-guided Bayeux day, and Mont-Saint-Michel — how you get from Orly to Bayeux on Oct 19 is not specified. Thursday Oct 22 flies Orly to Porto (TP455) to the Ribeira apartment. The return TAP TP211 OPO→EWR (7:30 PM–11:55 PM) has no date in Jon’s email; this guide assumes Oct 26 from the Porto checkout — confirm with Jon.",
-    "differentiators": "Three Airbnbs are on the books plus one missing Orly hotel: London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), an Orly hotel TBD, then an unspecified transfer to Bayeux. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
+        "differentiators": "Three Airbnbs are on the books plus one missing Orly hotel: London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), an Orly hotel TBD, then an unspecified transfer to Bayeux. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
   },
   "days": [
     {
@@ -594,9 +594,9 @@ function dismissWelcome(dest) {
           "type": "Transport",
           "time": "07:00",
           "end_time": null,
-          "text": "Transfer Heathrow to 53 Greek Street — method not specified",
+          "text": "Transfer Heathrow to 53 Greek Street — method and time not specified",
           "location": "53 Greek Street, London W1D 3DR",
-          "why": "Jon listed the address but not how to get there from LHR. Confirm Tube / Elizabeth line / taxi with Jon.",
+          "why": "Jon listed the address but not how or when to get there from LHR. This card is sequenced after the 5:50 AM landing, not a departure time Jon gave. Confirm Tube / Elizabeth line / taxi with Jon.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -647,10 +647,10 @@ function dismissWelcome(dest) {
         {
           "type": "Transport",
           "time": "09:30",
-          "end_time": null,
+          "end_time": "12:00",
           "text": "53 Greek St → Imperial War Museum: 12 min walk to Piccadilly Circus; Bakerloo southbound to Lambeth North, 4 stops; 9 min walk to the museum",
           "location": "Lambeth Road, London SE1 6HZ",
-          "why": "Routing from Jon’s 2026-09-14 day-plan email. Tube running time between stops was not given.",
+          "why": "Jon’s 9:30 AM–12:00 PM block is this journey, not a 9:30 gallery start. Tube running time between stops was not given.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -661,9 +661,9 @@ function dismissWelcome(dest) {
           "type": "Activity",
           "time": "09:30",
           "end_time": "12:00",
-          "text": "Imperial War Museum — 9:30 AM–12:00 PM window from Jon",
+          "text": "Imperial War Museum — morning destination (9:30–12:00 is the journey from Greek St)",
           "location": "Lambeth Road, London SE1 6HZ",
-          "why": "Free museum; no ticket required for general admission. Jon blocked 9:30 AM–12:00 PM including transit from Soho.",
+          "why": "Free museum; no ticket required for general admission. Jon timed 9:30–12:00 as 53 Greek St → IWM, including transit — not a 9:30 door time at the galleries.",
           "contact": {
             "website": "https://www.iwm.org.uk/visits/iwm-london",
             "booking_note": "General admission is free. Allow time for the WWII and Holocaust galleries.",
@@ -721,7 +721,7 @@ function dismissWelcome(dest) {
           "end_time": null,
           "text": "Walk to Funky Noodle — Jon: 3 min from 53 Greek St",
           "location": "103 Charing Cross Road, London WC2H 0DT",
-          "why": "Jon said 3 minutes from 53 Greek St. The restaurant’s own address is 103 Charing Cross Road (around the corner from Greek Street), not on Greek Street itself.",
+          "why": "Jon said 3 minutes from 53 Greek St. The restaurant’s own address is 103 Charing Cross Road (around the corner from Greek Street), not on Greek Street itself. Jon did not give a dinner start; this card is sequenced before the 6:45 PM theatre walk.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -732,7 +732,7 @@ function dismissWelcome(dest) {
           "type": "Dinner",
           "time": "18:00",
           "end_time": null,
-          "text": "Dinner at Funky Noodle — 3 min walk from 53 Greek St",
+          "text": "Dinner at Funky Noodle — 3 min from 53 Greek St. Eat before the 6:45 PM walk (Jon did not give a dinner start)",
           "location": null,
           "why": null,
           "contact": null,
@@ -864,8 +864,8 @@ function dismissWelcome(dest) {
         },
         {
           "type": "Transport",
-          "time": "12:30",
-          "end_time": null,
+          "time": "12:00",
+          "end_time": "14:00",
           "text": "To High Street Kensington: walk 9 min to St. James’s Park; Circle westbound via Victoria, 5 stops",
           "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
           "why": "Jon’s routing. duration_min is the 9-minute walk only; Circle-line running time was not given.",
@@ -908,9 +908,9 @@ function dismissWelcome(dest) {
         },
         {
           "type": "Dinner",
-          "time": "19:00",
+          "time": "16:00",
           "end_time": null,
-          "text": "Dinner TBD — Jon did not name a Thursday restaurant",
+          "text": "Dinner TBD — Jon did not name a Thursday restaurant or time",
           "location": null,
           "why": "Leave this open. Do not reuse an old leftover booking as if it were Thursday dinner.",
           "contact": null,
@@ -1031,9 +1031,9 @@ function dismissWelcome(dest) {
         },
         {
           "type": "Hotel",
-          "time": "18:30",
+          "time": "17:35",
           "end_time": null,
-          "text": "ORY hotel night of Oct 18 — TBD",
+          "text": "ORY hotel night of Oct 18 — TBD (after BA8137 lands 5:35 PM)",
           "location": null,
           "why": "Jon: “ORY hotel 10/18/26 — TBD.” Do not invent a property, address, or transfer from ORY.",
           "contact": null,
@@ -1458,11 +1458,11 @@ function dismissWelcome(dest) {
         },
         {
           "type": "Transport",
-          "time": "12:30",
+          "time": "12:00",
           "end_time": null,
-          "text": "Bayeux → Paris Orly (ORY) — method and duration not specified",
+          "text": "Bayeux → Paris Orly (ORY) — method, duration, and departure time not specified",
           "location": null,
-          "why": "Needed to make TP455 at 4:50 PM. Do not invent a driver, train, or drive time.",
+          "why": "Needed to make TP455 at 4:50 PM. Jon did not give a driver, train, or departure clock. This card is sequenced after the 12:00 PM checkout, not a time he specified.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -2190,8 +2190,8 @@ function dismissWelcome(dest) {
             "nonstop": true,
             "cabin": null,
             "aircraft": null,
-            "confirmation_note": "Oct 26 assumed — confirm with Jon. Email gave TP211 OPO 7:30 PM → EWR 11:55 PM and no date. Placed on Oct 26 only because Porto checkout is that day. Duration 8h 25m is from those clock times on Oct 26 (Portugal already off summer time; US still on EDT).",
-            "_dateUnconfirmed": true
+                    "confirmation_note": "Oct 26 assumed — confirm with Jon. Email gave TP211 OPO 7:30 PM → EWR 11:55 PM and no date. Placed on Oct 26 only because Porto checkout is that day. Duration 8h 25m is from those clock times on Oct 26 (Portugal already off summer time; US still on EDT).",
+                    "_dateUnconfirmed": true
           },
           "hotel": null,
           "restaurant": null,
@@ -2204,140 +2204,39 @@ function dismissWelcome(dest) {
 <script id="pins-data" type="application/json">{
   "_note": "Most landmark coordinates were TomTom-verified 2026-08-28 (see CLAUDE.md). New Sep 14 2026 lodging/show pins (53 Greek Street, Fortune Theatre, Funky Noodle, Borough Market, Rua dos Mercadores 77) are address-level estimates flagged approx — this session had no TomTom connector. Directions links always use a Google Maps text search, so navigation stays accurate even where a pin is approximate.",
   "cities": {
-    "London": {
-      "lat": 51.5074,
-      "lng": -0.1278,
-      "tz": "Europe/London"
-    },
-    "Normandy": {
-      "lat": 49.2764,
-      "lng": -0.7024,
-      "tz": "Europe/Paris"
-    },
-    "Porto": {
-      "lat": 41.1579,
-      "lng": -8.6291,
-      "tz": "Europe/Lisbon"
-    }
+    "London":    { "lat": 51.5074, "lng": -0.1278,  "tz": "Europe/London" },
+    "Normandy":  { "lat": 49.2764, "lng": -0.7024,  "tz": "Europe/Paris" },
+    "Porto":     { "lat": 41.1579, "lng": -8.6291,  "tz": "Europe/Lisbon" }
   },
   "hotels": {
-    "53 Greek Street Airbnb (HMFRRRZRTN)": {
-      "lat": 51.5144,
-      "lng": -0.1308,
-      "city": "London",
-      "approx": true
-    },
-    "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)": {
-      "lat": 49.27733,
-      "lng": -0.7042,
-      "city": "Normandy"
-    },
-    "Rua dos Mercadores 77 Airbnb — Ribeira São João, 3rd floor (HM549AK8C2)": {
-      "lat": 41.1408,
-      "lng": -8.6133,
-      "city": "Porto",
-      "approx": true
-    }
+    "53 Greek Street Airbnb (HMFRRRZRTN)": { "lat": 51.5144, "lng": -0.1308, "city": "London", "approx": true },
+    "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)": { "lat": 49.27733, "lng": -0.7042, "city": "Normandy" },
+    "Rua dos Mercadores 77 Airbnb — Ribeira São João, 3rd floor (HM549AK8C2)": { "lat": 41.1408, "lng": -8.6133, "city": "Porto", "approx": true }
   },
   "landmarks": {
-    "Riverside Building, County Hall, London SE1 7PB": {
-      "lat": 51.500967,
-      "lng": -0.119132
-    },
-    "Clive Steps, King Charles Street, London SW1A 2AQ": {
-      "lat": 51.5022,
-      "lng": -0.12935
-    },
-    "53 Greek Street, London W1D 3DR": {
-      "lat": 51.5144,
-      "lng": -0.1308,
-      "approx": true
-    },
-    "Lambeth Road, London SE1 6HZ": {
-      "lat": 51.496286,
-      "lng": -0.108597
-    },
-    "Borough Market, 8 Southwark Street, London SE1 1TL": {
-      "lat": 51.5055,
-      "lng": -0.0907,
-      "approx": true
-    },
-    "103 Charing Cross Road, London WC2H 0DT": {
-      "lat": 51.515,
-      "lng": -0.1296,
-      "approx": true
-    },
-    "Fortune Theatre, 29 Russell Street, London WC2B 5HH": {
-      "lat": 51.5128,
-      "lng": -0.1213,
-      "approx": true
-    },
-    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": {
-      "lat": 51.50092,
-      "lng": -0.192908
-    },
-    "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN": {
-      "lat": 51.540943,
-      "lng": -0.464943
-    },
-    "Embankment Underground station, London (river exit)": {
-      "lat": 51.50722,
-      "lng": -0.122227
-    },
-    "Barbican Underground station, London": {
-      "lat": 51.5202,
-      "lng": -0.0977
-    },
-    "Bovington Camp, Wareham, Dorset BH20 6JG": {
-      "lat": 50.694992,
-      "lng": -2.24312
-    },
-    "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer": {
-      "lat": 49.3606,
-      "lng": -0.8422,
-      "approx": true
-    },
-    "American Cemetery, 14710 Colleville-sur-Mer, France": {
-      "lat": 49.358627,
-      "lng": -0.854686
-    },
-    "Bayeux Cathedral, Bayeux, France": {
-      "lat": 49.2755,
-      "lng": -0.7035
-    },
-    "Boulevard Fabian Ware, 14400 Bayeux": {
-      "lat": 49.273468,
-      "lng": -0.711394
-    },
-    "Le Mont-Saint-Michel, 50170, Normandy": {
-      "lat": 48.6358791,
-      "lng": -1.5096205
-    },
-    "Cais da Ribeira, 4050-510 Porto, Portugal": {
-      "lat": 41.140607,
-      "lng": -8.6114067
-    },
-    "Rua do Agro 141, 4400-281 Vila Nova de Gaia": {
-      "lat": 41.13763,
-      "lng": -8.62367
-    },
-    "Praca Almeida Garrett, 4000-069 Porto": {
-      "lat": 41.145556,
-      "lng": -8.610667
-    },
-    "Vilarinho dos Freires, 5050-364 Peso da Regua": {
-      "lat": 41.1656,
-      "lng": -7.7881,
-      "approx": true
-    },
-    "Rua das Carmelitas 144, 4050-161 Porto": {
-      "lat": 41.14682,
-      "lng": -8.61488
-    },
-    "Rua de Sao Filipe de Nery, 4050-546 Porto": {
-      "lat": 41.1457,
-      "lng": -8.6146
-    }
+    "Riverside Building, County Hall, London SE1 7PB":                          { "lat": 51.500967, "lng": -0.119132 },
+    "Clive Steps, King Charles Street, London SW1A 2AQ":                        { "lat": 51.5022, "lng": -0.12935 },
+    "53 Greek Street, London W1D 3DR":                                          { "lat": 51.5144, "lng": -0.1308, "approx": true },
+    "Lambeth Road, London SE1 6HZ":                                             { "lat": 51.496286, "lng": -0.108597 },
+    "Borough Market, 8 Southwark Street, London SE1 1TL":                       { "lat": 51.5055, "lng": -0.0907, "approx": true },
+    "103 Charing Cross Road, London WC2H 0DT":                                  { "lat": 51.5150, "lng": -0.1296, "approx": true },
+    "Fortune Theatre, 29 Russell Street, London WC2B 5HH":                       { "lat": 51.5128, "lng": -0.1213, "approx": true },
+    "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)": { "lat": 51.50092, "lng": -0.192908 },
+    "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN":                       { "lat": 51.540943, "lng": -0.464943 },
+    "Embankment Underground station, London (river exit)":                     { "lat": 51.50722, "lng": -0.122227 },
+    "Barbican Underground station, London":                                    { "lat": 51.5202, "lng": -0.0977 },
+    "Bovington Camp, Wareham, Dorset BH20 6JG":                                 { "lat": 50.694992, "lng": -2.24312 },
+    "Omaha Beach, Avenue de la Liberation, 14710 Colleville-sur-Mer":           { "lat": 49.3606, "lng": -0.8422, "approx": true },
+    "American Cemetery, 14710 Colleville-sur-Mer, France":                      { "lat": 49.358627, "lng": -0.854686 },
+    "Bayeux Cathedral, Bayeux, France":                                         { "lat": 49.2755, "lng": -0.7035 },
+    "Boulevard Fabian Ware, 14400 Bayeux":                                      { "lat": 49.273468, "lng": -0.711394 },
+    "Le Mont-Saint-Michel, 50170, Normandy":                                    { "lat": 48.6358791, "lng": -1.5096205 },
+    "Cais da Ribeira, 4050-510 Porto, Portugal":                                { "lat": 41.140607, "lng": -8.6114067 },
+    "Rua do Agro 141, 4400-281 Vila Nova de Gaia":                              { "lat": 41.13763, "lng": -8.62367 },
+    "Praca Almeida Garrett, 4000-069 Porto":                                    { "lat": 41.145556, "lng": -8.610667 },
+    "Vilarinho dos Freires, 5050-364 Peso da Regua":                            { "lat": 41.1656, "lng": -7.7881, "approx": true },
+    "Rua das Carmelitas 144, 4050-161 Porto":                                   { "lat": 41.14682, "lng": -8.61488 },
+    "Rua de Sao Filipe de Nery, 4050-546 Porto":                                { "lat": 41.1457, "lng": -8.6146 }
   }
 }</script>
 
