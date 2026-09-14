@@ -48,8 +48,12 @@
   // link built from the same unhelpful query.
   var LANDMARK_DISPLAY_NAMES = {
     'Riverside Building, County Hall, London SE1 7PB': 'London Eye',
+    '53 Greek Street, London W1D 3DR': '53 Greek Street Airbnb',
     'Clive Steps, King Charles Street, London SW1A 2AQ': 'Churchill War Rooms',
     'Lambeth Road, London SE1 6HZ': 'Imperial War Museum London',
+    'Borough Market, 8 Southwark Street, London SE1 1TL': 'Borough Market',
+    '103 Charing Cross Road, London WC2H 0DT': 'Funky Noodle',
+    'Fortune Theatre, 29 Russell Street, London WC2B 5HH': 'Fortune Theatre (Operation Mincemeat)',
     'High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)': 'Kensington Royal Village Walk (departs High St Kensington)',
     "St. Andrew's Road, RAF Uxbridge, Uxbridge UB10 0RN": 'Battle of Britain Bunker',
     'Embankment Underground station, London (river exit)': "Thames Sightseeing, Brunel's River Walk (departs Embankment)",
@@ -137,16 +141,15 @@
     return h12 + ':' + m + ' ' + ampm;
   }
 
-  // Booking-trust copy for every flight surface. UA940 / UA145 are real
-  // published operating flights; CDG→OPO is Air France with no ident yet.
-  // None of the three is a confirmed ticket in this guide — never imply
-  // they are while a warning says otherwise.
+  // Booking-trust copy for every flight surface. BA184 / BA8137 / TP455
+  // are Jon's 2026-09-14 numbers; TP211's DATE is assumed Oct 26.
+  // Confirmation notes carry that distinction — never imply a ticket.
   function flightNumberLabel(f) {
     if (!f) return 'TBD';
     return f.flight_number || 'number pending';
   }
   function flightIsUnverified(f) {
-    return !!(f && (f._modelEstimatedFlightNumber || !f.flight_number));
+    return !!(f && (f._modelEstimatedFlightNumber || f._dateUnconfirmed || !f.flight_number));
   }
   function flightTrustBadgeHTML(f) {
     if (!f) return '';
@@ -154,6 +157,10 @@
       return '<div class="flight-warn">Unverified / confirm with airline — ' +
         esc(f.carrier || 'Airline') + ' ' + esc(f.from_airport || '') + '→' + esc(f.to_airport || '') +
         ', flight number not yet booked.</div>';
+    }
+    if (f._dateUnconfirmed) {
+      return '<div class="flight-warn">Oct 26 assumed — confirm with Jon. Email gave ' +
+        esc(f.flight_number) + ' times but no date; this guide uses Porto checkout day.</div>';
     }
     return '<div class="flight-warn">Unverified / confirm with airline — published operating flight (' +
       esc(f.carrier || '') + ' ' + esc(f.flight_number) + '), not a confirmed ticket.</div>';
@@ -702,12 +709,12 @@
   // Ground truth is the actual day count (N days = N-1 nights), NOT a sum of
   // cities[].nights - a city's own nights entry only covers nights actually
   // spent THERE, so a night spent in transit (e.g. this trip's overnight
-  // EWR-LHR flight, or the overnight Portsmouth-Ouistreham ferry, neither of
+  // EWR-LHR flight, or the unnamed Orly hotel night of Oct 18, neither of
   // which belongs to any city) is real trip time that a naive sum silently
   // drops. Summing cities[].nights here gives 12
   // (5 London + 3 Normandy + 4 Porto), while the trip is
   // genuinely 14 nights (days.length - 1) - the missing two are the
-  // overnight-flight night and the overnight-ferry night, which the hero's
+  // overnight-flight night and the Orly-hotel night, which the hero's
   // own meta line spells out explicitly.
   var totalTripNights = (TRIP.days || []).length ? (TRIP.days.length - 1) : 0;
   var tripNightsTotalEl = document.getElementById('tripNightsTotal');
@@ -1330,7 +1337,7 @@
         var f = item.flight;
         flightLine = '<div class="ref-line">' + esc(f.from_airport || '') + ' → ' + esc(f.to_airport || '') +
           (f.duration ? ' · ' + esc(f.duration) : '') + (f.nonstop ? ' · Nonstop' : '') + '</div>';
-        if (f._modelEstimatedFlightNumber || !f.flight_number) {
+        if (f._modelEstimatedFlightNumber || f._dateUnconfirmed || !f.flight_number) {
           flightWarn = flightTrustBadgeHTML(f);
         }
       }
@@ -1377,7 +1384,7 @@
         'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
       ],
       Normandy: [
-        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. This trip uses a private driver/guide for those days, not the Day 7 UK rental (that car is dropped in Portsmouth before the foot-passenger ferry). Taxis exist in Bayeux but are sparse.',
+        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. How you get from the Orly hotel (TBD) to Bayeux on Oct 19, and back to ORY on Oct 22, is not specified — confirm with Jon. Taxis exist in Bayeux but are sparse.',
         'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 9\'s self-guided Bayeux day specifically.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
         'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
@@ -1411,11 +1418,11 @@
     // Historical claims here were verified via WebSearch as part of the
     // mandatory prose fact-check sweep (see CLAUDE.md).
     var entries = [
-      { day: 'Day 3', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
-      { day: 'Day 4', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip.' },
-      { day: 'Day 5', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain. Churchill visited the gallery here on September 15, 1940 — the raid’s climax, still marked today as “Battle of Britain Day.”' },
-      { day: 'Day 7', title: 'Armored warfare & The Tank Museum', body: 'Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
-      { day: 'Day 8', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today, and it sits on this day’s guided / private-driver route. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing.' },
+      { day: 'Day 3', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip. Wednesday night’s show, Operation Mincemeat, is the musical about the 1943 British deception that used a corpse and fake papers to mislead the Axis about the Sicily invasion.' },
+      { day: 'Day 4', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
+      { day: 'Unscheduled', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'Still an open London idea — Jon did not assign it to a day. In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain. Churchill visited the gallery here on September 15, 1940 — the raid’s climax, still marked today as “Battle of Britain Day.”' },
+      { day: 'Unscheduled', title: 'Armored warfare & The Tank Museum', body: 'Still an open London idea — Jon wrote “maybe overnight,” and it is not on the Oct 18 LHR→ORY day. Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
+      { day: 'Bayeux stay', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing. Jon’s plan is Objective Normandy (guide Elisha / Elisa Denis) for this stay; which calendar day is not confirmed.' },
       { day: 'Day 9', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
       { day: 'Day 10', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
       { day: 'Days 12–13', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
@@ -1541,8 +1548,8 @@
 
   /* ---------------------------------------------------------
      BOOKING ACTIONS — everything bookable that ISN'T a restaurant:
-     lodging (VRBOs), museum/attraction tickets, the rental car, the
-     overnight ferry, and the Douro Valley tour. Curated, not derived
+     lodging, museum/attraction tickets, the Orly hotel gap, and the
+     Douro Valley tour. Curated, not derived
      from a data field (Activity/Transport items have no "needs
      advance booking" flag to key off), the same way the History
      entries are hand-mapped to specific days rather than computed.
@@ -1560,63 +1567,73 @@
     var ACTIONS = [
       {
         dayIdx: 1, kind: 'soon',
-        title: 'London Airbnb (Day 2 check-in) — confirm address',
-        note: 'Booked via Airbnb — Jonathan shared the listing and a co-traveler trip invite by email (2 bedrooms, 3 beds, 1 bath, ★4.64, Greater London) for the 5 nights Oct 13–18. The exact address wasn\'t in the email itself, so get it plus check-in instructions from Jonathan before departure, and confirm early check-in or luggage drop given the overnight-flight arrival.',
+        title: 'London Airbnb — 53 Greek St (HMFRRRZRTN)',
+        note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
       },
       {
         dayIdx: 2, kind: 'urgent',
-        title: 'Phantom of the Opera matinee (Day 3, 2:30 PM)',
-        note: 'Book directly via thephantomoftheopera.com now — best seats for a specific October date sell out 4–6 weeks ahead. Stalls center or Dress Circle for sightlines.',
+        title: 'Operation Mincemeat (Day 3, 7:30 PM) — Fortune Theatre',
+        note: 'Jon listed Fortune Theatre, 29 Russell Street, arrive 7:00 PM for 7:30 PM. Ticket status was not in the email — confirm seats are held. Official listing: atgtickets.com / Fortune Theatre.',
       },
       {
         dayIdx: 2, kind: 'soon',
-        title: 'Churchill War Rooms (Day 3, 10:00 AM)',
-        note: 'Book timed-entry tickets at iwm.org.uk — October dates can sell out 3+ weeks out. Audio guide is included.',
+        title: 'Imperial War Museum (Day 3, morning)',
+        note: 'General admission is free; no ticket required. Jon’s window is 9:30 AM–12:00 PM including transit from 53 Greek St.',
       },
       {
-        dayIdx: 4, kind: 'urgent',
-        title: 'Battle of Britain Bunker (Day 5)',
-        note: 'Guided-tour only — book ahead strongly advised (October slots can sell out). Limited same-day tickets are sometimes sold at the desk, but do not count on a walk-up. Call +44 1895 238154 or book via battleofbritainbunker.co.uk, 7–14 days ahead. Tours last about 60 minutes. Open all 7 days, 10 AM–4:30 PM (last admission 3:30 PM). Request the 10:00 morning tour to match this day’s plan.',
+        dayIdx: 3, kind: 'soon',
+        title: 'Churchill War Rooms (Day 4, 10:00 AM)',
+        note: 'Book timed-entry tickets at iwm.org.uk — October dates can sell out 3+ weeks out. Audio guide is included. Jon blocked 10:00 AM–12:00 PM.',
       },
       {
-        dayIdx: 4, kind: 'urgent',
-        title: 'Hamilton (Day 5, 7:30 PM)',
-        note: 'Book directly via hamiltonmusical.com/london now — same sell-out risk as Phantom for a specific October date. Stalls rows A–M or Dress Circle A–C for sightlines.',
+        dayIdx: 3, kind: 'soon',
+        title: 'Kensington Royal Village walk (Day 4, 2:00 PM)',
+        note: 'Jon’s Thursday 2:00–4:00 PM. An earlier Aug 21 email reserved Walk ID 110 (2 attendees) for 15 Oct 2:00 PM — confirm that reservation still stands. Meet at Wasabi at the High Street Kensington arcade.',
       },
       {
-        dayIdx: 6, kind: 'soon',
-        title: 'Rental car — one-way London → Portsmouth drop-off (Day 7)',
-        note: 'UK one-way only: pick up in London, drive Bovington → Portsmouth, drop at Portsmouth International Port BEFORE the ferry. Do not book this car onto the crossing and do not plan to drive it in Normandy (those days are a private driver/guide). Pickup location TBD — reserve a larger vehicle soon; one-way availability tightens closer to the date.',
+        dayIdx: 3, kind: 'flex',
+        title: 'Thursday dinner (Day 4) — TBD',
+        note: 'Jon wrote “Dinner TBD.” Do not invent a restaurant.',
+      },
+      {
+        dayIdx: 4, kind: 'flex',
+        title: 'Unused London ideas (Days 2 / 5 / 6)',
+        note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18). Earlier emails also reserved Saturday London Walks (Walk ID 3315 10:00 AM; Walk ID 430 2:30 PM) that Jon’s Sep 14 day-by-day did not restate — confirm whether those still stand.',
       },
       {
         dayIdx: 6, kind: 'urgent',
-        title: 'Overnight Brittany Ferries crossing — book the cabin (Day 7 night)',
-        note: 'Portsmouth→Ouistreham (Caen), departs 10:45 PM arrives ~7:45 AM, approx. 8 hrs. Book a FOOT-PASSENGER cabin, not a vehicle crossing — the UK rental is dropped at Portsmouth first. Cabins sell out ahead of the sailing date. +44 330 159 7000 or brittany-ferries.co.uk.',
+        title: 'ORY hotel night of Oct 18 — TBD',
+        note: 'Jon: “ORY hotel 10/18/26 — TBD.” Needed after BA8137 lands 5:35 PM and before Bayeux check-in 5:00 PM Oct 19. Do not invent a property.',
       },
       {
         dayIdx: 7, kind: 'soon',
-        title: 'Normandy Airbnb — message host about late arrival (Day 8 check-in)',
-        note: 'Booked — "Home in Bayeux," 4 Rue Franche, hosted by Bruno, 3 nights (check-in Mon Oct 19 5:00 PM, checkout Thu Oct 22 12:00 PM). Late arrival expected ~9:30 PM after the ferry docks and a full day of D-Day sites — message Bruno ahead of time to confirm self-check-in/lockbox instructions for that late.',
+        title: 'Bayeux Airbnb HMKWYPDKBE + ORY↔Bayeux transfers',
+        note: 'Booked — 4 Rue Franche, Oct 19–22, check-in 5:00 PM / check-out 12:00 PM. Transfer from the Orly hotel on Oct 19 and back to ORY on Oct 22 are not specified — confirm with Jon. Message the host if arrival will be after 5:00 PM.',
       },
       {
-        dayIdx: 10, kind: 'urgent',
-        title: 'Porto Airbnb — get the listing (Day 11 check-in)',
-        note: 'Booked via Airbnb — Jonathan sent a co-traveler trip invite by email on Aug 21, 2026 for the 4 nights Oct 22–26, replacing the earlier VRBO placeholder. No specific listing or address was attached to the invite, so get the actual property and check-in instructions from Jonathan before the trip.',
+        dayIdx: 7, kind: 'soon',
+        title: 'Objective Normandy American Sector tour — confirm which day',
+        note: 'Aug plan: full-day Utah / Omaha / American Cemetery with guide Elisha, objectivenormandy.com (site lists Elisa Denis). Jon’s Sep 14 email did not assign a date. Confirm pickup (Orly vs Bayeux) with contact@objectivenormandy.com.',
+      },
+      {
+        dayIdx: 10, kind: 'soon',
+        title: 'Porto Airbnb HM549AK8C2 — Rua dos Mercadores 77, 3rd floor',
+        note: 'Booked Oct 22–26, check-in 4:00 PM / check-out 11:00 AM. Jon wrote “Ribera San Joao.” TP455 lands OPO 6:05 PM — after official check-in. Confirm access and the exact 3rd-floor unit.',
       },
       {
         dayIdx: 12, kind: 'soon',
         title: 'Quinta do Vallado Douro Valley tasting (Day 13)',
-        note: 'Book 7+ days ahead via quintadovallado.com or reservas@quintadovallado.com — it\'s not a walk-in tasting room. Also confirm the private driver for the day (GetYourGuide or hotel concierge) 3 days ahead.',
+        note: 'On the existing Porto day plan (Aug city-level: Douro Valley). Book 7+ days ahead via quintadovallado.com or reservas@quintadovallado.com if this day is still wanted — Jon did not restate a Douro booking.',
       },
       {
-        dayIdx: 12, kind: 'soon',
-        title: '1828 Steakhouse farewell dinner (Day 14, 8:00 PM)',
-        note: 'Call +351 22 012 1200 to reserve — a river-view table on the last night deserves an advance booking, not a walk-in gamble.',
+        dayIdx: 14, kind: 'urgent',
+        title: 'Return TP211 date — Oct 26 assumed, confirm with Jon',
+        note: 'Email gave TAP TP211 OPO 7:30 PM → EWR 11:55 PM and no date. This guide uses Oct 26 only because Porto checkout is that day.',
       },
       {
         dayIdx: 0, kind: 'flex',
-        title: 'Flights (all 3 legs)',
-        note: 'None of these are confirmed tickets in this guide. EWR→LHR is published as United UA940; OPO→EWR as United UA145; CDG→OPO is Air France with the flight number still pending — confirm ident and time with Air France when you ticket. Verify number, times, and equipment when you book. Nothing else to do until online check-in opens (typically 24–48h before each departure).',
+        title: 'Flights (Jon 2026-09-14)',
+        note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM (typically a Vueling-operated BA codeshare). TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TP211 OPO→EWR 7:30 PM / 11:55 PM — date not in the email. Confirm tickets / record locators with Jon.',
       },
     ];
     var today = new Date(); today.setHours(0, 0, 0, 0);
