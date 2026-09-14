@@ -567,6 +567,7 @@ def day7(weather):
                     "address": None,
                     "phone": None,
                     "website": None,
+                    "city": "Orly (TBD)",
                     "check_in_time": None,
                     "confirmation_note": (
                         "Unbooked / unnamed. Night of Sunday Oct 18 only. "

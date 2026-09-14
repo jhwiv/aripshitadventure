@@ -1460,8 +1460,9 @@
       (day.items || []).forEach(function (item) {
         if (item.type === 'Flight' && item.flight) flights.push({ f: item.flight, dayIndex: idx });
         if (item.hotel && item.hotel.name) {
-          var h = hotelsByName[item.hotel.name] || { city: day.city };
+          var h = hotelsByName[item.hotel.name] || { city: item.hotel.city || day.city };
           Object.keys(item.hotel).forEach(function (k) { if (item.hotel[k] && !h[k]) h[k] = item.hotel[k]; });
+          if (item.hotel.city) h.city = item.hotel.city;
           hotelsByName[item.hotel.name] = h;
         }
       });
