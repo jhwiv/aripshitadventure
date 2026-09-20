@@ -99,7 +99,8 @@
     return '<span class="book-chip book-chip--' + status + '">' + label + '</span>';
   }
 
-  // Conflict banners — only the two days the Mobbin pass named.
+  // Conflict banners + sticky day-strip `.day-tab--concern` — same keys.
+  // Only the two days the Mobbin pass named; do not invent extra flags.
   var DAY_CONFLICTS = {
     8: {
       title: 'Schedule conflict',
@@ -842,11 +843,15 @@
       var dateLabel = formatMonthDay(idx);
       var label = formatWeekdayMonthDay(idx) + (day.city ? ' — ' + day.city : '');
       var extra = (todayN === n ? ' is-today' : '');
+      var concern = DAY_CONFLICTS[n];
+      if (concern) extra += ' day-tab--concern';
+      var a11y = label + (concern ? ' — ' + concern.title : '');
       return '<a href="#day-' + n + '" class="day-tab-card' + extra + '" data-day="' + n + '" style="--day-tab-color:' + color + '" ' +
-        'aria-label="Jump to ' + esc(label) + '" title="' + esc(label) + '">' +
+        'aria-label="Jump to ' + esc(a11y) + '" title="' + esc(a11y) + '">' +
         '<span class="day-tab-wd">' + wd + '</span>' +
         '<span class="day-tab-date">' + dateLabel + '</span>' +
         (flag ? '<span class="day-tab-flag" aria-hidden="true">' + flag + '</span>' : '') +
+        (concern ? '<span class="day-tab-concern-mark" aria-hidden="true">⚠</span>' : '') +
       '</a>';
     }).join('');
   })();
