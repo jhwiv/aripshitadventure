@@ -122,8 +122,12 @@
   }
 
   var WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function tripStartLocal() {
     return new Date(2026, 9, 12);
+  }
+  function tripDateAt(idx) {
+    return new Date(2026, 9, 12 + idx);
   }
   function todayTripDayNum() {
     var start = tripStartLocal();
@@ -145,8 +149,37 @@
     return diff >= 0 && diff < ((TRIP.days && TRIP.days.length) || 15);
   }
   function weekdayShortForDay(idx) {
-    var d = new Date(2026, 9, 12 + idx);
-    return WEEKDAY_SHORT[d.getDay()];
+    return WEEKDAY_SHORT[tripDateAt(idx).getDay()];
+  }
+  // Traveler-facing date labels. Chip: actual calendar dates, not "Day N".
+  // Strip cards: weekday + "Oct 12". Headers / pills / History: "Mon Oct 12".
+  function formatMonthDay(idx) {
+    var d = tripDateAt(idx);
+    return MONTH_SHORT[d.getMonth()] + ' ' + d.getDate();
+  }
+  function formatWeekdayMonthDay(idx) {
+    return weekdayShortForDay(idx) + ' ' + formatMonthDay(idx);
+  }
+  function themeFromDayLabel(day) {
+    var parts = String((day && day.label) || '').split('·').map(function (s) { return s.trim(); });
+    if (parts.length >= 3 && /^Day\s+\d+/i.test(parts[0])) return parts.slice(2).join(' · ');
+    return parts.filter(function (p) { return p && !/^Day\s+\d+/i.test(p); }).join(' · ');
+  }
+  function displayDayLabel(day, idx) {
+    var theme = themeFromDayLabel(day);
+    return theme ? formatWeekdayMonthDay(idx) + ' · ' + theme : formatWeekdayMonthDay(idx);
+  }
+  function displayDaysRange(range) {
+    var m = String(range || '').match(/Day\s+(\d+)\s*[–-]\s*Day\s+(\d+)/i);
+    if (!m) return range || '';
+    var a = parseInt(m[1], 10) - 1;
+    var b = parseInt(m[2], 10) - 1;
+    var da = tripDateAt(a);
+    var db = tripDateAt(b);
+    if (da.getMonth() === db.getMonth()) {
+      return MONTH_SHORT[da.getMonth()] + ' ' + da.getDate() + '–' + db.getDate();
+    }
+    return formatMonthDay(a) + ' – ' + formatMonthDay(b);
   }
 
   var selectedDayNum = null;
@@ -562,7 +595,7 @@
   var tabSections = Array.prototype.slice.call(document.querySelectorAll('.tab-section'));
   var navTapLock = false;
   var navTapTimer = null;
-  var spyTimer = null;
+  var spyRaf = null;
   var lastActiveSection = tabSections.length ? tabSections[0].id : null;
   var lastViewedCity = 'London';
 
@@ -602,7 +635,10 @@
     var cards = document.querySelectorAll('.day-tab-card');
     cards.forEach(function (card) {
       var num = parseInt(card.getAttribute('data-day'), 10);
-      card.classList.toggle('is-selected', num === n);
+      var on = num === n;
+      card.classList.toggle('is-selected', on);
+      if (on) card.setAttribute('aria-current', 'true');
+      else card.removeAttribute('aria-current');
     });
     var todayBtn = document.getElementById('dayTabsToday');
     if (todayBtn) {
@@ -624,11 +660,12 @@
     if (top < 0) top = 0;
     navTapLock = true;
     clearTimeout(navTapTimer);
-    clearTimeout(spyTimer);
+    if (spyRaf != null) { cancelAnimationFrame(spyRaf); spyRaf = null; }
     window.scrollTo({ top: top, behavior: instant ? 'auto' : 'smooth' });
     function done() {
       navTapLock = false;
       if (after) after();
+      applyScrollSpy();
     }
     if (instant) { done(); return; }
     var idleTicks = 0;
@@ -669,6 +706,53 @@
     chip.addEventListener('click', function () { scrollToSection(chip.dataset.target); });
   });
 
+  function dayNumFromSpyEl(el) {
+    if (!el) return 0;
+    var raw = el.getAttribute('data-day');
+    if (raw) {
+      var n = parseInt(raw, 10);
+      return n > 0 ? n : 0;
+    }
+    if (el.id && /^day-\d+$/.test(el.id)) return parseInt(el.id.slice(4), 10) || 0;
+    return 0;
+  }
+  function firstDayNumForCity(city) {
+    if (!city || !TRIP.days) return 0;
+    for (var i = 0; i < TRIP.days.length; i++) {
+      if (TRIP.days[i].city === city) return i + 1;
+    }
+    return 0;
+  }
+  function applyDayStripSpy(active, navH) {
+    // City-tab #day-N banners sit BELOW Condensed on the continuous page.
+    // Spy only the markers in the section that's actually in view:
+    //   Condensed → .cond-day[data-day]
+    //   city tabs → .day-banner
+    // Spying every banner from Map/History/Pack (below the last day)
+    // snaps the strip to Oct 26. The old 140ms debounce-until-idle plus
+    // city-tab-only targets is why Chip saw endless scroll with dead
+    // day tabs: Condensed is the long first itinerary and had no spy
+    // nodes, and the highlight never moved while the finger was moving.
+    var nodes;
+    if (active === 'tab-condensed') {
+      nodes = document.querySelectorAll('#condensedList .cond-day[data-day]');
+    } else if (active && active.indexOf('tab-city-') === 0) {
+      nodes = document.querySelectorAll('.day-banner[id^="day-"]');
+    } else {
+      return;
+    }
+    var dayCurrent = 0;
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].getBoundingClientRect().top <= navH + 8) {
+        var n = dayNumFromSpyEl(nodes[i]);
+        if (n) dayCurrent = n;
+      }
+    }
+    if (!dayCurrent && active && active.indexOf('tab-city-') === 0) {
+      dayCurrent = firstDayNumForCity(cityFromSectionId(active));
+    }
+    if (dayCurrent && dayCurrent !== selectedDayNum) setSelectedDay(dayCurrent);
+  }
   function applyScrollSpy() {
     if (navTapLock) return;
     var navH = stickyClearancePx();
@@ -677,24 +761,15 @@
       if (s.getBoundingClientRect().top <= navH + 1) active = s.id;
     });
     if (active && active !== lastActiveSection) setActiveChip(active);
-    // Day banners all live in the city tabs further down the continuous
-    // page. Only spy them while a city section is in view — otherwise
-    // landing on Map/History/Pack would snap the strip to Day 15.
-    if (active && active.indexOf('tab-city-') === 0) {
-      var dayCurrent = selectedDayNum;
-      document.querySelectorAll('.day-banner[id^="day-"]').forEach(function (el) {
-        if (el.getBoundingClientRect().top <= navH + 8) {
-          var n = parseInt(el.id.slice(4), 10);
-          if (n) dayCurrent = n;
-        }
-      });
-      if (dayCurrent && dayCurrent !== selectedDayNum) setSelectedDay(dayCurrent);
-    }
+    applyDayStripSpy(active, navH);
   }
   function onScroll() {
     if (navTapLock) return;
-    clearTimeout(spyTimer);
-    spyTimer = setTimeout(applyScrollSpy, 140);
+    if (spyRaf != null) return;
+    spyRaf = requestAnimationFrame(function () {
+      spyRaf = null;
+      applyScrollSpy();
+    });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -764,12 +839,13 @@
       var flag = CITY_FLAGS[day.city] || '';
       var color = CITY_COLORS[day.city] || '#8a8f98';
       var wd = weekdayShortForDay(idx);
-      var label = 'Day ' + n + ' · ' + wd + (day.city ? ' — ' + day.city : '');
+      var dateLabel = formatMonthDay(idx);
+      var label = formatWeekdayMonthDay(idx) + (day.city ? ' — ' + day.city : '');
       var extra = (todayN === n ? ' is-today' : '');
       return '<a href="#day-' + n + '" class="day-tab-card' + extra + '" data-day="' + n + '" style="--day-tab-color:' + color + '" ' +
         'aria-label="Jump to ' + esc(label) + '" title="' + esc(label) + '">' +
         '<span class="day-tab-wd">' + wd + '</span>' +
-        '<span class="day-tab-num">' + n + '</span>' +
+        '<span class="day-tab-date">' + dateLabel + '</span>' +
         (flag ? '<span class="day-tab-flag" aria-hidden="true">' + flag + '</span>' : '') +
       '</a>';
     }).join('');
@@ -921,7 +997,7 @@
         '<div class="city-card-chevron">▾</div>' +
       '</div>' +
       '<div class="city-card-body-outer"><div class="city-card-body-inner"><div class="city-card-body">' +
-        '<div class="nights-detail">' + esc(c.days_range) + '</div>' +
+        '<div class="nights-detail">' + esc(displayDaysRange(c.days_range)) + '</div>' +
         '<div class="stay">' + esc(c.stay) + '</div>' +
         (c.transport_in ? '<div class="city-transport-in">→ ' + esc(c.transport_in) + '</div>' : '') +
         (focusChips.length ? '<div class="city-card-focus">' + focusChips.map(function (f) {
@@ -1209,22 +1285,17 @@
     // legs with a KNOWN duration), so this never overstates the day.
     var transit = dayTransitSummary(day);
     var showTransitChip = transit && (transit.totalMin >= 60 || transit.legs >= 2);
-    // Day banner: a thin navy divider per day, matching the real
-    // .day-banner pattern (eyebrow "DAY N" + the date) - sits right above
-    // each day's own content, same as it does directly under the location
-    // banner for a city's first day in the confirmed real reference.
-    var labelParts = (day.label || '').split('·').map(function (s) { return s.trim(); });
-    // id="day-N" lives on the banner (not .day-block below) so that jumping
-    // to a day via the day-tabs bar / per-city pill nav lands with the
-    // banner itself as the first thing in view, not scrolled past it -
-    // .day-block starts right after the banner, so an id there landed one
-    // element too late.
-    var dayBanner = '<div class="day-banner" id="day-' + dayNum + '">' +
-      '<div class="day-banner-eyebrow">' + esc((labelParts[0] || '').toUpperCase()) + '</div>' +
-      '<div class="day-banner-title">' + esc(labelParts[1] || '') + '</div>' +
+    // Day banner: navy divider per day. Eyebrow is the calendar date
+    // ("MON OCT 12"), title is the day's theme — not "DAY N".
+    // id="day-N" stays on the banner so jump-to-day lands on it.
+    var longDate = formatWeekdayMonthDay(dayNum - 1);
+    var theme = themeFromDayLabel(day);
+    var dayBanner = '<div class="day-banner" id="day-' + dayNum + '" data-day="' + dayNum + '">' +
+      '<div class="day-banner-eyebrow">' + esc(longDate.toUpperCase()) + '</div>' +
+      '<div class="day-banner-title">' + esc(theme || longDate) + '</div>' +
       '</div>';
     var html = dayBanner + '<div class="day-block">' +
-      '<div class="day-block-label">' + esc(day.label) + '</div>' +
+      '<div class="day-block-label">' + esc(displayDayLabel(day, dayNum - 1)) + '</div>' +
       '<div class="day-block-headline">' + esc(day.headline) + '</div>' +
       (wx ?
         '<div class="wx-chip" role="button" tabindex="0" aria-expanded="false">' +
@@ -1319,7 +1390,7 @@
     // past every earlier day to reach the one you actually want.
     var jumpNav = dayNums.length > 1
       ? '<div class="day-jump-nav">' + dayNums.map(function (n) {
-          return '<a href="#day-' + n + '" class="day-jump-pill">Day ' + n + '</a>';
+          return '<a href="#day-' + n + '" class="day-jump-pill">' + formatMonthDay(n - 1) + '</a>';
         }).join('') + '</div>'
       : '';
     container.innerHTML = jumpNav + html;
@@ -1340,10 +1411,10 @@
       // everything back to back with nothing else marking the boundary.
       var condTransit = dayTransitSummary(day);
       var showCondTransitChip = condTransit && (condTransit.totalMin >= 60 || condTransit.legs >= 2);
-      html += '<div class="cond-day" style="border-left-color:' + color + '">' +
+      html += '<div class="cond-day" data-day="' + (idx + 1) + '" style="border-left-color:' + color + '">' +
         '<div class="cond-day-head">' +
           (flag ? '<span class="cond-day-flag">' + flag + '</span>' : '') +
-          '<span class="cond-day-label">' + esc(day.label) + '</span>' +
+          '<span class="cond-day-label">' + esc(displayDayLabel(day, idx)) + '</span>' +
           (showCondTransitChip ? '<span class="cond-transit-chip">🧭 ~' + esc(condTransit.label) + '</span>' : '') +
         '</div>' +
         // The headline already exists on every day (it's the same one-line
@@ -1397,7 +1468,7 @@
     (TRIP.days || []).forEach(function (day, idx) {
       (day.items || []).forEach(function (item) {
         if (!item.restaurant) return;
-        rows.push({ day: day.label, time: item.time, r: item.restaurant });
+        rows.push({ day: displayDayLabel(day, idx), time: item.time, r: item.restaurant });
       });
     });
     if (!rows.length) { mealsEl.innerHTML = '<p class="ai-note">No restaurant reservations in this plan.</p>'; return; }
@@ -1548,7 +1619,7 @@
         ? 'Arrives ' + esc(formatTime12(item.time))
         : esc(formatTime12(item.time));
       return '<div class="ref-card">' +
-        '<div class="ref-title">' + icon + ' Day ' + row.dayNum + ' · ' + timeLabel + '</div>' +
+        '<div class="ref-title">' + icon + ' ' + formatWeekdayMonthDay(row.dayNum - 1) + ' · ' + timeLabel + '</div>' +
         '<div class="ref-line">' + esc(refText || '') + '</div>' +
         flightLine +
         flightWarn +
@@ -1570,14 +1641,14 @@
       ],
       Normandy: [
         'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. How you get from the Orly hotel (TBD) to Bayeux on Oct 19, and back to ORY on Oct 22, is not specified — confirm with Jon. Taxis exist in Bayeux but are sparse.',
-        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Day 9\'s self-guided Bayeux day specifically.',
+        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Tue Oct 20\'s self-guided Bayeux day specifically.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
         'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
       ],
       Porto: [
         'The Andante card covers metro, bus, and some train lines — buy and top up at metro station machines or the Andante app. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.',
         'Meal times run later than a US traveler expects — lunch from ~12:30pm, dinner rarely starts before 7:30–8pm; showing up at 6pm may mean an empty, still-prepping restaurant.',
-        'The Elevador dos Guindais funicular is a cheap, fast way to skip the steepest Ribeira-to-upper-town climb — useful for Day 11\'s evening Ribeira walk.',
+        'The Elevador dos Guindais funicular is a cheap, fast way to skip the steepest Ribeira-to-upper-town climb — useful for Thu Oct 22\'s evening Ribeira walk.',
         'Vinho verde (a young, slightly sparkling white/rosé) is the everyday casual wine here — don\'t confuse it with the fortified Port being toured/tasted in Vila Nova de Gaia; they\'re unrelated styles from the same region.'
       ]
     };
@@ -1603,14 +1674,14 @@
     // Historical claims here were verified via WebSearch as part of the
     // mandatory prose fact-check sweep (see CLAUDE.md).
     var entries = [
-      { day: 'Day 3', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip. Wednesday night’s show, Operation Mincemeat, is the musical about the 1943 British deception that used a corpse and fake papers to mislead the Axis about the Sicily invasion.' },
-      { day: 'Day 4', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
+      { day: 'Wed Oct 14', title: 'Imperial War Museum London', body: 'Founded in 1917 to document the First World War, IWM London’s collection now spans both World Wars and beyond, housed on the site of the former Bethlem Royal Hospital (“Bedlam”) on Lambeth Road. Its WWII galleries — the Blitz, the Holocaust exhibition, the home front — go deeper than any single site earlier in the trip. Wednesday night’s show, Operation Mincemeat, is the musical about the 1943 British deception that used a corpse and fake papers to mislead the Axis about the Sicily invasion.' },
+      { day: 'Thu Oct 15', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
       { day: 'Unscheduled', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'Still an open London idea — Jon did not assign it to a day. In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain. Churchill visited the gallery here on September 15, 1940 — the raid’s climax, still marked today as “Battle of Britain Day.”' },
       { day: 'Unscheduled', title: 'Armored warfare & The Tank Museum', body: 'Still an open London idea — Jon wrote “maybe overnight,” and it is not on the Oct 18 LHR→ORY day. Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
       { day: 'Bayeux stay', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing. Jon’s plan is Objective Normandy (guide Elisha / Elisa Denis) for this stay; which calendar day is not confirmed.' },
-      { day: 'Day 9', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
-      { day: 'Day 10', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
-      { day: 'Days 12–13', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
+      { day: 'Tue Oct 20', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
+      { day: 'Wed Oct 21', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
+      { day: 'Fri Oct 23 – Sat Oct 24', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
       return '<div class="accordion-item"><button class="accordion-header">' +
@@ -1758,32 +1829,32 @@
       },
       {
         dayIdx: 2, kind: 'urgent', status: 'confirm',
-        title: 'Operation Mincemeat (Day 3, 7:30 PM) — Fortune Theatre',
+        title: 'Operation Mincemeat (Wed Oct 14, 7:30 PM) — Fortune Theatre',
         note: 'Jon listed Fortune Theatre, 29 Russell Street, arrive 7:00 PM for 7:30 PM. Ticket status was not in the email — confirm seats are held. Official listing: atgtickets.com / Fortune Theatre.',
       },
       {
         dayIdx: 2, kind: 'soon', status: 'confirm',
-        title: 'Imperial War Museum (Day 3, morning)',
+        title: 'Imperial War Museum (Wed Oct 14, morning)',
         note: 'General admission is free; no ticket required. Jon’s window is 9:30 AM–12:00 PM including transit from 53 Greek St.',
       },
       {
         dayIdx: 3, kind: 'soon', status: 'needs',
-        title: 'Churchill War Rooms (Day 4, 10:00 AM)',
+        title: 'Churchill War Rooms (Thu Oct 15, 10:00 AM)',
         note: 'Book timed-entry tickets at iwm.org.uk — October dates can sell out 3+ weeks out. Audio guide is included. Jon blocked 10:00 AM–12:00 PM.',
       },
       {
         dayIdx: 3, kind: 'soon', status: 'confirm',
-        title: 'Kensington Royal Village walk (Day 4, 2:00 PM)',
+        title: 'Kensington Royal Village walk (Thu Oct 15, 2:00 PM)',
         note: 'Jon’s Thursday 2:00–4:00 PM. An earlier Aug 21 email reserved Walk ID 110 (2 attendees) for 15 Oct 2:00 PM — confirm that reservation still stands. Meet at Wasabi at the High Street Kensington arcade.',
       },
       {
         dayIdx: 3, kind: 'flex',
-        title: 'Thursday dinner (Day 4) — TBD',
+        title: 'Thursday dinner (Thu Oct 15) — TBD',
         note: 'Jon wrote “Dinner TBD.” Do not invent a restaurant.',
       },
       {
         dayIdx: 4, kind: 'flex',
-        title: 'Unused London ideas (Days 2 / 5 / 6)',
+        title: 'Unused London ideas (Tue Oct 13 / Fri Oct 16 / Sat Oct 17)',
         note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18). Earlier emails also reserved Saturday London Walks (Walk ID 3315 10:00 AM; Walk ID 430 2:30 PM) that Jon’s Sep 14 day-by-day did not restate — confirm whether those still stand.',
       },
       {
@@ -1808,7 +1879,7 @@
       },
       {
         dayIdx: 12, kind: 'soon', status: 'needs',
-        title: 'Quinta do Vallado Douro Valley tasting (Day 13)',
+        title: 'Quinta do Vallado Douro Valley tasting (Sat Oct 24)',
         note: 'On the existing Porto day plan (Aug city-level: Douro Valley). Book 7+ days ahead via quintadovallado.com or reservas@quintadovallado.com if this day is still wanted — Jon did not restate a Douro booking.',
       },
       {
@@ -2039,7 +2110,7 @@
     var cap = document.getElementById('mapSyncCaption');
     if (cap) {
       if (day) {
-        cap.textContent = 'Showing ' + (day.city || filterCity) + ' · Day ' + dayNum;
+        cap.textContent = 'Showing ' + (day.city || filterCity) + ' · ' + formatWeekdayMonthDay(dayNum - 1);
       } else if (filterCity && filterCity !== 'all') {
         cap.textContent = 'Showing ' + filterCity;
       } else {
@@ -2460,6 +2531,7 @@
   // mapMarkers was declared further down the file, which broke ALL city-day
   // rendering, not just the map, since the resulting uncaught exception
   // aborted the rest of the script).
+  applyScrollSpy();
   initMapOnce();
   syncMapToSelection();
 

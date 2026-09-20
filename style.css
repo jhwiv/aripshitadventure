@@ -226,7 +226,7 @@ img { max-width: 100%; display: block; }
   .nav-chip { padding: 6px 6px; letter-spacing: 0; }
 }
 
-/* ---- Day tabs bar — one numbered card per day (global Day N + that
+/* ---- Day tabs bar — one date card per day (weekday + Oct 12 + that
    day's city flag), directly under the site nav so any day is one tap
    away regardless of which city tab is currently in view. flex-wrap
    (not overflow-x scroll) guarantees every day card stays visible in
@@ -264,7 +264,7 @@ img { max-width: 100%; display: block; }
   --day-tab-color: var(--gold);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1px;
-  width: 44px; min-height: 48px; padding: 4px 2px;
+  width: 50px; min-height: 54px; padding: 4px 2px;
   border-radius: 10px;
   background: #fff;
   border: 1.5px solid var(--rule);
@@ -281,14 +281,18 @@ img { max-width: 100%; display: block; }
   background: var(--navy); color: #fff; border-color: var(--navy);
   box-shadow: 0 3px 10px rgba(13,33,51,0.28);
 }
-.day-tab-card.is-selected .day-tab-wd { color: #fff; }
+.day-tab-card.is-selected .day-tab-wd,
+.day-tab-card.is-selected .day-tab-date { color: #fff; }
 .day-tab-wd { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: #656d7c; font-weight: 700; line-height: 1; }
 .day-tab-flag { font-size: 12px; line-height: 1; }
-.day-tab-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; line-height: 1; }
+.day-tab-date {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700;
+  line-height: 1.15; text-align: center; white-space: nowrap;
+}
 @media (max-width: 480px) {
-  .day-tab-card { width: 38px; min-height: 44px; border-radius: 8px; }
+  .day-tab-card { width: 44px; min-height: 50px; border-radius: 8px; }
   .day-tab-flag { font-size: 10px; }
-  .day-tab-num { font-size: 11px; }
+  .day-tab-date { font-size: 9px; }
   .day-tab-wd { font-size: 8px; }
 }
 
