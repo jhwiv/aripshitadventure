@@ -45,6 +45,11 @@
     if (!item) return 'activities';
     if (item.type === 'Flight' || item.type === 'Transport') return 'transport';
     if (item.type === 'Hotel') return 'stay';
+    // A Note that is itself the transfer/flight card (Day 8 ORY→Bayeux)
+    // still belongs on the transport rail, not under Activities.
+    if (item.type === 'Note' && /transfer|flight|ferry|drive\b|taxi/i.test(item.text || '')) {
+      return 'transport';
+    }
     return 'activities';
   }
 
