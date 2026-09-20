@@ -176,6 +176,16 @@ same-day transatlantic flight), not a "looks fine" skim:
   `.nav-chip.active`, not the section. Drive from the spy chip /
   `lastActiveSection`. Jump-to-day must use `--sticky-clearance` as the spy
   offset (not 96px) and update the chip only after scroll settles.
+- **Day-strip scroll-spy must only run while a `tab-city-*` section is in
+  view.** All `#day-N` banners live in the city tabs, further down the
+  continuous page. Spying them from Map / History / Pack (or Condensed)
+  treats every banner as already above the spy line and snaps the strip to
+  the last day. The Today button and explicit day-card clicks still set
+  `selectedDayNum` from any section.
+- **Day timeline groups are labels, not a re-sort.** `transport` → `stay`
+  → `activities` is the visual vocabulary (time + type icons on a rail).
+  Reordering a day's `items[]` into those buckets breaks travel days (Day
+  11 checkout would land after TP455). Keep the plan's own time order.
 
 ### 3. City/scope changes — touches more than the data file
 
