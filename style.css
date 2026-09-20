@@ -287,12 +287,12 @@ img { max-width: 100%; display: block; }
 /* Same DAY_CONFLICTS days as the in-day conflict banners — amber fill +
    ⚠ pip, matching .conflict-banner. City top-stripe stays. */
 .day-tab-card.day-tab--concern {
-  background: #fff6e5;
+  background: #ffecc0;
   border-color: #e6c36a;
   border-top-color: var(--day-tab-color);
 }
 .day-tab-card.day-tab--concern:hover {
-  background: #fff0cc;
+  background: #ffe199;
   border-color: #d4a82e;
   border-top-color: var(--day-tab-color);
 }
@@ -309,7 +309,7 @@ img { max-width: 100%; display: block; }
   position: absolute;
   bottom: 2px;
   right: 2px;
-  font-size: 8px;
+  font-size: 10px;
   line-height: 1;
   color: #8a6a14;
   pointer-events: none;
@@ -326,7 +326,7 @@ img { max-width: 100%; display: block; }
   .day-tab-flag { font-size: 10px; }
   .day-tab-date { font-size: 9px; }
   .day-tab-wd { font-size: 8px; }
-  .day-tab-concern-mark { font-size: 7px; bottom: 1px; right: 1px; }
+  .day-tab-concern-mark { font-size: 9px; bottom: 1px; right: 1px; }
 }
 
 /* ---- Layout ---- */
