@@ -33,6 +33,119 @@
     Lunch: '🍽️', Breakfast: '☕', Activity: '📍', Note: '📝'
   };
 
+  // Vertical day-timeline groups (display order when a day's type changes:
+  // transport → stay → activities). Items stay in the plan's own time
+  // order — this is a label, not a reorder of the itinerary.
+  var TIMELINE_GROUP_LABELS = {
+    transport: 'Transport',
+    stay: 'Stay',
+    activities: 'Activities'
+  };
+  function timelineGroupOf(item) {
+    if (!item) return 'activities';
+    if (item.type === 'Flight' || item.type === 'Transport') return 'transport';
+    if (item.type === 'Hotel') return 'stay';
+    return 'activities';
+  }
+
+  // Booking-status chips on bookable day rows. Labels are the three the
+  // Mobbin pass asked for — not the older Book & Confirm wording.
+  // Matched to existing ACTIONS research, not new booking policy.
+  var BOOK_CHIP_LABELS = {
+    needs: 'Needs book',
+    confirm: 'Confirm',
+    wait: 'Do not book yet'
+  };
+  var BOOKING_ROW_RULES = [
+    { day: 1, type: 'Flight', status: 'confirm' },
+    { day: 2, type: 'Hotel', status: 'confirm' },
+    { day: 3, test: /Operation Mincemeat|Fortune Theatre/i, status: 'confirm' },
+    { day: 4, test: /Churchill War Rooms/i, status: 'needs' },
+    { day: 4, test: /Kensington/i, status: 'confirm' },
+    { day: 7, type: 'Flight', status: 'confirm' },
+    { day: 7, type: 'Hotel', status: 'needs' },
+    { day: 8, test: /Objective Normandy|American Sector/i, status: 'confirm' },
+    { day: 8, type: 'Hotel', status: 'confirm' },
+    { day: 11, type: 'Flight', status: 'confirm' },
+    { day: 11, type: 'Hotel', test: /Mercadores|Ribeira|Porto/i, status: 'confirm' },
+    { day: 13, test: /Vallado|Douro/i, status: 'needs' },
+    { day: 15, type: 'Flight', status: 'confirm' }
+  ];
+  function bookingStatusForItem(item, dayNum) {
+    if (!item) return null;
+    var r = item.restaurant && item.restaurant.reservation;
+    if (r && r.platform && r.platform !== 'walkin' && r.platform !== 'phone') {
+      return 'needs';
+    }
+    var text = (item.text || '') + ' ' + ((item.hotel && item.hotel.name) || '') + ' ' +
+      ((item.flight && item.flight.flight_number) || '');
+    for (var i = 0; i < BOOKING_ROW_RULES.length; i++) {
+      var rule = BOOKING_ROW_RULES[i];
+      if (rule.day !== dayNum) continue;
+      if (rule.type && item.type !== rule.type) continue;
+      if (rule.test && !rule.test.test(text)) continue;
+      return rule.status;
+    }
+    return null;
+  }
+  function bookingChipHTML(status) {
+    var label = BOOK_CHIP_LABELS[status];
+    if (!label) return '';
+    return '<span class="book-chip book-chip--' + status + '">' + label + '</span>';
+  }
+
+  // Conflict banners — only the two days the Mobbin pass named.
+  var DAY_CONFLICTS = {
+    8: {
+      title: 'Schedule conflict',
+      text: 'A full-day American Sector tour (Utah, Omaha, American Cemetery) is listed on the same Monday as the Orly → Bayeux arrival. Official check-in at 4 Rue Franche is 5:00 PM; the Orly transfer and tour pickup (Orly vs Bayeux) are unconfirmed. Confirm with Jon / Objective Normandy before treating both as the same-day plan.'
+    },
+    11: {
+      title: 'Schedule squeeze',
+      text: 'Bayeux checkout is 12:00 PM and TAP TP455 leaves Paris Orly at 4:50 PM the same day. The Bayeux → ORY transfer is not specified. Noon checkout into a 4:50 PM Orly departure is a tight squeeze — confirm the transfer and leave earlier if you need more airport buffer.'
+    }
+  };
+  function conflictBannerHTML(dayNum) {
+    var c = DAY_CONFLICTS[dayNum];
+    if (!c) return '';
+    return '<div class="conflict-banner" role="status">' +
+      '<span class="conflict-banner-icon" aria-hidden="true">⚠</span>' +
+      '<div class="conflict-banner-body">' +
+        '<div class="conflict-banner-title">' + esc(c.title) + '</div>' +
+        '<p class="conflict-banner-text">' + esc(c.text) + '</p>' +
+      '</div></div>';
+  }
+
+  var WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function tripStartLocal() {
+    return new Date(2026, 9, 12);
+  }
+  function todayTripDayNum() {
+    var start = tripStartLocal();
+    start.setHours(0, 0, 0, 0);
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var diff = Math.round((now - start) / 86400000);
+    var nDays = (TRIP.days && TRIP.days.length) || 15;
+    if (diff < 0) return 1;
+    if (diff >= nDays) return nDays;
+    return diff + 1;
+  }
+  function isCalendarTodayOnTrip() {
+    var start = tripStartLocal();
+    start.setHours(0, 0, 0, 0);
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var diff = Math.round((now - start) / 86400000);
+    return diff >= 0 && diff < ((TRIP.days && TRIP.days.length) || 15);
+  }
+  function weekdayShortForDay(idx) {
+    var d = new Date(2026, 9, 12 + idx);
+    return WEEKDAY_SHORT[d.getDay()];
+  }
+
+  var selectedDayNum = null;
+
   // PINS.landmarks is keyed by full street address (needed for accurate
   // coordinates), but showing that raw key as a display name/title reads as
   // confusing or meaningless for anything whose street name isn't itself
@@ -475,6 +588,22 @@
     var city = cityFromSectionId(sectionId);
     if (city) lastViewedCity = city;
     navChips.forEach(function (c) { c.classList.toggle('active', c.dataset.target === sectionId); });
+    syncMapToSelection();
+  }
+
+  function setSelectedDay(n) {
+    if (!n || n < 1) return;
+    selectedDayNum = n;
+    var cards = document.querySelectorAll('.day-tab-card');
+    cards.forEach(function (card) {
+      var num = parseInt(card.getAttribute('data-day'), 10);
+      card.classList.toggle('is-selected', num === n);
+    });
+    var todayBtn = document.getElementById('dayTabsToday');
+    if (todayBtn) {
+      todayBtn.classList.toggle('is-current', isCalendarTodayOnTrip() && n === todayTripDayNum());
+    }
+    syncMapToSelection();
   }
   function setHashAfterSettle(hashId) {
     if (!hashId) return;
@@ -543,6 +672,19 @@
       if (s.getBoundingClientRect().top <= navH + 1) active = s.id;
     });
     if (active && active !== lastActiveSection) setActiveChip(active);
+    // Day banners all live in the city tabs further down the continuous
+    // page. Only spy them while a city section is in view — otherwise
+    // landing on Map/History/Pack would snap the strip to Day 15.
+    if (active && active.indexOf('tab-city-') === 0) {
+      var dayCurrent = selectedDayNum;
+      document.querySelectorAll('.day-banner[id^="day-"]').forEach(function (el) {
+        if (el.getBoundingClientRect().top <= navH + 8) {
+          var n = parseInt(el.id.slice(4), 10);
+          if (n) dayCurrent = n;
+        }
+      });
+      if (dayCurrent && dayCurrent !== selectedDayNum) setSelectedDay(dayCurrent);
+    }
   }
   function onScroll() {
     if (navTapLock) return;
@@ -565,12 +707,29 @@
     var dayId = 'day-' + m[1];
     var el = document.getElementById(dayId);
     if (!el) return;
-    var sectionId = parentSectionId(el) || sectionIdForDayNum(parseInt(m[1], 10));
+    var dayNum = parseInt(m[1], 10);
+    var sectionId = parentSectionId(el) || sectionIdForDayNum(dayNum);
+    setSelectedDay(dayNum);
     scrollToElement(el, 'smooth', function () {
       setActiveChip(sectionId);
       setHashAfterSettle(dayId);
     });
   });
+
+  var todayBtnEl = document.getElementById('dayTabsToday');
+  if (todayBtnEl) {
+    todayBtnEl.addEventListener('click', function () {
+      var n = todayTripDayNum();
+      var el = document.getElementById('day-' + n);
+      if (!el) return;
+      setSelectedDay(n);
+      var sectionId = parentSectionId(el) || sectionIdForDayNum(n);
+      scrollToElement(el, 'smooth', function () {
+        setActiveChip(sectionId);
+        setHashAfterSettle('day-' + n);
+      });
+    });
+  }
 
   /* ---------------------------------------------------------
      DAY TABS BAR — one card per day (global day number + that day's
@@ -594,15 +753,19 @@
   (function renderDayTabsBar() {
     var wrap = document.getElementById('dayTabsRow');
     if (!wrap || !TRIP.days || !TRIP.days.length) return;
+    var todayN = isCalendarTodayOnTrip() ? todayTripDayNum() : null;
     wrap.innerHTML = TRIP.days.map(function (day, idx) {
       var n = idx + 1;
       var flag = CITY_FLAGS[day.city] || '';
       var color = CITY_COLORS[day.city] || '#8a8f98';
-      var label = 'Day ' + n + (day.city ? ' — ' + day.city : '');
-      return '<a href="#day-' + n + '" class="day-tab-card" style="--day-tab-color:' + color + '" ' +
+      var wd = weekdayShortForDay(idx);
+      var label = 'Day ' + n + ' · ' + wd + (day.city ? ' — ' + day.city : '');
+      var extra = (todayN === n ? ' is-today' : '');
+      return '<a href="#day-' + n + '" class="day-tab-card' + extra + '" data-day="' + n + '" style="--day-tab-color:' + color + '" ' +
         'aria-label="Jump to ' + esc(label) + '" title="' + esc(label) + '">' +
-        (flag ? '<span class="day-tab-flag" aria-hidden="true">' + flag + '</span>' : '') +
+        '<span class="day-tab-wd">' + wd + '</span>' +
         '<span class="day-tab-num">' + n + '</span>' +
+        (flag ? '<span class="day-tab-flag" aria-hidden="true">' + flag + '</span>' : '') +
       '</a>';
     }).join('');
   })();
@@ -650,6 +813,7 @@
         if (id.indexOf('day-') === 0) {
           var n = parseInt(id.slice(4), 10);
           sectionId = parentSectionId(el) || sectionIdForDayNum(n) || sectionId;
+          if (n) setSelectedDay(n);
         }
         setActiveChip(sectionId);
       });
@@ -840,8 +1004,10 @@
     return dest;
   }
 
-  function renderItemHTML(item, day) {
+  function renderItemHTML(item, day, dayNum) {
     var icon = ITEM_ICONS[item.type] || '•';
+    var group = timelineGroupOf(item);
+    var bookStatus = bookingStatusForItem(item, dayNum);
     var extras = itemExtra(item);
     var displayText = item.text;
     var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
@@ -896,10 +1062,13 @@
     var restaurantBlock = item.restaurant
       ? '<div class="item-restaurant-card">' + restaurantCardHTML(item.restaurant) + '</div>'
       : navigateRow;
-    return '<div class="item">' +
-      '<div class="item-icon">' + icon + '</div>' +
+    return '<div class="item day-tl-item" data-tl-group="' + group + '">' +
+      '<div class="item-icon" title="' + esc(item.type || '') + '">' + icon + '</div>' +
       '<div class="item-body">' +
-      '<div class="item-time">' + timeLine + '</div>' +
+      '<div class="item-time-row">' +
+        '<div class="item-time">' + timeLine + '</div>' +
+        (bookStatus ? bookingChipHTML(bookStatus) : '') +
+      '</div>' +
       '<div class="item-text">' + esc(displayText || '') + '</div>' +
       flightWarn +
       (item.why ? '<div class="item-why">' + esc(item.why) + '</div>' : '') +
@@ -940,7 +1109,7 @@
   var FREE_TIME_THRESHOLD_MIN = 150;
   function freeTimeCardHTML(gapMin) {
     var hrs = (gapMin / 60).toFixed(1).replace(/\.0$/, '');
-    return '<div class="item free-time-item">' +
+    return '<div class="item day-tl-item free-time-item" data-tl-group="activities">' +
       '<div class="item-icon">🕐</div>' +
       '<div class="item-body"><div class="item-text">Free time (~' + hrs + ' hrs, unscheduled)</div></div></div>';
   }
@@ -1068,10 +1237,18 @@
         '<div class="transit-chip">' +
           '<span class="transit-chip-icon">🧭</span>' +
           '<span class="transit-chip-label">On the move ~' + esc(transit.label) + ' today</span>' +
-        '</div>' : '');
+        '</div>' : '') +
+      conflictBannerHTML(dayNum);
     var items = day.items || [];
+    html += '<div class="day-timeline">';
+    var lastGroup = null;
     items.forEach(function (item, i) {
-      html += renderItemHTML(item, day);
+      var group = timelineGroupOf(item);
+      if (group !== lastGroup) {
+        html += '<div class="day-tl-group">' + esc(TIMELINE_GROUP_LABELS[group] || group) + '</div>';
+        lastGroup = group;
+      }
+      html += renderItemHTML(item, day, dayNum);
       // A Flight item's own "end" is its arrival time (item.flight.arrive_time),
       // not its departure time (item.time) - using item.time here produced a
       // false ~14hr "free time" gap between an 8:20 AM departure/8:40 PM
@@ -1096,7 +1273,7 @@
         html += freeTimeCardHTML(nextStart - thisEnd);
       }
     });
-    html += '</div>';
+    html += '</div></div>';
     return html;
   }
 
@@ -1168,7 +1345,8 @@
         // "what this day is about" shown at the top of the day-tab card) but
         // Condensed never rendered it - without it this view was just a flat
         // list of times and venue names with no sense of the day's shape.
-        (day.headline ? '<div class="cond-day-headline">' + esc(day.headline) + '</div>' : '');
+        (day.headline ? '<div class="cond-day-headline">' + esc(day.headline) + '</div>' : '') +
+        conflictBannerHTML(idx + 1);
       (day.items || []).forEach(function (item) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && (item.flight._modelEstimatedFlightNumber || !item.flight.flight_number))
@@ -1188,11 +1366,13 @@
           : (item.type === 'Flight' && item.flight && item.flight.duration) ? item.flight.duration
           : null;
         var condDurationBadge = condDuration ? ' <span class="cond-duration">⏱ ' + esc(condDuration) + '</span>' : '';
+        var condChip = bookingChipHTML(bookingStatusForItem(item, idx + 1));
         html += '<div class="cond-row">' +
           '<div class="cond-row-icon">' + icon + '</div>' +
           '<div class="cond-row-body">' +
             '<span class="cond-time">' + esc(condTimeLabel) + '</span>' +
             esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + condDurationBadge +
+            (condChip ? ' ' + condChip : '') +
           '</div>' +
         '</div>';
       });
@@ -1567,27 +1747,27 @@
     if (!el) return;
     var ACTIONS = [
       {
-        dayIdx: 1, kind: 'soon',
+        dayIdx: 1, kind: 'soon', status: 'confirm',
         title: 'London Airbnb — 53 Greek St (HMFRRRZRTN)',
         note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
       },
       {
-        dayIdx: 2, kind: 'urgent',
+        dayIdx: 2, kind: 'urgent', status: 'confirm',
         title: 'Operation Mincemeat (Day 3, 7:30 PM) — Fortune Theatre',
         note: 'Jon listed Fortune Theatre, 29 Russell Street, arrive 7:00 PM for 7:30 PM. Ticket status was not in the email — confirm seats are held. Official listing: atgtickets.com / Fortune Theatre.',
       },
       {
-        dayIdx: 2, kind: 'soon',
+        dayIdx: 2, kind: 'soon', status: 'confirm',
         title: 'Imperial War Museum (Day 3, morning)',
         note: 'General admission is free; no ticket required. Jon’s window is 9:30 AM–12:00 PM including transit from 53 Greek St.',
       },
       {
-        dayIdx: 3, kind: 'soon',
+        dayIdx: 3, kind: 'soon', status: 'needs',
         title: 'Churchill War Rooms (Day 4, 10:00 AM)',
         note: 'Book timed-entry tickets at iwm.org.uk — October dates can sell out 3+ weeks out. Audio guide is included. Jon blocked 10:00 AM–12:00 PM.',
       },
       {
-        dayIdx: 3, kind: 'soon',
+        dayIdx: 3, kind: 'soon', status: 'confirm',
         title: 'Kensington Royal Village walk (Day 4, 2:00 PM)',
         note: 'Jon’s Thursday 2:00–4:00 PM. An earlier Aug 21 email reserved Walk ID 110 (2 attendees) for 15 Oct 2:00 PM — confirm that reservation still stands. Meet at Wasabi at the High Street Kensington arcade.',
       },
@@ -1602,50 +1782,48 @@
         note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18). Earlier emails also reserved Saturday London Walks (Walk ID 3315 10:00 AM; Walk ID 430 2:30 PM) that Jon’s Sep 14 day-by-day did not restate — confirm whether those still stand.',
       },
       {
-        dayIdx: 6, kind: 'urgent',
+        dayIdx: 6, kind: 'urgent', status: 'needs',
         title: 'ORY hotel night of Oct 18 — TBD',
         note: 'Jon: “ORY hotel 10/18/26 — TBD.” Needed after BA8137 lands 5:35 PM and before Bayeux check-in 5:00 PM Oct 19. Do not invent a property.',
       },
       {
-        dayIdx: 7, kind: 'soon',
+        dayIdx: 7, kind: 'soon', status: 'confirm',
         title: 'Bayeux Airbnb HMKWYPDKBE + ORY↔Bayeux transfers',
         note: 'Booked — 4 Rue Franche, Oct 19–22, check-in 5:00 PM / check-out 12:00 PM. Transfer from the Orly hotel on Oct 19 and back to ORY on Oct 22 are not specified — confirm with Jon. Message the host if arrival will be after 5:00 PM.',
       },
       {
-        dayIdx: 7, kind: 'soon',
+        dayIdx: 7, kind: 'soon', status: 'confirm',
         title: 'Objective Normandy American Sector tour — confirm which day',
         note: 'Aug plan: full-day Utah / Omaha / American Cemetery with guide Elisha, objectivenormandy.com (site lists Elisa Denis). Jon’s Sep 14 email did not assign a date. Confirm pickup (Orly vs Bayeux) with contact@objectivenormandy.com.',
       },
       {
-        dayIdx: 10, kind: 'soon',
+        dayIdx: 10, kind: 'soon', status: 'confirm',
         title: 'Porto Airbnb HM549AK8C2 — Rua dos Mercadores 77, 3rd floor',
         note: 'Booked Oct 22–26, check-in 4:00 PM / check-out 11:00 AM. Jon wrote “Ribera San Joao.” TP455 lands OPO 6:05 PM — after official check-in. Confirm access and the exact 3rd-floor unit.',
       },
       {
-        dayIdx: 12, kind: 'soon',
+        dayIdx: 12, kind: 'soon', status: 'needs',
         title: 'Quinta do Vallado Douro Valley tasting (Day 13)',
         note: 'On the existing Porto day plan (Aug city-level: Douro Valley). Book 7+ days ahead via quintadovallado.com or reservas@quintadovallado.com if this day is still wanted — Jon did not restate a Douro booking.',
       },
       {
-        dayIdx: 14, kind: 'urgent',
+        dayIdx: 14, kind: 'urgent', status: 'confirm',
         title: 'Return TP211 date — Oct 26 assumed, confirm with Jon',
         note: 'Email gave TAP TP211 OPO 7:30 PM → EWR 11:55 PM and no date. This guide uses Oct 26 only because Porto checkout is that day.',
       },
       {
-        dayIdx: 0, kind: 'flex',
+        dayIdx: 0, kind: 'flex', status: 'confirm',
         title: 'Flights (Jon 2026-09-14)',
         note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM (typically a Vueling-operated BA codeshare). TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TP211 OPO→EWR 7:30 PM / 11:55 PM — date not in the email. Confirm tickets / record locators with Jon.',
       },
     ];
     var today = new Date(); today.setHours(0, 0, 0, 0);
-    var BADGES = {
-      urgent: 'Do this now', soon: 'Book soon', flex: 'Not urgent', wait: "Don't book yet",
-    };
     el.innerHTML = ACTIONS.map(function (a) {
       var visitDate = new Date(dayDateISO(a.dayIdx) + 'T00:00:00');
       var daysUntil = Math.round((visitDate - today) / 86400000);
+      var chip = a.status ? bookingChipHTML(a.status) : '';
       return '<li class="timeline-row tl-' + a.kind + '">' +
-        '<span class="tl-badge">' + esc(BADGES[a.kind]) + '</span>' +
+        chip +
         '<div class="tl-body">' +
         '<p class="tl-name">' + esc(a.title) + ' <span class="ref-city">visit in ' + daysUntil + ' days</span></p>' +
         '<p class="tl-note">' + esc(a.note) + '</p>' +
@@ -1738,7 +1916,7 @@
 
     var bounds = [];
 
-    function addMarker(name, lat, lng, city, extraLabel) {
+    function addMarker(name, lat, lng, city, extraLabel, matchKeys) {
       var color = CITY_COLORS[city] || '#3f7d86';
       var marker = L.circleMarker([lat, lng], {
         radius: 7, color: color, fillColor: color, fillOpacity: 0.85, weight: 2
@@ -1748,7 +1926,7 @@
         '<br>' + directionsLinksHTML(name + ', ' + city)
       );
       bounds.push([lat, lng]);
-      mapMarkers.push({ marker: marker, city: city });
+      mapMarkers.push({ marker: marker, city: city, name: name, keys: matchKeys || [name] });
     }
 
     Object.keys(PINS.hotels || {}).forEach(function (name) {
@@ -1758,7 +1936,7 @@
 
     Object.keys(PINS.landmarks || {}).forEach(function (loc) {
       var p = PINS.landmarks[loc];
-      addMarker(landmarkDisplayName(loc), p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null);
+      addMarker(landmarkDisplayName(loc), p.lat, p.lng, guessCityForLandmark(loc), p.approx ? 'Approximate location' : null, [loc, landmarkDisplayName(loc)]);
     });
 
     // Route overview line — straight connectors between city centers in the
@@ -1792,28 +1970,96 @@
     return 'London';
   }
 
-  document.getElementById('mapFilters').addEventListener('click', function (e) {
-    var btn = e.target.closest('.map-filter-btn');
-    if (!btn) return;
-    document.querySelectorAll('.map-filter-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
-    var city = btn.dataset.city;
-    // Filtering previously only dimmed non-matching markers, leaving the
-    // map at whatever zoom level initMapOnce's one-time fitBounds(all
-    // markers) had set - so picking "London" alone still showed the whole
-    // trip's ~1000-mile UK-to-Portugal span, a genuinely unhelpful "100k
-    // foot view" for looking at one city's own points. Re-fit to just the
-    // visible markers' own bounds on every filter change instead (the
-    // "all" case naturally re-collects every marker, since `show` is true
-    // for all of them there too).
+  function dayPinNeedles(day) {
+    var needles = [];
+    function add(s) {
+      if (s && needles.indexOf(s) === -1) needles.push(s);
+    }
+    (day.items || []).forEach(function (item) {
+      if (item.location) {
+        add(item.location);
+        add(landmarkDisplayName(item.location));
+      }
+      if (item.hotel) {
+        add(item.hotel.name);
+        add(item.hotel.address);
+      }
+      if (item.restaurant) {
+        add(item.restaurant.name);
+        if (item.restaurant.contact) add(item.restaurant.contact.address);
+      }
+      add(item.text);
+    });
+    return needles;
+  }
+  function markerMatchesDay(m, needles) {
+    if (!needles || !needles.length) return false;
+    var keys = (m.keys || []).concat(m.name || '');
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (!k) continue;
+      for (var j = 0; j < needles.length; j++) {
+        var n = needles[j];
+        if (!n) continue;
+        if (k === n || String(n).indexOf(k) !== -1 || String(k).indexOf(n) !== -1) return true;
+      }
+    }
+    return false;
+  }
+  function applyMapFilter(city, dayNum) {
+    if (!mapInstance) return;
+    var day = (dayNum && TRIP.days) ? TRIP.days[dayNum - 1] : null;
+    var needles = day ? dayPinNeedles(day) : [];
+    var filterCity = city || (day && day.city) || 'all';
+    document.querySelectorAll('.map-filter-btn').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.city === filterCity);
+    });
     var visibleLatLngs = [];
+    var dayHits = 0;
     mapMarkers.forEach(function (m) {
-      var show = city === 'all' || m.city === city;
+      var inCity = filterCity === 'all' || m.city === filterCity;
+      var inDay = day ? markerMatchesDay(m, needles) : true;
+      if (inCity && inDay) dayHits += 1;
+    });
+    var useDay = day && dayHits > 0;
+    mapMarkers.forEach(function (m) {
+      var inCity = filterCity === 'all' || m.city === filterCity;
+      var show = useDay ? (inCity && markerMatchesDay(m, needles)) : inCity;
       m.marker.setStyle({ opacity: show ? 1 : 0, fillOpacity: show ? 0.85 : 0 });
       if (show) visibleLatLngs.push(m.marker.getLatLng());
     });
-    if (visibleLatLngs.length && mapInstance) {
+    if (visibleLatLngs.length) {
       mapInstance.fitBounds(visibleLatLngs, { padding: [24, 24], maxZoom: 12 });
     }
+    var cap = document.getElementById('mapSyncCaption');
+    if (cap) {
+      if (day) {
+        cap.textContent = 'Showing ' + (day.city || filterCity) + ' · Day ' + dayNum;
+      } else if (filterCity && filterCity !== 'all') {
+        cap.textContent = 'Showing ' + filterCity;
+      } else {
+        cap.textContent = 'Showing the full trip.';
+      }
+    }
+  }
+  function syncMapToSelection() {
+    if (!mapInstance) return;
+    var day = selectedDayNum && TRIP.days ? TRIP.days[selectedDayNum - 1] : null;
+    var city = (day && day.city) || cityFromSectionId(lastActiveSection) || lastViewedCity || 'all';
+    applyMapFilter(city, selectedDayNum);
+    mapInstance.invalidateSize();
+  }
+
+  document.getElementById('mapFilters').addEventListener('click', function (e) {
+    var btn = e.target.closest('.map-filter-btn');
+    if (!btn) return;
+    // Manual city filter — keep the selected day if it belongs to that
+    // city, otherwise drop the day pin-narrowing so the whole city shows.
+    var city = btn.dataset.city;
+    var day = selectedDayNum && TRIP.days ? TRIP.days[selectedDayNum - 1] : null;
+    var dayNum = (city !== 'all' && day && day.city === city) ? selectedDayNum : null;
+    if (city !== 'all') lastViewedCity = city;
+    applyMapFilter(city, dayNum);
   });
 
   /* ---------------------------------------------------------
@@ -2210,6 +2456,7 @@
   // rendering, not just the map, since the resulting uncaught exception
   // aborted the rest of the script).
   initMapOnce();
+  syncMapToSelection();
 
 })();
 
@@ -2239,7 +2486,9 @@
   var progress = document.getElementById('pack-progress');
   function updateProgress() {
     var done = checks.filter(function (c) { return c.checked; }).length;
-    if (progress) progress.textContent = done + ' of ' + checks.length + ' packed';
+    if (progress) progress.textContent = done + '/' + checks.length;
+    var bar = document.getElementById('pack-progress-bar');
+    if (bar && checks.length) bar.style.width = Math.round(100 * done / checks.length) + '%';
     checks.forEach(function (c) {
       var li = c.closest('li');
       if (li) li.classList.toggle('is-packed', c.checked);

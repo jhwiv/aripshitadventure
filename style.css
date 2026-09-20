@@ -179,6 +179,13 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
 }
 .nav-row { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; }
+.nav-row--ref { display: block; padding-top: 4px; }
+.nav-row-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--steel); font-weight: 700; margin-bottom: 4px; padding: 0 2px;
+}
+.nav-row-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.nav-chip--ref { background: #f4f2ec; color: #5b6577; }
 .nav-chip {
   font-size: 11px;
   padding: 8px 10px;
@@ -235,16 +242,29 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
   padding: 10px 10px 12px;
 }
+.day-tabs-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 6px; margin-bottom: 6px;
+}
 .day-tabs-label {
   font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--steel); font-weight: 700; margin-bottom: 6px; padding: 0 2px;
+  color: var(--steel); font-weight: 700; padding: 0 2px;
 }
+.day-today-btn {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 6px 12px; min-height: 28px; border-radius: 16px;
+  background: #fff; color: var(--navy); border: 1.5px solid var(--navy);
+  cursor: pointer;
+}
+.day-today-btn:hover { background: #fffdf7; }
+.day-today-btn:active { transform: scale(0.96); }
+.day-today-btn.is-current { background: var(--navy); color: #fff; }
 .day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .day-tab-card {
   --day-tab-color: var(--gold);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1px;
-  width: 40px; height: 40px;
+  width: 44px; min-height: 48px; padding: 4px 2px;
   border-radius: 10px;
   background: #fff;
   border: 1.5px solid var(--rule);
@@ -256,12 +276,20 @@ img { max-width: 100%; display: block; }
 }
 .day-tab-card:hover { background: #fffdf7; border-color: var(--gold-soft); box-shadow: 0 2px 6px rgba(13,33,51,0.12); }
 .day-tab-card:active { transform: scale(0.94); }
+.day-tab-card.is-today { box-shadow: 0 0 0 2px var(--day-tab-color); }
+.day-tab-card.is-selected {
+  background: var(--navy); color: #fff; border-color: var(--navy);
+  box-shadow: 0 3px 10px rgba(13,33,51,0.28);
+}
+.day-tab-card.is-selected .day-tab-wd { color: #fff; }
+.day-tab-wd { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: #656d7c; font-weight: 700; line-height: 1; }
 .day-tab-flag { font-size: 12px; line-height: 1; }
 .day-tab-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; line-height: 1; }
 @media (max-width: 480px) {
-  .day-tab-card { width: 34px; height: 34px; border-radius: 8px; }
+  .day-tab-card { width: 38px; min-height: 44px; border-radius: 8px; }
   .day-tab-flag { font-size: 10px; }
   .day-tab-num { font-size: 11px; }
+  .day-tab-wd { font-size: 8px; }
 }
 
 /* ---- Layout ---- */
@@ -276,7 +304,7 @@ img { max-width: 100%; display: block; }
 #meals, #cityCards { scroll-margin-top: var(--sticky-clearance, 112px); }
 @media (prefers-reduced-motion: reduce) {
   .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card,
-  .welcome-feature {
+  .welcome-feature, .day-today-btn, .book-chip {
     transition: none;
   }
 }
@@ -636,14 +664,44 @@ img { max-width: 100%; display: block; }
 .logistics-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dim); padding-top: 1px; }
 .logistics-disclaimer { font-size: 10.5px; color: #656d7c; margin-top: 4px; font-style: italic; }
 
+.day-timeline { position: relative; margin: 8px 0 0; padding: 4px 0 4px 2px; }
+.day-timeline::before {
+  content: ''; position: absolute; left: 24px; top: 10px; bottom: 10px;
+  width: 2px; background: #e6e3da; pointer-events: none;
+}
+.day-tl-group {
+  position: relative; z-index: 1;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #656d7c; font-weight: 700; margin: 12px 0 2px 46px;
+}
+.day-tl-group:first-child { margin-top: 0; }
 .item { display: flex; gap: 12px; padding: 12px 0; border-top: 1px dashed #e6e3da; margin: 0 -10px; padding-left: 10px; padding-right: 10px; border-radius: 6px; transition: background 0.15s ease; }
+.day-timeline .item { border-top: none; margin: 0; position: relative; }
 .item:hover { background: #f8f7f3; }
 .item:first-of-type { border-top: none; }
 .free-time-item .item-text { color: #656d7c; font-style: italic; font-weight: 500; }
 .free-time-item .item-icon { background: transparent; opacity: 0.6; }
 .item-icon { flex: none; width: 30px; height: 30px; border-radius: 50%; background: #eef3f3; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.day-timeline .item-icon { background: #fff; border: 1.5px solid var(--rule); z-index: 1; }
 .item-body { flex: 1; min-width: 0; }
+.item-time-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
 .item-time { font-size: 11.5px; color: #656d7c; font-weight: 600; letter-spacing: 0.02em; }
+.book-chip {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.03em;
+  padding: 2px 8px; border-radius: 999px; line-height: 1.4; white-space: nowrap;
+}
+.book-chip--needs { background: #fdecea; color: #9b2c2c; }
+.book-chip--confirm { background: #e7f1f2; color: #2d5c63; }
+.book-chip--wait { background: #f4f2ec; color: #5b6577; }
+.conflict-banner {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin: 12px 0 4px; padding: 12px 14px;
+  background: #fff6e5; border: 1.5px solid #e6c36a; border-radius: 10px;
+}
+.conflict-banner-icon { font-size: 16px; line-height: 1.2; }
+.conflict-banner-title { font-size: 13px; font-weight: 700; color: #6b4f12; margin-bottom: 2px; }
+.conflict-banner-text { font-size: 13px; color: #5b4a20; line-height: 1.45; margin: 0; }
+.map-sync-caption { font-size: 12px; color: #656d7c; margin: 0 0 10px; }
 .item-text { font-size: 14.5px; font-weight: 600; margin-top: 2px; }
 .item-why { font-size: 13px; color: #5b6577; margin-top: 3px; font-style: italic; }
 .item-links { margin-top: 6px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
@@ -790,6 +848,10 @@ img { max-width: 100%; display: block; }
   letter-spacing: 0.04em; text-transform: uppercase; color: var(--navy);
 }
 .pack-progress { color: #376e76; font-weight: 600; }
+.pack-progress-track {
+  height: 6px; background: #e6e3da; border-radius: 999px; margin: -6px 0 16px; overflow: hidden;
+}
+.pack-progress-bar { height: 100%; width: 0; background: #376e76; border-radius: 999px; }
 .pack-reset {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
   background: transparent; color: #5b6577; border: 1px solid #dcd8cf; padding: 6px 12px;
@@ -853,6 +915,9 @@ img { max-width: 100%; display: block; }
      reveal it, so left alone the weather detail + advisory tip would
      silently vanish from every printed day. Force it open and flow inline
      instead of floating, and drop the now-nonfunctional caret. */
+  .conflict-banner { background: none !important; border-color: #c9a24b; color: #1c2840; }
+  .conflict-banner-title, .conflict-banner-text { color: #1c2840; }
+  .book-chip { background: none !important; border: 1px solid #8a8f98; color: #1c2840; }
   .wx-chip { display: block; background: none; border: none; padding: 0; margin-bottom: 8px; }
   .wx-chip-caret { display: none; }
   .transit-chip { display: block; background: none; border: none; padding: 0; margin: 0 0 8px; }
