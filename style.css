@@ -262,6 +262,7 @@ img { max-width: 100%; display: block; }
 .day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; }
 .day-tab-card {
   --day-tab-color: var(--gold);
+  position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1px;
   width: 50px; min-height: 54px; padding: 4px 2px;
@@ -283,6 +284,37 @@ img { max-width: 100%; display: block; }
 }
 .day-tab-card.is-selected .day-tab-wd,
 .day-tab-card.is-selected .day-tab-date { color: #fff; }
+/* Same DAY_CONFLICTS days as the in-day conflict banners — amber fill +
+   ⚠ pip, matching .conflict-banner. City top-stripe stays. */
+.day-tab-card.day-tab--concern {
+  background: #fff6e5;
+  border-color: #e6c36a;
+  border-top-color: var(--day-tab-color);
+}
+.day-tab-card.day-tab--concern:hover {
+  background: #fff0cc;
+  border-color: #d4a82e;
+  border-top-color: var(--day-tab-color);
+}
+.day-tab-card.day-tab--concern.is-today:not(.is-selected) {
+  box-shadow: 0 0 0 2px #c9891a;
+}
+.day-tab-card.day-tab--concern.is-selected {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px #e6c36a, 0 3px 10px rgba(13,33,51,0.28);
+}
+.day-tab-concern-mark {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 8px;
+  line-height: 1;
+  color: #8a6a14;
+  pointer-events: none;
+}
+.day-tab-card.is-selected .day-tab-concern-mark { color: #e6c36a; }
 .day-tab-wd { font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: #656d7c; font-weight: 700; line-height: 1; }
 .day-tab-flag { font-size: 12px; line-height: 1; }
 .day-tab-date {
@@ -294,6 +326,7 @@ img { max-width: 100%; display: block; }
   .day-tab-flag { font-size: 10px; }
   .day-tab-date { font-size: 9px; }
   .day-tab-wd { font-size: 8px; }
+  .day-tab-concern-mark { font-size: 7px; bottom: 1px; right: 1px; }
 }
 
 /* ---- Layout ---- */
