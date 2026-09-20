@@ -574,7 +574,7 @@
           "end_time": null,
           "text": "Transfer ORY hotel → Bayeux is not specified",
           "location": null,
-          "why": "Starting from an unnamed Orly hotel (TBD). Objective Normandy is on Oct 21, not this day.",
+          "why": "Starting from an unnamed Orly hotel (TBD). Transfer method and departure time are not specified.",
           "contact": null,
           "flight": null,
           "hotel": null,
