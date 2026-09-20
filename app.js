@@ -69,8 +69,8 @@
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
-    { day: 8, test: /Objective Normandy|American Sector/i, status: 'confirm' },
     { day: 8, type: 'Hotel', status: 'confirm' },
+    { day: 10, test: /Objective Normandy|American Sector/i, status: 'confirm' },
     { day: 11, type: 'Flight', status: 'confirm' },
     { day: 11, type: 'Hotel', test: /Mercadores|Ribeira|Porto/i, status: 'confirm' },
     { day: 13, test: /Vallado|Douro/i, status: 'needs' },
@@ -100,17 +100,10 @@
   }
 
   // Conflict banners + sticky day-strip `.day-tab--concern` — same keys.
-  // Only the two days the Mobbin pass named; do not invent extra flags.
-  var DAY_CONFLICTS = {
-    8: {
-      title: 'Schedule conflict',
-      text: 'A full-day American Sector tour (Utah, Omaha, American Cemetery) is listed on the same Monday as the Orly → Bayeux arrival. Official check-in at 4 Rue Franche is 5:00 PM; the Orly transfer and tour pickup (Orly vs Bayeux) are unconfirmed. Confirm with Jon / Objective Normandy before treating both as the same-day plan.'
-    },
-    11: {
-      title: 'Schedule squeeze',
-      text: 'Bayeux checkout is 12:00 PM and TAP TP455 leaves Paris Orly at 4:50 PM the same day. The Bayeux → ORY transfer is not specified. Noon checkout into a 4:50 PM Orly departure is a tight squeeze — confirm the transfer and leave earlier if you need more airport buffer.'
-    }
-  };
+  // Retired: Day 8 American Sector vs Orly→Bayeux (tour moved to Oct 21);
+  // Day 11 noon-checkout squeeze (Jon: depart Bayeux 11:00 AM for ORY).
+  // Do not invent replacement flags.
+  var DAY_CONFLICTS = {};
   function conflictBannerHTML(dayNum) {
     var c = DAY_CONFLICTS[dayNum];
     if (!c) return '';
@@ -294,7 +287,7 @@
   }
 
   // Booking-trust copy for every flight surface. BA184 / BA8137 / TP455
-  // are Jon's 2026-09-14 numbers; TP211's DATE is assumed Oct 26.
+  // are Jon's 2026-09-14 numbers; TP211's DATE is confirmed Oct 26.
   // Confirmation notes carry that distinction — never imply a ticket.
   function flightNumberLabel(f) {
     if (!f) return 'TBD';
@@ -1536,7 +1529,7 @@
     // deliberately not a generic "useful apps abroad" list.
     var APPS = [
       { name: 'Citymapper or TfL Go', why: 'London routing across Tube/bus/Overground — either works well; TfL Go is the official app with live disruption alerts.' },
-      { name: 'Google Maps — download OFFLINE areas for Normandy', why: 'Rural coverage between Bayeux, the D-Day beaches, and Mont-Saint-Michel can be spotty. Download the Normandy region for offline use before you leave London; this site itself works offline too (see the install prompt) but it isn\'t turn-by-turn navigation.' },
+      { name: 'Google Maps — download OFFLINE areas for Normandy', why: 'Rural coverage between Bayeux and the D-Day beaches can be spotty. Download the Normandy region for offline use before you leave London; this site itself works offline too (see the install prompt) but it isn\'t turn-by-turn navigation.' },
       { name: 'Uber AND Bolt (both)', why: 'Coverage and pricing differ by city — Bolt is often cheaper/more available in Porto and France than Uber alone. Worth having both installed rather than picking one in advance.' },
       { name: 'Andante Porto', why: 'Top up Porto\'s transit card directly from your phone instead of hunting for a station machine.' },
       { name: 'An eSIM app (Airalo, Holafly, or similar)', why: 'Install and set up the eSIM profile BEFORE departure — activating it is much easier on home wifi than fumbling with it at Heathrow arrivals.' },
@@ -1645,10 +1638,10 @@
         'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
       ],
       Normandy: [
-        'Rural and car-dependent — Bayeux, the D-Day beaches, and Mont-Saint-Michel have limited public transit. How you get from the Orly hotel (TBD) to Bayeux on Oct 19, and back to ORY on Oct 22, is not specified — confirm with Jon. Taxis exist in Bayeux but are sparse.',
-        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays — worth knowing for Tue Oct 20\'s self-guided Bayeux day specifically.',
+        'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. How you get from the Orly hotel (TBD) to Bayeux on Oct 19 is not specified. Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to OPO. Taxis exist in Bayeux but are sparse.',
+        'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
-        'Fuel up before a rural drive (especially to Mont-Saint-Michel) — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
+        'Fuel up before a rural drive — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
       ],
       Porto: [
         'The Andante card covers metro, bus, and some train lines — buy and top up at metro station machines or the Andante app. The historic center (Ribeira, Clérigos) is steep and best walked; Uber/Bolt are common for the Vila Nova de Gaia crossing or longer trips.',
@@ -1670,9 +1663,7 @@
      HISTORY — AI-authored general context (labeled at top of tab)
      --------------------------------------------------------- */
   (function renderHistory() {
-    // One entry per major stop rather than one per city - a 14-night trip
-    // built around 6 distinct WWII sites (plus Mont-Saint-Michel, a major
-    // non-WWII historical stop) reads thin at 4 entries. Each is tagged
+    // One entry per major stop rather than one per city. Each is tagged
     // with the day it corresponds to on THIS itinerary (cross-checked
     // against the real trip-data.json, not guessed) so it reads as
     // context for a specific day, not a detached encyclopedia list.
@@ -1683,9 +1674,8 @@
       { day: 'Thu Oct 15', title: 'Churchill War Rooms & the Cabinet War Rooms', body: 'The underground bunker beneath Whitehall where Churchill’s War Cabinet ran Britain’s war effort from 1939 to 1945, preserved largely as staff left it on VJ Day — the Map Room’s pins and grease-pencil marks are original. London itself was hit hard during the Blitz (1940–41); much of the East End and City were rebuilt after the war, and the scars are still visible in odd gaps in otherwise Victorian streetscapes.' },
       { day: 'Unscheduled', title: 'The Battle of Britain & the Uxbridge Bunker', body: 'Still an open London idea — Jon did not assign it to a day. In summer/autumn 1940, RAF Fighter Command’s No. 11 Group — directed from the underground Operations Room at RAF Uxbridge — coordinated the fighter squadrons that fought off the Luftwaffe’s assault on Britain’s airfields and cities. The battle’s outcome forced Hitler to indefinitely postpone Operation Sea Lion, the planned invasion of Britain. Churchill visited the gallery here on September 15, 1940 — the raid’s climax, still marked today as “Battle of Britain Day.”' },
       { day: 'Unscheduled', title: 'Armored warfare & The Tank Museum', body: 'Still an open London idea — Jon wrote “maybe overnight,” and it is not on the Oct 18 LHR→ORY day. Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
-      { day: 'Bayeux stay', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing. Jon’s plan is Objective Normandy (guide Elisha / Elisa Denis) for this stay; which calendar day is not confirmed.' },
-      { day: 'Tue Oct 20', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
-      { day: 'Wed Oct 21', title: 'Mont-Saint-Michel: eight centuries before D-Day', body: 'A Benedictine abbey has stood on this tidal island since the 8th century; the current Gothic abbey dates mostly to the 13th. It withstood a decades-long English siege during the Hundred Years’ War (1337–1453) without ever being taken — one of the only Norman strongholds that didn’t fall. Used as a prison after the French Revolution, it was restored and reconsecrated in the 19th century and is now one of France’s most-visited sites outside Paris.' },
+      { day: 'Wed Oct 21', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing. Objective Normandy (guide Elisha / Elisa Denis) meets at 9:00 AM at the Bayeux apartment, 4 Rue Franche.' },
+      { day: 'Bayeux stay', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
       { day: 'Fri Oct 23 – Sat Oct 24', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
@@ -1830,7 +1820,7 @@
       {
         dayIdx: 1, kind: 'soon', status: 'confirm',
         title: 'London Airbnb — 53 Greek St (HMFRRRZRTN)',
-        note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
+        note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM on Oct 18. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
       },
       {
         dayIdx: 2, kind: 'urgent', status: 'confirm',
@@ -1870,12 +1860,12 @@
       {
         dayIdx: 7, kind: 'soon', status: 'confirm',
         title: 'Bayeux Airbnb HMKWYPDKBE + ORY↔Bayeux transfers',
-        note: 'Booked — 4 Rue Franche, Oct 19–22, check-in 5:00 PM / check-out 12:00 PM. Transfer from the Orly hotel on Oct 19 and back to ORY on Oct 22 are not specified — confirm with Jon. Message the host if arrival will be after 5:00 PM.',
+        note: 'Booked — 4 Rue Franche, Oct 19–22, check-in 5:00 PM. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO. Transfer from the Orly hotel on Oct 19 is not specified. Message the host if arrival will be after 5:00 PM.',
       },
       {
-        dayIdx: 7, kind: 'soon', status: 'confirm',
-        title: 'Objective Normandy American Sector tour — confirm which day',
-        note: 'Aug plan: full-day Utah / Omaha / American Cemetery with guide Elisha, objectivenormandy.com (site lists Elisa Denis). Jon’s Sep 14 email did not assign a date. Confirm pickup (Orly vs Bayeux) with contact@objectivenormandy.com.',
+        dayIdx: 9, kind: 'soon', status: 'confirm',
+        title: 'Objective Normandy American Sector tour — Wed Oct 21, 9:00 AM',
+        note: 'Meet 9:00 AM at the Bayeux apartment (4 Rue Franche / Home in Bayeux). Full-day Utah / Omaha / American Cemetery with guide Elisha, objectivenormandy.com (site lists Elisa Denis). contact@objectivenormandy.com.',
       },
       {
         dayIdx: 10, kind: 'soon', status: 'confirm',
@@ -1889,13 +1879,13 @@
       },
       {
         dayIdx: 14, kind: 'urgent', status: 'confirm',
-        title: 'Return TP211 date — Oct 26 assumed, confirm with Jon',
-        note: 'Email gave TAP TP211 OPO 7:30 PM → EWR 11:55 PM and no date. This guide uses Oct 26 only because Porto checkout is that day.',
+        title: 'Return TAP TP211 — Oct 26 confirmed',
+        note: 'TAP TP211 OPO 7:30 PM → EWR 11:55 PM on Oct 26.',
       },
       {
         dayIdx: 0, kind: 'flex', status: 'confirm',
         title: 'Flights (Jon 2026-09-14)',
-        note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM (typically a Vueling-operated BA codeshare). TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TP211 OPO→EWR 7:30 PM / 11:55 PM — date not in the email. Confirm tickets / record locators with Jon.',
+        note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM (typically a Vueling-operated BA codeshare). TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TP211 OPO→EWR Oct 26 7:30 PM / 11:55 PM. Confirm tickets / record locators with Jon.',
       },
     ];
     var today = new Date(); today.setHours(0, 0, 0, 0);

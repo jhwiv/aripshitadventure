@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Rebuild trip-data.json from Jon Ripchick's 2026-09-14 emails.
 
+SUPERSEDED for traveler-facing facts by the later Jon update (Objective
+Normandy on Oct 21 at 9am Bayeux apt; depart Bayeux 11am Oct 22; bags at
+53 Greek St until 12pm LHR on Oct 18; TP211 date confirmed Oct 26;
+Normandy filler/restaurants TBD). Do not re-run this script — it would
+overwrite those facts with the Sep 14 assumed-date / unconfirmed-tour state.
+
 Does not invent missing facts. Remaining London days stay high-level.
 OPO→EWR date, ORY hotel, and Thu dinner are labeled unconfirmed/TBD.
 """
