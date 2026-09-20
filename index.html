@@ -186,19 +186,25 @@ function dismissWelcome(dest) {
       <button class="nav-chip nav-chip--london" data-target="tab-city-London">🇬🇧 London</button>
       <button class="nav-chip nav-chip--normandy" data-target="tab-city-Normandy">🇫🇷 Normandy</button>
       <button class="nav-chip nav-chip--porto" data-target="tab-city-Porto">🇵🇹 Porto</button>
-    </div>
-    <div class="nav-row" id="navRow2">
-      <button class="nav-chip" data-target="tab-essentials">Essentials</button>
-      <button class="nav-chip" data-target="tab-transit">Transit</button>
-      <button class="nav-chip" data-target="tab-history">History</button>
       <button class="nav-chip" data-target="tab-map">Map</button>
-      <button class="nav-chip" data-target="tab-airhotel">✈️ Stay</button>
-      <button class="nav-chip" data-target="tab-packing">Pack</button>
+    </div>
+    <div class="nav-row nav-row--ref" id="navRow2">
+      <div class="nav-row-label">Reference</div>
+      <div class="nav-row-chips">
+        <button class="nav-chip nav-chip--ref" data-target="tab-essentials">Essentials</button>
+        <button class="nav-chip nav-chip--ref" data-target="tab-transit">Transit</button>
+        <button class="nav-chip nav-chip--ref" data-target="tab-history">History</button>
+        <button class="nav-chip nav-chip--ref" data-target="tab-airhotel">✈️ Stay</button>
+        <button class="nav-chip nav-chip--ref" data-target="tab-packing">Pack</button>
+      </div>
     </div>
   </nav>
 
   <div class="day-tabs-wrap" id="dayTabsWrap">
-    <div class="day-tabs-label">Jump to a day</div>
+    <div class="day-tabs-head">
+      <div class="day-tabs-label">Jump to a day</div>
+      <button type="button" class="day-today-btn" id="dayTabsToday">Today</button>
+    </div>
     <div class="day-tabs-row" id="dayTabsRow"></div>
   </div>
 </div>
@@ -325,6 +331,7 @@ function dismissWelcome(dest) {
   <!-- ===================== MAP ===================== -->
   <section class="tab-section" id="tab-map">
     <div class="section-banner"><div class="section-banner-title">Itinerary Map</div></div>
+    <p class="map-sync-caption" id="mapSyncCaption">Synced to the selected day or city.</p>
     <div class="map-filters" id="mapFilters">
       <button class="map-filter-btn active" data-city="all">All</button>
       <button class="map-filter-btn" data-city="London">London</button>
@@ -354,8 +361,9 @@ function dismissWelcome(dest) {
 
     <p class="pack-actions">
       <button type="button" class="pack-reset" id="pack-reset">Reset checklist</button>
-      <span class="pack-progress" id="pack-progress" aria-live="polite">0 of 0 packed</span>
+      <span class="pack-progress" id="pack-progress" aria-live="polite">0/0</span>
     </p>
+    <div class="pack-progress-track" aria-hidden="true"><div class="pack-progress-bar" id="pack-progress-bar"></div></div>
 
     <div class="pack-group">
       <h3 class="grouphead">Daytime clothing · London/Normandy cool (mid-50s°F), Porto milder (upper-60s°F)</h3>

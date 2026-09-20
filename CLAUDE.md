@@ -176,6 +176,16 @@ same-day transatlantic flight), not a "looks fine" skim:
   `.nav-chip.active`, not the section. Drive from the spy chip /
   `lastActiveSection`. Jump-to-day must use `--sticky-clearance` as the spy
   offset (not 96px) and update the chip only after scroll settles.
+- **Day-strip scroll-spy must only run while a `tab-city-*` section is in
+  view.** All `#day-N` banners live in the city tabs, further down the
+  continuous page. Spying them from Map / History / Pack (or Condensed)
+  treats every banner as already above the spy line and snaps the strip to
+  the last day. The Today button and explicit day-card clicks still set
+  `selectedDayNum` from any section.
+- **Day timeline groups are labels, not a re-sort.** `transport` → `stay`
+  → `activities` is the visual vocabulary (time + type icons on a rail).
+  Reordering a day's `items[]` into those buckets breaks travel days (Day
+  11 checkout would land after TP455). Keep the plan's own time order.
 
 ### 3. City/scope changes — touches more than the data file
 
@@ -473,6 +483,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Mobbin UX pass — P0 day strip / timeline / conflicts + cheap P1/P2 (2026-09-20).** Chip GO: “Fix ripshit as recommended.” Trip data untouched. **P0:** sticky `#stickyTop` day strip already existed; added a **Today** button (jumps to calendar-today if the trip is in progress, else Day 1 / last day) plus weekday + selected/today states. City-tab days are now one vertical rail (`transport` / `stay` / `activities` **labels** in the plan’s own time order — a hard re-sort would put Day 11 checkout after the Orly flight). Conflict banners only on Day 8 / Day 11: Oct 19 full-day American Sector vs Orly→Bayeux arrival; Oct 22 Bayeux noon checkout → TP455 16:50 ORY squeeze. **P1:** bookable rows get Needs book / Confirm / Do not book yet chips (mapped from existing ACTIONS research, not new policy); map `applyMapFilter` follows the selected day/city (caption on the Map section). **P2:** packing progress is `12/40` + a bar (checkboxes already existed); History / Essentials / Transit / Stay / Pack sit in a labeled **Reference** secondary nav row so they don’t compete with day chips; Map moved to the primary row. **Trap:** day-banner scroll-spy must only run while a `tab-city-*` section is in view — otherwise Map/History/Pack (all below the last day on the continuous page) snap the strip to Day 15. flex-wrap only (no overflow-x). Local Chrome prove only — no live-site claim.
 
 - **CoS payload re-sync — invented clocks + stale `#trip-data` embed (2026-09-14).** Jon’s Thursday block is 12:00–14:00 lunch+transit and dinner TBD with no hour. `data/trip-data.json` already had those clocks (no guessed 12:30 / 19:00), but `index.html`’s `#trip-data` blob still had the older times — the site reads the embed, so Thursday on the page was still invented. Re-embedded. Also stopped presenting three other non-Jon clocks as if he said them: Wed 9:30–12:00 is Greek St → IWM (including transit), not a 9:30 gallery start; Funky Noodle has no dinner start (sequenced before the 6:45 PM theatre walk); Bayeux→ORY has no departure clock (sequenced after 12:00 checkout). ORY hotel card is timed at the 5:35 PM landing, not a guessed 6:30 check-in.
 
