@@ -176,12 +176,17 @@ same-day transatlantic flight), not a "looks fine" skim:
   `.nav-chip.active`, not the section. Drive from the spy chip /
   `lastActiveSection`. Jump-to-day must use `--sticky-clearance` as the spy
   offset (not 96px) and update the chip only after scroll settles.
-- **Day-strip scroll-spy must only run while a `tab-city-*` section is in
-  view.** All `#day-N` banners live in the city tabs, further down the
-  continuous page. Spying them from Map / History / Pack (or Condensed)
-  treats every banner as already above the spy line and snaps the strip to
-  the last day. The Today button and explicit day-card clicks still set
-  `selectedDayNum` from any section.
+- **Day-strip scroll-spy is live (rAF), not debounce-until-idle, and is
+  section-scoped.** `#day-N` banners live in the city tabs, further down
+  the continuous page. Spy city banners only while a `tab-city-*` section
+  is in view; while Condensed is in view, spy `#condensedList .cond-day`
+  instead (those are the itinerary the traveler actually scrolls first).
+  Spying every city banner from Map / History / Pack treats them as
+  already above the spy line and snaps the strip to the last day. A 140ms
+  idle debounce makes the strip look dead during continuous scroll — use
+  `requestAnimationFrame`. The Today button and explicit day-card clicks
+  still set `selectedDayNum` from any section. Traveler-facing labels are
+  calendar dates (`Mon Oct 12` / strip `Mon` + `Oct 12`), not `Day N`.
 - **Day timeline groups are labels, not a re-sort.** `transport` → `stay`
   → `activities` is the visual vocabulary (time + type icons on a rail).
   Reordering a day's `items[]` into those buckets breaks travel days (Day
@@ -483,6 +488,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Day-strip scroll-spy was dead during scroll + Day N → calendar dates (2026-09-20).** Chip contested the #11 LIVE PASS: “infinite scroll w/o tabs auto advancing,” then “change day number to actual date.” Two real bugs in the #11 spy, not a missing feature: (1) `onScroll` debounced `applyScrollSpy` 140ms *after scroll stopped*, so the selected card never moved while the traveler was actually scrolling; (2) day spy only read `.day-banner` and only while a `tab-city-*` section was active — Condensed is the long first itinerary and has no `#day-N` banners, so the strip stayed unselected for the entire default scroll. Fix stays on the existing `#11` strip: rAF-throttled spy; Condensed spies `#condensedList .cond-day[data-day]`; city tabs still spy `.day-banner`; Map/History/Pack still freeze the last day (spying every banner from below still snaps to Oct 26). Tap / Today still jump to `#day-N` and set selection. Labels: strip cards are weekday + `Oct 12` (not `1`); banners / condensed / jump pills / History tags / city ranges use `Mon Oct 12` or `Oct 12–18`. Conflict banners already named Oct 19 / Oct 22. Local prove only — no live-site claim.
 
 - **Mobbin UX pass — P0 day strip / timeline / conflicts + cheap P1/P2 (2026-09-20).** Chip GO: “Fix ripshit as recommended.” Trip data untouched. **P0:** sticky `#stickyTop` day strip already existed; added a **Today** button (jumps to calendar-today if the trip is in progress, else Day 1 / last day) plus weekday + selected/today states. City-tab days are now one vertical rail (`transport` / `stay` / `activities` **labels** in the plan’s own time order — a hard re-sort would put Day 11 checkout after the Orly flight). Conflict banners only on Day 8 / Day 11: Oct 19 full-day American Sector vs Orly→Bayeux arrival; Oct 22 Bayeux noon checkout → TP455 16:50 ORY squeeze. **P1:** bookable rows get Needs book / Confirm / Do not book yet chips (mapped from existing ACTIONS research, not new policy); map `applyMapFilter` follows the selected day/city (caption on the Map section). **P2:** packing progress is `12/40` + a bar (checkboxes already existed); History / Essentials / Transit / Stay / Pack sit in a labeled **Reference** secondary nav row so they don’t compete with day chips; Map moved to the primary row. **Trap:** day-banner scroll-spy must only run while a `tab-city-*` section is in view — otherwise Map/History/Pack (all below the last day on the continuous page) snap the strip to Day 15. flex-wrap only (no overflow-x). Local Chrome prove only — no live-site claim.
 
