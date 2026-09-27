@@ -66,6 +66,7 @@
     { day: 2, type: 'Hotel', status: 'confirm' },
     { day: 3, test: /Operation Mincemeat|Fortune Theatre/i, status: 'confirm' },
     { day: 4, test: /D84QTB896/, status: 'confirm' },
+    { day: 5, test: /T082726199373/, status: 'confirm' },
     { day: 6, test: /Disastrous London/, status: 'confirm' },
     { day: 6, test: /Brunel|Walk ID 3315/, status: 'confirm' },
     { day: 4, test: /Kensington/i, status: 'confirm' },
@@ -1853,6 +1854,11 @@
         dayIdx: 4, kind: 'flex',
         title: 'Unused London ideas (Tue Oct 13 / Fri Oct 16 / Sat Oct 17)',
         note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18).',
+      },
+      {
+        dayIdx: 4, kind: 'soon', status: 'confirm',
+        title: 'Hamilton (Fri Oct 16, 7:30 PM) — Victoria Palace Theatre',
+        note: 'Booked. Friday 16 Oct 2026, 7:30 PM BST. Victoria Palace Theatre, 126 Victoria St, London SW1E 5EA. 2 tickets: STALLS Row E Seat 34 and STALLS Row E Seat 35. Door 4 on both seats. Order T082726199373 via LondonTheatre.co.uk, dated Aug 27, 2026. Order total $423.72 USD. Tickets are in Jon\'s LondonTheatre.co.uk email.',
       },
       {
         dayIdx: 5, kind: 'soon', status: 'confirm',
