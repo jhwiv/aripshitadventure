@@ -71,6 +71,7 @@
     { day: 6, test: /Brunel|Walk ID 3315/, status: 'confirm' },
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
+    { day: 7, test: /83193251|Moxy Paris Clamart/, status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
     { day: 8, type: 'Hotel', status: 'confirm' },
     { day: 10, test: /Objective Normandy|American Sector/i, status: 'confirm' },
@@ -1641,7 +1642,7 @@
         'Pubs: order and pay at the bar, no table service unless it\'s a gastropub. Tipping at the bar isn\'t expected.'
       ],
       Normandy: [
-        'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. How you get from the Orly hotel (TBD) to Bayeux on Oct 19 is not specified. Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to OPO. Taxis exist in Bayeux but are sparse.',
+        'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. Oct 19: depart Moxy Paris Clamart at 8:00 AM and travel to Caen Memorial Museum (Jon: the trip should be 2:30 hours). Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to OPO. Taxis exist in Bayeux but are sparse.',
         'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
         'Fuel up before a rural drive — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
@@ -1871,19 +1872,19 @@
         note: 'Booked. Walk ID 430. Jonathan Ripchick, 2 attendees. Meet at Barbican Underground station. Guides hold up the London Walks flyer with the Streets Ahead! blue plaque on the cover. london@walks.com, +44 20 7624 3978, https://www.walks.com. Tell London Walks if you cannot attend: https://cms.walks.com/cancel/MjAyNjM1fGJjN2U1NjU2Zjc3YTE0NWU2MjllNWI0MGU2MTY1YzU1.',
       },
       {
-        dayIdx: 6, kind: 'urgent', status: 'needs',
-        title: 'ORY hotel night of Oct 18 — TBD',
-        note: 'Jon: “ORY hotel 10/18/26 — TBD.” Needed after BA8137 lands 5:35 PM and before Bayeux check-in 5:00 PM Oct 19. Do not invent a property.',
+        dayIdx: 6, kind: 'soon', status: 'confirm',
+        title: 'Moxy Paris Clamart (Sun Oct 18–Mon Oct 19)',
+        note: 'Booked. Confirmation no. 83193251. 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Total stay 162.00 EUR. Night’s lodging after BA8137 lands at ORY at 5:35 PM. Street address and check-in time were not on the confirmation.',
       },
       {
         dayIdx: 7, kind: 'soon', status: 'confirm',
         title: 'Bayeux Airbnb HMKWYPDKBE + ORY↔Bayeux transfers',
-        note: 'Booked — 4 Rue Franche, Oct 19–22, check-in 5:00 PM. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO. Transfer from the Orly hotel on Oct 19 is not specified. Message the host if arrival will be after 5:00 PM.',
+        note: 'Booked — 4 Rue Franche, Oct 19–22, official check-in 5:00 PM. Jon: travel to Bayeux and check in 4:30–5:00 PM on Oct 19. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO.',
       },
       {
         dayIdx: 9, kind: 'soon', status: 'confirm',
         title: 'Objective Normandy American Sector tour — Wed Oct 21, 9:00 AM',
-        note: 'Meet 9:00 AM at the Bayeux apartment (4 Rue Franche / Home in Bayeux). Full-day Utah / Omaha / American Cemetery with guide Elisha, objectivenormandy.com (site lists Elisa Denis). contact@objectivenormandy.com.',
+        note: 'Jon: meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM, full-day tour with Objective Normandy. Booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis. American Sector: Utah, Omaha, American Cemetery. contact@objectivenormandy.com.',
       },
       {
         dayIdx: 10, kind: 'soon', status: 'confirm',

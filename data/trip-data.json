@@ -1,6 +1,6 @@
 {
   "destination": "London → Normandy → Porto",
-  "meta": "Mon Oct 12 – Mon Oct 26, 2026 · 14 nights · 2 adults · Cultural WWII history & Port wine country · 5 London + 3 Normandy + 4 Porto nights (plus 1 overnight-flight night and 1 Orly-hotel night not attributed to any city). Flights and stays from Jonathan Ripchick. TAP TP211 OPO→EWR is Oct 26. ORY hotel TBD.",
+  "meta": "Mon Oct 12 – Mon Oct 26, 2026 · 14 nights · 2 adults · Cultural WWII history & Port wine country · 5 London + 3 Normandy + 4 Porto nights (plus 1 overnight-flight night and 1 Orly-hotel night not attributed to any city). Flights and stays from Jonathan Ripchick. TAP TP211 OPO→EWR is Oct 26. Night of Oct 18 is Moxy Paris Clamart, confirmation 83193251.",
   "cities": [
     {
       "name": "London",
@@ -14,9 +14,9 @@
       "name": "Normandy",
       "nights": 3,
       "days_range": "Day 8–Day 11",
-      "focus": "Objective Normandy American Sector tour (Utah, Omaha, American Cemetery) on Oct 21 — guide Elisha (objectivenormandy.com lists Elisa Denis); meet 9:00 AM at the Bayeux apartment. Oct 19 is transfer/check-in only; Oct 20 is TBD. Stay Bayeux.",
+      "focus": "Objective Normandy American Sector tour (Utah, Omaha, American Cemetery) on Oct 21 — Jon: meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM (booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis). Oct 19: depart Moxy Paris Clamart 8:00 AM for Caen Memorial Museum, Longues-sur-Mer Battery, Arromanches-les-Bains, then 4 Rue Franche at 5:00 PM. Oct 20: Mont Saint-Michel, then Bayeux. Stay Bayeux.",
       "stay": "4 Rue Franche, Bayeux (Airbnb HMKWYPDKBE) — check-in 5:00 PM Oct 19, depart 11:00 AM Oct 22 for ORY (official Airbnb check-out 12:00 PM)",
-      "transport_in": "Fly LHR→ORY BA8137 Oct 18, overnight at an ORY hotel (TBD), then to Bayeux Oct 19. ORY→Bayeux transfer is not specified."
+      "transport_in": "Fly LHR→ORY BA8137 Oct 18, overnight at Moxy Paris Clamart (confirmation 83193251, Oct 18–19). Mon Oct 19 depart the Moxy at 8:00 AM for Caen Memorial Museum."
     },
     {
       "name": "Porto",
@@ -28,8 +28,8 @@
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Other London days are still high-level ideas only (Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; the Orly hotel that night is TBD. Monday Oct 19 is Orly → Bayeux transfer (not specified) and 5:00 PM check-in at 4 Rue Franche. Tuesday Oct 20 in Bayeux is TBD. Wednesday Oct 21 is Objective Normandy (American Sector) — meet 9:00 AM at the Bayeux apartment. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
-    "differentiators": "Three Airbnbs are on the books plus one missing Orly hotel: London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), an Orly hotel TBD, then an unspecified transfer to Bayeux. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Other London days are still high-level ideas only (Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
+    "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
   },
   "days": [
     {
@@ -567,7 +567,7 @@
     {
       "label": "Day 7 · Sun Oct 18 · Fly London → Paris Orly",
       "city": "London",
-      "headline": "Checkout 10:00 AM · bags may stay at 53 Greek St until 12:00 PM LHR departure · BA8137 · Orly hotel TBD",
+      "headline": "Checkout 10:00 AM · bags may stay at 53 Greek St until 12:00 PM LHR departure · BA8137 · Moxy Paris Clamart booked",
       "weather": "High 57°F / low 46°F · mostly cloudy with 50% rain risk — bring layers & umbrella",
       "items": [
         {
@@ -647,19 +647,19 @@
           "type": "Hotel",
           "time": "17:35",
           "end_time": null,
-          "text": "ORY hotel night of Oct 18 — TBD (after BA8137 lands 5:35 PM)",
-          "location": null,
-          "why": "Jon: “ORY hotel 10/18/26 — TBD.” Do not invent a property, address, or transfer from ORY.",
+          "text": "Moxy Paris Clamart — booked. Oct 18–19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Confirmation 83193251. Total stay 162.00 EUR. After BA8137 lands at ORY at 5:35 PM",
+          "location": "Moxy Paris Clamart",
+          "why": "Booked. Moxy Paris Clamart, Sun Oct 18 to Mon Oct 19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Confirmation no. 83193251. Total stay 162.00 EUR. Night's lodging after BA8137 lands at ORY at 5:35 PM. The confirmation did not include a street address or a check-in time.",
           "contact": null,
           "flight": null,
           "hotel": {
-            "name": "ORY hotel (TBD)",
+            "name": "Moxy Paris Clamart",
             "address": null,
             "phone": null,
             "website": null,
-            "city": "Orly (TBD)",
+            "city": "Clamart",
             "check_in_time": null,
-            "confirmation_note": "Unbooked / unnamed. Night of Sunday Oct 18 only. Needed because the next Bayeux check-in is Monday Oct 19 at 5:00 PM."
+            "confirmation_note": "Booked. Confirmation no. 83193251. Sun Oct 18–Mon Oct 19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Total stay 162.00 EUR. After BA8137 lands at ORY at 5:35 PM. Street address and check-in time were not on the confirmation."
           },
           "restaurant": null,
           "duration_min": null
@@ -667,18 +667,83 @@
       ]
     },
     {
-      "label": "Day 8 · Mon Oct 19 · To Bayeux — transfer from Orly not specified",
+      "label": "Day 8 · Mon Oct 19 · Caen Memorial, Longues-sur-Mer, Arromanches, Bayeux",
       "city": "Normandy",
-      "headline": "Get from the Orly-area hotel to Bayeux; check in 5:00 PM. No tour this day.",
+      "headline": "Depart Moxy Paris Clamart 8:00 AM — Caen Memorial Museum, Longues-sur-Mer Battery, Arromanches-les-Bains, then 4 Rue Franche",
       "weather": "High 60°F / low 48°F · partly cloudy with 30% rain risk — breezy on the coast",
       "items": [
         {
-          "type": "Note",
-          "time": "09:00",
-          "end_time": null,
-          "text": "Transfer ORY hotel → Bayeux is not specified",
-          "location": null,
-          "why": "Starting from an unnamed Orly hotel (TBD). Transfer method and departure time are not specified.",
+          "type": "Transport",
+          "time": "08:00",
+          "end_time": "10:30",
+          "text": "Depart Moxy Paris Clamart and travel to Caen Memorial Museum. Trip should be 2:30 hours",
+          "location": "Caen Memorial Museum",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 150
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "13:00",
+          "text": "Caen Memorial Museum visit, including quick lunch",
+          "location": "Caen Memorial Museum",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "13:00",
+          "end_time": "13:45",
+          "text": "Travel from Caen Memorial Museum to Longues-sur-Mer Battery",
+          "location": "Longues-sur-Mer Battery",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 45
+        },
+        {
+          "type": "Activity",
+          "time": "13:45",
+          "end_time": "15:00",
+          "text": "Longues-sur-Mer Battery visit",
+          "location": "Longues-sur-Mer Battery",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "15:00",
+          "end_time": "15:15",
+          "text": "Travel from Longues-sur-Mer to Arromanches-les-Bains",
+          "location": "Arromanches-les-Bains",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 15
+        },
+        {
+          "type": "Activity",
+          "time": "15:15",
+          "end_time": "16:30",
+          "text": "Arromanches-les-Bains visit",
+          "location": "Arromanches-les-Bains",
+          "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -687,11 +752,11 @@
         },
         {
           "type": "Hotel",
-          "time": "17:00",
-          "end_time": null,
-          "text": "Check in to 4 Rue Franche, Bayeux (Airbnb HMKWYPDKBE) — official check-in 5:00 PM",
-          "location": null,
-          "why": null,
+          "time": "16:30",
+          "end_time": "17:00",
+          "text": "Travel to Bayeux and check into 4 Rue Franche (Airbnb HMKWYPDKBE) — booked",
+          "location": "4 Rue Franche, Bayeux, France",
+          "why": "Booked. Home in Bayeux, hosted by Bruno, furnished apartment with cathedral view. Airbnb HMKWYPDKBE, 4 Rue Franche. Oct 19–22. Official check-in 5:00 PM. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO.",
           "contact": null,
           "flight": null,
           "hotel": {
@@ -700,26 +765,117 @@
             "phone": null,
             "website": null,
             "check_in_time": "17:00",
-            "confirmation_note": "Airbnb HMKWYPDKBE · 4 Rue Franche, Bayeux · Oct 19–22 · check-in 5:00 PM. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO. ORY→Bayeux transfer on Oct 19 is not specified — message the host if you will be late."
+            "confirmation_note": "Airbnb HMKWYPDKBE · 4 Rue Franche, Bayeux · Oct 19–22 · official check-in 5:00 PM. Jon: travel to Bayeux and check in 4:30–5:00 PM on Oct 19. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO."
           },
+          "restaurant": null,
+          "duration_min": 30
+        },
+        {
+          "type": "Note",
+          "time": "17:00",
+          "end_time": "18:30",
+          "text": "Rest before dinner",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
           "restaurant": null,
           "duration_min": null
         }
       ]
     },
     {
-      "label": "Day 9 · Tue Oct 20 · Bayeux — TBD",
+      "label": "Day 9 · Tue Oct 20 · Mont Saint-Michel and Bayeux",
       "city": "Normandy",
-      "headline": "Self-guided activities and restaurants TBD",
+      "headline": "Mont Saint-Michel, then a walk in Bayeux including the cathedral",
       "weather": "High 62°F / low 49°F · partly cloudy, dry",
       "items": [
         {
-          "type": "Note",
+          "type": "Transport",
           "time": "09:00",
-          "end_time": null,
-          "text": "Tuesday in Bayeux is TBD — no day-by-day from Jon for Oct 20",
+          "end_time": "10:30",
+          "text": "Leave 4 Rue Franche for Mont Saint-Michel",
+          "location": "Mont Saint-Michel",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 90
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "14:00",
+          "text": "Visit Mont Saint-Michel, including quick lunch",
+          "location": "Mont Saint-Michel",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "14:00",
+          "end_time": "15:30",
+          "text": "Drive back to Bayeux. Optional to go back to something from prior day.",
+          "location": "4 Rue Franche, Bayeux, France",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 90
+        },
+        {
+          "type": "Activity",
+          "time": "15:30",
+          "end_time": "17:30",
+          "text": "Casual walking tour of Bayeux including cathedral. Optional to revisit something from 10/19/26.",
+          "location": "Bayeux Cathedral, Bayeux, France",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "17:30",
+          "end_time": "19:00",
+          "text": "Rest before dinner",
           "location": null,
-          "why": "Restaurants and self-guided activities for this day are not set. Do not invent a restaurant or a timed walk.",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "19:00",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -731,20 +887,46 @@
     {
       "label": "Day 10 · Wed Oct 21 · Objective Normandy",
       "city": "Normandy",
-      "headline": "Meet 9:00 AM at the Bayeux apartment (4 Rue Franche) — American Sector tour",
+      "headline": "Meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM — Objective Normandy",
       "weather": "High 58°F / low 44°F · partly cloudy, breezy on the causeway",
       "items": [
         {
           "type": "Activity",
           "time": "09:00",
-          "end_time": null,
-          "text": "Objective Normandy — American Sector (Utah, Omaha, American Cemetery) — meet 9:00 AM at Bayeux apartment",
+          "end_time": "17:00",
+          "text": "Meet Elisa at 4 Rue Franche for a full-day tour with Objective Normandy — American Sector (Utah, Omaha, American Cemetery)",
           "location": "4 Rue Franche, Bayeux, France",
-          "why": "Meet 9:00 AM at Home in Bayeux, 4 Rue Franche. Guide Elisha (objectivenormandy.com lists Elisa Denis). Full-day American Sector: Utah, Omaha, American Cemetery.",
+          "why": "Jon: 9:00 AM–5:00 PM, meet Elisa at 4 Rue Franche. Booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis. Full-day American Sector: Utah, Omaha, American Cemetery. contact@objectivenormandy.com.",
           "contact": {
             "website": "https://objectivenormandy.com/",
-            "booking_note": "Pickup is the Bayeux apartment at 9:00 AM Oct 21. contact@objectivenormandy.com"
+            "booking_note": "Pickup is the Bayeux apartment at 9:00 AM Oct 21. Jon: meet Elisa, 9:00 AM–5:00 PM. contact@objectivenormandy.com."
           },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "17:00",
+          "end_time": "18:30",
+          "text": "Rest before dinner",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null,
