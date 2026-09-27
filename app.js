@@ -65,7 +65,7 @@
     { day: 1, type: 'Flight', status: 'confirm' },
     { day: 2, type: 'Hotel', status: 'confirm' },
     { day: 3, test: /Operation Mincemeat|Fortune Theatre/i, status: 'confirm' },
-    { day: 4, test: /Churchill War Rooms/i, status: 'needs' },
+    { day: 4, test: /Churchill War Rooms/i, status: 'confirm' },
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
@@ -1834,8 +1834,8 @@
       },
       {
         dayIdx: 3, kind: 'soon', status: 'needs',
-        title: 'Churchill War Rooms (Thu Oct 15, 10:00 AM)',
-        note: 'Book timed-entry tickets at iwm.org.uk — October dates can sell out 3+ weeks out. Audio guide is included. Jon blocked 10:00 AM–12:00 PM.',
+        title: 'Churchill War Rooms (Thu Oct 15, timed entry 10:00–10:30 AM)',
+        note: 'Booked. Imperial War Museums order D84QTB896, Jonathan Ripchick, 23 Sep 2026. 2 x Adult general admission (GBP 34.00 each, GBP 68.00) plus 1 guidebook (GBP 6.00, collect on the day). Paid GBP 74.00. Clive Steps, King Charles Street, London SW1A 2AQ. Show the email confirmation or order barcode on arrival. Entry before the timeslot is not guaranteed. No suitcases or large bags; no cloakroom or lockers.',
       },
       {
         dayIdx: 3, kind: 'soon', status: 'confirm',
