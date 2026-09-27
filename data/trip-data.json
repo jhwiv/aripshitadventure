@@ -376,13 +376,14 @@
           "type": "Activity",
           "time": "14:00",
           "end_time": "16:00",
-          "text": "London Walks: Kensington Royal Village — meet at Wasabi at the end of the tube shopping arcade",
+          "text": "London Walks: Kensington Royal Village — booked, 2 people. Meet at Wasabi at the end of the tube shopping arcade",
           "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
-          "why": "Jon’s Thursday 2:00–4:00 PM block. An earlier Aug 21 confirmation email reserved this walk (Walk ID 110, 2 attendees, 2:00 PM 15/10) — that booking matches this day; confirm it still stands.",
+          "why": "Booked. Walk ID 110. Reservation name Jonathan Ripchick, 2 attendees. Thu 15 Oct 2026, 2:00–4:00 PM. Meet at High Street Kensington Underground station by the Wasabi restaurant at the end of the shopping arcade. Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. london@walks.com, +44 20 7624 3978, https://www.walks.com.",
           "contact": {
             "phone": "+44 20 7624 3978",
             "website": "https://www.walks.com",
-            "booking_note": "Earlier reservation: Walk ID 110, 2 attendees, 15 Oct 2026 2:00 PM. Meet by Wasabi, 5 min before start.",
+            "email": "london@walks.com",
+            "booking_note": "Booked. Walk ID 110. Reservation name Jonathan Ripchick, 2 attendees. Meet by the Wasabi restaurant at the end of the shopping arcade. Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend.",
             "hours": "2:00 PM, 15/10/2026"
           },
           "flight": null,
@@ -442,7 +443,7 @@
     {
       "label": "Day 6 · Sat Oct 17 · London — high-level only",
       "city": "London",
-      "headline": "Disastrous London walk 2:30 PM (booked) · rest of Saturday open",
+      "headline": "Brunel’s River Walk 10:00 AM + Disastrous London 2:30 PM (both booked)",
       "weather": "High 59°F / low 47°F · partly cloudy with 40% chance of light showers",
       "items": [
         {
@@ -451,8 +452,26 @@
           "end_time": null,
           "text": "Saturday is not detailed in the Sep 14 emails",
           "location": null,
-          "why": "Earlier emails reserved London Walks on this Saturday that Jon’s Sep 14 day-by-day did not restate: Thames Sightseeing / Brunel’s River Walk (Walk ID 3315, 10:00 AM). Confirm whether that still stands. Other unused London ideas: Bunker, Bletchley, Tank Museum.",
+          "why": "Still-open London ideas: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington.",
           "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Activity",
+          "time": "10:00",
+          "end_time": null,
+          "text": "London Walks: Thames Sightseeing, Brunel’s River Walk — booked, 2 people. Meet at Embankment Underground station (river exit)",
+          "location": "Embankment Underground station, London (river exit)",
+          "why": "Booked. Walk ID 3315. Jonathan Ripchick, 2 attendees. Sat 17 Oct 2026, 10:00 AM. Meet at Embankment Underground station (river exit). Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. london@walks.com, +44 20 7624 3978, https://www.walks.com.",
+          "contact": {
+            "phone": "+44 20 7624 3978",
+            "website": "https://www.walks.com",
+            "email": "london@walks.com",
+            "booking_note": "Booked. Walk ID 3315. Reservation name Jonathan Ripchick, 2 attendees. Meet at Embankment Underground station (river exit). Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend."
+          },
           "flight": null,
           "hotel": null,
           "restaurant": null,
