@@ -66,6 +66,7 @@
     { day: 2, type: 'Hotel', status: 'confirm' },
     { day: 3, test: /Operation Mincemeat|Fortune Theatre/i, status: 'confirm' },
     { day: 4, test: /D84QTB896/, status: 'confirm' },
+    { day: 6, test: /Disastrous London/, status: 'confirm' },
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
@@ -1850,7 +1851,12 @@
       {
         dayIdx: 4, kind: 'flex',
         title: 'Unused London ideas (Tue Oct 13 / Fri Oct 16 / Sat Oct 17)',
-        note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18). Earlier emails also reserved Saturday London Walks (Walk ID 3315 10:00 AM; Walk ID 430 2:30 PM) that Jon’s Sep 14 day-by-day did not restate — confirm whether those still stand.',
+        note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18). Earlier emails also reserved Saturday London Walks (Walk ID 3315, 10:00 AM, Thames Sightseeing / Brunel’s River Walk) that Jon’s Sep 14 day-by-day did not restate — confirm whether that still stands.',
+      },
+      {
+        dayIdx: 5, kind: 'soon', status: 'confirm',
+        title: 'London Walks: Disastrous London (Sat Oct 17, 2:30 PM)',
+        note: 'Booked. Walk ID 430. Jonathan Ripchick, 2 attendees. Meet at Barbican Underground station. Guides hold up the London Walks flyer with the Streets Ahead! blue plaque on the cover. london@walks.com, +44 20 7624 3978, https://www.walks.com. Tell London Walks if you cannot attend: https://cms.walks.com/cancel/MjAyNjM1fGJjN2U1NjU2Zjc3YTE0NWU2MjllNWI0MGU2MTY1YzU1.',
       },
       {
         dayIdx: 6, kind: 'urgent', status: 'needs',
