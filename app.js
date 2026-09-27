@@ -65,7 +65,7 @@
     { day: 1, type: 'Flight', status: 'confirm' },
     { day: 2, type: 'Hotel', status: 'confirm' },
     { day: 3, test: /Operation Mincemeat|Fortune Theatre/i, status: 'confirm' },
-    { day: 4, test: /Churchill War Rooms/i, status: 'confirm' },
+    { day: 4, test: /D84QTB896/, status: 'confirm' },
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
