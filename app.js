@@ -1833,7 +1833,7 @@
         note: 'General admission is free; no ticket required. Jon’s window is 9:30 AM–12:00 PM including transit from 53 Greek St.',
       },
       {
-        dayIdx: 3, kind: 'soon', status: 'needs',
+        dayIdx: 3, kind: 'soon', status: 'confirm',
         title: 'Churchill War Rooms (Thu Oct 15, timed entry 10:00–10:30 AM)',
         note: 'Booked. Imperial War Museums order D84QTB896, Jonathan Ripchick, 23 Sep 2026. 2 x Adult general admission (GBP 34.00 each, GBP 68.00) plus 1 guidebook (GBP 6.00, collect on the day). Paid GBP 74.00. Clive Steps, King Charles Street, London SW1A 2AQ. Show the email confirmation or order barcode on arrival. Entry before the timeslot is not guaranteed. No suitcases or large bags; no cloakroom or lockers.',
       },
