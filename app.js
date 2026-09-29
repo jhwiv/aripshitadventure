@@ -1095,7 +1095,12 @@
     var displayText = item.text;
     var searchTarget = extras[0] || (item.location ? item.location : item.text) || (day.city || '');
     if (item.type === 'Transport') {
-      var driveDest = parseTransportDestination(item.text, day);
+      // location is the destination address. parseTransportDestination's
+      // last "to X" is only a fallback when that address is empty: a
+      // multi-leg route ("to Bank … to Tottenham Court Rd … to 53 Greek
+      // St") makes the last capture a sentence fragment and used to
+      // replace the real address on Navigate.
+      var driveDest = item.location || parseTransportDestination(item.text, day);
       if (driveDest) searchTarget = driveDest;
     }
     var timeLine = esc(formatTime12(item.time)) + (item.end_time ? '–' + esc(formatTime12(item.end_time)) : '');
@@ -1601,7 +1606,7 @@
       }
       var navLine = '';
       if (item.type === 'Transport') {
-        var dest = parseTransportDestination(item.text, row.day);
+        var dest = item.location || parseTransportDestination(item.text, row.day);
         var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
         var refDuration = transportDurationBadgeOf(item);
         var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
