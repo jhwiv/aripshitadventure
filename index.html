@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260927-normandy">
+<link rel="stylesheet" href="style.css?v=20260929-nav">
 </head>
 <body>
 
@@ -701,9 +701,9 @@ function dismissWelcome(dest) {
           "type": "Activity",
           "time": "12:00",
           "end_time": "14:30",
-          "text": "Borough Market — walk the area, then return to 53 Greek St to rest",
+          "text": "Borough Market — walk the area",
           "location": "Borough Market, 8 Southwark Street, London SE1 1TL",
-          "why": "Jon: 12:00–2:30 PM at Borough Market, then back to 53 Greek St to rest before dinner. No lunch restaurant named.",
+          "why": "Jon: 12:00–2:30 PM at Borough Market. No lunch restaurant named.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -711,17 +711,17 @@ function dismissWelcome(dest) {
           "duration_min": null
         },
         {
-          "type": "Note",
+          "type": "Transport",
           "time": "14:30",
-          "end_time": null,
-          "text": "Return to 53 Greek Street to rest before dinner",
+          "end_time": "15:00",
+          "text": "Travel from Borough Market to 53 Greek St. Walk 3 minutes to London Bridge northbound platform 1, Northern line 1 stop to Bank station, follow signs to westbound platform 5, Central line (west Ruislip) 4 stops to Tottenham Court Rd. Exit via 4. 6 minutes walk to 53 Greek St.",
           "location": "53 Greek Street, London W1D 3DR",
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null,
-          "duration_min": null
+          "duration_min": 30
         },
         {
           "type": "Transport",
@@ -2243,7 +2243,7 @@ function dismissWelcome(dest) {
 
 <script src="vendor/leaflet/leaflet.js"></script>
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-<script src="app.js?v=20260927-normandy"></script>
+<script src="app.js?v=20260929-nav"></script>
 <script>
   // Offline support - see sw.js for the caching strategy. Registered here
   // rather than app.js so it runs even if app.js itself fails to parse.

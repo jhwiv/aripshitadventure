@@ -190,9 +190,9 @@
           "type": "Activity",
           "time": "12:00",
           "end_time": "14:30",
-          "text": "Borough Market — walk the area, then return to 53 Greek St to rest",
+          "text": "Borough Market — walk the area",
           "location": "Borough Market, 8 Southwark Street, London SE1 1TL",
-          "why": "Jon: 12:00–2:30 PM at Borough Market, then back to 53 Greek St to rest before dinner. No lunch restaurant named.",
+          "why": "Jon: 12:00–2:30 PM at Borough Market. No lunch restaurant named.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -200,17 +200,17 @@
           "duration_min": null
         },
         {
-          "type": "Note",
+          "type": "Transport",
           "time": "14:30",
-          "end_time": null,
-          "text": "Return to 53 Greek Street to rest before dinner",
+          "end_time": "15:00",
+          "text": "Travel from Borough Market to 53 Greek St. Walk 3 minutes to London Bridge northbound platform 1, Northern line 1 stop to Bank station, follow signs to westbound platform 5, Central line (west Ruislip) 4 stops to Tottenham Court Rd. Exit via 4. 6 minutes walk to 53 Greek St.",
           "location": "53 Greek Street, London W1D 3DR",
           "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
           "restaurant": null,
-          "duration_min": null
+          "duration_min": 30
         },
         {
           "type": "Transport",
