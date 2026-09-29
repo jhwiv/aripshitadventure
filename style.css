@@ -605,8 +605,13 @@ img { max-width: 100%; display: block; }
 
 /* ---- Reservation Timeline (adapted from santafe-itinerary) ---- */
 .timeline-intro { font-size: 13.5px; color: #5b6577; line-height: 1.55; margin: 6px 0 16px; }
-.timeline-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-.timeline-row { display: grid; grid-template-columns: 1fr; gap: 6px; background: #fff; border: 1px solid #dcd8cf; border-left: 3px solid #dcd8cf; padding: 12px 14px; border-radius: 4px; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.timeline-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+/* minmax(0, 1fr) — a 1fr column's default minimum is min-content. An
+   unbroken token (the London Walks cancel URL) then sizes the column to
+   the URL and the card paints past the phone. min-width: 0 on the row
+   and its children lets the column shrink; overflow-wrap breaks the URL. */
+.timeline-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; min-width: 0; max-width: 100%; background: #fff; border: 1px solid #dcd8cf; border-left: 3px solid #dcd8cf; padding: 12px 14px; border-radius: 4px; transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.timeline-row > * { min-width: 0; max-width: 100%; }
 .timeline-row:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13,33,51,0.08); }
 .timeline-row.tl-urgent { border-left-color: #c9524b; background: #fdf3ee; }
 .timeline-row.tl-soon { border-left-color: var(--gold); }
@@ -619,8 +624,8 @@ img { max-width: 100%; display: block; }
 .tl-done .tl-badge { background: #2d6b3b; color: #fff; border-color: #2d6b3b; }
 .tl-flex .tl-badge { background: #fff; color: #656d7c; }
 .tl-wait .tl-badge { background: #376e76; color: #fff; border-color: #376e76; }
-.tl-name { font-weight: 700; font-size: 14.5px; margin: 0 0 2px; }
-.tl-note { font-size: 12.5px; color: #5b6577; margin: 0; line-height: 1.5; }
+.tl-name { font-weight: 700; font-size: 14.5px; margin: 0 0 2px; overflow-wrap: anywhere; }
+.tl-note { font-size: 12.5px; color: #5b6577; margin: 0; line-height: 1.5; overflow-wrap: anywhere; }
 
 /* ---- Day items (used inside city tabs) ---- */
 .day-block { padding: 24px 0; border-bottom: 1px solid #dcd8cf; scroll-margin-top: var(--sticky-clearance, 112px); }
@@ -724,8 +729,8 @@ img { max-width: 100%; display: block; }
 .item-time-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
 .item-time { font-size: 11.5px; color: #656d7c; font-weight: 600; letter-spacing: 0.02em; }
 .book-chip {
-  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.03em;
-  padding: 2px 8px; border-radius: 999px; line-height: 1.4; white-space: nowrap;
+  display: inline-block; max-width: 100%; font-size: 10px; font-weight: 700; letter-spacing: 0.03em;
+  padding: 2px 8px; border-radius: 999px; line-height: 1.4; white-space: normal; overflow-wrap: anywhere;
 }
 .book-chip--needs { background: #fdecea; color: #9b2c2c; }
 .book-chip--confirm { background: #e7f1f2; color: #2d5c63; }
@@ -739,8 +744,8 @@ img { max-width: 100%; display: block; }
 .conflict-banner-title { font-size: 13px; font-weight: 700; color: #6b4f12; margin-bottom: 2px; }
 .conflict-banner-text { font-size: 13px; color: #5b4a20; line-height: 1.45; margin: 0; }
 .map-sync-caption { font-size: 12px; color: #656d7c; margin: 0 0 10px; }
-.item-text { font-size: 14.5px; font-weight: 600; margin-top: 2px; }
-.item-why { font-size: 13px; color: #5b6577; margin-top: 3px; font-style: italic; }
+.item-text { font-size: 14.5px; font-weight: 600; margin-top: 2px; overflow-wrap: anywhere; }
+.item-why { font-size: 13px; color: #5b6577; margin-top: 3px; font-style: italic; overflow-wrap: anywhere; }
 .item-links { margin-top: 6px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .item-links a { font-size: 12.5px; font-weight: 600; }
 .directions-group { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; }
