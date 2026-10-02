@@ -10,7 +10,9 @@
 # from the git integration and applies this binding on that deploy.
 name = "aripshitadventure"
 pages_build_output_dir = "."
-compatibility_date = "2026-09-01"
+# 2025-04-01 is inside the range the Pages build image's Wrangler accepts.
+# A date past that image's known set fails the deploy before functions run.
+compatibility_date = "2025-04-01"
 
 [ai]
 binding = "AI"

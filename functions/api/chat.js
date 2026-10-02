@@ -12,13 +12,16 @@
 //   data: {"response":"..."}
 //   data: [DONE]
 //
-// The itinerary block is built from this repo's data/trip-data.json on
-// each cold start, not from the worker's stale Nuremberg-era blob.
+// The itinerary block is built from functions/_lib/trip-data.js, a plain
+// module generated from data/trip-data.json. It is not the worker's stale
+// Nuremberg-era blob. The JSON file is not imported directly: the Pages
+// function compiler rejects `with { type: 'json' }` and imports that leave
+// the functions directory. Regenerate _lib when trip-data.json changes.
 // The role text and the 3-option recommendation format are the wwii2026
 // prompt; sentences that named Nuremberg / Oct 10–24 are updated so they
 // match the itinerary the traveler is actually on.
 
-import trip from '../../data/trip-data.json' with { type: 'json' };
+import trip from '../_lib/trip-data.js';
 
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 

@@ -1,0 +1,1696 @@
+// Generated from data/trip-data.json. Regenerate this file when that JSON changes.
+// Plain export so the Pages function compiler does not need a JSON import attribute.
+export default {
+  "destination": "London → Normandy → Porto",
+  "meta": "Mon Oct 12 – Mon Oct 26, 2026 · 14 nights · 2 adults · Cultural WWII history & Port wine country · 5 London + 3 Normandy + 4 Porto nights (plus 1 overnight-flight night and 1 Orly-hotel night not attributed to any city). Flights and stays from Jonathan Ripchick. TAP TP211 OPO→EWR is Oct 26. Night of Oct 18 is Moxy Paris Clamart, confirmation 83193251.",
+  "cities": [
+    {
+      "name": "London",
+      "nights": 5,
+      "days_range": "Day 1–Day 7",
+      "focus": "WWII history ideas — Churchill War Rooms; Imperial War Museum; Battle of Britain Bunker; Bletchley Park; The Tank Museum Bovington (maybe overnight); West End play. Wed Oct 14 and Thu Oct 15 are the only fully detailed days.",
+      "stay": "53 Greek Street, Soho (Airbnb HMFRRRZRTN) — check-in 3:00 PM, check-out 10:00 AM · Oct 12–18. Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM on Oct 18.",
+      "transport_in": "Fly EWR→LHR · British Airways BA184 · departs 5:50 PM Oct 12, arrives 5:50 AM Oct 13 (Jon typed LHW; this guide uses LHR). Then Elizabeth line service C37570, Tue Oct 13: depart 7:06 AM Heathrow Terminals 2 & 3 (HXX), arrive 7:38 AM Tottenham Court Road (TCR), journey 0h 32m. Omio booking 6382G8GX. Standard class, Anytime Day Single, semi-refundable (unused tickets can be cancelled for GBP 5.00 before the day). Collect-at-station ticket: collect from a self-service machine before departure. Passengers Jonathan Ripchick, Benjamin Ripchick. Total USD 58.88. Times are London local (BST)."
+    },
+    {
+      "name": "Normandy",
+      "nights": 3,
+      "days_range": "Day 8–Day 11",
+      "focus": "Objective Normandy American Sector tour (Utah, Omaha, American Cemetery) on Oct 21 — Jon: meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM (booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis). Oct 19: depart Moxy Paris Clamart 8:00 AM for Caen Memorial Museum, Longues-sur-Mer Battery, Arromanches-les-Bains, then 4 Rue Franche at 5:00 PM. Oct 20: Mont Saint-Michel, then Bayeux. Stay Bayeux.",
+      "stay": "4 Rue Franche, Bayeux (Airbnb HMKWYPDKBE) — check-in 5:00 PM Oct 19, depart 11:00 AM Oct 22 for ORY (official Airbnb check-out 12:00 PM)",
+      "transport_in": "Fly LHR→ORY BA8137 Oct 18, overnight at Moxy Paris Clamart (confirmation 83193251, Oct 18–19). Mon Oct 19 depart the Moxy at 8:00 AM for Caen Memorial Museum."
+    },
+    {
+      "name": "Porto",
+      "nights": 4,
+      "days_range": "Day 11–Day 15",
+      "focus": "Self-guided city; Douro Valley.",
+      "stay": "Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2) — check-in 4:00 PM Oct 22, check-out 11:00 AM Oct 26. Jon wrote “Ribera San Joao.”",
+      "transport_in": "Fly ORY→OPO · TAP TP455 · departs 4:50 PM arrives 6:05 PM Oct 22. Depart Bayeux 11:00 AM Oct 22 to drive to ORY for this flight."
+    }
+  ],
+  "introduction": {
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Other London days are still high-level ideas only (Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
+    "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
+  },
+  "days": [
+    {
+      "label": "Day 1 · Mon Oct 12 · Depart Newark",
+      "city": "London",
+      "headline": "Overnight British Airways to Heathrow — Jon wrote LHW; this guide uses LHR",
+      "weather": "High 64°F / low 48°F · partly cloudy, dry evening departure window",
+      "items": [
+        {
+          "type": "Flight",
+          "time": "17:50",
+          "end_time": null,
+          "text": "Newark (EWR) to London Heathrow (LHR) — British Airways BA184, nonstop overnight",
+          "location": null,
+          "why": "Flight number and times from Jonathan Ripchick email 2026-09-14. Jon typed arrival airport as LHW — treated here as LHR (London Heathrow). Published BA184 is EWR→LHR, typically Heathrow Terminal 5.",
+          "contact": {
+            "phone": null,
+            "website": "https://www.britishairways.com"
+          },
+          "flight": {
+            "carrier": "British Airways",
+            "flight_number": "BA184",
+            "from_airport": "EWR",
+            "to_airport": "LHR",
+            "depart_time": "17:50",
+            "arrive_time": "05:50",
+            "duration": "7h 00m",
+            "nonstop": true,
+            "cabin": null,
+            "aircraft": null,
+            "confirmation_note": "From Jon’s 2026-09-14 email: BA184 EWR 5:50 PM → LHR 5:50 AM (+1). He typed LHW; display uses LHR. Confirm the ticket / record locator with Jon or BA."
+          },
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 2 · Tue Oct 13 · Arrive London",
+      "city": "London",
+      "headline": "Land Heathrow 5:50 AM — 53 Greek Street is booked; day’s plan is still high-level",
+      "weather": "High 59°F / low 48°F · partly cloudy with occasional drizzle risk",
+      "items": [
+        {
+          "type": "Flight",
+          "time": "05:50",
+          "end_time": null,
+          "text": "Land Heathrow (LHR) — BA184 from EWR. Jon typed LHW; this is LHR.",
+          "location": null,
+          "why": "Arrival time from Jon’s 2026-09-14 email. No terminal/immigration plan was specified.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "07:06",
+          "end_time": "07:38",
+          "text": "Elizabeth line service C37570 — Heathrow Terminals 2 & 3 (HXX) to Tottenham Court Road (TCR). Depart 7:06 AM, arrive 7:38 AM. Journey 0h 32m. Omio booking 6382G8GX. Collect at a station machine before departure",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": "Omio booking 6382G8GX. Jon’s booked train transfer from LHR to 53 Greek Street. Tue Oct 13, 2026, Elizabeth line service C37570. Depart 7:06 AM Heathrow Terminals 2 & 3 (HXX), arrive 7:38 AM Tottenham Court Road (TCR). Journey 0h 32m. Standard class, Anytime Day Single. Semi-refundable: unused tickets can be cancelled for GBP 5.00 before the day. Collect-at-station ticket — must be collected from a self-service machine before departure. Passengers: Jonathan Ripchick, Benjamin Ripchick. Total USD 58.88. Times are London local (BST). If you land at Terminal 5, take the Elizabeth line or Heathrow Express to Terminals 2 & 3 for free. Get a free inter-terminal transfer ticket from the blue machines (at T5 they're on the arrivals floor, before the lifts down to the station).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 32
+        },
+        {
+          "type": "Hotel",
+          "time": "15:00",
+          "end_time": null,
+          "text": "53 Greek Street Airbnb is booked from Oct 12 — official check-in 3:00 PM",
+          "location": null,
+          "why": "Booking dates 10/12–10/18, Airbnb HMFRRRZRTN, check-in 3:00 PM / check-out 10:00 AM. Travelers land Oct 13 ~5:50 AM, after the Oct 12 check-in window has already opened — confirm key/access and whether morning arrival is fine.",
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "53 Greek Street Airbnb (HMFRRRZRTN)",
+            "address": "53 Greek Street, London W1D 3DR",
+            "phone": null,
+            "website": null,
+            "check_in_time": "15:00",
+            "confirmation_note": "Airbnb HMFRRRZRTN · 53 Greek St. · Oct 12–18 · check-in 3:00 PM, check-out 10:00 AM. From Jon’s 2026-09-14 email. Ground-floor of this building is a bar (Thirst); the listing is the Airbnb, not the bar. No listing URL was in the email."
+          },
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "16:00",
+          "end_time": null,
+          "text": "Rest of Tuesday is high-level only — no day-by-day from Jon for Oct 13",
+          "location": null,
+          "why": "Aug thread London ideas still open for unused days: Churchill War Rooms (scheduled Thu), Imperial War Museum (scheduled Wed), Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight), West End play (Operation Mincemeat is Wed night).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 3 · Wed Oct 14 · Imperial War Museum, Borough Market & Operation Mincemeat",
+      "city": "London",
+      "headline": "IWM then Borough Market; Funky Noodle dinner and Operation Mincemeat at 7:30 PM",
+      "weather": "High 60°F / low 49°F · partly cloudy, dry",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "09:30",
+          "end_time": "12:00",
+          "text": "53 Greek St → Imperial War Museum: 12 min walk to Piccadilly Circus; Bakerloo southbound to Lambeth North, 4 stops; 9 min walk to the museum",
+          "location": "Lambeth Road, London SE1 6HZ",
+          "why": "Jon’s 9:30 AM–12:00 PM block is this journey, not a 9:30 gallery start. Tube running time between stops was not given.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Activity",
+          "time": "09:30",
+          "end_time": "12:00",
+          "text": "Imperial War Museum — morning destination (9:30–12:00 is the journey from Greek St)",
+          "location": "Lambeth Road, London SE1 6HZ",
+          "why": "Free museum; no ticket required for general admission. Jon timed 9:30–12:00 as 53 Greek St → IWM, including transit — not a 9:30 door time at the galleries.",
+          "contact": {
+            "website": "https://www.iwm.org.uk/visits/iwm-london",
+            "booking_note": "General admission is free. Allow time for the WWII and Holocaust galleries.",
+            "hours": "Daily 10 AM–6 PM",
+            "price": "Free (donations welcome)",
+            "phone": "+44 20 7416 5000"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:00",
+          "end_time": null,
+          "text": "IWM → Borough Market: 13 min walk to Elephant and Castle northbound Platform 1, 2 stops to London Bridge exit west side, 2 min walk",
+          "location": "Borough Market, 8 Southwark Street, London SE1 1TL",
+          "why": "Routing from Jon’s 2026-09-14 email. 12:00–2:30 PM block includes walking the area.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Activity",
+          "time": "12:00",
+          "end_time": "14:30",
+          "text": "Borough Market — walk the area",
+          "location": "Borough Market, 8 Southwark Street, London SE1 1TL",
+          "why": "Jon: 12:00–2:30 PM at Borough Market. No lunch restaurant named.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "14:30",
+          "end_time": "15:00",
+          "text": "Travel from Borough Market to 53 Greek St. Walk 3 minutes to London Bridge northbound platform 1, Northern line 1 stop to Bank station, follow signs to westbound platform 5, Central line (west Ruislip) 4 stops to Tottenham Court Rd. Exit via 4. 6 minutes walk to 53 Greek St.",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 30
+        },
+        {
+          "type": "Transport",
+          "time": "18:00",
+          "end_time": null,
+          "text": "Walk to Funky Noodle — Jon: 3 min from 53 Greek St",
+          "location": "103 Charing Cross Road, London WC2H 0DT",
+          "why": "Jon said 3 minutes from 53 Greek St. The restaurant’s own address is 103 Charing Cross Road (around the corner from Greek Street), not on Greek Street itself. Jon did not give a dinner start; this card is sequenced before the 6:45 PM theatre walk.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 3
+        },
+        {
+          "type": "Dinner",
+          "time": "18:00",
+          "end_time": null,
+          "text": "Dinner at Funky Noodle — 3 min from 53 Greek St. Eat before the 6:45 PM walk (Jon did not give a dinner start)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "Funky Noodle",
+            "neighborhood": "Soho / Charing Cross Road",
+            "cuisine": "Northwest Chinese, hand-pulled noodles",
+            "price_range": "££",
+            "why": "Jon’s Wednesday dinner, 3 minutes from 53 Greek St. Real venue is Funky Noodle, 103 Charing Cross Road, London WC2H 0DT — their site says they do not take reservations (walk-in).",
+            "contact": {
+              "address": "103 Charing Cross Road, London WC2H 0DT",
+              "website": "https://www.funky-noodle.com/",
+              "hours": "Listed daily 12:00–10:00 PM"
+            },
+            "reservation": {
+              "platform": "walkin"
+            },
+            "open_days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Funky%20Noodle%20103%20Charing%20Cross%20Road%20London"
+          },
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:45",
+          "end_time": null,
+          "text": "15 min walk from Funky Noodle to Fortune Theatre",
+          "location": "Fortune Theatre, 29 Russell Street, London WC2B 5HH",
+          "why": "Jon: 6:45 PM, 15-minute walk from Funky Noodle to the theatre. Arrive 7:00 PM for a 7:30 PM show.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 15
+        },
+        {
+          "type": "Activity",
+          "time": "19:00",
+          "end_time": "22:00",
+          "text": "Operation Mincemeat — Fortune Theatre, 29 Russell Street — arrive 7:00 PM for 7:30 PM showtime",
+          "location": "Fortune Theatre, 29 Russell Street, London WC2B 5HH",
+          "why": "From Jon’s 2026-09-14 email. The show is at the Fortune Theatre (29 Russell Street / WC2B 5HH). Published evening performances are 7:30 PM; running time about 2 hours 20 minutes including interval (typical finish ~9:50 PM), which matches Jon’s 10:00 PM return.",
+          "contact": {
+            "website": "https://www.atgtickets.com/shows/operation-mincemeat-a-new-musical/fortune-theatre/",
+            "phone": "0333 009 6690",
+            "hours": "Evening performances Mon–Sat 7:30 PM",
+            "booking_note": "Jon listed the show and theatre; ticket status was not in the email — confirm seats are held."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "22:00",
+          "end_time": null,
+          "text": "Return to 53 Greek Street",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": "Jon: 10:00 PM return to 53 Greek St. Route not specified.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 4 · Thu Oct 15 · Churchill War Rooms & Kensington Walk",
+      "city": "London",
+      "headline": "War Rooms in the morning, Kensington Royal Village walk at 2:00 PM — dinner TBD",
+      "weather": "High 59°F / low 47°F · mostly cloudy, 30% chance light rain",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "09:30",
+          "end_time": null,
+          "text": "Walk 53 Greek St → Churchill War Rooms — about 20 minutes to King Charles Street, London SW1A 2AQ",
+          "location": "Clive Steps, King Charles Street, London SW1A 2AQ",
+          "why": "Jon’s Thursday plan: 9:30 AM walk, about 20 minutes.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 20
+        },
+        {
+          "type": "Activity",
+          "time": "10:00",
+          "end_time": "10:30",
+          "text": "Churchill War Rooms — booked timed entry 10:00–10:30 AM. Order D84QTB896. 2 x Adult general admission, GBP 34.00 each (GBP 68.00), plus 1 guidebook GBP 6.00. Paid GBP 74.00",
+          "location": "Clive Steps, King Charles Street, London SW1A 2AQ",
+          "why": "Imperial War Museums order D84QTB896, booked by Jonathan Ripchick on 23 Sep 2026. Thu 15 October 2026, timed entry 10:00–10:30 AM (London time, BST) — that window is the entry slot, not a time you must leave. 2 x Adult | Churchill War Rooms | General Admission, GBP 34.00 each (GBP 68.00). Plus 1 x Churchill War Rooms Guidebook, GBP 6.00 (retail, collected on the day). Order total GBP 74.00, paid. Address: Churchill War Rooms, Clive Steps, King Charles Street, London SW1A 2AQ. Show the email confirmation or order barcode on arrival (phone or print). Entry before the timeslot is not guaranteed. Suitcases and large bags are not permitted; there is no cloakroom or lockers on site.",
+          "contact": {
+            "phone": "+44 20 7930 6961",
+            "website": "https://www.iwm.org.uk/visits/churchill-war-rooms",
+            "booking_note": "Order D84QTB896. Timed entry 10:00–10:30 AM Thu 15 Oct 2026. Paid GBP 74.00. Show the email confirmation or order barcode on arrival.",
+            "hours": "Daily 9:30 AM–6 PM (last entry 5 PM)"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "12:00",
+          "end_time": "14:00",
+          "text": "12:00–2:00 PM — lunch (restaurant not named), then transit to High Street Kensington",
+          "location": null,
+          "why": "Jon: lunch then transit. No restaurant named. Do not treat any leftover Soho/Westminster booking as Thursday lunch.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:00",
+          "end_time": "14:00",
+          "text": "To High Street Kensington: walk 9 min to St. James’s Park; Circle westbound via Victoria, 5 stops",
+          "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
+          "why": "Jon’s routing. duration_min is the 9-minute walk only; Circle-line running time was not given.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 9
+        },
+        {
+          "type": "Activity",
+          "time": "14:00",
+          "end_time": "16:00",
+          "text": "London Walks: Kensington Royal Village — booked, 2 people. Meet at Wasabi at the end of the tube shopping arcade",
+          "location": "High Street Kensington Underground station, London W8 (meet by the Wasabi restaurant at the end of the shopping arcade linking the station to the High Street)",
+          "why": "Booked. Walk ID 110. Reservation name Jonathan Ripchick, 2 attendees. Thu 15 Oct 2026, 2:00–4:00 PM. Meet at High Street Kensington Underground station by the Wasabi restaurant at the end of the shopping arcade. Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. london@walks.com, +44 20 7624 3978, https://www.walks.com.",
+          "contact": {
+            "phone": "+44 20 7624 3978",
+            "website": "https://www.walks.com",
+            "email": "london@walks.com",
+            "booking_note": "Booked. Walk ID 110. Reservation name Jonathan Ripchick, 2 attendees. Meet by the Wasabi restaurant at the end of the shopping arcade. Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend.",
+            "hours": "2:00 PM, 15/10/2026"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "16:00",
+          "end_time": null,
+          "text": "Return to 53 Greek St: Circle eastbound platform 2, 3 stops to Paddington; 3 min to Elizabeth line platform A; 2 stops to Tottenham Court Road; exit Dean/Oxford St; 9 min walk",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": "Jon’s 4:00 PM return routing. Individual walk legs 3 min + 9 min; tube times not given as minutes.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "16:00",
+          "end_time": null,
+          "text": "Dinner TBD — Jon did not name a Thursday restaurant or time",
+          "location": null,
+          "why": "Leave this open. Do not reuse an old leftover booking as if it were Thursday dinner.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 5 · Fri Oct 16 · London",
+      "city": "London",
+      "headline": "Free day, then Hamilton in the evening",
+      "weather": "High 58°F / low 46°F · partly cloudy, breezy",
+      "items": [
+        {
+          "type": "Note",
+          "time": "09:00",
+          "end_time": null,
+          "text": "Daytime is open. Leftover London ideas (not scheduled): Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington.",
+          "location": null,
+          "why": "Still-open London ideas from the Aug thread (not scheduled to a clock time): Battle of Britain Bunker (about an hour from center); Bletchley Park; The Tank Museum Bovington (Jon: maybe an overnight — that would have to be before the Oct 18 LHR→ORY flight).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:30",
+          "end_time": "19:00",
+          "text": "Walk from 53 Greek St to Oxford Circus, then the Victoria line southbound (Brixton direction), 2 stops to Victoria",
+          "location": "Victoria Underground station, London",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 30
+        },
+        {
+          "type": "Activity",
+          "time": "19:30",
+          "end_time": "22:00",
+          "text": "Hamilton, Victoria Palace Theatre, 126 Victoria St, London SW1E 5EA — booked. 2 tickets, Stalls Row E, seats 34–35 (enter via Door 4). Order T082726199373 via LondonTheatre.co.uk, $423.72 USD. Tickets are in Jon's LondonTheatre.co.uk email.",
+          "location": "Victoria Palace Theatre, 126 Victoria St, London SW1E 5EA",
+          "why": "Booked. Friday 16 Oct 2026, 7:30 PM BST. Victoria Palace Theatre, 126 Victoria St, London SW1E 5EA. 2 tickets: STALLS Row E Seat 34 and STALLS Row E Seat 35. The note on both seats is Door 4. Order T082726199373 via LondonTheatre.co.uk, dated Aug 27, 2026. Order total $423.72 USD. Tickets are in Jon's LondonTheatre.co.uk email.",
+          "contact": {
+            "booking_note": "Booked. Order T082726199373 via LondonTheatre.co.uk, Aug 27, 2026. 2 tickets, STALLS Row E Seat 34 and Seat 35, Door 4. Order total $423.72 USD. Tickets are in Jon's LondonTheatre.co.uk email."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "22:00",
+          "end_time": null,
+          "text": "Victoria line northbound (Walthamstow Central direction), 2 stops from Victoria to Oxford Circus, then walk Oxford St to Soho St to Greek St (53 Greek St)",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 6 · Sat Oct 17 · London",
+      "city": "London",
+      "headline": "Brunel’s River Walk 10:00 AM + Disastrous London 2:30 PM (both booked)",
+      "weather": "High 59°F / low 47°F · partly cloudy with 40% chance of light showers",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "09:00",
+          "end_time": "09:30",
+          "text": "Walk from 53 Greek St to Embankment Underground Station — about 20 minutes",
+          "location": "Embankment Underground station, London (river exit)",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 20
+        },
+        {
+          "type": "Activity",
+          "time": "10:00",
+          "end_time": "12:00",
+          "text": "London Walks: Thames Sightseeing, Brunel’s River Walk — booked, 2 people. Meet at Embankment Underground station (river exit)",
+          "location": "Embankment Underground station, London (river exit)",
+          "why": "Booked. Walk ID 3315. Jonathan Ripchick, 2 attendees. Sat 17 Oct 2026, 10:00 AM. Meet at Embankment Underground station (river exit). Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. london@walks.com, +44 20 7624 3978, https://www.walks.com.",
+          "contact": {
+            "phone": "+44 20 7624 3978",
+            "website": "https://www.walks.com",
+            "email": "london@walks.com",
+            "booking_note": "Booked. Walk ID 3315. Reservation name Jonathan Ripchick, 2 attendees. Meet at Embankment Underground station (river exit). Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Lunch",
+          "time": "12:00",
+          "end_time": "13:30",
+          "text": "Lunch — location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "13:45",
+          "end_time": "14:06",
+          "text": "Circle line eastbound via Liverpool Street, 10 stops to Barbican",
+          "location": "Barbican Underground station, London",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 21
+        },
+        {
+          "type": "Activity",
+          "time": "14:30",
+          "end_time": "16:30",
+          "text": "London Walks: Disastrous London — booked, 2 people. Meet at Barbican Underground station",
+          "location": "Barbican Underground station, London",
+          "why": "Walk ID 430. Jonathan Ripchick, 2 attendees. Sat 17 Oct 2026, 2:30 PM. Meet at Barbican Underground station. Guides hold up the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. london@walks.com, +44 20 7624 3978, https://www.walks.com. Cancel: https://cms.walks.com/cancel/MjAyNjM1fGJjN2U1NjU2Zjc3YTE0NWU2MjllNWI0MGU2MTY1YzU1.",
+          "contact": {
+            "phone": "+44 20 7624 3978",
+            "website": "https://www.walks.com",
+            "email": "london@walks.com",
+            "booking_note": "Walk ID 430. Reservation name Jonathan Ripchick, 2 attendees. Look for the guide holding the London Walks flyer with the ‘Streets Ahead!’ blue plaque on the cover. Please let London Walks know if you are unable to attend. Cancel: https://cms.walks.com/cancel/MjAyNjM1fGJjN2U1NjU2Zjc3YTE0NWU2MjllNWI0MGU2MTY1YzU1."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 7 · Sun Oct 18 · Fly London → Paris Orly",
+      "city": "London",
+      "headline": "Checkout 10:00 AM · bags may stay at 53 Greek St until 12:00 PM LHR departure · BA8137 · Moxy Paris Clamart booked",
+      "weather": "High 57°F / low 46°F · mostly cloudy with 50% rain risk — bring layers & umbrella",
+      "items": [
+        {
+          "type": "Hotel",
+          "time": "10:00",
+          "end_time": null,
+          "text": "Check out of 53 Greek Street Airbnb — official check-out 10:00 AM",
+          "location": null,
+          "why": "Official check-out 10:00 AM. Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM.",
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "53 Greek Street Airbnb (HMFRRRZRTN)",
+            "address": "53 Greek Street, London W1D 3DR",
+            "phone": null,
+            "website": null,
+            "check_out_time": "10:00",
+            "confirmation_note": "Airbnb HMFRRRZRTN · check-out 10:00 AM Oct 18. Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM. Same-day BA8137 LHR→ORY at 3:00 PM."
+          },
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "10:00",
+          "end_time": null,
+          "text": "Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM",
+          "location": null,
+          "why": "Checkout is 10:00 AM; bags can stay at the apartment until the 12:00 PM departure for Heathrow.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:00",
+          "end_time": "12:33",
+          "text": "Elizabeth line service C37281 — 12:00 PM is the train departure from Tottenham Court Road (TCR) to Heathrow Terminals 2 & 3 (HXX), arrive 12:33 PM. Journey 0h 33m. Omio booking R26BT76X. Collect at a station machine before departure",
+          "location": null,
+          "why": "Omio booking R26BT76X. Jon’s booked return from 53 Greek Street to LHR. Sun Oct 18, 2026, Elizabeth line service C37281. 12:00 PM is the train departure from Tottenham Court Road (TCR), arriving 12:33 PM at Heathrow Terminals 2 & 3 (HXX). Journey 0h 33m. Standard class, Off-Peak Day Single. Semi-refundable. Collect-at-station ticket — collect from a self-service machine before departure. Passengers: Jonathan Ripchick, Benjamin Ripchick. Total USD 49.44. Times are London local (BST). If your flight leaves from Terminal 4, take the Elizabeth line from Terminals 2 & 3 to Terminal 4 for free (Heathrow Express doesn't stop at T4). Get a free inter-terminal transfer ticket from the machines in the station.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 33
+        },
+        {
+          "type": "Flight",
+          "time": "15:00",
+          "end_time": null,
+          "text": "London Heathrow (LHR) to Paris Orly (ORY) — British Airways BA8137",
+          "location": null,
+          "why": "Clock time 3:00–5:35 is 2h 35m; UK is 1 hour behind France in October, so airborne time is ~1h 35m.",
+          "contact": {
+            "website": "https://www.britishairways.com"
+          },
+          "flight": {
+            "carrier": "British Airways",
+            "flight_number": "BA8137",
+            "from_airport": "LHR",
+            "to_airport": "ORY",
+            "depart_time": "15:00",
+            "arrive_time": "17:35",
+            "duration": "1h 35m",
+            "nonstop": true,
+            "cabin": null,
+            "aircraft": null,
+            "confirmation_note": "From Jon’s 2026-09-14 email: BA8137 LHR 3:00 PM → ORY 5:35 PM. Published BA8137 is a BA codeshare on Vueling VY8961 (typically LHR T4 → ORY T3). Confirm the ticket and operating carrier with Jon / BA."
+          },
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Hotel",
+          "time": "17:35",
+          "end_time": null,
+          "text": "Moxy Paris Clamart — booked. Oct 18–19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Confirmation 83193251. Total stay 162.00 EUR. After BA8137 lands at ORY at 5:35 PM",
+          "location": "Moxy Paris Clamart",
+          "why": "Booked. Moxy Paris Clamart, Sun Oct 18 to Mon Oct 19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Confirmation no. 83193251. Total stay 162.00 EUR. Night's lodging after BA8137 lands at ORY at 5:35 PM. The confirmation did not include a street address or a check-in time.",
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Moxy Paris Clamart",
+            "address": null,
+            "phone": null,
+            "website": null,
+            "city": "Clamart",
+            "check_in_time": null,
+            "confirmation_note": "Booked. Confirmation no. 83193251. Sun Oct 18–Mon Oct 19, 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Total stay 162.00 EUR. After BA8137 lands at ORY at 5:35 PM. Street address and check-in time were not on the confirmation."
+          },
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 8 · Mon Oct 19 · Caen Memorial, Longues-sur-Mer, Arromanches, Bayeux",
+      "city": "Normandy",
+      "headline": "Depart Moxy Paris Clamart 8:00 AM — Caen Memorial Museum, Longues-sur-Mer Battery, Arromanches-les-Bains, then 4 Rue Franche",
+      "weather": "High 60°F / low 48°F · partly cloudy with 30% rain risk — breezy on the coast",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "08:00",
+          "end_time": "10:30",
+          "text": "Depart Moxy Paris Clamart and travel to Caen Memorial Museum. Trip should be 2:30 hours",
+          "location": "Caen Memorial Museum",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 150
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "13:00",
+          "text": "Caen Memorial Museum visit, including quick lunch",
+          "location": "Caen Memorial Museum",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "13:00",
+          "end_time": "13:45",
+          "text": "Travel from Caen Memorial Museum to Longues-sur-Mer Battery",
+          "location": "Longues-sur-Mer Battery",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 45
+        },
+        {
+          "type": "Activity",
+          "time": "13:45",
+          "end_time": "15:00",
+          "text": "Longues-sur-Mer Battery visit",
+          "location": "Longues-sur-Mer Battery",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "15:00",
+          "end_time": "15:15",
+          "text": "Travel from Longues-sur-Mer to Arromanches-les-Bains",
+          "location": "Arromanches-les-Bains",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 15
+        },
+        {
+          "type": "Activity",
+          "time": "15:15",
+          "end_time": "16:30",
+          "text": "Arromanches-les-Bains visit",
+          "location": "Arromanches-les-Bains",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Hotel",
+          "time": "16:30",
+          "end_time": "17:00",
+          "text": "Travel to Bayeux and check into 4 Rue Franche (Airbnb HMKWYPDKBE) — booked",
+          "location": "4 Rue Franche, Bayeux, France",
+          "why": "Booked. Home in Bayeux, hosted by Bruno, furnished apartment with cathedral view. Airbnb HMKWYPDKBE, 4 Rue Franche. Oct 19–22. Official check-in 5:00 PM. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO.",
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)",
+            "address": "4 Rue Franche, Bayeux, France",
+            "phone": null,
+            "website": null,
+            "check_in_time": "17:00",
+            "confirmation_note": "Airbnb HMKWYPDKBE · 4 Rue Franche, Bayeux · Oct 19–22 · official check-in 5:00 PM. Jon: travel to Bayeux and check in 4:30–5:00 PM on Oct 19. Official Airbnb check-out is 12:00 PM Oct 22; Jon: depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO."
+          },
+          "restaurant": null,
+          "duration_min": 30
+        },
+        {
+          "type": "Note",
+          "time": "17:00",
+          "end_time": "18:30",
+          "text": "Rest before dinner",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 9 · Tue Oct 20 · Mont Saint-Michel and Bayeux",
+      "city": "Normandy",
+      "headline": "Mont Saint-Michel, then a walk in Bayeux including the cathedral",
+      "weather": "High 62°F / low 49°F · partly cloudy, dry",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "09:00",
+          "end_time": "10:30",
+          "text": "Leave 4 Rue Franche for Mont Saint-Michel",
+          "location": "Mont Saint-Michel",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 90
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "14:00",
+          "text": "Visit Mont Saint-Michel, including quick lunch",
+          "location": "Mont Saint-Michel",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "14:00",
+          "end_time": "15:30",
+          "text": "Drive back to Bayeux. Optional to go back to something from prior day.",
+          "location": "4 Rue Franche, Bayeux, France",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 90
+        },
+        {
+          "type": "Activity",
+          "time": "15:30",
+          "end_time": "17:30",
+          "text": "Casual walking tour of Bayeux including cathedral. Optional to revisit something from 10/19/26.",
+          "location": "Bayeux Cathedral, Bayeux, France",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "17:30",
+          "end_time": "19:00",
+          "text": "Rest before dinner",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "19:00",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 10 · Wed Oct 21 · Objective Normandy",
+      "city": "Normandy",
+      "headline": "Meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM — Objective Normandy",
+      "weather": "High 58°F / low 44°F · partly cloudy, breezy on the causeway",
+      "items": [
+        {
+          "type": "Activity",
+          "time": "09:00",
+          "end_time": "17:00",
+          "text": "Meet Elisa at 4 Rue Franche for a full-day tour with Objective Normandy — American Sector (Utah, Omaha, American Cemetery)",
+          "location": "4 Rue Franche, Bayeux, France",
+          "why": "Jon: 9:00 AM–5:00 PM, meet Elisa at 4 Rue Franche. Booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis. Full-day American Sector: Utah, Omaha, American Cemetery. contact@objectivenormandy.com.",
+          "contact": {
+            "website": "https://objectivenormandy.com/",
+            "booking_note": "Pickup is the Bayeux apartment at 9:00 AM Oct 21. Jon: meet Elisa, 9:00 AM–5:00 PM. contact@objectivenormandy.com."
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "17:00",
+          "end_time": "18:30",
+          "text": "Rest before dinner",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Dinner",
+          "time": "18:30",
+          "end_time": null,
+          "text": "Dinner location TBD",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 11 · Thu Oct 22 · Fly Orly → Porto",
+      "city": "Porto",
+      "headline": "Depart Bayeux 11:00 AM → ORY · TP455 ORY→OPO 4:50 PM · Ribeira apartment 3rd floor",
+      "weather": "High 72°F / low 57°F · partly cloudy, chance of light evening rain",
+      "items": [
+        {
+          "type": "Hotel",
+          "time": "11:00",
+          "end_time": null,
+          "text": "Check out of 4 Rue Franche, Bayeux — depart 11:00 AM for ORY / TP455 to OPO",
+          "location": null,
+          "why": "Jon: depart Bayeux 11:00 AM on Oct 22 to drive to ORY for the Porto flight. Official Airbnb check-out is 12:00 PM.",
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Home in Bayeux — furnished apartment with cathedral view (Airbnb, hosted by Bruno)",
+            "address": "4 Rue Franche, Bayeux, France",
+            "phone": null,
+            "website": null,
+            "check_out_time": "11:00",
+            "confirmation_note": "Airbnb HMKWYPDKBE · depart 11:00 AM Oct 22 to drive to ORY for TP455 to OPO. Official Airbnb check-out is 12:00 PM. TP455 ORY 4:50 PM."
+          },
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "11:00",
+          "end_time": null,
+          "text": "Bayeux → Paris Orly (ORY) — depart 11:00 AM to drive to ORY for TP455 to OPO",
+          "location": null,
+          "why": "Jon: depart Bayeux 11:00 AM Oct 22 to drive to ORY for the OPO flight. TP455 remains 4:50 PM. Driver and duration not specified.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Flight",
+          "time": "16:50",
+          "end_time": null,
+          "text": "Paris Orly (ORY) to Porto (OPO) — TAP TP455",
+          "location": null,
+          "why": null,
+          "contact": {
+            "website": "https://www.flytap.com"
+          },
+          "flight": {
+            "carrier": "TAP Air Portugal",
+            "flight_number": "TP455",
+            "from_airport": "ORY",
+            "to_airport": "OPO",
+            "depart_time": "16:50",
+            "arrive_time": "18:05",
+            "duration": "2h 15m",
+            "nonstop": true,
+            "cabin": null,
+            "aircraft": null,
+            "confirmation_note": "From Jon’s 2026-09-14 email: TP455 ORY 4:50 PM → OPO 6:05 PM. Portugal is 1 hour behind mainland France, so airborne time is ~2h 15m. Confirm the ticket with Jon / TAP."
+          },
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:20",
+          "end_time": null,
+          "text": "OPO → Rua dos Mercadores 77 — method not specified",
+          "location": "Rua dos Mercadores 77, Ribeira São João, Porto, Portugal (3rd floor)",
+          "why": "Apartment is in Ribeira São João (Jon: Ribera San Joao), 3rd floor. Official check-in 4:00 PM; flight lands 6:05 PM.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Hotel",
+          "time": "18:45",
+          "end_time": null,
+          "text": "Check in to Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Rua dos Mercadores 77 Airbnb — Ribeira São João, 3rd floor (HM549AK8C2)",
+            "address": "Rua dos Mercadores 77, Ribeira São João, Porto, Portugal (3rd floor)",
+            "phone": null,
+            "website": null,
+            "check_in_time": "16:00",
+            "confirmation_note": "Airbnb HM549AK8C2 · Rua dos Mercadores 77, Ribeira São João, Apt 3rd floor · Oct 22–26 · check-in 4:00 PM, check-out 11:00 AM. From Jon’s 2026-09-14 email (he wrote “Ribera San Joao”). Unit number beyond “3rd floor” was not given. Flight lands after official check-in — that is fine if access is arranged."
+          },
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Note",
+          "time": "19:30",
+          "end_time": null,
+          "text": "Evening in Ribeira — self-guided; no dinner named for arrival night",
+          "location": "Cais da Ribeira, 4050-510 Porto, Portugal",
+          "why": "Aug plan for Porto is self-guided city + Douro Valley. The apartment is on Rua dos Mercadores in Ribeira.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 12 · Fri Oct 23 · Port Cellars & Azulejo Art",
+      "city": "Porto",
+      "headline": "Morning port tasting at Graham's Lodge, afternoon at São Bento Station",
+      "weather": "High 71°F / low 56°F · partly sunny",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "09:35",
+          "end_time": null,
+          "text": "Travel from the Airbnb to Graham's Port Lodge, Vila Nova de Gaia — 15–25 min by taxi/rideshare (crosses the Douro; exact time depends on the confirmed address)",
+          "location": null,
+          "why": "From Rua dos Mercadores 77 (Ribeira São João, 3rd floor).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 20
+        },
+        {
+          "type": "Activity",
+          "time": "10:00",
+          "end_time": "11:30",
+          "text": "Port tasting at Graham's Lodge — cellar tour & vintage tasting",
+          "location": "Rua do Agro 141, 4400-281 Vila Nova de Gaia",
+          "why": "Graham's 1890 Lodge sits high on the Vila Nova de Gaia hillside with sweeping Douro views.",
+          "contact": {
+            "phone": "+351 22 377 6484",
+            "website": "https://www.grahams-port.com",
+            "booking_note": "Book 3+ days ahead via website.",
+            "hours": "Daily 9:30am–6pm",
+            "price": "€20–45/person depending on tasting tier"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:35",
+          "end_time": null,
+          "text": "Cross back to central Porto — approx. 25 min: a steep, partly uphill walk down from Graham's to the Dom Luís I bridge and up into the center, or ~10 min by taxi/Uber",
+          "location": null,
+          "why": "Rideshare recommended over walking for this leg — Graham's sits on a steep hill above the river.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 25
+        },
+        {
+          "type": "Lunch",
+          "time": "13:00",
+          "end_time": null,
+          "text": "Lunch at A Pizzaiolo Clérigos",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "A Pizzaiolo Clérigos",
+            "neighborhood": "Central Porto",
+            "cuisine": "Italian, Pizzeria",
+            "price_range": "$$",
+            "why": "Simple pizza and pasta, no seafood — a 5-minute walk from Clérigos Tower toward São Bento.",
+            "contact": {
+              "address": "Rua Cândido dos Reis 18, Porto",
+              "phone": "+351 22 205 5071",
+              "hours": "Daily, roughly 12–3pm & 7pm–midnight (confirm exact midday close before relying on it)"
+            },
+            "reservation": {
+              "platform": "opentable",
+              "url": "https://www.opentable.com/r/pizzaiolo-clerigos-porto"
+            },
+            "open_days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "backup": {
+              "name": "Tapabento",
+              "neighborhood": "Central Porto",
+              "cuisine": "Portuguese Tapas",
+              "price_range": "$$",
+              "why": "Right next to São Bento station — order a full portion of one simple dish rather than the small-plates spread.",
+              "contact": {
+                "phone": "+351 912 881 272"
+              },
+              "reservation": {
+                "platform": "phone"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=A%20Pizzaiolo%20Cl%C3%A9rigos%20Central%20Porto%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "15:15",
+          "end_time": null,
+          "text": "Walk to São Bento Station — approx. 6 min (both in central Porto)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 6
+        },
+        {
+          "type": "Activity",
+          "time": "15:30",
+          "end_time": "16:15",
+          "text": "São Bento Station azulejo panels — 20,000 hand-painted tiles depicting Portuguese history",
+          "location": "Praca Almeida Garrett, 4000-069 Porto",
+          "why": "São Bento's entrance hall is covered floor-to-ceiling in roughly 20,000 azulejo tiles, painted 1905–1916 by Jorge Colaço — scenes of Portuguese battles, royal processions, and rural life. Free, and one of the world's most beautiful train stations.",
+          "contact": {
+            "phone": "+351 707 210 220",
+            "website": "https://www.cp.pt",
+            "booking_note": "No reservation — just walk in.",
+            "hours": "Daily 5:30am–1am (station open)",
+            "price": "Free"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "19:45",
+          "end_time": null,
+          "text": "Walk to KOB by Olivier, Rua Conde de Vizela — approx. 10 min from São Bento",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 10
+        },
+        {
+          "type": "Dinner",
+          "time": "20:00",
+          "end_time": null,
+          "text": "Dinner at KOB by Olivier",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "KOB by Olivier",
+            "neighborhood": "Central Porto",
+            "cuisine": "Steakhouse",
+            "price_range": "$$$",
+            "why": "Simple, premium grilled steak cuts with a truffle pasta side — central Porto, no taxi-both-ways trip out to Foz do Douro needed.",
+            "contact": {
+              "address": "Rua Conde de Vizela 149, 4050-640 Porto",
+              "phone": "+351 918 280 080",
+              "hours": "Fri 12:30–3pm & 7:30pm–midnight"
+            },
+            "reservation": {
+              "platform": "thefork",
+              "url": "https://www.thefork.com/restaurant/kob-by-olivier-porto-r462453"
+            },
+            "open_days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "backup": {
+              "name": "Ribeira Square",
+              "neighborhood": "Ribeira",
+              "cuisine": "Portuguese",
+              "price_range": "$$",
+              "why": "Also this trip's Day 11 dinner spot — fine as a repeat backup.",
+              "contact": {
+                "phone": "+351 912 491 771"
+              },
+              "reservation": {
+                "platform": "phone"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=KOB%20by%20Olivier%20Central%20Porto%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 13 · Sat Oct 24 · Douro Valley Wine Country",
+      "city": "Porto",
+      "headline": "Private Douro valley day — Quinta do Vallado tasting & river lunch",
+      "weather": "High 70°F / low 55°F · sunny",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "08:30",
+          "end_time": null,
+          "text": "Private driver pickup for Douro valley day — 2h drive to Peso da Regua via A4",
+          "location": null,
+          "why": "Book via GetYourGuide (Douro Exclusive private tours) or hotel concierge — confirm 3 days ahead",
+          "contact": {
+            "phone": "+351 91 234 5678"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 120
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "12:30",
+          "text": "Quinta do Vallado — cellar tour, vineyard walk, and premium tasting",
+          "location": "Vilarinho dos Freires, 5050-364 Peso da Regua",
+          "why": "One of the Douro's oldest quintas, first documented in 1716 and family-owned since 1818 (the Ferreira family, now sixth generation).",
+          "contact": {
+            "phone": "+351 254 323 147",
+            "website": "https://www.quintadovallado.com",
+            "booking_note": "Book 7+ days ahead via website or email reservas@quintadovallado.com",
+            "hours": "Daily 10am–6pm",
+            "price": "€30–50/person for premium tasting"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:45",
+          "end_time": null,
+          "text": "Short drive from Quinta do Vallado to Tasca da Quinta, Peso da Régua — approx. 10 min (same private driver)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 10
+        },
+        {
+          "type": "Lunch",
+          "time": "13:00",
+          "end_time": null,
+          "text": "Lunch at Tasca da Quinta",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "Tasca da Quinta",
+            "neighborhood": "Peso da Régua, Douro Valley",
+            "cuisine": "Portuguese Tasca",
+            "price_range": "$$",
+            "why": "Small, simple tasca menu — grilled meats and pork ribs, near the Douro Museum. Very small; reservation recommended given the tour's timing.",
+            "contact": {
+              "address": "Rua do Marquês de Pombal 42 R/C, 5050-282 Peso da Régua",
+              "phone": "+351 918 754 102"
+            },
+            "reservation": {
+              "platform": "phone",
+              "phone": "+351 918 754 102"
+            },
+            "open_days": [
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat"
+            ],
+            "closure_note": "Address re-confirmed in a second, independent research pass (matches what was originally recorded, with a fuller postal code). Closed Sunday and Monday — this Saturday lunch booking is fine.",
+            "backup": {
+              "name": "Castas e Pratos",
+              "neighborhood": "Peso da Régua, Douro Valley",
+              "cuisine": "Portuguese Wine Bar",
+              "price_range": "$$$",
+              "why": "Old train-station warehouse with a terrace — more restaurant-modern than a plain tasca, but still has straightforward grilled meat options.",
+              "contact": {
+                "phone": "+351 254 323 290",
+                "address": "Rua José Vasques Osório, 5050-280 Peso da Régua",
+                "hours": "Mon 12:30–10:30pm; Tue–Sun 10:30am–10:30pm (Wed to 11pm)"
+              },
+              "reservation": {
+                "platform": "phone"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Tasca%20da%20Quinta%20Peso%20da%20R%C3%A9gua%2C%20Douro%20Valley%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "15:30",
+          "end_time": null,
+          "text": "Return drive to Porto — 2h via N222 scenic river road",
+          "location": null,
+          "why": "Same private driver — scenic route confirmed",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 120
+        },
+        {
+          "type": "Dinner",
+          "time": "19:30",
+          "end_time": null,
+          "text": "Dinner at Adega São Nicolau",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "Adega São Nicolau",
+            "neighborhood": "Central Porto",
+            "cuisine": "Portuguese Traditional",
+            "price_range": "$$",
+            "why": "Traditional Portuguese roasted/grilled meat dishes — steer toward the simpler grilled options rather than the heavier regional specialties.",
+            "contact": {
+              "address": "Rua de São Nicolau 1, 4050-561 Porto",
+              "phone": "+351 222 008 232",
+              "hours": "Mon–Sat 12–11pm, Sun closed"
+            },
+            "reservation": {
+              "platform": "phone",
+              "phone": "+351 222 008 232"
+            },
+            "open_days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat"
+            ],
+            "closure_note": "Closed Sundays. This Saturday dinner booking has no conflict. Booking ahead recommended.",
+            "backup": {
+              "name": "Casa Aleixo",
+              "neighborhood": "Near Campanhã station, Porto",
+              "cuisine": "Portuguese Traditional",
+              "price_range": "$$",
+              "why": "Known for veal steak (posta de vitela) — order the steak rather than the octopus/tripe specialties for the simpler option.",
+              "contact": {
+                "phone": "+351 225 370 462"
+              },
+              "reservation": {
+                "platform": "phone"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Adega%20S%C3%A3o%20Nicolau%20Central%20Porto%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 14 · Sun Oct 25 · Bookshop, Clerigos Tower & Farewell Dinner",
+      "city": "Porto",
+      "headline": "Climb Clérigos Tower at sunset for the city's best panorama",
+      "weather": "High 69°F / low 54°F · mostly sunny, light breeze",
+      "items": [
+        {
+          "type": "Transport",
+          "time": "10:05",
+          "end_time": null,
+          "text": "Travel from the Airbnb to Livraria Lello — 10–20 min on foot or by taxi (central Porto is very walkable; exact time depends on the confirmed address)",
+          "location": null,
+          "why": "From Rua dos Mercadores 77 (Ribeira São João, 3rd floor).",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 20
+        },
+        {
+          "type": "Activity",
+          "time": "10:30",
+          "end_time": "11:15",
+          "text": "Livraria Lello — the bookshop long rumored to have inspired Hogwarts library",
+          "location": "Rua das Carmelitas 144, 4050-161 Porto",
+          "why": "The neo-Gothic staircase and stained-glass ceiling make Lello one of the world's most beautiful bookshops. J.K. Rowling did live in Porto in the early '90s while writing early Harry Potter material, but the specific claim that Lello inspired Hogwarts's library is a popular, widely-repeated legend she has publicly and explicitly denied (2020: \"I was never inspired by Lello's, I didn't even enter it\") — worth knowing before repeating it as fact on-site.",
+          "contact": {
+            "phone": "+351 22 200 2037",
+            "website": "https://www.livrarialello.pt",
+            "booking_note": "Buy timed-entry ticket online 1–2 days ahead to skip the queue.",
+            "hours": "Daily 9:30am–7pm",
+            "price": "€5 entry (redeemable with book purchase)"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "12:45",
+          "end_time": null,
+          "text": "Walk to Francesinhas Al Forno da Baixa, Rua do Almada — approx. 10 min",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 10
+        },
+        {
+          "type": "Lunch",
+          "time": "13:00",
+          "end_time": null,
+          "text": "Lunch at Francesinhas Al Forno da Baixa",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "Francesinhas Al Forno da Baixa",
+            "neighborhood": "Baixa",
+            "cuisine": "Portuguese casual",
+            "price_range": "$",
+            "why": "Casual Baixa spot specializing in francesinha, including a vegan option — confirmed open Sundays.",
+            "contact": {
+              "address": "Rua do Almada 160, 4050-031 Porto",
+              "phone": "+351 912 551 855",
+              "hours": "Daily 12:00–3:00 PM & 7:00 PM–4:00 AM"
+            },
+            "reservation": {
+              "platform": "walkin"
+            },
+            "open_days": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "closure_note": "Confirmed open Sundays (daily hours, no closed day).",
+            "backup": {
+              "name": "Mercado do Bolhao",
+              "neighborhood": "Baixa",
+              "cuisine": "Portuguese market food stalls",
+              "price_range": "$",
+              "why": "Market food-stall alternative, same neighborhood.",
+              "contact": {},
+              "reservation": {
+                "platform": "walkin"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=Francesinhas%20Al%20Forno%20da%20Baixa%20Baixa%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "17:20",
+          "end_time": null,
+          "text": "Walk to Clérigos Tower — approx. 5 min (Rua de Sao Filipe de Nery is right by Livraria Lello / Rua das Carmelitas)",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 5
+        },
+        {
+          "type": "Activity",
+          "time": "17:30",
+          "end_time": "18:30",
+          "text": "Clérigos Tower — climb 225 steps for sunset panorama over Porto",
+          "location": "Rua de Sao Filipe de Nery, 4050-546 Porto",
+          "why": "The 75-meter baroque bell tower is Porto's most iconic landmark.",
+          "contact": {
+            "phone": "+351 22 014 5489",
+            "website": "https://www.torredosclerigos.pt",
+            "booking_note": "No reservation needed — buy ticket on-site or online.",
+            "hours": "Daily 9am–7pm (last entry 6:30pm)",
+            "price": "€6/person"
+          },
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "19:35",
+          "end_time": null,
+          "text": "Cross to Vila Nova de Gaia for the farewell dinner at 1828 Steakhouse (World of Wine) — approx. 20 min: walk down and across the Dom Luis I bridge, or ~10 min by taxi/Uber",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 20
+        },
+        {
+          "type": "Dinner",
+          "time": "20:00",
+          "end_time": null,
+          "text": "Farewell dinner at 1828 Steakhouse",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": {
+            "name": "1828 Steakhouse",
+            "neighborhood": "Vila Nova de Gaia",
+            "cuisine": "Steakhouse",
+            "price_range": "$$$",
+            "why": "Premium but straightforward grilled steak with dramatic river/city views from the World of Wine complex — a special-but-simple close to the trip.",
+            "contact": {
+              "address": "Rua do Choupelo 39, 4400-088 Vila Nova de Gaia (5th floor, World of Wine)",
+              "phone": "+351 22 012 1200",
+              "hours": "Tue–Sun 12–11pm (weekday lunch availability varies — confirm ahead)"
+            },
+            "reservation": {
+              "platform": "thefork",
+              "url": "https://www.thefork.com/restaurant/1828-r739174"
+            },
+            "open_days": [
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ],
+            "backup": {
+              "name": "Steakhouse à Brasileira",
+              "neighborhood": "Vila Nova de Gaia",
+              "cuisine": "Brazilian Churrascaria",
+              "price_range": "$$",
+              "why": "Picanha and Black Angus brisket — meat-forward, simple, festive. Closed Tuesdays.",
+              "contact": {
+                "phone": "+351 22 492 4768"
+              },
+              "reservation": {
+                "platform": "phone"
+              }
+            },
+            "verify_status": "verify_before_booking",
+            "verify_url": "https://www.google.com/maps/search/?api=1&query=1828%20Steakhouse%20Vila%20Nova%20de%20Gaia%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
+          },
+          "duration_min": null
+        }
+      ]
+    },
+    {
+      "label": "Day 15 · Mon Oct 26 · Depart Porto for Newark",
+      "city": "Porto",
+      "headline": "Checkout 11:00 AM · TAP TP211 7:30 PM · Oct 26",
+      "weather": "High 68°F / low 53°F · partly cloudy",
+      "items": [
+        {
+          "type": "Hotel",
+          "time": "11:00",
+          "end_time": null,
+          "text": "Check out of Rua dos Mercadores 77 — official check-out 11:00 AM",
+          "location": null,
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": {
+            "name": "Rua dos Mercadores 77 Airbnb — Ribeira São João, 3rd floor (HM549AK8C2)",
+            "address": "Rua dos Mercadores 77, Ribeira São João, Porto, Portugal (3rd floor)",
+            "phone": null,
+            "website": null,
+            "check_out_time": "11:00",
+            "confirmation_note": "Airbnb HM549AK8C2 · check-out 11:00 AM Oct 26. Return TAP TP211 OPO→EWR that evening."
+          },
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "16:00",
+          "end_time": null,
+          "text": "Rua dos Mercadores 77 → Porto Airport (OPO) — method not specified",
+          "location": null,
+          "why": "Flight is 7:30 PM. No driver or duration was in the email.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Flight",
+          "time": "19:30",
+          "end_time": null,
+          "text": "Porto (OPO) to Newark (EWR) — TAP TP211 · Oct 26",
+          "location": null,
+          "why": null,
+          "contact": {
+            "website": "https://www.flytap.com"
+          },
+          "flight": {
+            "carrier": "TAP Air Portugal",
+            "flight_number": "TP211",
+            "from_airport": "OPO",
+            "to_airport": "EWR",
+            "depart_time": "19:30",
+            "arrive_time": "23:55",
+            "duration": "8h 25m",
+            "nonstop": true,
+            "cabin": null,
+            "aircraft": null,
+            "confirmation_note": "TAP TP211 OPO 7:30 PM → EWR 11:55 PM on Oct 26. Duration 8h 25m is from those clock times on Oct 26 (Portugal already off summer time; US still on EDT)."
+          },
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        }
+      ]
+    }
+  ]
+}
+;
