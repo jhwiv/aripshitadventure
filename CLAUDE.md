@@ -255,13 +255,16 @@ at 3.3MB total; unnecessary for phone/tablet display width).
   re-embedded into `index.html`'s matching `<script id="trip-data">`/
   `<script id="pins-data">` blob, or the live site won't reflect it** —
   editing the data files alone does nothing.
-- If the new itinerary changes cities/days/schedule, `jhwiv/cloudflare-worker`'s
-  `wwii2026` `ITINERARY_SCHEDULE`/`WWII2026_ITINERARY` blob (`src/index.js`)
-  needs the matching update — via **PR**, never a direct push to `main`
-  (that repo auto-deploys to the shared production Worker every live trip
-  site's chat depends on). Verify segment contiguity (`from[i+1] ===
-  to[i]` at every city transition) before opening the PR — two real bugs
-  shipped from getting this wrong across differing UTC offsets.
+- The concierge is **this repo's** `functions/api/chat.js`, not
+  `jhwiv/cloudflare-worker`. It builds its itinerary block from
+  `data/trip-data.json` at module load, so a trip-data edit is picked up
+  on the next Pages deploy (the JSON import is bundled; re-embed
+  `index.html` as usual for the page itself). Do **not** point `CHAT_API`
+  back at `cloudflare-worker.jhwiv-online.workers.dev` — that hostname was
+  overwritten by the Railbird worker (`jhwiv/ne-racing`) and has no chat
+  route. Do not redeploy that worker to "fix" chat.
+- Nearby is `functions/api/nearby.js` (server-side Overpass). Do not put
+  the browser back on `overpass-api.de` directly.
 
 ### 8. Editorial commentary belongs in the decisions log, never in traveler-facing text
 
@@ -488,6 +491,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Concierge and Nearby were dead after the panels opened (2026-10-02).** Concierge posted to `https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026`. That workers.dev name now serves the Railbird/ne-racing proxy (CORS origin `https://railbirdai.com`, no `/api/chat`). Nearby posted Overpass from the browser; public instances time out or 429. Neither worker was redeployed. Fix is same-origin Pages Functions: `functions/api/chat.js` ports the wwii2026 handler (Workers AI `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, same SSE `data: {"response"}` / `data: [DONE]` shape, lat/lng/gpsStatus/localTime/activeTab/history) and builds the itinerary from `data/trip-data.json` so it is London → Normandy → Porto Oct 12–26, not the worker's stale Nuremberg / Oct 10–24 prompt. `wrangler.toml` names the existing Pages project `aripshitadventure`, output `.`, and binds `[ai] binding = "AI"`. `functions/api/flight-status.js` and the cache-bust workflow use no env vars, so no `[vars]` block (secrets, none required today, stay in the dashboard). `functions/api/nearby.js` allowlists the four button category strings, clamps radius 100–2000, tries four Overpass mirrors at ~6s each, and caches 120s via `caches.default`. `app.js` `CHAT_API` is `/api/chat`; `runLocalSearch` posts `/api/nearby` and, on failure or an empty list, renders an "Open in Google Maps" link (`maps.google.com/?q=`, same pattern as `directionsLinksHTML`). Stamp `v=20261002-concierge`, SW `trip-cache-v10`. `sw.js` already returned before caching `/api/*`; the comment now says chat and nearby too. No CSP `connect-src` entry for workers.dev existed in `_headers` or `index.html` (weather and OSM tiles are still browser fetches), so none was removed. Missing `env.AI` returns SSE text the panel can show, not a thrown connection error.
 
 - **Phone width: Disastrous London booking card overflowed the viewport (2026-09-29).** At 390px the Book & Confirm row for Disastrous London (and the same cancel URL in that day's `why`) painted to ~571px and set `documentElement.scrollWidth` to 607. Cause was CSS, not the copy: `.timeline-row` is `grid-template-columns: 1fr`, and a `1fr` track's minimum is min-content, so the unbroken `cms.walks.com/cancel/…` token sized the column. The chip, `.tl-name`, and `.tl-note` all stretched to that track. Fix is layout only: `minmax(0, 1fr)`, `min-width: 0` on the row and its children, `overflow-wrap: anywhere` on the name/note and on `.item-text`/`.item-why` (same URL, day card), and `.book-chip` wraps (`white-space: normal`, `max-width: 100%`). No itinerary text changed. Stamp `v=20260929-width` and `trip-cache-v9`, with `[skip cache-bust]` so Pages does not race a second deploy.
 

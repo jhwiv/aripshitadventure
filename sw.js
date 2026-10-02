@@ -18,12 +18,12 @@
 // individual day tabs are all client-side render, so no extra requests
 // there, but this also covers vendor/leaflet files, the manifest, etc.
 //
-// Deliberately does NOT touch third-party requests (weather, maps tiles,
-// Overpass local search, the chat worker) or /api/ (flight-status) - those
-// need to be live or fail, and already degrade gracefully ("Weather
-// unavailable" etc.) when offline.
+// Deliberately does NOT touch third-party requests (weather, map tiles)
+// or anything under /api/ (flight-status, concierge chat, nearby search).
+// Those need to be live or fail. A cached /api response would keep serving
+// a stale chat stream or an old Overpass payload after a fix.
 
-const CACHE_NAME = 'trip-cache-v9';
+const CACHE_NAME = 'trip-cache-v10';
 const ALWAYS_PRECACHE = [
   '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',
@@ -98,6 +98,8 @@ self.addEventListener('fetch', function (event) {
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  // Never cache function responses. POST chat/nearby are already skipped
+  // by the method check above; this also covers GET /api/flight-status.
   if (url.pathname.indexOf('/api/') === 0) return;
 
   event.respondWith(

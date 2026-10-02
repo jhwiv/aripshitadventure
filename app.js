@@ -4,9 +4,10 @@
   var TRIP = JSON.parse(document.getElementById('trip-data').textContent);
   var PINS = JSON.parse(document.getElementById('pins-data').textContent);
 
-  // Same worker that already backs zurich-weekend.com's concierge chat —
-  // this trip is registered there under the "wwii2026" site key.
-  var CHAT_API = 'https://cloudflare-worker.jhwiv-online.workers.dev/api/chat/wwii2026';
+  // Same-origin Pages Function (functions/api/chat.js). The old
+  // cloudflare-worker.jhwiv-online.workers.dev hostname now serves Railbird
+  // and has no /api/chat route — do not point this back at it.
+  var CHAT_API = '/api/chat';
 
   var CITY_COLORS = { London: '#3f7d86', Normandy: '#c9524b', Porto: '#c9a24b' };
   var CITY_FLAGS = { London: '🇬🇧', Normandy: '🇫🇷', Porto: '🇵🇹' };
@@ -2297,23 +2298,41 @@
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
+  var NEARBY_SEARCH_LABEL = {
+    'cafe|restaurant|bakery': 'coffee',
+    'restaurant|cafe': 'restaurants',
+    'bar|pub': 'bars and pubs',
+    'pharmacy': 'pharmacy'
+  };
+  function nearbyMapsQuery(categories, center) {
+    var label = NEARBY_SEARCH_LABEL[categories] || 'places';
+    return label + ' near ' + Number(center.lat).toFixed(4) + ',' + Number(center.lng).toFixed(4);
+  }
+  function nearbyMapsFallback(categories, center) {
+    var q = nearbyMapsQuery(categories, center);
+    var href = safeHref('https://maps.google.com/?q=' + encodeURIComponent(q));
+    if (!href) return '';
+    return '<p class="ai-note"><a href="' + href + '" target="_blank" rel="noopener">Open in Google Maps</a></p>';
+  }
+
   async function runLocalSearch(categories) {
     localResults.textContent = 'Searching nearby…';
     var pos = lastKnownPosition || await getPosition();
     var cityName = viewedCityName();
     var center = pos || currentCityCoords();
-    var query = '[out:json][timeout:8];(node["amenity"~"' + categories + '"]["name"](around:800,' + center.lat + ',' + center.lng + '););out body 20;';
     var cityNote = (!pos && cityName)
       ? '<p class="ai-note">GPS off — searching near ' + esc(cityName) + ' (the city tab you\'re viewing).</p>'
       : '';
+    var mapsFallback = nearbyMapsFallback(categories, center);
     try {
-      var res = await fetch('https://overpass-api.de/api/interpreter', {
+      var res = await fetch('/api/nearby', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'data=' + encodeURIComponent(query)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: center.lat, lng: center.lng, categories: categories })
       });
-      if (!res.ok) throw new Error('overpass ' + res.status);
+      if (!res.ok) throw new Error('nearby ' + res.status);
       var data = await res.json();
+      if (!data || data.ok === false) throw new Error((data && data.error) || 'nearby');
       var places = (data.elements || [])
         .filter(function (el) { return el.tags && el.tags.name; })
         .map(function (el) {
@@ -2327,7 +2346,7 @@
         .slice(0, 10);
 
       if (!places.length) {
-        localResults.innerHTML = cityNote + 'No results nearby — try Google Maps directly.';
+        localResults.innerHTML = cityNote + '<p>No results nearby.</p>' + mapsFallback;
         return;
       }
       localResults.innerHTML = cityNote + places.map(function (p) {
@@ -2338,7 +2357,7 @@
           '</div>';
       }).join('');
     } catch (err) {
-      localResults.textContent = 'Local search is unavailable right now (network error). Try again in a moment.';
+      localResults.innerHTML = cityNote + '<p>Local search is unavailable right now.</p>' + mapsFallback;
     }
   }
 

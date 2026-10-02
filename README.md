@@ -17,8 +17,8 @@ live site won't reflect it.** `data/trip-data.min.json` is a minified mirror of
 - Day-by-day itinerary rendered from the `trip-data` JSON embedded in `index.html` (sourced from `data/trip-data.json`)
 - Live weather per city (Open-Meteo, free/keyless) — `data/pins.json` holds city coordinates
 - Interactive map (Leaflet, vendored locally in `vendor/leaflet/` — no CDN dependency; tiles from OpenStreetMap's standard tile server, free and keyless. Previously used CartoDB's basemap tiles, which started requiring a signup-gated API key in 2026 and were watermarking unauthenticated requests "API KEY REQUIRED" — switched to OSM to stay genuinely keyless.)
-- Location-aware local search (OpenStreetMap Overpass API — coffee/food/drinks/pharmacy near you or the city you're viewing)
-- AI trip concierge chat — streams from the `wwii2026` route on the shared `jhwiv/cloudflare-worker` project (same worker that backs zurich-weekend.com), which itself calls Cloudflare Workers AI + Open-Meteo + Overpass server-side
+- Location-aware local search (coffee/food/drinks/pharmacy near you or the city you're viewing) — the browser posts to same-origin `/api/nearby`, which queries OpenStreetMap Overpass server-side
+- AI trip concierge chat — streams from same-origin `/api/chat` (Cloudflare Pages Function, Workers AI). It used to call the shared `jhwiv/cloudflare-worker` `wwii2026` route; that workers.dev hostname now serves a different app and is not used
 
 ## Coordinate accuracy
 

@@ -1,0 +1,16 @@
+# Cloudflare Pages project for aripshitadventure.com
+# (production hostname aripshitadventure.pages.dev).
+#
+# functions/api/flight-status.js reads no env bindings — it proxies to the
+# shared flight-status worker with a plain fetch. This file declares only
+# the Workers AI binding the concierge needs. It does not set [vars].
+# Dashboard secrets, if any are added later, are not listed here and are
+# left in place (a wrangler.toml that omits a secret does not delete it).
+# There is no GitHub Action running `wrangler pages deploy`; Pages builds
+# from the git integration and applies this binding on that deploy.
+name = "aripshitadventure"
+pages_build_output_dir = "."
+compatibility_date = "2026-09-01"
+
+[ai]
+binding = "AI"
