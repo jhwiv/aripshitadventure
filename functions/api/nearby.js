@@ -2,10 +2,14 @@
 //
 // The browser used to POST Overpass itself. Public Overpass instances
 // close the connection, time out, or return 429/504 often enough that
-// Nearby sat on "Searching nearby…" and then failed. This function asks
-// the same mirrors from the server, with a short per-try timeout, and
-// returns the first valid JSON. caches.default holds a brief copy so a
-// second tap in the same spot does not hammer Overpass again.
+// Nearby sat on "Searching nearby…" and then failed. Asking the mirrors
+// one after another made that worse: the four that do not answer each
+// burned ~6s, so an uncached tap took 19–25s before the French interpreter
+// replied. This function starts every mirror at once, keeps the first
+// valid JSON, and aborts the rest. The whole race has an ~8s budget.
+// After that the function returns a clean error and the panel shows the
+// Google Maps link. caches.default holds a brief copy keyed on rounded
+// lat/lng + category so a second tap in the same spot does not race again.
 //
 // Body: { lat, lng, categories, radius? }
 // categories must be one of the four button values in index.html.
@@ -17,24 +21,23 @@ const ALLOWED_CATEGORIES = new Set([
   'pharmacy',
 ]);
 
-// The first four are the required order. On 2026-10-02 all four were
-// down or timed out from both this environment and the Pages function
-// (overpass-api.de returned 521). The French and Swiss public interpreters
-// answered the same query in about a second, so they are extra fallbacks
-// after the required list — still first-good-JSON, still not cached on failure.
+// French and Swiss interpreters answered in about a second on 2026-10-02.
+// The other four (de, kumi, private.coffee, mail.ru) returned 521 or hung.
+// All six start together; list order is not a wait order. Promise.any
+// keeps whichever returns valid JSON first.
 const MIRRORS = [
+  'https://overpass.openstreetmap.fr/api/interpreter',
+  'https://overpass.osm.ch/api/interpreter',
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
-  'https://overpass.openstreetmap.fr/api/interpreter',
-  'https://overpass.osm.ch/api/interpreter',
 ];
 
 const DEFAULT_RADIUS = 800;
 const MIN_RADIUS = 100;
 const MAX_RADIUS = 2000;
-const TRY_TIMEOUT_MS = 6000;
+const TOTAL_BUDGET_MS = 8000;
 const CACHE_SECONDS = 120;
 
 const JSON_HEADERS = {
@@ -83,39 +86,57 @@ export async function onRequestPost(context) {
   const cached = await cacheMatch(cacheKey);
   if (cached) return cached;
 
-  const query = `[out:json][timeout:8];(node["amenity"~"${categories}"]["name"](around:${radius},${lat},${lng}););out body 20;`;
-  const errors = [];
-
-  for (const endpoint of MIRRORS) {
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json',
-          'User-Agent': 'aripshitadventure-nearby/1.0 (trip guide)',
-        },
-        body: 'data=' + encodeURIComponent(query),
-        signal: AbortSignal.timeout(TRY_TIMEOUT_MS),
-      });
-      if (!res.ok) {
-        errors.push(endpoint + ' ' + res.status);
-        continue;
-      }
-      const data = await res.json();
-      if (!data || !Array.isArray(data.elements)) {
-        errors.push(endpoint + ' bad json');
-        continue;
-      }
-      const out = json({ ok: true, elements: data.elements }, 200, CACHE_SECONDS);
-      await cachePut(cacheKey, out.clone());
-      return out;
-    } catch (err) {
-      errors.push(endpoint + ' ' + (err && err.name ? err.name : String(err)));
-    }
+  const query = `[out:json][timeout:6];(node["amenity"~"${categories}"]["name"](around:${radius},${lat},${lng}););out body 20;`;
+  const winner = await raceMirrors(query);
+  if (!winner) {
+    return json({ ok: false, error: 'overpass unavailable' }, 502);
   }
 
-  return json({ ok: false, error: 'overpass unavailable', detail: errors.join(' | ') }, 502);
+  const out = json({ ok: true, elements: winner.elements }, 200, CACHE_SECONDS);
+  await cachePut(cacheKey, out.clone());
+  return out;
+}
+
+// First valid JSON wins. Every other request is aborted, and nothing
+// is allowed to run past TOTAL_BUDGET_MS. Failures are not cached.
+async function raceMirrors(query) {
+  const deadline = AbortSignal.timeout(TOTAL_BUDGET_MS);
+  const controllers = MIRRORS.map(() => new AbortController());
+  const onDeadline = () => {
+    for (const controller of controllers) controller.abort();
+  };
+  if (deadline.aborted) onDeadline();
+  else deadline.addEventListener('abort', onDeadline, { once: true });
+
+  const attempts = MIRRORS.map((endpoint, i) =>
+    fetchMirror(endpoint, query, controllers[i].signal)
+  );
+
+  try {
+    return await Promise.any(attempts);
+  } catch {
+    return null;
+  } finally {
+    deadline.removeEventListener('abort', onDeadline);
+    for (const controller of controllers) controller.abort();
+  }
+}
+
+async function fetchMirror(endpoint, query, signal) {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+      'User-Agent': 'aripshitadventure-nearby/1.0 (trip guide)',
+    },
+    body: 'data=' + encodeURIComponent(query),
+    signal,
+  });
+  if (!res.ok) throw new Error('mirror ' + res.status);
+  const data = await res.json();
+  if (!data || !Array.isArray(data.elements)) throw new Error('mirror bad json');
+  return { elements: data.elements };
 }
 
 function nearbyCacheKey(requestUrl, lat, lng, categories, radius) {
