@@ -17,11 +17,18 @@ const ALLOWED_CATEGORIES = new Set([
   'pharmacy',
 ]);
 
+// The first four are the required order. On 2026-10-02 all four were
+// down or timed out from both this environment and the Pages function
+// (overpass-api.de returned 521). The French and Swiss public interpreters
+// answered the same query in about a second, so they are extra fallbacks
+// after the required list — still first-good-JSON, still not cached on failure.
 const MIRRORS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+  'https://overpass.openstreetmap.fr/api/interpreter',
+  'https://overpass.osm.ch/api/interpreter',
 ];
 
 const DEFAULT_RADIUS = 800;
