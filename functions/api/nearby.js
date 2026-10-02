@@ -135,7 +135,12 @@ async function fetchMirror(endpoint, query, signal) {
   });
   if (!res.ok) throw new Error('mirror ' + res.status);
   const data = await res.json();
-  if (!data || !Array.isArray(data.elements)) throw new Error('mirror bad json');
+  // overpass.osm.ch often answers first with elements:[] for a query the
+  // French interpreter fills. An empty list is not a win — let the race
+  // continue. A real empty area still ends as the clean 502 below.
+  if (!data || !Array.isArray(data.elements) || data.elements.length === 0) {
+    throw new Error('mirror empty');
+  }
   return { elements: data.elements };
 }
 
