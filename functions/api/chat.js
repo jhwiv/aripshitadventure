@@ -430,53 +430,78 @@ function formatWeather(wx, label) {
   return s;
 }
 
+// Same mirror list as functions/api/nearby.js. overpass-api.de and
+// overpass.kumi.systems hang or return 521, so trying them one after
+// another burned two 5s timeouts and never filled the verified list.
+// All mirrors start together; the first non-empty reply wins and the
+// rest are aborted. The whole race has a 5s budget.
 const CHAT_OVERPASS = [
+  'https://overpass.openstreetmap.fr/api/interpreter',
+  'https://overpass.osm.ch/api/interpreter',
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+  'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
 ];
+const CHAT_OVERPASS_BUDGET_MS = 5000;
 
 async function getNearbyPlaces(lat, lng, categories) {
-  // Same two mirrors the original wwii2026 handler tried. The public
-  // /api/nearby route is the one with the full mirror list and cache.
   const safeCat = String(categories).replace(/[^a-z|]/g, '');
-  const query = `[out:json][timeout:8];(node["amenity"~"${safeCat}"]["name"](around:800,${lat},${lng}););out body 15;`;
-  for (const endpoint of CHAT_OVERPASS) {
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'aripshitadventure-chat/1.0 (trip guide)',
-        },
-        body: 'data=' + encodeURIComponent(query),
-        signal: AbortSignal.timeout(5000),
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      if (!data.elements || !data.elements.length) continue;
-      const places = [];
-      for (const el of data.elements) {
-        const tags = el.tags || {};
-        if (!tags.name) continue;
-        const placeLat = el.lat != null ? el.lat : (el.center && el.center.lat);
-        const placeLng = el.lon != null ? el.lon : (el.center && el.center.lon);
-        if (placeLat == null || placeLng == null) continue;
-        const dist = haversineMeters(lat, lng, placeLat, placeLng);
-        places.push({
-          name: tags.name,
-          type: tags.amenity || 'place',
-          address: [tags['addr:housenumber'], tags['addr:street']].filter(Boolean).join(' ') || null,
-          distance: dist,
-          walkTime: walkTimeLabel(dist),
-        });
-      }
-      places.sort((a, b) => a.distance - b.distance);
-      return places.slice(0, 8);
-    } catch {
-      /* try the next mirror */
-    }
+  const query = `[out:json][timeout:5];(node["amenity"~"${safeCat}"]["name"](around:800,${lat},${lng}););out body 15;`;
+  const elements = await raceOverpass(query);
+  if (!elements) return null;
+  const places = [];
+  for (const el of elements) {
+    const tags = el.tags || {};
+    if (!tags.name) continue;
+    const placeLat = el.lat != null ? el.lat : (el.center && el.center.lat);
+    const placeLng = el.lon != null ? el.lon : (el.center && el.center.lon);
+    if (placeLat == null || placeLng == null) continue;
+    const dist = haversineMeters(lat, lng, placeLat, placeLng);
+    places.push({
+      name: tags.name,
+      type: tags.amenity || 'place',
+      address: [tags['addr:housenumber'], tags['addr:street']].filter(Boolean).join(' ') || null,
+      distance: dist,
+      walkTime: walkTimeLabel(dist),
+    });
   }
-  return null;
+  if (!places.length) return null;
+  places.sort((a, b) => a.distance - b.distance);
+  return places.slice(0, 8);
+}
+
+async function raceOverpass(query) {
+  const controllers = CHAT_OVERPASS.map(() => new AbortController());
+  const abortAll = () => { for (const c of controllers) c.abort(); };
+  const timer = setTimeout(abortAll, CHAT_OVERPASS_BUDGET_MS);
+  const attempts = CHAT_OVERPASS.map(async (endpoint, i) => {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'User-Agent': 'aripshitadventure-chat/1.0 (trip guide)',
+      },
+      body: 'data=' + encodeURIComponent(query),
+      signal: controllers[i].signal,
+    });
+    if (!res.ok) throw new Error('mirror ' + res.status);
+    const data = await res.json();
+    // An empty list is not a win (overpass.osm.ch often answers [] first).
+    if (!data || !Array.isArray(data.elements) || !data.elements.length) {
+      throw new Error('mirror empty');
+    }
+    return data.elements;
+  });
+  try {
+    return await Promise.any(attempts);
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+    abortAll();
+  }
 }
 
 function formatPlacesForPrompt(places) {
