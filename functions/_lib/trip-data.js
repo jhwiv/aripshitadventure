@@ -1103,17 +1103,17 @@ export default {
       ]
     },
     {
-      "label": "Day 12 · Fri Oct 23 · São Bento Station",
+      "label": "Day 12 · Fri Oct 23 · E-bike tour & São Bento",
       "city": "Porto",
-      "headline": "Viator booking (details to come from Jon); afternoon at São Bento Station",
+      "headline": "3 hour e-bike tour at 10:00 AM; afternoon at São Bento Station",
       "weather": "High 71°F / low 56°F · partly sunny",
       "items": [
         {
           "type": "Activity",
-          "time": null,
-          "end_time": null,
-          "text": "Viator booking (Jon). Tour name, start time and meeting point to come from Jon’s Viator confirmation.",
-          "location": null,
+          "time": "10:00",
+          "end_time": "13:00",
+          "text": "3 hour e-bike tour. Meet at the Blue Dragon tour office, Rua Alexandre Herculano 251, Porto.",
+          "location": "Blue Dragon tour office, Rua Alexandre Herculano 251, Porto",
           "why": null,
           "contact": null,
           "flight": null,

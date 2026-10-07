@@ -294,8 +294,8 @@
   // Booking-trust copy for every flight surface. BA184 / BA8137 / TP455
   // are Jon's 2026-09-14 numbers; TP211's DATE is confirmed Oct 26.
   // Jon's 2026-10-07 email added the booking locators on each
-  // confirmation_note. BA8137 stays Sun Oct 18 (that email said 10/19;
-  // no airline confirmation supports a date change).
+  // confirmation_note. That email said BA8137 was 10/19; Chip confirmed
+  // that was a typo, so the flight stays Sun Oct 18.
   function flightNumberLabel(f) {
     if (!f) return 'TBD';
     return f.flight_number || 'number pending';
