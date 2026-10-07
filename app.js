@@ -293,7 +293,9 @@
 
   // Booking-trust copy for every flight surface. BA184 / BA8137 / TP455
   // are Jon's 2026-09-14 numbers; TP211's DATE is confirmed Oct 26.
-  // Confirmation notes carry that distinction — never imply a ticket.
+  // Jon's 2026-10-07 email added the booking locators on each
+  // confirmation_note. That email said BA8137 was 10/19; Chip confirmed
+  // that was a typo, so the flight stays Sun Oct 18.
   function flightNumberLabel(f) {
     if (!f) return 'TBD';
     return f.flight_number || 'number pending';
@@ -1858,8 +1860,8 @@
         note: 'Jon wrote “Dinner TBD.” Do not invent a restaurant.',
       },
       {
-        dayIdx: 4, kind: 'flex',
-        title: 'Unused London ideas (Tue Oct 13 / Fri Oct 16 / Sat Oct 17)',
+        dayIdx: 5, kind: 'flex',
+        title: 'Unused London ideas (Sat Oct 17)',
         note: 'Not scheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight, before Oct 18).',
       },
       {
@@ -1910,7 +1912,7 @@
       {
         dayIdx: 0, kind: 'flex', status: 'confirm',
         title: 'Flights (Jon 2026-09-14)',
-        note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM (typically a Vueling-operated BA codeshare). TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TP211 OPO→EWR Oct 26 7:30 PM / 11:55 PM. Confirm tickets / record locators with Jon.',
+        note: 'BA184 EWR→LHR Oct 12 5:50 PM / 5:50 AM (Jon typed LHW; this guide uses LHR). British Airways booking locator ZH5UVX. BA8137 LHR→ORY Oct 18 3:00 PM / 5:35 PM. Operates as Vueling VY8961. BA booking locator ZL9UQZ. Vueling booking locator UQTTMH. TP455 ORY→OPO Oct 22 4:50 PM / 6:05 PM. TAP booking locator ZJXFYF. TP211 OPO→EWR Oct 26 7:30 PM / 11:55 PM. TAP booking locator ZJXFYF.',
       },
     ];
     var today = new Date(); today.setHours(0, 0, 0, 0);
