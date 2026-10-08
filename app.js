@@ -1897,7 +1897,7 @@
       {
         dayIdx: 10, kind: 'soon', status: 'confirm',
         title: 'Porto Airbnb HM549AK8C2 — Rua dos Mercadores 77, 3rd floor',
-        note: 'Booked Oct 22–26, check-in 4:00 PM / check-out 11:00 AM. Jon wrote “Ribera San Joao.” TP455 lands OPO 6:05 PM — after official check-in. Confirm access and the exact 3rd-floor unit.',
+        note: 'Booked Oct 22–26, check-in 4:00 PM / listed check-out 11:00 AM. The host agreed they can stay until 4:00 PM Oct 26 and leave for the airport then. Jon wrote “Ribera San Joao.” TP455 lands OPO 6:05 PM — after official check-in. Confirm access and the exact 3rd-floor unit.',
       },
       {
         dayIdx: 12, kind: 'soon', status: 'needs',

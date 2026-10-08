@@ -23,7 +23,7 @@
 // Those need to be live or fail. A cached /api response would keep serving
 // a stale chat stream or an old Overpass payload after a fix.
 
-const CACHE_NAME = 'trip-cache-v10';
+const CACHE_NAME = 'trip-cache-v11';
 const ALWAYS_PRECACHE = [
   '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',
