@@ -23,12 +23,12 @@
       "nights": 4,
       "days_range": "Day 11–Day 15",
       "focus": "Self-guided city; Douro Valley.",
-      "stay": "Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2) — check-in 4:00 PM Oct 22, check-out 11:00 AM Oct 26. Jon wrote “Ribera San Joao.”",
+      "stay": "Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2) — check-in 4:00 PM Oct 22, listed check-out 11:00 AM Oct 26. The host agreed they can stay until 4:00 PM and leave for the airport then. Jon wrote “Ribera San Joao.”",
       "transport_in": "Fly ORY→OPO · TAP TP455 · departs 4:50 PM arrives 6:05 PM Oct 22. Depart Bayeux 11:00 AM Oct 22 to drive to ORY for this flight."
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. Monday Oct 26: listed checkout 11:00 AM; the host agreed they can stay until 4:00 PM and leave for the airport then. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
     "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
   },
   "days": [
@@ -1080,7 +1080,7 @@
             "phone": null,
             "website": null,
             "check_in_time": "16:00",
-            "confirmation_note": "Airbnb HM549AK8C2 · Rua dos Mercadores 77, Ribeira São João, Apt 3rd floor · Oct 22–26 · check-in 4:00 PM, check-out 11:00 AM. From Jon’s 2026-09-14 email (he wrote “Ribera San Joao”). Unit number beyond “3rd floor” was not given. Flight lands after official check-in — that is fine if access is arranged."
+            "confirmation_note": "Airbnb HM549AK8C2 · Rua dos Mercadores 77, Ribeira São João, Apt 3rd floor · Oct 22–26 · check-in 4:00 PM, check-out 11:00 AM. From Jon’s 2026-09-14 email (he wrote “Ribera San Joao”). Unit number beyond “3rd floor” was not given. Flight lands after official check-in — that is fine if access is arranged. Listed check-out remains 11:00 AM Oct 26. The host agreed they can stay until 4:00 PM and leave for the airport then."
           },
           "restaurant": null,
           "duration_min": null
@@ -1592,16 +1592,16 @@
     {
       "label": "Day 15 · Mon Oct 26 · Depart Porto for Newark",
       "city": "Porto",
-      "headline": "Checkout 11:00 AM · TAP TP211 7:30 PM · Oct 26",
+      "headline": "Listed checkout 11:00 AM · host agreed stay until 4:00 PM · airport at 4:00 PM · TAP TP211 7:30 PM",
       "weather": "High 68°F / low 53°F · partly cloudy",
       "items": [
         {
           "type": "Hotel",
           "time": "11:00",
-          "end_time": null,
-          "text": "Check out of Rua dos Mercadores 77 — official check-out 11:00 AM",
+          "end_time": "16:00",
+          "text": "Stay at Rua dos Mercadores 77 until 4:00 PM — the host agreed. Listed check-out 11:00 AM.",
           "location": null,
-          "why": null,
+          "why": "The host agreed they can stay until 4:00 PM. They leave for the airport at 4:00 PM. Listed checkout is 11:00 AM.",
           "contact": null,
           "flight": null,
           "hotel": {
@@ -1610,7 +1610,7 @@
             "phone": null,
             "website": null,
             "check_out_time": "11:00",
-            "confirmation_note": "Airbnb HM549AK8C2 · check-out 11:00 AM Oct 26. Return TAP TP211 OPO→EWR that evening."
+            "confirmation_note": "Airbnb HM549AK8C2 · listed check-out 11:00 AM Oct 26. The host agreed they can stay until 4:00 PM. They leave for the airport at 4:00 PM. Return TAP TP211 OPO→EWR 7:30 PM."
           },
           "restaurant": null,
           "duration_min": null
@@ -1619,9 +1619,9 @@
           "type": "Transport",
           "time": "16:00",
           "end_time": null,
-          "text": "Rua dos Mercadores 77 → Porto Airport (OPO) — method not specified",
+          "text": "Leave for Porto Airport (OPO) at 4:00 PM from Rua dos Mercadores 77 — method not specified",
           "location": null,
-          "why": "Flight is 7:30 PM. No driver or duration was in the email.",
+          "why": "They leave for the airport at 4:00 PM. Flight is TAP TP211 at 7:30 PM. No driver or duration was in the email.",
           "contact": null,
           "flight": null,
           "hotel": null,
