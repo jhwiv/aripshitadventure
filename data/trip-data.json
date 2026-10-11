@@ -22,13 +22,13 @@
       "name": "Porto",
       "nights": 4,
       "days_range": "Day 11–Day 15",
-      "focus": "Self-guided city; Douro Valley.",
+      "focus": "Self-guided city; Braga and Guimarães day trip.",
       "stay": "Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2) — check-in 4:00 PM Oct 22, listed check-out 11:00 AM Oct 26. The host agreed they can stay until 4:00 PM and leave for the airport then. Jon wrote “Ribera San Joao.”",
       "transport_in": "Fly ORY→OPO · TAP TP455 · departs 4:50 PM arrives 6:05 PM Oct 22. Depart Bayeux 11:00 AM Oct 22 to drive to ORY for this flight."
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms and the Kensington Royal Village walk; dinner that night is TBD. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. Monday Oct 26: listed checkout 11:00 AM; the host agreed they can stay until 4:00 PM and leave for the airport then. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms, the Kensington Royal Village walk, and Jack the Ripper's Whitechapel walking tour (leave 53 Greek St at 6:00 PM, meet 6:45 PM on Whitechapel Road outside Whitechapel Station, about 9:15 PM back at 53 Greek St); dinner is before 6:00 PM or after the tour. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. Saturday Oct 24 is Best of Braga and Guimarães Day Trip from Porto, 7:50 AM start, full day, 2 adults (Viator booking reference 1455473045, confirmation 1837461523). Monday Oct 26: listed checkout 11:00 AM; the host agreed they can stay until 4:00 PM and leave for the airport then. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
     "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
   },
   "days": [
@@ -336,9 +336,9 @@
       ]
     },
     {
-      "label": "Day 4 · Thu Oct 15 · Churchill War Rooms & Kensington Walk",
+      "label": "Day 4 · Thu Oct 15 · Churchill War Rooms, Kensington & Whitechapel",
       "city": "London",
-      "headline": "War Rooms in the morning, Kensington Royal Village walk at 2:00 PM — dinner TBD",
+      "headline": "War Rooms in the morning, Kensington Royal Village walk at 2:00 PM, Jack the Ripper's Whitechapel walking tour at 6:45 PM — dinner before 6:00 PM or after the tour",
       "weather": "High 59°F / low 47°F · mostly cloudy, 30% chance light rain",
       "items": [
         {
@@ -434,9 +434,48 @@
           "type": "Dinner",
           "time": "16:00",
           "end_time": null,
-          "text": "Dinner TBD — Jon did not name a Thursday restaurant or time",
+          "text": "Dinner TBD — before 6:00 PM or after the tour",
           "location": null,
-          "why": "Leave this open. Do not reuse an old leftover booking as if it were Thursday dinner.",
+          "why": "Jon did not name a Thursday restaurant. Dinner is before 6:00 PM or after the tour. Do not reuse an old leftover booking as if it were Thursday dinner.",
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "18:00",
+          "end_time": "18:45",
+          "text": "Leave 53 Greek St.",
+          "location": "Whitechapel Road outside Whitechapel Station",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": 45
+        },
+        {
+          "type": "Activity",
+          "time": "18:45",
+          "end_time": "21:15",
+          "text": "Jack the Ripper's Whitechapel walking tour. Meet on Whitechapel Road outside Whitechapel Station.",
+          "location": "Whitechapel Road outside Whitechapel Station",
+          "why": null,
+          "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "21:15",
+          "end_time": null,
+          "text": "About 9:15 PM back at 53 Greek St.",
+          "location": "53 Greek Street, London W1D 3DR",
+          "why": null,
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -1091,7 +1130,7 @@
           "end_time": null,
           "text": "Evening in Ribeira — self-guided; no dinner named for arrival night",
           "location": "Cais da Ribeira, 4050-510 Porto, Portugal",
-          "why": "Aug plan for Porto is self-guided city + Douro Valley. The apartment is on Rua dos Mercadores in Ribeira.",
+          "why": "The apartment is on Rua dos Mercadores in Ribeira.",
           "contact": null,
           "flight": null,
           "hotel": null,
@@ -1219,122 +1258,26 @@
       ]
     },
     {
-      "label": "Day 13 · Sat Oct 24 · Douro Valley Wine Country",
+      "label": "Day 13 · Sat Oct 24 · Braga and Guimarães",
       "city": "Porto",
-      "headline": "Private Douro valley day — Quinta do Vallado tasting & river lunch",
+      "headline": "Best of Braga and Guimarães Day Trip from Porto — 7:50 AM, full day",
       "weather": "High 70°F / low 55°F · sunny",
       "items": [
         {
-          "type": "Transport",
-          "time": "08:30",
-          "end_time": null,
-          "text": "Private driver pickup for Douro valley day — 2h drive to Peso da Regua via A4",
-          "location": null,
-          "why": "Book via GetYourGuide (Douro Exclusive private tours) or hotel concierge — confirm 3 days ahead",
-          "contact": {
-            "phone": "+351 91 234 5678"
-          },
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "duration_min": 120
-        },
-        {
           "type": "Activity",
-          "time": "10:30",
-          "end_time": "12:30",
-          "text": "Quinta do Vallado — cellar tour, vineyard walk, and premium tasting",
-          "location": "Vilarinho dos Freires, 5050-364 Peso da Regua",
-          "why": "One of the Douro's oldest quintas, first documented in 1716 and family-owned since 1818 (the Ferreira family, now sixth generation).",
+          "time": "07:50",
+          "end_time": "19:30",
+          "text": "Best of Braga and Guimarães Day Trip from Porto. 7:50 AM start, full day, 2 adults. Viator booking reference 1455473045, confirmation 1837461523. $141.60, charged automatically Oct 22, with tickets sent after payment. Free cancellation up to 24 hours before. Meeting point: check Viator ticket.",
+          "location": null,
+          "why": "Operator: Living Tours, Rua Mouzinho da Silveira 352/4, Porto, +351 228 320 992. The booking does not give a return time. 7:30 PM is dinner at Adega São Nicolau, already on this day.",
           "contact": {
-            "phone": "+351 254 323 147",
-            "website": "https://www.quintadovallado.com",
-            "booking_note": "Book 7+ days ahead via website or email reservas@quintadovallado.com",
-            "hours": "Daily 10am–6pm",
-            "price": "€30–50/person for premium tasting"
+            "phone": "+351 228 320 992",
+            "booking_note": "Viator booking reference 1455473045. Confirmation 1837461523. $141.60, charged automatically Oct 22, tickets sent after payment. Free cancellation up to 24 hours before. Operator: Living Tours, Rua Mouzinho da Silveira 352/4, Porto. Meeting point: check Viator ticket."
           },
           "flight": null,
           "hotel": null,
           "restaurant": null,
           "duration_min": null
-        },
-        {
-          "type": "Transport",
-          "time": "12:45",
-          "end_time": null,
-          "text": "Short drive from Quinta do Vallado to Tasca da Quinta, Peso da Régua — approx. 10 min (same private driver)",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "duration_min": 10
-        },
-        {
-          "type": "Lunch",
-          "time": "13:00",
-          "end_time": null,
-          "text": "Lunch at Tasca da Quinta",
-          "location": null,
-          "why": null,
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": {
-            "name": "Tasca da Quinta",
-            "neighborhood": "Peso da Régua, Douro Valley",
-            "cuisine": "Portuguese Tasca",
-            "price_range": "$$",
-            "why": "Small, simple tasca menu — grilled meats and pork ribs, near the Douro Museum. Very small; reservation recommended given the tour's timing.",
-            "contact": {
-              "address": "Rua do Marquês de Pombal 42 R/C, 5050-282 Peso da Régua",
-              "phone": "+351 918 754 102"
-            },
-            "reservation": {
-              "platform": "phone",
-              "phone": "+351 918 754 102"
-            },
-            "open_days": [
-              "tue",
-              "wed",
-              "thu",
-              "fri",
-              "sat"
-            ],
-            "closure_note": "Address re-confirmed in a second, independent research pass (matches what was originally recorded, with a fuller postal code). Closed Sunday and Monday — this Saturday lunch booking is fine.",
-            "backup": {
-              "name": "Castas e Pratos",
-              "neighborhood": "Peso da Régua, Douro Valley",
-              "cuisine": "Portuguese Wine Bar",
-              "price_range": "$$$",
-              "why": "Old train-station warehouse with a terrace — more restaurant-modern than a plain tasca, but still has straightforward grilled meat options.",
-              "contact": {
-                "phone": "+351 254 323 290",
-                "address": "Rua José Vasques Osório, 5050-280 Peso da Régua",
-                "hours": "Mon 12:30–10:30pm; Tue–Sun 10:30am–10:30pm (Wed to 11pm)"
-              },
-              "reservation": {
-                "platform": "phone"
-              }
-            },
-            "verify_status": "verify_before_booking",
-            "verify_url": "https://www.google.com/maps/search/?api=1&query=Tasca%20da%20Quinta%20Peso%20da%20R%C3%A9gua%2C%20Douro%20Valley%20London%20%E2%86%92%20Normandy%20%E2%86%92%20Porto"
-          },
-          "duration_min": null
-        },
-        {
-          "type": "Transport",
-          "time": "15:30",
-          "end_time": null,
-          "text": "Return drive to Porto — 2h via N222 scenic river road",
-          "location": null,
-          "why": "Same private driver — scenic route confirmed",
-          "contact": null,
-          "flight": null,
-          "hotel": null,
-          "restaurant": null,
-          "duration_min": 120
         },
         {
           "type": "Dinner",
