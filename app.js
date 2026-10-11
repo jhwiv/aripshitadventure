@@ -78,7 +78,7 @@
     { day: 10, test: /Objective Normandy|American Sector/i, status: 'confirm' },
     { day: 11, type: 'Flight', status: 'confirm' },
     { day: 11, type: 'Hotel', test: /Mercadores|Ribeira|Porto/i, status: 'confirm' },
-    { day: 13, test: /Vallado|Douro/i, status: 'needs' },
+    { day: 13, test: /1455473045|Braga and Guimarães/, status: 'confirm' },
     { day: 15, type: 'Flight', status: 'confirm' }
   ];
   function bookingStatusForItem(item, dayNum) {
@@ -1688,7 +1688,7 @@
       { day: 'Unscheduled', title: 'Armored warfare & The Tank Museum', body: 'Still an open London idea — Jon wrote “maybe overnight,” and it is not on the Oct 18 LHR→ORY day. Bovington has trained British tank crews since 1916, and its museum holds one of the world’s largest tank collections — 300+ vehicles from WWI’s first prototypes to modern main battle tanks. The star exhibit, Tiger 131, is the only running Tiger I in the world: captured largely intact in Tunisia in April 1943, it gave Allied engineers their first real look at German tank design.' },
       { day: 'Wed Oct 21', title: 'D-Day: the American sector', body: 'On June 6, 1944, Allied forces landed across five beaches — Utah, Omaha, Gold, Juno, Sword — in the largest seaborne invasion in history. Omaha saw the heaviest fighting of the five landings. Pointe du Hoc, the clifftop battery just west of Omaha, was scaled under fire by the 2nd Ranger Battalion — the cratered ground is still visible today. The American Cemetery above Omaha holds 9,389 graves and lists 1,557 more names on its Walls of the Missing. Objective Normandy (guide Elisha / Elisa Denis) meets at 9:00 AM at the Bayeux apartment, 4 Rue Franche.' },
       { day: 'Bayeux stay', title: 'Bayeux: first city liberated, and the British sector', body: 'Bayeux was the first French city liberated, on June 7, 1944 — spared the destruction that flattened Caen and other Norman towns, which is why its medieval center still stands. It sits in the British and Canadian sector of the invasion; Bayeux War Cemetery, across the road from the Battle of Normandy Memorial Museum, is the largest British and Commonwealth WWII cemetery in France. (Bayeux is also home to the 11th-century Bayeux Tapestry, depicting a much older invasion — William the Conqueror’s 1066 conquest of England. The museum that houses it in Bayeux is closed for renovation through October 2027, so that visit isn’t on this itinerary. The tapestry itself is on loan at the British Museum in London from 10 Sep 2026 through July 2027 — i.e. during this trip’s London days — if you want to see it there.)' },
-      { day: 'Fri Oct 23 – Sat Oct 24', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
+      { day: 'Porto', title: 'Porto & the Douro', body: 'Porto’s wine trade dates to Roman times, but the fortified “port” style was shaped by 17th–18th century trade with England. Port wine is aged in lodges across the river in Vila Nova de Gaia, not in Porto itself — the grapes come from terraced vineyards up the Douro Valley, one of the oldest demarcated wine regions in the world (1756).' }
     ];
     document.getElementById('historyList').innerHTML = entries.map(function (e) {
       return '<div class="accordion-item"><button class="accordion-header">' +
@@ -1813,7 +1813,7 @@
   /* ---------------------------------------------------------
      BOOKING ACTIONS — everything bookable that ISN'T a restaurant:
      lodging, museum/attraction tickets, the Orly hotel gap, and the
-     Douro Valley tour. Curated, not derived
+     Braga and Guimarães day trip. Curated, not derived
      from a data field (Activity/Transport items have no "needs
      advance booking" flag to key off), the same way the History
      entries are hand-mapped to specific days rather than computed.
@@ -1856,8 +1856,8 @@
       },
       {
         dayIdx: 3, kind: 'flex',
-        title: 'Thursday dinner (Thu Oct 15) — TBD',
-        note: 'Jon wrote “Dinner TBD.” Do not invent a restaurant.',
+        title: 'Thursday dinner (Thu Oct 15) — before 6:00 PM or after the tour',
+        note: 'Jon did not name a restaurant. Dinner is before 6:00 PM or after Jack the Ripper\'s Whitechapel walking tour (leave 53 Greek St at 6:00 PM, meet 6:45 PM on Whitechapel Road outside Whitechapel Station, about 9:15 PM back at 53 Greek St).',
       },
       {
         dayIdx: 5, kind: 'flex',
@@ -1900,9 +1900,9 @@
         note: 'Booked Oct 22–26, check-in 4:00 PM / listed check-out 11:00 AM. The host agreed they can stay until 4:00 PM Oct 26 and leave for the airport then. Jon wrote “Ribera San Joao.” TP455 lands OPO 6:05 PM — after official check-in. Confirm access and the exact 3rd-floor unit.',
       },
       {
-        dayIdx: 12, kind: 'soon', status: 'needs',
-        title: 'Quinta do Vallado Douro Valley tasting (Sat Oct 24)',
-        note: 'On the existing Porto day plan (Aug city-level: Douro Valley). Book 7+ days ahead via quintadovallado.com or reservas@quintadovallado.com if this day is still wanted — Jon did not restate a Douro booking.',
+        dayIdx: 12, kind: 'soon', status: 'confirm',
+        title: 'Best of Braga and Guimarães Day Trip from Porto (Sat Oct 24, 7:50 AM)',
+        note: 'Booked. Viator booking reference 1455473045, confirmation 1837461523. Full day, 2 adults. $141.60, charged automatically Oct 22, with tickets sent after payment. Free cancellation up to 24 hours before. Operator: Living Tours, Rua Mouzinho da Silveira 352/4, Porto, +351 228 320 992. Meeting point: check Viator ticket. The booking does not give a return time.',
       },
       {
         dayIdx: 14, kind: 'urgent', status: 'confirm',
