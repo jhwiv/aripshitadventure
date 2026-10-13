@@ -115,7 +115,10 @@ function dismissWelcome(dest) {
   document.body.classList.add('welcomed');
   document.body.style.overflow = '';
   setTimeout(function(){ ws.style.display = 'none'; }, 600);
-  if (!dest) return;
+  if (!dest) {
+    if (typeof window.orientToNow === 'function') window.orientToNow();
+    return;
+  }
   // Chat panel lives under the welcome overlay (z-index 99999). Opening it
   // during the fade would hide it behind navy until the overlay is gone.
   if (dest === 'chat') {
@@ -206,6 +209,13 @@ function dismissWelcome(dest) {
       <button type="button" class="day-today-btn" id="dayTabsToday">Today</button>
     </div>
     <div class="day-tabs-row" id="dayTabsRow"></div>
+    <div class="geo-ask" id="geoAsk" role="region" aria-label="Location">
+      <p class="geo-ask-text">Use location to confirm the city on a travel day? The clock still picks the stop if you skip this.</p>
+      <div class="geo-ask-actions">
+        <button type="button" class="geo-ask-btn geo-ask-btn--yes" id="geoAskAllow">Allow</button>
+        <button type="button" class="geo-ask-btn" id="geoAskDismiss">Not now</button>
+      </div>
+    </div>
   </div>
 </div>
 
