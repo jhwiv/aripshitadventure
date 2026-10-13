@@ -181,6 +181,21 @@ same-day transatlantic flight), not a "looks fine" skim:
   runs while the page is still moving and the day strip snaps to the wrong
   day. `scrollToElement` clears that property for the call and passes
   `behavior: 'instant'`.
+- **During the trip the hero must not paint before the current item.**
+  `landOnOpen` used to wait for `window` `load` / `setTimeout(0)`. The
+  hero is parsed above `app.js`, so the first frame was the navy header
+  and then a jump. An inline script in `head` sets
+  `history.scrollRestoration = 'manual'` and, only inside the trip
+  window (London midnight Oct 12 through Lisbon midnight Oct 27, same
+  bounds as `tripMoment`), adds `html.trip-orienting`, whose rule is
+  inline too — `style.css` arrives too late to hide the first frame.
+  `landOnOpen` runs synchronously once the city-day cards exist, still
+  inside the parser-blocking script, scrolls with `behavior:'instant'`,
+  then removes the class. Resume (`visibilitychange`, and `pagehide` /
+  `pageshow` when the page is frozen) puts the class back on while
+  hidden and reveals only after the same instant scroll. A hash still
+  wins; it is scrolled the same way before the reveal. Outside the trip
+  the class is never added.
 - **Day-strip scroll-spy is live (rAF), not debounce-until-idle, and is
   section-scoped.** `#day-N` banners live in the city tabs, further down
   the continuous page. Spy city banners only while a `tab-city-*` section
@@ -501,6 +516,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **First paint during the trip was the hero, then a jump (2026-10-13).** Opening on the current stop still waited for `window` `load`, and the hero sits above `app.js`, so the first frame was the navy header and then the page jumped. Chip: go directly to the location and do not stop on the hero. The hide rule is an inline style in `head` (`html.trip-orienting`), not `style.css`, because the stylesheet is a second request and the hero would paint first. The welcome screen is the same full-viewport navy and was hidden only by a script after its own markup, so a returning open painted it once before that script; the head script now adds `html.skip-welcome` when onboarding was already dismissed (or `?direct=1`). The head script also sets `history.scrollRestoration = 'manual'` and adds the class only when `Date.now()` is inside London midnight Oct 12 → Lisbon midnight Oct 27 (the same window `tripMoment` uses — not the phone zone). `landOnOpen` now runs in the same turn the city-day cards are inserted, scrolls with `behavior:'instant'` while the page is still hidden, then removes the class. A trailing inline script removes it if `app.js` throws; a 20s timer is the fallback if the script never arrives. Home Screen cold start is that same document load. Resume hides again on `visibilitychange` hidden and on `pagehide` when the page is entering the back-forward cache, and reveals only after the instant scroll, so a restored scroll of 0 does not flash the hero. Outside the trip the class is not added and the hero stays. A hash on open still wins. `trip-cache-v14`.
 
 - **Open on the current stop while the trip is underway (2026-10-13).** The page always opened at the top of Condensed. During Oct 12–26 it now lands on today's day and scrolls to the item in progress, or the next one if nothing is in progress, on first load, `pageshow` from the back-forward cache, and `visibilitychange` when the Home Screen app comes back. The clock is the day's city zone (`Europe/London`, `Europe/Paris`, `Europe/Lisbon`), not the phone zone — a Chicago phone at 4:00 AM is still 10:00 in London. A hash already in the URL on open still wins and is not overwritten (auto-orient does not write a hash, or the next launch would look like a deep link). Before Oct 12 and after Oct 26 the page stays at the top. Overlap around midnight (London still on the old date, Paris already on the next) is broken by time first (a day with something still ahead beats a finished day); location is only the tie-break, and only if permission is already granted or the traveler taps Allow once on a non-blocking row. Denying it, or never answering, leaves the clock in charge. The marker is a gold Now / Next chip on that card (city day and Condensed). `scrollToElement`'s instant path used `behavior:'auto'`, and `html { scroll-behavior: smooth }` makes `auto` animate — the spy then ran mid-flight and the strip stuck on the last day while the card was still thousands of pixels down. Instant jumps now set `scroll-behavior: auto` for that call and pass `behavior:'instant'`. `trip-cache-v13`.
 
