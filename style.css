@@ -279,15 +279,31 @@ html.trip-days .days-toggle-row { display: flex; }
   z-index: 1;
   overflow: hidden;
   height: auto;
+  overflow-anchor: none;
 }
 .day-tabs-slide { transform: translate3d(0, 0, 0); }
+html.trip-days { overflow-anchor: none; }
 html.trip-days .day-tabs-clip {
   transition: height 0.66s cubic-bezier(0.4, 0, 0.2, 1);
 }
 html.trip-days .day-tabs-slide {
   transition: transform 0.66s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
 }
 html.days-tucked .day-tabs-slide { transform: translate3d(0, -100%, 0); }
+/* iPhone Reduce Motion must not skip this. A slower fade-up still reads
+   as the pills leaving, and the Days pulse still runs. */
+html.days-gentle.trip-days .day-tabs-clip {
+  transition-duration: 0.45s;
+  transition-timing-function: ease-out;
+}
+html.days-gentle.trip-days .day-tabs-slide {
+  transition: transform 1.05s ease-out, opacity 1.05s ease-out;
+}
+html.days-gentle.days-tucked .day-tabs-slide {
+  transform: translate3d(0, -36%, 0);
+  opacity: 0;
+}
 .day-tabs-wrap {
   background: var(--paper);
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
@@ -428,8 +444,9 @@ html.days-tucked .day-tabs-slide { transform: translate3d(0, -100%, 0); }
   .welcome-feature, .day-today-btn, .book-chip, .days-toggle {
     transition: none;
   }
-  .day-tabs-clip, .day-tabs-slide, .day-tabs-wrap { transition: none; }
-  .days-toggle--notice { animation: none; }
+  /* The day-pill slide and the Days pulse stay. Reduce Motion is common
+     on iPhone, and turning these off made the tuck invisible. html.days-gentle
+     slows them down instead. */
 }
 .section-heading {
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;

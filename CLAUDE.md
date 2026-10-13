@@ -201,17 +201,23 @@ same-day transatlantic flight), not a "looks fine" skim:
   item they still eat the top of the screen. The tuck waits until after
   the hidden pre-paint scroll, holds the pills fully open for 800ms, then
   `html.days-tucked` translates `.day-tabs-slide` up (`translate3d(0,-100%,0)`)
-  while the clip's height eases to 0 over 660ms
-  (`cubic-bezier(0.4, 0, 0.2, 1)`). A height-only collapse crops the
-  bottom and does not read as a slide. Height must be a pixel length
-  before that ease — `auto` does not interpolate. When the slide ends,
-  `.days-toggle--notice` pulses the Days control. `prefers-reduced-motion`
-  skips the hold, the translate, and the pulse and tucks immediately.
-  Tap Days to drop the pills back down, tap again or pick a day
-  (including Today) to tuck them. The row is `flex-wrap`, not a sideways
-  scroller. Outside the trip the classes stay off. A hash still wins
-  the landing; the hold and slide happen after that scroll. A resume
-  does not replay the intro.
+  while the clip stays at its open height so the motion is not clipped.
+  The height eases to 0 only after that transition ends. A height-only
+  collapse crops the bottom and does not read as a slide. The hold
+  starts only once `html.trip-orienting` is gone, the document is
+  `visible`, and two frames have painted — a Home Screen cold start
+  can finish a transition while the page is still hidden. When the
+  slide ends, `.days-toggle--notice` pulses the Days control.
+  `prefers-reduced-motion` does **not** skip this: iPhones often have
+  Reduce Motion on. It adds `html.days-gentle` (about 1.05s fade plus a
+  short rise, then the same pulse). Tap Days to drop the pills back
+  down, tap again or pick a day (including Today) to tuck them. The
+  row is `flex-wrap`, not a sideways scroller. Outside the trip the
+  classes stay off. A hash still wins the landing; the hold and slide
+  happen after that scroll. A resume does not replay the intro. A new
+  service worker (`trip-cache-v17`) reloads a page that already had a
+  controller, once, on `controllerchange`, and document fetches bypass
+  the HTTP cache.
 - **Day-strip scroll-spy is live (rAF), not debounce-until-idle, and is
   section-scoped.** `#day-N` banners live in the city tabs, further down
   the continuous page. Spy city banners only while a `tab-city-*` section
@@ -532,6 +538,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **iPhone Home Screen showed no day-pill slide (2026-10-13).** Chip, Chrome on iPhone (WebKit): no animation after #30. Two things stacked. `prefers-reduced-motion: reduce` — common on iPhones — hit a CSS `transition: none` / `animation: none` on the clip, the slide, and `.days-toggle--notice`, and `tuckDaysAfterPaint` called `setDaysTucked(true)` in the same turn as `revealTripOrient()`, which set the clip height to 0 before the first paint. The open frame was already tucked. Separately, the installed service worker called `skipWaiting` and `clients.claim` but never reloaded the open document, and `fetch(req)` for HTML is allowed to come from the HTTP cache, so a Home Screen app could keep the previous script. The tuck now waits until the document is visible, `trip-orienting` is gone, and two frames have painted the open pills, then holds 800ms. The translate (or, under Reduce Motion, `html.days-gentle`: opacity to 0 and a 36% rise over 1.05s) runs while the clip height stays open, because collapsing it in the same turn clips the motion on WebKit. Height goes to 0 when that transition ends, and Days still pulses. `trip-cache-v17` precaches before `skipWaiting`, claims on activate, reloads once on `controllerchange` when a controller was already there, and uses `cache: 'reload'` for document requests. `reg.update()` runs on each load.
 
 - **Day-pill tuck collapsed in place, so the slide was easy to miss (2026-10-13).** Chip: make it an animation slide up so the user notices. The first tuck added `days-tucked` on the next frame and animated `grid-template-rows` from `1fr` to `0fr` over 420ms. That crops the bottom of the row while the top stays put, and it started before anyone had seen the pills. After the open paints (hero still hidden until the instant scroll), the pills now stay fully open for 800ms, then `.day-tabs-slide` translates up under the icon row while the clip height eases from its measured pixel height to 0 over 660ms on `cubic-bezier(0.4, 0, 0.2, 1)`. The nav's z-index covers the part that crosses the icon row. When that height transition ends, Days pulses gold twice (`.days-toggle--notice`). `prefers-reduced-motion: reduce` turns the transitions and the pulse off and tucks in the same turn as the reveal, with no 800ms hold. Tapping Days, a day, or Today during the hold cancels the intro timer. A later resume does not play the intro again. Outside the trip nothing is added. `trip-cache-v16`.
 

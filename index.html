@@ -68,6 +68,26 @@
   window.__cancelTripOrientFailsafe = function () { clearTimeout(fail); };
 })();
 </script>
+<script>
+  // A Home Screen app that is already open keeps the old document when a
+  // new service worker claims it. Reload once so the next open runs the
+  // new script. First install has no controller, so it does not reload.
+  if ('serviceWorker' in navigator) {
+    var swReloading = false;
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (swReloading) return;
+        swReloading = true;
+        location.reload();
+      });
+    }
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').then(function (reg) {
+        if (reg && reg.update) return reg.update();
+      }).catch(function () {});
+    });
+  }
+</script>
 <meta name="description" content="Trip guide: London, Normandy, Porto — Oct 2026. Live weather, map, local search, AI concierge.">
 <!-- Icon is a real photo (Mont-Saint-Michel), not a vector mark - so the
      favicon/manifest/touch-icon are all PNG renders of one square crop
@@ -2244,15 +2264,6 @@ function dismissWelcome(dest) {
   // A normal open has already removed the class inside landOnOpen.
   if (window.__cancelTripOrientFailsafe) window.__cancelTripOrientFailsafe();
   document.documentElement.classList.remove('trip-orienting');
-</script>
-<script>
-  // Offline support - see sw.js for the caching strategy. Registered here
-  // rather than app.js so it runs even if app.js itself fails to parse.
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('/sw.js').catch(function () { /* offline support unavailable - app still works online */ });
-    });
-  }
 </script>
 </body>
 </html>
