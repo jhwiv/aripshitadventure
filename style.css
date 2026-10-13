@@ -260,6 +260,39 @@ img { max-width: 100%; display: block; }
 .day-today-btn:active { transform: scale(0.96); }
 .day-today-btn.is-current { background: var(--navy); color: #fff; }
 .day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.geo-ask {
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: #fffdf7;
+  border: 1px solid var(--gold-soft);
+  border-radius: 10px;
+}
+.geo-ask.active { display: flex; }
+.geo-ask-text {
+  flex: 1 1 180px;
+  margin: 0;
+  min-width: 0;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: #5b4a20;
+}
+.geo-ask-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.geo-ask-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 14px;
+  border: 1.5px solid var(--navy);
+  background: #fff;
+  color: var(--navy);
+  cursor: pointer;
+}
+.geo-ask-btn--yes { background: var(--navy); color: #fff; }
 .day-tab-card {
   --day-tab-color: var(--gold);
   position: relative;
@@ -727,6 +760,42 @@ img { max-width: 100%; display: block; }
 .day-timeline .item-icon { background: #fff; border: 1.5px solid var(--rule); z-index: 1; }
 .item-body { flex: 1; min-width: 0; }
 .item-time-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.now-marker {
+  display: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b4f12;
+  background: #fff6e0;
+  border: 1px solid #e6c36a;
+  border-radius: 999px;
+  padding: 1px 6px;
+  line-height: 1.4;
+}
+.item.is-now .now-marker,
+.item.is-next .now-marker,
+.cond-row.is-now .now-marker,
+.cond-row.is-next .now-marker { display: inline-flex; align-items: center; }
+.day-timeline .item.is-now,
+.day-timeline .item.is-next {
+  background: #fffaf0;
+  border-radius: 8px;
+  box-shadow: inset 3px 0 0 #c9a24b;
+}
+.day-timeline .item.is-now .item-icon,
+.day-timeline .item.is-next .item-icon {
+  border-color: #c9a24b;
+  box-shadow: 0 0 0 3px #fff6e0;
+}
+.cond-row.is-now,
+.cond-row.is-next {
+  background: #fffaf0;
+  border-radius: 6px;
+  box-shadow: inset 3px 0 0 #c9a24b;
+  padding-left: 6px;
+}
 .item-time { font-size: 11.5px; color: #656d7c; font-weight: 600; letter-spacing: 0.02em; }
 .book-chip {
   display: inline-block; max-width: 100%; font-size: 10px; font-weight: 700; letter-spacing: 0.03em;
@@ -935,7 +1004,7 @@ img { max-width: 100%; display: block; }
    full trip in one print job isn't attempted here - see parking-lot
    items in docs/new-trip-site-playbook.md for that as a future add) ── */
 @media print {
-  .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill,
+  .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill, .geo-ask,
   #itineraryMap, .hero-photo,
   .day-jump-nav, .day-tabs-wrap, .countdown-badge { display: none !important; }
   .hero { background: none !important; min-height: 0; color: #1c2840; padding: 12px 0; }
@@ -960,6 +1029,12 @@ img { max-width: 100%; display: block; }
   .conflict-banner { background: none !important; border-color: #c9a24b; color: #1c2840; }
   .conflict-banner-title, .conflict-banner-text { color: #1c2840; }
   .book-chip { background: none !important; border: 1px solid #8a8f98; color: #1c2840; }
+  .item.is-now, .item.is-next, .cond-row.is-now, .cond-row.is-next {
+    background: none !important;
+    box-shadow: none !important;
+    border-left: 3px solid #1c2840;
+  }
+  .now-marker { color: #1c2840 !important; background: none !important; border-color: #1c2840 !important; }
   .wx-chip { display: block; background: none; border: none; padding: 0; margin-bottom: 8px; }
   .wx-chip-caret { display: none; }
   .transit-chip { display: block; background: none; border: none; padding: 0; margin: 0 0 8px; }

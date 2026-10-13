@@ -128,24 +128,204 @@
   function tripDateAt(idx) {
     return new Date(2026, 9, 12 + idx);
   }
+  // Per-day city zone. Item clocks are local to that day's city, not the
+  // phone's zone (home is America/Chicago; a 10:00 London card is not 10:00
+  // in Dallas). Normandy days are France local (Europe/Paris).
+  var CITY_ZONE = {
+    London: 'Europe/London',
+    Normandy: 'Europe/Paris',
+    Porto: 'Europe/Lisbon'
+  };
+  // Nearest-city fix, only to break a midnight overlap between two days.
+  // Paris/Clamart is the Oct 18 hotel night on the way into Normandy.
+  var GEO_POINTS = [
+    { city: 'London', lat: 51.5074, lng: -0.1278 },
+    { city: 'Normandy', lat: 49.2764, lng: -0.7024 },
+    { city: 'Paris', lat: 48.8014, lng: 2.265 },
+    { city: 'Porto', lat: 41.1579, lng: -8.6291 }
+  ];
+  var geoCityName = null;
+
+  function tzParts(date, timeZone) {
+    var fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: timeZone,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    });
+    var o = { year: '0', month: '1', day: '1', hour: '0', minute: '0' };
+    fmt.formatToParts(date).forEach(function (p) {
+      if (p.type !== 'literal') o[p.type] = p.value;
+    });
+    var hour = parseInt(o.hour, 10);
+    if (hour === 24) hour = 0;
+    return {
+      y: parseInt(o.year, 10),
+      m: parseInt(o.month, 10),
+      d: parseInt(o.day, 10),
+      hour: hour,
+      minute: parseInt(o.minute, 10)
+    };
+  }
+  function zonedMidnightUtc(y, m, d, timeZone) {
+    var utcGuess = Date.UTC(y, m - 1, d, 0, 0, 0);
+    var want = utcGuess;
+    var ms = utcGuess;
+    for (var n = 0; n < 3; n++) {
+      var p = tzParts(new Date(ms), timeZone);
+      var got = Date.UTC(p.y, p.m - 1, p.d, p.hour, p.minute);
+      if (got === want && p.hour !== 24) return ms;
+      ms = ms - (got - want);
+    }
+    return ms;
+  }
+  function dayZone(day) {
+    return (day && CITY_ZONE[day.city]) || 'Europe/London';
+  }
+  function dayBoundsMs(idx) {
+    var d = tripDateAt(idx);
+    var tz = dayZone(TRIP.days[idx]);
+    var start = zonedMidnightUtc(d.getFullYear(), d.getMonth() + 1, d.getDate(), tz);
+    var next = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    var end = zonedMidnightUtc(next.getFullYear(), next.getMonth() + 1, next.getDate(), tz);
+    return { start: start, end: end, tz: tz };
+  }
+  function localMinutesIn(now, tz) {
+    var p = tzParts(now, tz);
+    return p.hour * 60 + p.minute;
+  }
+  function haversineKm(aLat, aLng, bLat, bLng) {
+    var r = 6371;
+    var dLat = (bLat - aLat) * Math.PI / 180;
+    var dLng = (bLng - aLng) * Math.PI / 180;
+    var s = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(aLat * Math.PI / 180) * Math.cos(bLat * Math.PI / 180) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * r * Math.asin(Math.min(1, Math.sqrt(s)));
+  }
+  function cityFromFix(lat, lng) {
+    var best = null;
+    var bestKm = Infinity;
+    GEO_POINTS.forEach(function (p) {
+      var km = haversineKm(lat, lng, p.lat, p.lng);
+      if (km < bestKm) { bestKm = km; best = p.city; }
+    });
+    if (bestKm > 180) return null;
+    return best;
+  }
+  function dayMatchesGeo(dayCity, geo) {
+    if (!geo || !dayCity) return false;
+    if (geo === dayCity) return true;
+    if (geo === 'Paris' && dayCity === 'Normandy') return true;
+    return false;
+  }
+  function itemWindows(day) {
+    var items = (day && day.items) || [];
+    var starts = items.map(function (item) { return toMinutes(item.time); });
+    var out = [];
+    items.forEach(function (item, i) {
+      var start = starts[i];
+      if (start == null) return;
+      var nextStart = null;
+      for (var j = i + 1; j < starts.length; j++) {
+        if (starts[j] != null && starts[j] > start) { nextStart = starts[j]; break; }
+      }
+      var end = toMinutes(item.end_time);
+      if (end != null && end <= start) end = null;
+      if (end == null && item.type === 'Flight' && item.flight) {
+        var arr = toMinutes(item.flight.arrive_time);
+        var dep = toMinutes(item.flight.depart_time);
+        if (arr != null && dep != null && item.time === dep && arr > start) end = arr;
+        if (end == null && item.flight.duration) {
+          var dur = durationStrToMinutes(item.flight.duration);
+          if (dur != null && dur > 0) end = start + dur;
+        }
+      }
+      if (end == null && item.type === 'Transport') {
+        var tdur = transportDurationMinutesOf(item);
+        if (tdur != null && tdur > 0) end = start + tdur;
+      }
+      if (end == null) end = nextStart != null ? nextStart : start + 90;
+      out.push({ index: i, start: start, end: end });
+    });
+    return out;
+  }
+  function pickItem(day, minutes) {
+    var windows = itemWindows(day);
+    if (!windows.length) return null;
+    var current = null;
+    for (var i = 0; i < windows.length; i++) {
+      var w = windows[i];
+      if (minutes >= w.start && minutes < w.end) current = w;
+    }
+    if (current) return { window: current, kind: 'current', rank: 3 };
+    for (var k = 0; k < windows.length; k++) {
+      if (windows[k].start > minutes) return { window: windows[k], kind: 'next', rank: 2 };
+    }
+    return { window: windows[windows.length - 1], kind: 'current', rank: 1 };
+  }
+  function chooseDayIndex(hits, now, geoCity) {
+    if (hits.length === 1) return hits[0];
+    var scored = hits.map(function (i) {
+      var pick = pickItem(TRIP.days[i], localMinutesIn(now, dayZone(TRIP.days[i])));
+      return { dayIndex: i, rank: pick ? pick.rank : 0 };
+    });
+    var max = 0;
+    scored.forEach(function (s) { if (s.rank > max) max = s.rank; });
+    var top = scored.filter(function (s) { return s.rank === max; });
+    if (top.length === 1) return top[0].dayIndex;
+    if (geoCity) {
+      var geoTop = top.filter(function (s) {
+        return dayMatchesGeo(TRIP.days[s.dayIndex].city, geoCity);
+      });
+      if (geoTop.length === 1) return geoTop[0].dayIndex;
+      if (geoTop.length > 1) top = geoTop;
+    }
+    var later = top[0].dayIndex;
+    top.forEach(function (s) { if (s.dayIndex > later) later = s.dayIndex; });
+    return later;
+  }
+  function tripMoment(now, geoCity) {
+    now = now || new Date();
+    var n = (TRIP.days && TRIP.days.length) || 0;
+    if (!n) return { phase: 'before', dayIndex: 0, dayNum: 1, day: null, minutes: 0, tz: 'Europe/London' };
+    var bounds = [];
+    for (var i = 0; i < n; i++) bounds.push(dayBoundsMs(i));
+    var t = now.getTime();
+    if (t < bounds[0].start) return { phase: 'before', dayIndex: 0, dayNum: 1, day: TRIP.days[0], minutes: 0, tz: bounds[0].tz };
+    if (t >= bounds[n - 1].end) return { phase: 'after', dayIndex: n - 1, dayNum: n, day: TRIP.days[n - 1], minutes: 0, tz: bounds[n - 1].tz };
+    var hits = [];
+    for (var h = 0; h < n; h++) {
+      if (t >= bounds[h].start && t < bounds[h].end) hits.push(h);
+    }
+    var dayIndex;
+    if (!hits.length) {
+      dayIndex = 0;
+      for (var g = 0; g < n; g++) {
+        if (bounds[g].end <= t) dayIndex = g;
+      }
+    } else {
+      dayIndex = chooseDayIndex(hits, now, geoCity);
+    }
+    var day = TRIP.days[dayIndex];
+    var tz = dayZone(day);
+    return {
+      phase: 'during',
+      dayIndex: dayIndex,
+      dayNum: dayIndex + 1,
+      day: day,
+      tz: tz,
+      city: day.city,
+      minutes: localMinutesIn(now, tz)
+    };
+  }
   function todayTripDayNum() {
-    var start = tripStartLocal();
-    start.setHours(0, 0, 0, 0);
-    var now = new Date();
-    now.setHours(0, 0, 0, 0);
-    var diff = Math.round((now - start) / 86400000);
-    var nDays = (TRIP.days && TRIP.days.length) || 15;
-    if (diff < 0) return 1;
-    if (diff >= nDays) return nDays;
-    return diff + 1;
+    var m = tripMoment(new Date(), geoCityName);
+    if (m.phase === 'before') return 1;
+    if (m.phase === 'after') return (TRIP.days && TRIP.days.length) || 1;
+    return m.dayNum;
   }
   function isCalendarTodayOnTrip() {
-    var start = tripStartLocal();
-    start.setHours(0, 0, 0, 0);
-    var now = new Date();
-    now.setHours(0, 0, 0, 0);
-    var diff = Math.round((now - start) / 86400000);
-    return diff >= 0 && diff < ((TRIP.days && TRIP.days.length) || 15);
+    return tripMoment(new Date(), geoCityName).phase === 'during';
   }
   function weekdayShortForDay(idx) {
     return WEEKDAY_SHORT[tripDateAt(idx).getDay()];
@@ -662,7 +842,18 @@
     navTapLock = true;
     clearTimeout(navTapTimer);
     if (spyRaf != null) { cancelAnimationFrame(spyRaf); spyRaf = null; }
-    window.scrollTo({ top: top, behavior: instant ? 'auto' : 'smooth' });
+    // html { scroll-behavior: smooth } makes behavior:'auto' animate. An
+    // open/resume jump has to land before the spy runs, or the strip snaps
+    // to whatever day is passing the line mid-animation.
+    var root = document.documentElement;
+    var prevScroll = root.style.scrollBehavior;
+    if (instant) root.style.scrollBehavior = 'auto';
+    try {
+      window.scrollTo({ top: top, behavior: instant ? 'instant' : 'smooth' });
+    } catch (e) {
+      window.scrollTo(0, top);
+    }
+    if (instant) root.style.scrollBehavior = prevScroll;
     function done() {
       navTapLock = false;
       if (after) after();
@@ -800,6 +991,10 @@
   var todayBtnEl = document.getElementById('dayTabsToday');
   if (todayBtnEl) {
     todayBtnEl.addEventListener('click', function () {
+      if (isCalendarTodayOnTrip()) {
+        orientToNow({ scroll: true, force: true });
+        return;
+      }
       var n = todayTripDayNum();
       var el = document.getElementById('day-' + n);
       if (!el) return;
@@ -885,28 +1080,38 @@
     }, { passive: true });
   })();
 
-  // If the URL already has #day-N or #tab-*, land with the real sticky
-  // offset and the matching city/section chip once layout is known.
-  (function restoreHashLanding() {
-    function go() {
-      var id = (location.hash || '').replace(/^#/, '');
-      if (!id) return;
-      var el = document.getElementById(id);
+  // Hash present on the first load is an explicit deep link and wins over
+  // the during-trip "open on now" landing. A hash this page writes later
+  // (day-tab taps) is not that signal — open/resume with a clean URL
+  // re-orients. Captured before any script writes location.hash.
+  var initialHashId = (location.hash || '').replace(/^#/, '');
+
+  function landOnOpen() {
+    measureSticky();
+    if (initialHashId) {
+      var el = document.getElementById(initialHashId);
+      var hashed = tripMoment(new Date(), geoCityName);
+      refreshTodayChrome(hashed);
+      applyNowHighlight(hashed);
       if (!el) return;
-      var instant = 'instant';
-      scrollToElement(el, instant, function () {
-        var sectionId = parentSectionId(el) || id;
-        if (id.indexOf('day-') === 0) {
-          var n = parseInt(id.slice(4), 10);
+      scrollToElement(el, 'instant', function () {
+        var sectionId = parentSectionId(el) || initialHashId;
+        if (initialHashId.indexOf('day-') === 0) {
+          var n = parseInt(initialHashId.slice(4), 10);
           sectionId = parentSectionId(el) || sectionIdForDayNum(n) || sectionId;
           if (n) setSelectedDay(n);
         }
         setActiveChip(sectionId);
       });
+      setupGeo();
+      return;
     }
-    if (document.readyState === 'complete') setTimeout(go, 0);
-    else window.addEventListener('load', go);
-  })();
+    var moment = tripMoment(new Date(), geoCityName);
+    if (moment.phase === 'during') orientToNow({ scroll: true });
+    setupGeo();
+  }
+  if (document.readyState === 'complete') setTimeout(landOnOpen, 0);
+  else window.addEventListener('load', landOnOpen);
 
   /* ---------------------------------------------------------
      HERO
@@ -937,16 +1142,16 @@
     if (!el) return;
     var totalDays = (TRIP.days || []).length;
     if (!totalDays) return;
-    var tripStart = new Date(2026, 9, 12); tripStart.setHours(0, 0, 0, 0);
-    var tripEnd = new Date(tripStart); tripEnd.setDate(tripEnd.getDate() + totalDays - 1);
-    var today = new Date(); today.setHours(0, 0, 0, 0);
-    var msPerDay = 86400000;
-    var daysUntilStart = Math.round((tripStart - today) / msPerDay);
-    if (daysUntilStart > 0) {
+    var moment = tripMoment(new Date(), geoCityName);
+    if (moment.phase === 'before') {
+      var tripStart = new Date(2026, 9, 12); tripStart.setHours(0, 0, 0, 0);
+      var parts = tzParts(new Date(), 'Europe/London');
+      var today = new Date(parts.y, parts.m - 1, parts.d);
+      var daysUntilStart = Math.round((tripStart - today) / 86400000);
+      if (daysUntilStart < 1) daysUntilStart = 1;
       el.textContent = '✈ ' + daysUntilStart + (daysUntilStart === 1 ? ' day' : ' days') + ' until departure';
-    } else if (today <= tripEnd) {
-      var dayNum = Math.round((today - tripStart) / msPerDay) + 1;
-      el.textContent = '📍 Day ' + dayNum + ' of ' + totalDays + ' — enjoy the trip';
+    } else if (moment.phase === 'during') {
+      el.textContent = '📍 Day ' + moment.dayNum + ' of ' + totalDays + ' — enjoy the trip';
     } else {
       el.textContent = '✓ Trip complete — hope it was a ripshit adventure';
     }
@@ -1090,7 +1295,7 @@
     return dest;
   }
 
-  function renderItemHTML(item, day, dayNum) {
+  function renderItemHTML(item, day, dayNum, itemIdx) {
     var icon = ITEM_ICONS[item.type] || '•';
     var group = timelineGroupOf(item);
     var bookStatus = bookingStatusForItem(item, dayNum);
@@ -1153,10 +1358,11 @@
     var restaurantBlock = item.restaurant
       ? '<div class="item-restaurant-card">' + restaurantCardHTML(item.restaurant) + '</div>'
       : navigateRow;
-    return '<div class="item day-tl-item" data-tl-group="' + group + '">' +
+    return '<div class="item day-tl-item" data-tl-group="' + group + '" data-day="' + dayNum + '" data-item="' + itemIdx + '">' +
       '<div class="item-icon" title="' + esc(item.type || '') + '">' + icon + '</div>' +
       '<div class="item-body">' +
       '<div class="item-time-row">' +
+        '<span class="now-marker" aria-hidden="true"></span>' +
         '<div class="item-time">' + timeLine + '</div>' +
         (bookStatus ? bookingChipHTML(bookStatus) : '') +
       '</div>' +
@@ -1334,7 +1540,7 @@
         html += '<div class="day-tl-group">' + esc(TIMELINE_GROUP_LABELS[group] || group) + '</div>';
         lastGroup = group;
       }
-      html += renderItemHTML(item, day, dayNum);
+      html += renderItemHTML(item, day, dayNum, i);
       // A Flight item's own "end" is its arrival time (item.flight.arrive_time),
       // not its departure time (item.time) - using item.time here produced a
       // false ~14hr "free time" gap between an 8:20 AM departure/8:40 PM
@@ -1433,7 +1639,7 @@
         // list of times and venue names with no sense of the day's shape.
         (day.headline ? '<div class="cond-day-headline">' + esc(day.headline) + '</div>' : '') +
         conflictBannerHTML(idx + 1);
-      (day.items || []).forEach(function (item) {
+      (day.items || []).forEach(function (item, itemIdx) {
         var name = (item.restaurant && item.restaurant.name) || (item.hotel && item.hotel.name) || '';
         var unverifiedTag = (item.type === 'Flight' && item.flight && (item.flight._modelEstimatedFlightNumber || !item.flight.flight_number))
           ? ' <span class="cond-warn">⚠ Unverified / confirm with airline</span>'
@@ -1453,9 +1659,10 @@
           : null;
         var condDurationBadge = condDuration ? ' <span class="cond-duration">⏱ ' + esc(condDuration) + '</span>' : '';
         var condChip = bookingChipHTML(bookingStatusForItem(item, idx + 1));
-        html += '<div class="cond-row">' +
+        html += '<div class="cond-row" data-day="' + (idx + 1) + '" data-item="' + itemIdx + '">' +
           '<div class="cond-row-icon">' + icon + '</div>' +
           '<div class="cond-row-body">' +
+            '<span class="now-marker" aria-hidden="true"></span>' +
             '<span class="cond-time">' + esc(condTimeLabel) + '</span>' +
             esc(condText || '') + (name ? ' — <strong>' + esc(name) + '</strong>' : '') + unverifiedTag + condDurationBadge +
             (condChip ? ' ' + condChip : '') +
@@ -2516,17 +2723,12 @@
       return { date: dayDateISO(idx), city: day.city, info: CITY_TZ[day.city] };
     }).filter(function (z) { return z.info; });
 
-    function todayISO() {
-      var d = new Date();
-      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    }
-
     function currentZone() {
-      var today = todayISO();
-      for (var i = 0; i < zones.length; i++) {
-        if (zones[i].date === today) return zones[i];
-      }
-      return zones[0] || null; // before/after the trip: default to the first leg
+      // During the trip, the leg is the city-local day — not the phone's
+      // calendar date. Before and after, keep the first leg as the default.
+      var m = tripMoment(new Date(), geoCityName);
+      if (m.phase === 'during' && zones[m.dayIndex]) return zones[m.dayIndex];
+      return zones[0] || null;
     }
 
     function fmtTime(tz) {
@@ -2571,6 +2773,182 @@
   // mapMarkers was declared further down the file, which broke ALL city-day
   // rendering, not just the map, since the resulting uncaught exception
   // aborted the rest of the script).
+  function measureSticky() {
+    var stickyEl = document.getElementById('stickyTop');
+    if (!stickyEl) return;
+    var h = stickyEl.getBoundingClientRect().height;
+    if (h > 0) document.documentElement.style.setProperty('--sticky-clearance', (h + 12) + 'px');
+  }
+  function explicitHashBlocksOrient() {
+    return !!initialHashId;
+  }
+  function clearNowMarks() {
+    document.querySelectorAll('.is-now, .is-next').forEach(function (el) {
+      el.classList.remove('is-now', 'is-next');
+      el.removeAttribute('aria-current');
+    });
+    document.querySelectorAll('.now-marker').forEach(function (m) {
+      m.textContent = '';
+      m.setAttribute('aria-hidden', 'true');
+    });
+  }
+  function markNowEl(el, kind) {
+    if (!el) return;
+    var upcoming = kind === 'next';
+    el.classList.add(upcoming ? 'is-next' : 'is-now');
+    if (upcoming) el.removeAttribute('aria-current');
+    else el.setAttribute('aria-current', 'true');
+    var marker = el.querySelector('.now-marker');
+    if (marker) {
+      marker.textContent = upcoming ? 'Next' : 'Now';
+      marker.setAttribute('aria-hidden', 'false');
+    }
+  }
+  function refreshTodayChrome(moment) {
+    var n = moment && moment.phase === 'during' ? moment.dayNum : null;
+    document.querySelectorAll('.day-tab-card').forEach(function (card) {
+      var num = parseInt(card.getAttribute('data-day'), 10);
+      card.classList.toggle('is-today', n === num);
+    });
+  }
+  function applyNowHighlight(moment) {
+    clearNowMarks();
+    if (!moment || moment.phase !== 'during' || !moment.day) return null;
+    var pick = pickItem(moment.day, moment.minutes);
+    if (!pick) return null;
+    var itemSel = '.item[data-day="' + moment.dayNum + '"][data-item="' + pick.window.index + '"]';
+    var condSel = '.cond-row[data-day="' + moment.dayNum + '"][data-item="' + pick.window.index + '"]';
+    markNowEl(document.querySelector(itemSel), pick.kind);
+    markNowEl(document.querySelector(condSel), pick.kind);
+    return { el: document.querySelector(itemSel), kind: pick.kind, item: pick.window.index, dayNum: moment.dayNum };
+  }
+  var lastOrientKey = '';
+  function orientToNow(opts) {
+    opts = opts || {};
+    var moment = tripMoment(new Date(), geoCityName);
+    refreshTodayChrome(moment);
+    var target = applyNowHighlight(moment);
+    if (moment.phase !== 'during') return moment;
+    var allowScroll = opts.scroll !== false && (opts.force || !explicitHashBlocksOrient());
+    if (!allowScroll) return moment;
+    measureSticky();
+    setSelectedDay(moment.dayNum);
+    var el = target && target.el;
+    var key = moment.dayNum + ':' + (target ? target.item : 'day') + ':' + (target ? target.kind : '');
+    if (!el) el = document.getElementById('day-' + moment.dayNum);
+    if (!el) return moment;
+    if (opts.onlyIfChanged && key === lastOrientKey) return moment;
+    lastOrientKey = key;
+    scrollToElement(el, 'instant', function () {
+      setActiveChip(parentSectionId(el) || sectionIdForDayNum(moment.dayNum));
+    });
+    return moment;
+  }
+  window.orientToNow = function () {
+    if (explicitHashBlocksOrient()) return;
+    orientToNow({ scroll: true, force: true });
+  };
+
+  var GEO_ASKED_KEY = 'aripshitadventure-geo-asked';
+  var geoSetupDone = false;
+  var orientTimer = null;
+  function storageGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return '1'; }
+  }
+  function storageSet(key, val) {
+    try { localStorage.setItem(key, val); } catch (e) {}
+  }
+  function hideGeoAsk() {
+    var bar = document.getElementById('geoAsk');
+    if (bar) bar.classList.remove('active');
+    measureSticky();
+  }
+  function showGeoAsk() {
+    var bar = document.getElementById('geoAsk');
+    if (!bar) return;
+    bar.classList.add('active');
+    measureSticky();
+    if (!explicitHashBlocksOrient()) orientToNow({ scroll: true });
+  }
+  function applyGeoFix(pos) {
+    if (!pos || !pos.coords) return;
+    var city = cityFromFix(pos.coords.latitude, pos.coords.longitude);
+    if (!city || city === geoCityName) return;
+    geoCityName = city;
+    scheduleOrient('geo');
+  }
+  function requestGeoOnce() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(applyGeoFix, function () {}, {
+      enableHighAccuracy: false,
+      timeout: 8000,
+      maximumAge: 300000
+    });
+  }
+  function setupGeo() {
+    if (geoSetupDone || !navigator.geolocation) return;
+    if (!isCalendarTodayOnTrip()) return;
+    geoSetupDone = true;
+    var allowBtn = document.getElementById('geoAskAllow');
+    var dismissBtn = document.getElementById('geoAskDismiss');
+    if (allowBtn) allowBtn.addEventListener('click', function () {
+      storageSet(GEO_ASKED_KEY, '1');
+      hideGeoAsk();
+      requestGeoOnce();
+    });
+    if (dismissBtn) dismissBtn.addEventListener('click', function () {
+      storageSet(GEO_ASKED_KEY, '1');
+      hideGeoAsk();
+      if (!explicitHashBlocksOrient()) orientToNow({ scroll: true });
+    });
+    function onState(state) {
+      if (state === 'granted') requestGeoOnce();
+      else if (state === 'prompt' && storageGet(GEO_ASKED_KEY) !== '1') showGeoAsk();
+    }
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'geolocation' }).then(function (status) {
+        onState(status.state);
+        status.onchange = function () {
+          if (status.state === 'granted') requestGeoOnce();
+        };
+      }).catch(function () {});
+    }
+  }
+  function scheduleOrient(reason) {
+    clearTimeout(orientTimer);
+    orientTimer = setTimeout(function () {
+      if (explicitHashBlocksOrient()) {
+        var moment = tripMoment(new Date(), geoCityName);
+        refreshTodayChrome(moment);
+        applyNowHighlight(moment);
+        return;
+      }
+      orientToNow({ scroll: true, onlyIfChanged: reason === 'geo' });
+    }, 60);
+  }
+  var appWasHidden = false;
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') appWasHidden = true;
+    else if (appWasHidden) {
+      appWasHidden = false;
+      setupGeo();
+      scheduleOrient('resume');
+    }
+  });
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    setupGeo();
+    scheduleOrient('resume');
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      measureSticky();
+      if (!explicitHashBlocksOrient() && isCalendarTodayOnTrip()) {
+        orientToNow({ scroll: true });
+      }
+    });
+  }
+
   applyScrollSpy();
   initMapOnce();
   syncMapToSelection();
