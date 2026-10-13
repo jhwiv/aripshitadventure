@@ -196,17 +196,22 @@ same-day transatlantic flight), not a "looks fine" skim:
   hidden and reveals only after the same instant scroll. A hash still
   wins; it is scrolled the same way before the reveal. Outside the trip
   the class is never added.
-- **During the trip, tuck Jump to a day after the open lands.** The day
-  pills stay in the sticky group, so once the page is on the current
-  item they still eat the top of the screen. After that first paint
-  (double `requestAnimationFrame`, so it does not run while the hero is
-  still hidden), `html.days-tucked` animates `.day-tabs-clip` from
-  `1fr` to `0fr` and the pills slide up under the icon row. A Days
-  control with a chevron stays in the nav: tap to drop the pills back
-  down, tap again or pick a day (including Today) to tuck them. The
-  row is `flex-wrap`, not a sideways scroller. Outside the trip the
-  classes stay off, so the pills and the control do not change. A hash
-  still wins the landing; the tuck happens after that scroll.
+- **During the trip, show Jump to a day, then slide it up under the icons.**
+  The pills stay in the sticky group, so once the page is on the current
+  item they still eat the top of the screen. The tuck waits until after
+  the hidden pre-paint scroll, holds the pills fully open for 800ms, then
+  `html.days-tucked` translates `.day-tabs-slide` up (`translate3d(0,-100%,0)`)
+  while the clip's height eases to 0 over 660ms
+  (`cubic-bezier(0.4, 0, 0.2, 1)`). A height-only collapse crops the
+  bottom and does not read as a slide. Height must be a pixel length
+  before that ease — `auto` does not interpolate. When the slide ends,
+  `.days-toggle--notice` pulses the Days control. `prefers-reduced-motion`
+  skips the hold, the translate, and the pulse and tucks immediately.
+  Tap Days to drop the pills back down, tap again or pick a day
+  (including Today) to tuck them. The row is `flex-wrap`, not a sideways
+  scroller. Outside the trip the classes stay off. A hash still wins
+  the landing; the hold and slide happen after that scroll. A resume
+  does not replay the intro.
 - **Day-strip scroll-spy is live (rAF), not debounce-until-idle, and is
   section-scoped.** `#day-N` banners live in the city tabs, further down
   the continuous page. Spy city banners only while a `tab-city-*` section
@@ -527,6 +532,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Day-pill tuck collapsed in place, so the slide was easy to miss (2026-10-13).** Chip: make it an animation slide up so the user notices. The first tuck added `days-tucked` on the next frame and animated `grid-template-rows` from `1fr` to `0fr` over 420ms. That crops the bottom of the row while the top stays put, and it started before anyone had seen the pills. After the open paints (hero still hidden until the instant scroll), the pills now stay fully open for 800ms, then `.day-tabs-slide` translates up under the icon row while the clip height eases from its measured pixel height to 0 over 660ms on `cubic-bezier(0.4, 0, 0.2, 1)`. The nav's z-index covers the part that crosses the icon row. When that height transition ends, Days pulses gold twice (`.days-toggle--notice`). `prefers-reduced-motion: reduce` turns the transitions and the pulse off and tucks in the same turn as the reveal, with no 800ms hold. Tapping Days, a day, or Today during the hold cancels the intro timer. A later resume does not play the intro again. Outside the trip nothing is added. `trip-cache-v16`.
 
 - **Jump-to-a-day stays on screen after the open lands (2026-10-13).** Chip: once the app is on the right stop, the day pills should slide up underneath the icons, and come back when asked. They were the bottom of `#stickyTop`, so they covered the top of the day for the rest of the trip. After the open scroll (and after a hash landing), two animation frames later `html.days-tucked` collapses `.day-tabs-clip` with `grid-template-rows` so the pills slide up under `.site-nav` and wrap instead of scrolling sideways. The Days chevron lives in the nav, not in the clip, so it is still there when the pills are gone: tap shows them, tap again or a day pill (or Today) tucks them. Clearance uses the nav height while tucked and the pills’ `scrollHeight` while open, so a jump does not aim at a bar that is mid-animation. Outside Oct 12–26 the classes are not added. The tuck is not applied in the same turn as the hidden pre-paint scroll, so the hero still does not flash. `trip-cache-v15`.
 

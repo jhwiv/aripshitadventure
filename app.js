@@ -982,6 +982,7 @@
     var m = href.match(/^#day-(\d+)$/);
     if (!m) return;
     e.preventDefault();
+    cancelDaysIntro();
     var dayId = 'day-' + m[1];
     var el = document.getElementById(dayId);
     if (!el) return;
@@ -994,6 +995,7 @@
       shrink = clip ? clip.getBoundingClientRect().height : 0;
     }
     if (isCalendarTodayOnTrip()) setDaysTucked(true);
+    if (prefersReducedMotion()) shrink = 0;
     scrollToElement(el, 'smooth', function () {
       setActiveChip(sectionId);
       setHashAfterSettle(dayId);
@@ -1004,6 +1006,7 @@
   if (daysToggleEl) {
     daysToggleEl.addEventListener('click', function () {
       if (!isCalendarTodayOnTrip()) return;
+      cancelDaysIntro();
       setDaysTucked(!document.documentElement.classList.contains('days-tucked'));
     });
   }
@@ -1012,10 +1015,12 @@
   if (todayBtnEl) {
     todayBtnEl.addEventListener('click', function () {
       if (isCalendarTodayOnTrip()) {
+        cancelDaysIntro();
         var openClip = document.getElementById('dayTabsClip');
         var todayShrink = document.documentElement.classList.contains('days-tucked') || !openClip
           ? 0 : openClip.getBoundingClientRect().height;
         setDaysTucked(true);
+        if (prefersReducedMotion()) todayShrink = 0;
         orientToNow({ scroll: true, force: true, shrink: todayShrink });
         return;
       }
@@ -1155,17 +1160,55 @@
     btn.setAttribute('aria-expanded', tucked ? 'false' : 'true');
     btn.setAttribute('aria-label', tucked ? 'Show days' : 'Hide days');
   }
+  function prefersReducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  function daysClipEl() { return document.getElementById('dayTabsClip'); }
+  function daysSlideEl() { return document.getElementById('dayTabsSlide'); }
+  // Height has to be a pixel length before it can ease to 0. auto does
+  // not interpolate, so a single class change cropped instead of sliding.
   function setDaysTucked(tucked) {
     var root = document.documentElement;
+    var clip = daysClipEl();
     if (!isCalendarTodayOnTrip()) {
       root.classList.remove('trip-days');
       root.classList.remove('days-tucked');
+      if (clip) clip.style.height = '';
       syncDaysToggle();
       applyStickyClearance();
       return;
     }
     root.classList.add('trip-days');
-    root.classList.toggle('days-tucked', !!tucked);
+    if (!clip || prefersReducedMotion()) {
+      root.classList.toggle('days-tucked', !!tucked);
+      if (clip) clip.style.height = tucked ? '0px' : '';
+      syncDaysToggle();
+      applyStickyClearance();
+      return;
+    }
+    if (tucked) {
+      var current = clip.getBoundingClientRect().height;
+      if (current > 1) {
+        clip.style.setProperty('--days-open-h', current + 'px');
+        clip.style.height = current + 'px';
+        clip.offsetHeight;
+      }
+      root.classList.add('days-tucked');
+      clip.style.height = '0px';
+    } else {
+      var stored = parseFloat(clip.style.getPropertyValue('--days-open-h'));
+      var slide = daysSlideEl();
+      var target = stored > 1 ? stored : (slide ? slide.scrollHeight : 0);
+      root.classList.remove('days-tucked');
+      clip.style.height = target + 'px';
+      function onEnd(e) {
+        if (!e || e.target !== clip || e.propertyName !== 'height') return;
+        clip.removeEventListener('transitionend', onEnd);
+        if (root.classList.contains('days-tucked')) return;
+        clip.style.height = 'auto';
+      }
+      clip.addEventListener('transitionend', onEnd);
+    }
     syncDaysToggle();
     applyStickyClearance();
   }
@@ -1180,11 +1223,71 @@
     root.classList.add('trip-days');
     syncDaysToggle();
   }
+  var daysIntroTimer = 0;
+  var daysIntroState = 'idle';
+  function cancelDaysIntro() {
+    if (daysIntroTimer) clearTimeout(daysIntroTimer);
+    daysIntroTimer = 0;
+    if (daysIntroState === 'idle' || daysIntroState === 'holding') daysIntroState = 'cancelled';
+  }
+  function pulseDaysToggle() {
+    if (prefersReducedMotion()) return;
+    if (!document.documentElement.classList.contains('days-tucked')) return;
+    var btn = document.getElementById('daysToggle');
+    if (!btn) return;
+    btn.classList.remove('days-toggle--notice');
+    btn.offsetWidth;
+    btn.classList.add('days-toggle--notice');
+    btn.addEventListener('animationend', function onAnim() {
+      btn.classList.remove('days-toggle--notice');
+      btn.removeEventListener('animationend', onAnim);
+    });
+  }
+  // After the open has painted: leave the pills fully open long enough
+  // to see them, then translate the block up under the icons and pulse
+  // Days so the control is where they went. Reduced motion skips the wait,
+  // the slide, and the pulse. A later resume does not replay the intro.
   function tuckDaysAfterPaint() {
+    if (!isCalendarTodayOnTrip()) return;
+    if (daysIntroState === 'holding') return;
+    if (daysIntroState !== 'idle') {
+      if (!document.documentElement.classList.contains('days-tucked')) setDaysTucked(true);
+      return;
+    }
+    daysIntroState = 'holding';
+    if (prefersReducedMotion()) {
+      daysIntroState = 'done';
+      setDaysTucked(true);
+      return;
+    }
+    // Two frames so the open pills have actually painted, then hold them.
+    // Starting the 800ms inside landOnOpen ate part of it on the rest of
+    // this script, and the slide began before it could be seen.
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
-        if (!isCalendarTodayOnTrip()) return;
-        setDaysTucked(true);
+        if (daysIntroState !== 'holding') return;
+        daysIntroTimer = window.setTimeout(function () {
+          daysIntroTimer = 0;
+          if (daysIntroState !== 'holding') return;
+          if (!isCalendarTodayOnTrip()) return;
+          daysIntroState = 'done';
+          if (document.documentElement.classList.contains('days-tucked')) return;
+          setDaysTucked(true);
+          var clip = daysClipEl();
+          var pulsed = false;
+          function go() {
+            if (pulsed) return;
+            pulsed = true;
+            if (clip) clip.removeEventListener('transitionend', onEnd);
+            pulseDaysToggle();
+          }
+          function onEnd(e) {
+            if (!e || e.target !== clip || e.propertyName !== 'height') return;
+            go();
+          }
+          if (clip) clip.addEventListener('transitionend', onEnd);
+          window.setTimeout(go, 900);
+        }, 800);
       });
     });
   }

@@ -193,6 +193,13 @@ html.trip-days .days-toggle-row { display: flex; }
   cursor: pointer;
 }
 .days-toggle:active { transform: scale(0.96); }
+@keyframes days-toggle-notice {
+  0%, 100% { background: #fff; box-shadow: 0 0 0 0 rgba(201, 162, 75, 0); }
+  28% { background: #ffe9a8; box-shadow: 0 0 0 8px rgba(201, 162, 75, 0.55); }
+  55% { background: #fff; box-shadow: 0 0 0 0 rgba(201, 162, 75, 0); }
+  78% { background: #fff3cc; box-shadow: 0 0 0 5px rgba(201, 162, 75, 0.45); }
+}
+.days-toggle--notice { animation: days-toggle-notice 0.9s ease-in-out 1; }
 .days-chevron {
   width: 0; height: 0;
   border-left: 4px solid transparent;
@@ -262,27 +269,29 @@ html.trip-days .days-toggle-row { display: flex; }
    CLAUDE.md's decisions log), this is anchored at the TOP, geometrically
    nowhere near .fab-row/#time-pill (both position:fixed at the bottom),
    so the same collision shape can't recur here. ---- */
-/* During the trip the pills slide up under the icon row (html.days-tucked).
-   grid-template-rows animates to the real height, so the row wraps and
-   never needs a sideways scroller. The nav above paints on top (z-index). */
+/* During the trip the pills stay fully open, then the whole block
+   translates up under the icon row (html.days-tucked). Height closes on
+   the same curve so the gap goes with them; a height-only collapse crops
+   the bottom and does not read as a slide. The nav paints above this
+   clip (z-index). flex-wrap on the row, never a sideways scroller. */
 .day-tabs-clip {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.42s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  height: auto;
 }
-html.days-tucked .day-tabs-clip { grid-template-rows: 0fr; }
-.day-tabs-clip > .day-tabs-wrap { min-height: 0; overflow: hidden; }
+.day-tabs-slide { transform: translate3d(0, 0, 0); }
+html.trip-days .day-tabs-clip {
+  transition: height 0.66s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.trip-days .day-tabs-slide {
+  transition: transform 0.66s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.days-tucked .day-tabs-slide { transform: translate3d(0, -100%, 0); }
 .day-tabs-wrap {
   background: var(--paper);
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
   padding: 10px 10px 12px;
-  transition: padding 0.42s ease;
-}
-/* Padding is inside the grid item, so a 0fr row still left a 22px strip. */
-html.days-tucked .day-tabs-wrap {
-  padding-top: 0;
-  padding-bottom: 0;
-  box-shadow: none;
 }
 .day-tabs-head {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -419,7 +428,8 @@ html.days-tucked .day-tabs-wrap {
   .welcome-feature, .day-today-btn, .book-chip, .days-toggle {
     transition: none;
   }
-  .day-tabs-clip, .day-tabs-wrap { transition: none; }
+  .day-tabs-clip, .day-tabs-slide, .day-tabs-wrap { transition: none; }
+  .days-toggle--notice { animation: none; }
 }
 .section-heading {
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
