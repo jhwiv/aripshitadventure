@@ -989,17 +989,11 @@
     var dayNum = parseInt(m[1], 10);
     var sectionId = parentSectionId(el) || sectionIdForDayNum(dayNum);
     setSelectedDay(dayNum);
-    var shrink = 0;
-    if (isCalendarTodayOnTrip() && !document.documentElement.classList.contains('days-tucked')) {
-      var clip = document.getElementById('dayTabsClip');
-      shrink = clip ? clip.getBoundingClientRect().height : 0;
-    }
     if (isCalendarTodayOnTrip()) setDaysTucked(true);
-    if (prefersReducedMotion()) shrink = 0;
     scrollToElement(el, 'smooth', function () {
       setActiveChip(sectionId);
       setHashAfterSettle(dayId);
-    }, shrink);
+    });
   });
 
   var daysToggleEl = document.getElementById('daysToggle');
@@ -1016,12 +1010,8 @@
     todayBtnEl.addEventListener('click', function () {
       if (isCalendarTodayOnTrip()) {
         cancelDaysIntro();
-        var openClip = document.getElementById('dayTabsClip');
-        var todayShrink = document.documentElement.classList.contains('days-tucked') || !openClip
-          ? 0 : openClip.getBoundingClientRect().height;
         setDaysTucked(true);
-        if (prefersReducedMotion()) todayShrink = 0;
-        orientToNow({ scroll: true, force: true, shrink: todayShrink });
+        orientToNow({ scroll: true, force: true });
         return;
       }
       var n = todayTripDayNum();
@@ -1143,9 +1133,15 @@
     var nav = document.getElementById('siteNav');
     var geo = document.getElementById('geoAsk');
     var wrap = document.getElementById('dayTabsWrap');
+    var clip = document.getElementById('dayTabsClip');
     var tucked = document.documentElement.classList.contains('days-tucked');
     var h = nav ? nav.getBoundingClientRect().height : 0;
-    if (!tucked && wrap) h += wrap.scrollHeight;
+    // Inline height 0 means the gap is closing. The used height is still
+    // the open size for a frame, and counting it would aim jumps too low.
+    var closing = clip && clip.style.height === '0px';
+    var clipH = !closing && clip ? clip.getBoundingClientRect().height : 0;
+    if (clipH > 1) h += clipH;
+    else if (!tucked && wrap) h += wrap.scrollHeight;
     if (geo && geo.classList.contains('active')) h += geo.getBoundingClientRect().height;
     return h;
   }
@@ -1167,21 +1163,24 @@
   function daysSlideEl() { return document.getElementById('dayTabsSlide'); }
   // Height has to be a pixel length before it can ease to 0. auto does
   // not interpolate, so a single class change cropped instead of sliding.
-  function setDaysTucked(tucked) {
+  function setDaysTucked(tucked, opts) {
+    opts = opts || {};
     var root = document.documentElement;
     var clip = daysClipEl();
+    var slide = daysSlideEl();
     if (!isCalendarTodayOnTrip()) {
       root.classList.remove('trip-days');
       root.classList.remove('days-tucked');
+      root.classList.remove('days-gentle');
       if (clip) clip.style.height = '';
       syncDaysToggle();
       applyStickyClearance();
       return;
     }
     root.classList.add('trip-days');
-    if (!clip || prefersReducedMotion()) {
+    if (prefersReducedMotion()) root.classList.add('days-gentle');
+    if (!clip) {
       root.classList.toggle('days-tucked', !!tucked);
-      if (clip) clip.style.height = tucked ? '0px' : '';
       syncDaysToggle();
       applyStickyClearance();
       return;
@@ -1190,14 +1189,32 @@
       var current = clip.getBoundingClientRect().height;
       if (current > 1) {
         clip.style.setProperty('--days-open-h', current + 'px');
+        // Keep the box open while the pills translate. Collapsing height
+        // in the same turn clips the slide, which on WebKit looks like
+        // no animation at all.
         clip.style.height = current + 'px';
         clip.offsetHeight;
       }
       root.classList.add('days-tucked');
-      clip.style.height = '0px';
+      var finished = false;
+      function finishSlide() {
+        if (finished) return;
+        finished = true;
+        if (slide) slide.removeEventListener('transitionend', onSlide);
+        if (root.classList.contains('days-tucked')) clip.style.height = '0px';
+        applyStickyClearance();
+        if (opts.onSlid) opts.onSlid();
+      }
+      function onSlide(e) {
+        if (!e || e.target !== slide) return;
+        var p = e.propertyName || '';
+        if (p !== 'transform' && p !== '-webkit-transform' && p !== 'opacity') return;
+        finishSlide();
+      }
+      if (slide) slide.addEventListener('transitionend', onSlide);
+      window.setTimeout(finishSlide, root.classList.contains('days-gentle') ? 1400 : 900);
     } else {
       var stored = parseFloat(clip.style.getPropertyValue('--days-open-h'));
-      var slide = daysSlideEl();
       var target = stored > 1 ? stored : (slide ? slide.scrollHeight : 0);
       root.classList.remove('days-tucked');
       clip.style.height = target + 'px';
@@ -1217,10 +1234,12 @@
     if (!isCalendarTodayOnTrip()) {
       root.classList.remove('trip-days');
       root.classList.remove('days-tucked');
+      root.classList.remove('days-gentle');
       syncDaysToggle();
       return;
     }
     root.classList.add('trip-days');
+    if (prefersReducedMotion()) root.classList.add('days-gentle');
     syncDaysToggle();
   }
   var daysIntroTimer = 0;
@@ -1231,7 +1250,6 @@
     if (daysIntroState === 'idle' || daysIntroState === 'holding') daysIntroState = 'cancelled';
   }
   function pulseDaysToggle() {
-    if (prefersReducedMotion()) return;
     if (!document.documentElement.classList.contains('days-tucked')) return;
     var btn = document.getElementById('daysToggle');
     if (!btn) return;
@@ -1243,10 +1261,19 @@
       btn.removeEventListener('animationend', onAnim);
     });
   }
-  // After the open has painted: leave the pills fully open long enough
-  // to see them, then translate the block up under the icons and pulse
-  // Days so the control is where they went. Reduced motion skips the wait,
-  // the slide, and the pulse. A later resume does not replay the intro.
+  function pillsAreShown() {
+    var clip = daysClipEl();
+    if (!clip) return false;
+    if (document.documentElement.classList.contains('trip-orienting')) return false;
+    var cs = getComputedStyle(clip);
+    return cs.visibility !== 'hidden' && cs.display !== 'none';
+  }
+  // After the open has painted and the page is actually visible: leave the
+  // pills fully open, then slide them up. The hold must not start while
+  // html.trip-orienting still has the page visibility:hidden, or while a
+  // Home Screen cold start is still hidden — WebKit will finish the
+  // transition offscreen and the traveler never sees it. Reduce Motion
+  // uses the gentler fade (html.days-gentle) instead of skipping it.
   function tuckDaysAfterPaint() {
     if (!isCalendarTodayOnTrip()) return;
     if (daysIntroState === 'holding') return;
@@ -1255,41 +1282,40 @@
       return;
     }
     daysIntroState = 'holding';
-    if (prefersReducedMotion()) {
-      daysIntroState = 'done';
-      setDaysTucked(true);
-      return;
-    }
-    // Two frames so the open pills have actually painted, then hold them.
-    // Starting the 800ms inside landOnOpen ate part of it on the rest of
-    // this script, and the slide began before it could be seen.
-    requestAnimationFrame(function () {
+    var tries = 0;
+    function armHold() {
+      if (daysIntroState !== 'holding') return;
+      if (document.visibilityState === 'hidden') {
+        document.addEventListener('visibilitychange', function onVis() {
+          if (document.visibilityState === 'hidden') return;
+          document.removeEventListener('visibilitychange', onVis);
+          armHold();
+        });
+        return;
+      }
+      if (!pillsAreShown() && tries < 120) {
+        tries++;
+        requestAnimationFrame(armHold);
+        return;
+      }
       requestAnimationFrame(function () {
-        if (daysIntroState !== 'holding') return;
-        daysIntroTimer = window.setTimeout(function () {
-          daysIntroTimer = 0;
+        requestAnimationFrame(function () {
           if (daysIntroState !== 'holding') return;
-          if (!isCalendarTodayOnTrip()) return;
-          daysIntroState = 'done';
-          if (document.documentElement.classList.contains('days-tucked')) return;
-          setDaysTucked(true);
-          var clip = daysClipEl();
-          var pulsed = false;
-          function go() {
-            if (pulsed) return;
-            pulsed = true;
-            if (clip) clip.removeEventListener('transitionend', onEnd);
-            pulseDaysToggle();
-          }
-          function onEnd(e) {
-            if (!e || e.target !== clip || e.propertyName !== 'height') return;
-            go();
-          }
-          if (clip) clip.addEventListener('transitionend', onEnd);
-          window.setTimeout(go, 900);
-        }, 800);
+          daysIntroTimer = window.setTimeout(function () {
+            daysIntroTimer = 0;
+            if (daysIntroState !== 'holding') return;
+            if (!isCalendarTodayOnTrip()) return;
+            daysIntroState = 'done';
+            if (document.documentElement.classList.contains('days-tucked')) {
+              pulseDaysToggle();
+              return;
+            }
+            setDaysTucked(true, { onSlid: pulseDaysToggle });
+          }, 800);
+        });
       });
-    });
+    }
+    armHold();
   }
   // Called once the day cards exist, still inside this parser-blocking
   // script, while html.trip-orienting is hiding the hero. Waiting for

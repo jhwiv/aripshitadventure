@@ -23,7 +23,7 @@
 // Those need to be live or fail. A cached /api response would keep serving
 // a stale chat stream or an old Overpass payload after a fix.
 
-const CACHE_NAME = 'trip-cache-v16';
+const CACHE_NAME = 'trip-cache-v17';
 const ALWAYS_PRECACHE = [
   '/', '/index.html', '/manifest.json', '/favicon-32.png', '/sw.js',
   '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png',
@@ -80,9 +80,11 @@ self.addEventListener('install', function (event) {
           if (r.ok) return cache.put(u, r);
         }).catch(function () {});
       }));
+      // After the new cache exists. Calling this before waitUntil finishes
+      // lets activate delete the old cache while this one is still empty.
+      await self.skipWaiting();
     })()
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', function (event) {
@@ -93,6 +95,11 @@ self.addEventListener('activate', function (event) {
   );
 });
 
+function isDocumentRequest(req, url) {
+  return req.mode === 'navigate' || req.destination === 'document'
+    || url.pathname === '/' || url.pathname === '/index.html';
+}
+
 self.addEventListener('fetch', function (event) {
   var req = event.request;
   if (req.method !== 'GET') return;
@@ -102,11 +109,26 @@ self.addEventListener('fetch', function (event) {
   // by the method check above; this also covers GET /api/flight-status.
   if (url.pathname.indexOf('/api/') === 0) return;
 
+  // HTML is network-first and bypasses the HTTP cache. A Home Screen
+  // launch was still showing the previous document because fetch(req)
+  // inside the worker is allowed to be satisfied from HTTP cache.
+  var doc = isDocumentRequest(req, url);
+  var net = doc
+    ? fetch(req.url, { cache: 'reload', credentials: 'same-origin' })
+    : fetch(req);
+
   event.respondWith(
-    fetch(req).then(function (res) {
+    net.then(function (res) {
       if (!res.ok) return res;
-      var resClone = res.clone();
-      caches.open(CACHE_NAME).then(function (cache) { cache.put(req, resClone); });
+      var copy = res.clone();
+      caches.open(CACHE_NAME).then(function (cache) {
+        if (doc) {
+          cache.put('/index.html', copy);
+          cache.put('/', res.clone());
+        } else {
+          cache.put(req, copy);
+        }
+      });
       return res;
     }).catch(function () {
       return caches.match(req).then(function (cached) {
@@ -115,7 +137,9 @@ self.addEventListener('fetch', function (event) {
         if (/\.(js|css|png|jpe?g|gif|webp|svg|woff2?|json|map)$/i.test(path)) {
           return new Response('', { status: 504, statusText: 'offline' });
         }
-        return caches.match('/index.html') || caches.match('/');
+        return caches.match('/index.html').then(function (html) {
+          return html || caches.match('/');
+        });
       });
     })
   );
