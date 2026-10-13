@@ -4,6 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>London → Normandy → Porto · Oct 12–26, 2026</title>
+<!-- During the trip the first paint has to already be on the current item.
+     This runs before the hero is parsed. style.css is a later request, so
+     the hide rule has to live here or the navy hero paints while app.js
+     downloads. App.js scrolls, then drops .trip-orienting. Outside
+     Oct 12 London midnight → Oct 27 Lisbon midnight the class is not added
+     and the hero stays. A hash still wins; we only hide until that jump. -->
+<style>
+  html.trip-orienting { scroll-behavior: auto !important; background: #f8f7f3; }
+  html.trip-orienting body > *:not(#welcome-screen) { visibility: hidden !important; }
+  html.skip-welcome #welcome-screen { display: none !important; }
+  @media print {
+    html.trip-orienting body > *:not(#welcome-screen) { visibility: visible !important; }
+  }
+</style>
+<script>
+(function () {
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+  // Returning travelers (and ?direct=1) already dismissed onboarding. The
+  // welcome markup is a full-viewport navy screen; hiding it from a script
+  // after that markup lets it paint once, which looks like the hero.
+  try {
+    if (location.search.indexOf('direct=1') !== -1 || localStorage.getItem('aripshitadventure-welcomed')) {
+      document.documentElement.classList.add('skip-welcome');
+    }
+  } catch (e) {}
+  function tzParts(date, timeZone) {
+    var fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: timeZone,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    });
+    var o = { year: '0', month: '1', day: '1', hour: '0', minute: '0' };
+    fmt.formatToParts(date).forEach(function (p) {
+      if (p.type !== 'literal') o[p.type] = p.value;
+    });
+    var hour = parseInt(o.hour, 10);
+    if (hour === 24) hour = 0;
+    return { y: parseInt(o.year, 10), m: parseInt(o.month, 10), d: parseInt(o.day, 10), hour: hour, minute: parseInt(o.minute, 10) };
+  }
+  function zonedMidnightUtc(y, m, d, timeZone) {
+    var utcGuess = Date.UTC(y, m - 1, d, 0, 0, 0);
+    var want = utcGuess;
+    var ms = utcGuess;
+    for (var n = 0; n < 3; n++) {
+      var p = tzParts(new Date(ms), timeZone);
+      var got = Date.UTC(p.y, p.m - 1, p.d, p.hour, p.minute);
+      if (got === want && p.hour !== 24) return ms;
+      ms = ms - (got - want);
+    }
+    return ms;
+  }
+  // Same bounds as tripMoment: day 1 starts London midnight Oct 12,
+  // day 15 ends Lisbon midnight Oct 27. Not the phone's zone.
+  var start = zonedMidnightUtc(2026, 10, 12, 'Europe/London');
+  var end = zonedMidnightUtc(2026, 10, 27, 'Europe/Lisbon');
+  var t = Date.now();
+  if (t < start || t >= end) return;
+  document.documentElement.classList.add('trip-orienting');
+  var fail = setTimeout(function () {
+    document.documentElement.classList.remove('trip-orienting');
+  }, 20000);
+  window.__cancelTripOrientFailsafe = function () { clearTimeout(fail); };
+})();
+</script>
 <meta name="description" content="Trip guide: London, Normandy, Porto — Oct 2026. Live weather, map, local search, AI concierge.">
 <!-- Icon is a real photo (Mont-Saint-Michel), not a vector mark - so the
      favicon/manifest/touch-icon are all PNG renders of one square crop
@@ -2165,6 +2229,12 @@ function dismissWelcome(dest) {
 <script src="vendor/leaflet/leaflet.js"></script>
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <script src="app.js?v=20261013-6193806"></script>
+<script>
+  // If app.js threw before it could reveal, don't leave the trip page blank.
+  // A normal open has already removed the class inside landOnOpen.
+  if (window.__cancelTripOrientFailsafe) window.__cancelTripOrientFailsafe();
+  document.documentElement.classList.remove('trip-orienting');
+</script>
 <script>
   // Offline support - see sw.js for the caching strategy. Registered here
   // rather than app.js so it runs even if app.js itself fails to parse.

@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+
   var TRIP = JSON.parse(document.getElementById('trip-data').textContent);
   var PINS = JSON.parse(document.getElementById('pins-data').textContent);
 
@@ -1085,33 +1087,64 @@
   // (day-tab taps) is not that signal — open/resume with a clean URL
   // re-orients. Captured before any script writes location.hash.
   var initialHashId = (location.hash || '').replace(/^#/, '');
+  // Resume listeners can fire while this script is still parsing (a
+  // headless load sometimes starts hidden). Revealing before the day
+  // cards exist would paint the hero and then jump.
+  var tripOpenSettled = false;
 
-  function landOnOpen() {
-    measureSticky();
-    if (initialHashId) {
-      var el = document.getElementById(initialHashId);
-      var hashed = tripMoment(new Date(), geoCityName);
-      refreshTodayChrome(hashed);
-      applyNowHighlight(hashed);
-      if (!el) return;
-      scrollToElement(el, 'instant', function () {
-        var sectionId = parentSectionId(el) || initialHashId;
-        if (initialHashId.indexOf('day-') === 0) {
-          var n = parseInt(initialHashId.slice(4), 10);
-          sectionId = parentSectionId(el) || sectionIdForDayNum(n) || sectionId;
-          if (n) setSelectedDay(n);
-        }
-        setActiveChip(sectionId);
-      });
-      setupGeo();
-      return;
-    }
-    var moment = tripMoment(new Date(), geoCityName);
-    if (moment.phase === 'during') orientToNow({ scroll: true });
-    setupGeo();
+  function revealTripOrient() {
+    if (typeof window.__cancelTripOrientFailsafe === 'function') window.__cancelTripOrientFailsafe();
+    document.documentElement.classList.remove('trip-orienting');
   }
-  if (document.readyState === 'complete') setTimeout(landOnOpen, 0);
-  else window.addEventListener('load', landOnOpen);
+  function scrollToInitialHash() {
+    var el = document.getElementById(initialHashId);
+    var hashed = tripMoment(new Date(), geoCityName);
+    refreshTodayChrome(hashed);
+    applyNowHighlight(hashed);
+    if (!el) return;
+    scrollToElement(el, 'instant', function () {
+      var sectionId = parentSectionId(el) || initialHashId;
+      if (initialHashId.indexOf('day-') === 0) {
+        var n = parseInt(initialHashId.slice(4), 10);
+        sectionId = parentSectionId(el) || sectionIdForDayNum(n) || sectionId;
+        if (n) setSelectedDay(n);
+      }
+      setActiveChip(sectionId);
+    });
+  }
+  // Called once the day cards exist, still inside this parser-blocking
+  // script, while html.trip-orienting is hiding the hero. Waiting for
+  // window load painted the hero and then jumped.
+  function landOnOpen() {
+    try {
+      measureSticky();
+      if (initialHashId) {
+        scrollToInitialHash();
+        setupGeo();
+        return;
+      }
+      var moment = tripMoment(new Date(), geoCityName);
+      if (moment.phase === 'during') orientToNow({ scroll: true });
+      setupGeo();
+    } finally {
+      tripOpenSettled = true;
+      revealTripOrient();
+    }
+  }
+  function resumeToNow() {
+    if (!tripOpenSettled) return;
+    try {
+      setupGeo();
+      if (explicitHashBlocksOrient()) scrollToInitialHash();
+      else if (isCalendarTodayOnTrip()) orientToNow({ scroll: true });
+    } finally {
+      revealTripOrient();
+    }
+  }
+  function hideForTripResume() {
+    if (!tripOpenSettled || !isCalendarTodayOnTrip()) return;
+    document.documentElement.classList.add('trip-orienting');
+  }
 
   /* ---------------------------------------------------------
      HERO
@@ -1673,6 +1706,10 @@
     });
     condensedEl.innerHTML = html;
   })();
+
+  // Scroll while the hero is still hidden, then reveal. This has to be
+  // after the city-tab cards exist (orient targets those .item nodes).
+  landOnOpen();
 
   /* ---------------------------------------------------------
      MEALS & RESERVATIONS — built from real reservation.platform,
@@ -2928,17 +2965,25 @@
   }
   var appWasHidden = false;
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') appWasHidden = true;
-    else if (appWasHidden) {
-      appWasHidden = false;
-      setupGeo();
-      scheduleOrient('resume');
+    if (document.visibilityState === 'hidden') {
+      appWasHidden = true;
+      // Home Screen resume can come back already scrolled to the top.
+      // Hide before that frame is shown so the hero is not the thing
+      // they see, then the visible handler lands on the item and reveals.
+      hideForTripResume();
+      return;
     }
+    if (!appWasHidden) return;
+    appWasHidden = false;
+    resumeToNow();
+  });
+  window.addEventListener('pagehide', function (e) {
+    if (!e.persisted) return;
+    hideForTripResume();
   });
   window.addEventListener('pageshow', function (e) {
     if (!e.persisted) return;
-    setupGeo();
-    scheduleOrient('resume');
+    resumeToNow();
   });
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () {
