@@ -265,20 +265,28 @@ function dismissWelcome(dest) {
         <button class="nav-chip nav-chip--ref" data-target="tab-packing">Pack</button>
       </div>
     </div>
+    <div class="days-toggle-row">
+      <button type="button" class="days-toggle" id="daysToggle" aria-expanded="true" aria-controls="dayTabsWrap">
+        <span class="days-toggle-label">Days</span>
+        <span class="days-chevron" aria-hidden="true"></span>
+      </button>
+    </div>
   </nav>
 
-  <div class="day-tabs-wrap" id="dayTabsWrap">
-    <div class="day-tabs-head">
-      <div class="day-tabs-label">Jump to a day</div>
-      <button type="button" class="day-today-btn" id="dayTabsToday">Today</button>
-    </div>
-    <div class="day-tabs-row" id="dayTabsRow"></div>
-    <div class="geo-ask" id="geoAsk" role="region" aria-label="Location">
-      <p class="geo-ask-text">Use location to confirm the city on a travel day? The clock still picks the stop if you skip this.</p>
-      <div class="geo-ask-actions">
-        <button type="button" class="geo-ask-btn geo-ask-btn--yes" id="geoAskAllow">Allow</button>
-        <button type="button" class="geo-ask-btn" id="geoAskDismiss">Not now</button>
+  <div class="day-tabs-clip" id="dayTabsClip">
+    <div class="day-tabs-wrap" id="dayTabsWrap">
+      <div class="day-tabs-head">
+        <div class="day-tabs-label">Jump to a day</div>
+        <button type="button" class="day-today-btn" id="dayTabsToday">Today</button>
       </div>
+      <div class="day-tabs-row" id="dayTabsRow"></div>
+    </div>
+  </div>
+  <div class="geo-ask" id="geoAsk" role="region" aria-label="Location">
+    <p class="geo-ask-text">Use location to confirm the city on a travel day? The clock still picks the stop if you skip this.</p>
+    <div class="geo-ask-actions">
+      <button type="button" class="geo-ask-btn geo-ask-btn--yes" id="geoAskAllow">Allow</button>
+      <button type="button" class="geo-ask-btn" id="geoAskDismiss">Not now</button>
     </div>
   </div>
 </div>

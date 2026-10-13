@@ -837,9 +837,13 @@
       else location.hash = hashId;
     }
   }
-  function scrollToElement(el, behavior, after) {
+  function scrollToElement(el, behavior, after, shrink) {
     var instant = behavior === 'instant' || behavior === 'auto';
-    var top = el.getBoundingClientRect().top + window.pageYOffset - stickyClearancePx();
+    // shrink: the day-pill block is about to collapse and pull everything
+    // under the sticky bar up by that many pixels. The rect is still the
+    // open position, so aim that much higher or the banner lands above
+    // the icons.
+    var top = el.getBoundingClientRect().top + window.pageYOffset - stickyClearancePx() - (shrink || 0);
     if (top < 0) top = 0;
     navTapLock = true;
     clearTimeout(navTapTimer);
@@ -984,17 +988,35 @@
     var dayNum = parseInt(m[1], 10);
     var sectionId = parentSectionId(el) || sectionIdForDayNum(dayNum);
     setSelectedDay(dayNum);
+    var shrink = 0;
+    if (isCalendarTodayOnTrip() && !document.documentElement.classList.contains('days-tucked')) {
+      var clip = document.getElementById('dayTabsClip');
+      shrink = clip ? clip.getBoundingClientRect().height : 0;
+    }
+    if (isCalendarTodayOnTrip()) setDaysTucked(true);
     scrollToElement(el, 'smooth', function () {
       setActiveChip(sectionId);
       setHashAfterSettle(dayId);
-    });
+    }, shrink);
   });
+
+  var daysToggleEl = document.getElementById('daysToggle');
+  if (daysToggleEl) {
+    daysToggleEl.addEventListener('click', function () {
+      if (!isCalendarTodayOnTrip()) return;
+      setDaysTucked(!document.documentElement.classList.contains('days-tucked'));
+    });
+  }
 
   var todayBtnEl = document.getElementById('dayTabsToday');
   if (todayBtnEl) {
     todayBtnEl.addEventListener('click', function () {
       if (isCalendarTodayOnTrip()) {
-        orientToNow({ scroll: true, force: true });
+        var openClip = document.getElementById('dayTabsClip');
+        var todayShrink = document.documentElement.classList.contains('days-tucked') || !openClip
+          ? 0 : openClip.getBoundingClientRect().height;
+        setDaysTucked(true);
+        orientToNow({ scroll: true, force: true, shrink: todayShrink });
         return;
       }
       var n = todayTripDayNum();
@@ -1069,10 +1091,7 @@
     var stickyEl = document.getElementById('stickyTop');
     if (!stickyEl) return;
     var resizeTimer = null;
-    function measure() {
-      var h = stickyEl.getBoundingClientRect().height;
-      if (h > 0) document.documentElement.style.setProperty('--sticky-clearance', (h + 12) + 'px');
-    }
+    function measure() { applyStickyClearance(); }
     measure();
     window.addEventListener('load', measure);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
@@ -1112,11 +1131,69 @@
       setActiveChip(sectionId);
     });
   }
+  // Jump-to-a-day slides up under the icon row after the open scroll has
+  // landed. The Days control lives in the nav, so it stays. Outside the
+  // trip the classes stay off and the pills remain in the document flow.
+  function stickyTargetHeight() {
+    var nav = document.getElementById('siteNav');
+    var geo = document.getElementById('geoAsk');
+    var wrap = document.getElementById('dayTabsWrap');
+    var tucked = document.documentElement.classList.contains('days-tucked');
+    var h = nav ? nav.getBoundingClientRect().height : 0;
+    if (!tucked && wrap) h += wrap.scrollHeight;
+    if (geo && geo.classList.contains('active')) h += geo.getBoundingClientRect().height;
+    return h;
+  }
+  function applyStickyClearance() {
+    var h = stickyTargetHeight();
+    if (h > 0) document.documentElement.style.setProperty('--sticky-clearance', (h + 12) + 'px');
+  }
+  function syncDaysToggle() {
+    var btn = document.getElementById('daysToggle');
+    if (!btn) return;
+    var tucked = document.documentElement.classList.contains('days-tucked');
+    btn.setAttribute('aria-expanded', tucked ? 'false' : 'true');
+    btn.setAttribute('aria-label', tucked ? 'Show days' : 'Hide days');
+  }
+  function setDaysTucked(tucked) {
+    var root = document.documentElement;
+    if (!isCalendarTodayOnTrip()) {
+      root.classList.remove('trip-days');
+      root.classList.remove('days-tucked');
+      syncDaysToggle();
+      applyStickyClearance();
+      return;
+    }
+    root.classList.add('trip-days');
+    root.classList.toggle('days-tucked', !!tucked);
+    syncDaysToggle();
+    applyStickyClearance();
+  }
+  function prepareTripDaysChrome() {
+    var root = document.documentElement;
+    if (!isCalendarTodayOnTrip()) {
+      root.classList.remove('trip-days');
+      root.classList.remove('days-tucked');
+      syncDaysToggle();
+      return;
+    }
+    root.classList.add('trip-days');
+    syncDaysToggle();
+  }
+  function tuckDaysAfterPaint() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        if (!isCalendarTodayOnTrip()) return;
+        setDaysTucked(true);
+      });
+    });
+  }
   // Called once the day cards exist, still inside this parser-blocking
   // script, while html.trip-orienting is hiding the hero. Waiting for
   // window load painted the hero and then jumped.
   function landOnOpen() {
     try {
+      prepareTripDaysChrome();
       measureSticky();
       if (initialHashId) {
         scrollToInitialHash();
@@ -1129,6 +1206,7 @@
     } finally {
       tripOpenSettled = true;
       revealTripOrient();
+      tuckDaysAfterPaint();
     }
   }
   function resumeToNow() {
@@ -1139,6 +1217,7 @@
       else if (isCalendarTodayOnTrip()) orientToNow({ scroll: true });
     } finally {
       revealTripOrient();
+      tuckDaysAfterPaint();
     }
   }
   function hideForTripResume() {
@@ -2811,10 +2890,7 @@
   // rendering, not just the map, since the resulting uncaught exception
   // aborted the rest of the script).
   function measureSticky() {
-    var stickyEl = document.getElementById('stickyTop');
-    if (!stickyEl) return;
-    var h = stickyEl.getBoundingClientRect().height;
-    if (h > 0) document.documentElement.style.setProperty('--sticky-clearance', (h + 12) + 'px');
+    applyStickyClearance();
   }
   function explicitHashBlocksOrient() {
     return !!initialHashId;
@@ -2878,7 +2954,7 @@
     lastOrientKey = key;
     scrollToElement(el, 'instant', function () {
       setActiveChip(parentSectionId(el) || sectionIdForDayNum(moment.dayNum));
-    });
+    }, opts.shrink || 0);
     return moment;
   }
   window.orientToNow = function () {

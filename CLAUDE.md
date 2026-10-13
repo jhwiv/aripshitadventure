@@ -196,6 +196,17 @@ same-day transatlantic flight), not a "looks fine" skim:
   hidden and reveals only after the same instant scroll. A hash still
   wins; it is scrolled the same way before the reveal. Outside the trip
   the class is never added.
+- **During the trip, tuck Jump to a day after the open lands.** The day
+  pills stay in the sticky group, so once the page is on the current
+  item they still eat the top of the screen. After that first paint
+  (double `requestAnimationFrame`, so it does not run while the hero is
+  still hidden), `html.days-tucked` animates `.day-tabs-clip` from
+  `1fr` to `0fr` and the pills slide up under the icon row. A Days
+  control with a chevron stays in the nav: tap to drop the pills back
+  down, tap again or pick a day (including Today) to tuck them. The
+  row is `flex-wrap`, not a sideways scroller. Outside the trip the
+  classes stay off, so the pills and the control do not change. A hash
+  still wins the landing; the tuck happens after that scroll.
 - **Day-strip scroll-spy is live (rAF), not debounce-until-idle, and is
   section-scoped.** `#day-N` banners live in the city tabs, further down
   the continuous page. Spy city banners only while a `tab-city-*` section
@@ -516,6 +527,8 @@ lives in `jhwiv/santafe-itinerary` (`worker/worker.js` — NOT
 check commit dates before trusting either).
 
 ## Decisions & fixed bugs (most recent first)
+
+- **Jump-to-a-day stays on screen after the open lands (2026-10-13).** Chip: once the app is on the right stop, the day pills should slide up underneath the icons, and come back when asked. They were the bottom of `#stickyTop`, so they covered the top of the day for the rest of the trip. After the open scroll (and after a hash landing), two animation frames later `html.days-tucked` collapses `.day-tabs-clip` with `grid-template-rows` so the pills slide up under `.site-nav` and wrap instead of scrolling sideways. The Days chevron lives in the nav, not in the clip, so it is still there when the pills are gone: tap shows them, tap again or a day pill (or Today) tucks them. Clearance uses the nav height while tucked and the pills’ `scrollHeight` while open, so a jump does not aim at a bar that is mid-animation. Outside Oct 12–26 the classes are not added. The tuck is not applied in the same turn as the hidden pre-paint scroll, so the hero still does not flash. `trip-cache-v15`.
 
 - **First paint during the trip was the hero, then a jump (2026-10-13).** Opening on the current stop still waited for `window` `load`, and the hero sits above `app.js`, so the first frame was the navy header and then the page jumped. Chip: go directly to the location and do not stop on the hero. The hide rule is an inline style in `head` (`html.trip-orienting`), not `style.css`, because the stylesheet is a second request and the hero would paint first. The welcome screen is the same full-viewport navy and was hidden only by a script after its own markup, so a returning open painted it once before that script; the head script now adds `html.skip-welcome` when onboarding was already dismissed (or `?direct=1`). The head script also sets `history.scrollRestoration = 'manual'` and adds the class only when `Date.now()` is inside London midnight Oct 12 → Lisbon midnight Oct 27 (the same window `tripMoment` uses — not the phone zone). `landOnOpen` now runs in the same turn the city-day cards are inserted, scrolls with `behavior:'instant'` while the page is still hidden, then removes the class. A trailing inline script removes it if `app.js` throws; a 20s timer is the fallback if the script never arrives. Home Screen cold start is that same document load. Resume hides again on `visibilitychange` hidden and on `pagehide` when the page is entering the back-forward cache, and reveals only after the instant scroll, so a restored scroll of 0 does not flash the hero. Outside the trip the class is not added and the hero stays. A hash on open still wins. `trip-cache-v14`.
 
