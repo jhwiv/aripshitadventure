@@ -173,10 +173,35 @@ img { max-width: 100%; display: block; }
    height, which itself changes across the breakpoints below. */
 .sticky-top { position: sticky; top: 0; z-index: 30; }
 .site-nav {
+  position: relative;
+  z-index: 2;
   background: var(--cream);
   border-bottom: 1px solid var(--rule);
   padding: 8px 10px;
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
+}
+/* Shown only during the trip (html.trip-days). Sits under the icon rows
+   and stays put when the day pills slide up underneath them. */
+.days-toggle-row { display: none; flex-wrap: wrap; padding-top: 4px; }
+html.trip-days .days-toggle-row { display: flex; }
+.days-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; min-height: 26px; border-radius: 14px;
+  border: 1.5px solid var(--navy); background: #fff; color: var(--navy);
+  cursor: pointer;
+}
+.days-toggle:active { transform: scale(0.96); }
+.days-chevron {
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+}
+.days-toggle[aria-expanded="true"] .days-chevron {
+  border-top: 0;
+  border-bottom: 5px solid currentColor;
 }
 .nav-row { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; }
 .nav-row--ref { display: block; padding-top: 4px; }
@@ -237,10 +262,27 @@ img { max-width: 100%; display: block; }
    CLAUDE.md's decisions log), this is anchored at the TOP, geometrically
    nowhere near .fab-row/#time-pill (both position:fixed at the bottom),
    so the same collision shape can't recur here. ---- */
+/* During the trip the pills slide up under the icon row (html.days-tucked).
+   grid-template-rows animates to the real height, so the row wraps and
+   never needs a sideways scroller. The nav above paints on top (z-index). */
+.day-tabs-clip {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.42s ease;
+}
+html.days-tucked .day-tabs-clip { grid-template-rows: 0fr; }
+.day-tabs-clip > .day-tabs-wrap { min-height: 0; overflow: hidden; }
 .day-tabs-wrap {
   background: var(--paper);
   box-shadow: 0 2px 8px rgba(13,33,51,0.06);
   padding: 10px 10px 12px;
+  transition: padding 0.42s ease;
+}
+/* Padding is inside the grid item, so a 0fr row still left a 22px strip. */
+html.days-tucked .day-tabs-wrap {
+  padding-top: 0;
+  padding-bottom: 0;
+  box-shadow: none;
 }
 .day-tabs-head {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -259,7 +301,7 @@ img { max-width: 100%; display: block; }
 .day-today-btn:hover { background: #fffdf7; }
 .day-today-btn:active { transform: scale(0.96); }
 .day-today-btn.is-current { background: var(--navy); color: #fff; }
-.day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.day-tabs-row { display: flex; flex-wrap: wrap; gap: 6px; max-width: 100%; }
 .geo-ask {
   display: none;
   flex-wrap: wrap;
@@ -374,9 +416,10 @@ img { max-width: 100%; display: block; }
 #meals, #cityCards { scroll-margin-top: var(--sticky-clearance, 112px); }
 @media (prefers-reduced-motion: reduce) {
   .city-card, .ref-card, .timeline-row, .item, .nav-chip, .day-jump-pill, .day-tab-card,
-  .welcome-feature, .day-today-btn, .book-chip {
+  .welcome-feature, .day-today-btn, .book-chip, .days-toggle {
     transition: none;
   }
+  .day-tabs-clip, .day-tabs-wrap { transition: none; }
 }
 .section-heading {
   font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
@@ -1006,7 +1049,7 @@ img { max-width: 100%; display: block; }
 @media print {
   .site-nav, .fab-row, .panel, #welcome-screen, .map-filters, #time-pill, .geo-ask,
   #itineraryMap, .hero-photo,
-  .day-jump-nav, .day-tabs-wrap, .countdown-badge { display: none !important; }
+  .day-jump-nav, .day-tabs-wrap, .days-toggle-row, .countdown-badge { display: none !important; }
   .hero { background: none !important; min-height: 0; color: #1c2840; padding: 12px 0; }
   .hero-overlay { display: none; }
   .hero .eyebrow, .hero .meta { color: #5b6577; }
