@@ -607,6 +607,19 @@
       '</span>';
   }
 
+  // day.city is the tab the day is filed under, not always where the stop
+  // is. Oct 18 is on the London tab and Oct 22 is on the Porto tab, but the
+  // Hertz desk is at Orly. Appending London or Porto to that address sends
+  // the maps link to the wrong country. A destination that already carries
+  // a postal code is used as written. Short names ("Caen Memorial Museum")
+  // still get the day city.
+  function mapQuery(dest, city) {
+    var place = dest || '';
+    if (!city) return place;
+    if (/,\s*\d{4,5}\b/.test(place)) return place;
+    return place + ', ' + city;
+  }
+
   // Pulls a duration ("45 min", "2h30m", "40-50 min") out of a Transport
   // item's own text, ANCHORED to the start of whatever follows the text's
   // last " — " or " · " separator - the consistent convention this data
@@ -1590,8 +1603,8 @@
     var contactLinks = (item.contact && item.contact.phone && telHref(item.contact.phone) ? '<a' + hrefAttr('tel:' + item.contact.phone) + '>' + esc(item.contact.phone) + '</a>' : '') +
       (item.contact && item.contact.website && safeHref(item.contact.website) ? '<a' + hrefAttr(item.contact.website) + ' target="_blank" rel="noopener">Website</a>' : '');
     var navigateRow = item.type === 'Transport'
-      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>'
-      : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>';
+      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(mapQuery(searchTarget, day && day.city)) + contactLinks + '</div>'
+      : '<div class="item-links">' + directionsLinksHTML(mapQuery(searchTarget, day && day.city)) + contactLinks + '</div>';
     // A Dinner/Lunch/Breakfast item's own restaurant details (hours, price,
     // backup pick, menu popup trigger) previously rendered ONLY in the
     // separate Meals & Reservations list, invisible to anyone reading the
@@ -2064,7 +2077,7 @@
       var navLine = '';
       if (item.type === 'Transport') {
         var dest = item.location || parseTransportDestination(item.text, row.day);
-        var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
+        var query = mapQuery(dest || item.text || '', row.day.city);
         var refDuration = transportDurationBadgeOf(item);
         var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
         // Same fix as renderItemHTML's navigateRow - a Transport item's own
