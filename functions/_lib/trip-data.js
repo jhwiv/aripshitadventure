@@ -18,7 +18,7 @@ export default {
       "days_range": "Day 8–Day 11",
       "focus": "Objective Normandy American Sector tour (Utah, Omaha, American Cemetery) on Oct 21 — Jon: meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM (booking on file: guide Elisha; objectivenormandy.com lists Elisa Denis). Oct 19: depart Moxy Paris Clamart 8:00 AM for Caen Memorial Museum, Longues-sur-Mer Battery, Arromanches-les-Bains, then 4 Rue Franche at 5:00 PM. Oct 20: Mont Saint-Michel, then Bayeux. Stay Bayeux.",
       "stay": "4 Rue Franche, Bayeux (Airbnb HMKWYPDKBE) — check-in 5:00 PM Oct 19, depart 11:00 AM Oct 22 for ORY (official Airbnb check-out 12:00 PM)",
-      "transport_in": "Fly LHR→ORY BA8137 Oct 18, overnight at Moxy Paris Clamart (confirmation 83193251, Oct 18–19). Mon Oct 19 depart the Moxy at 8:00 AM for Caen Memorial Museum."
+      "transport_in": "Fly LHR→ORY BA8137 Oct 18, Hertz pickup 5:30 PM at Orly Terminal 2-3, Return Park P2 (booking FR967254790, Hertz L711EB98874; BA8137 lands 5:35 PM), overnight at Moxy Paris Clamart (confirmation 83193251, Oct 18–19). Mon Oct 19 depart the Moxy at 8:00 AM for Caen Memorial Museum."
     },
     {
       "name": "Porto",
@@ -26,12 +26,12 @@ export default {
       "days_range": "Day 11–Day 15",
       "focus": "Self-guided city; Braga and Guimarães day trip.",
       "stay": "Rua dos Mercadores 77, Ribeira São João, 3rd floor (Airbnb HM549AK8C2) — check-in 4:00 PM Oct 22, listed check-out 11:00 AM Oct 26. The host agreed they can stay until 4:00 PM and leave for the airport then. Jon wrote “Ribera San Joao.”",
-      "transport_in": "Fly ORY→OPO · TAP TP455 · departs 4:50 PM arrives 6:05 PM Oct 22. Depart Bayeux 11:00 AM Oct 22 to drive to ORY for this flight."
+      "transport_in": "Fly ORY→OPO · TAP TP455 · departs 4:50 PM arrives 6:05 PM Oct 22. Depart Bayeux 11:00 AM Oct 22 to drive to ORY for this flight. Hertz return at the Orly desk is 2:00 PM."
     }
   ],
   "introduction": {
-    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms, the Kensington Royal Village walk, and Jack the Ripper's Whitechapel walking tour (leave 53 Greek St at 6:00 PM, meet 6:45 PM on Whitechapel Road outside Whitechapel Station, about 9:15 PM back at 53 Greek St); dinner is before 6:00 PM or after the tour. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to Porto. Saturday Oct 24 is Best of Braga and Guimarães Day Trip from Porto, 7:50 AM start, full day, 2 adults (Viator booking reference 1455473045, confirmation 1837461523). Monday Oct 26: listed checkout 11:00 AM; the host agreed they can stay until 4:00 PM and leave for the airport then. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
-    "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days."
+    "arc": "This itinerary threads WWII history across Britain and Normandy before closing in Porto. London nights are at 53 Greek Street in Soho (Oct 12–18). Wednesday Oct 14 is Imperial War Museum, Borough Market, dinner at Funky Noodle, then Operation Mincemeat at the Fortune Theatre. Thursday Oct 15 is Churchill War Rooms, the Kensington Royal Village walk, and Jack the Ripper's Whitechapel walking tour (leave 53 Greek St at 6:00 PM, meet 6:45 PM on Whitechapel Road outside Whitechapel Station, about 9:15 PM back at 53 Greek St); dinner is before 6:00 PM or after the tour. Tuesday Oct 13 is lunch at Napoli on the Road SoHo and dinner at Sophie’s SoHo. Friday Oct 16 is an RAF Museum self tour, then Hamilton. Still unscheduled: Battle of Britain Bunker, Bletchley Park, Tank Museum Bovington (maybe overnight). Sunday Oct 18: checkout 10:00 AM; bags may remain at 53 Greek Street until departure for LHR at 12:00 PM; BA8137 LHR→ORY 3:00 PM; Hertz pickup 5:30 PM at Orly Terminal 2-3, Return Park P2 (BA8137 lands 5:35 PM); night at Moxy Paris Clamart (confirmation 83193251). Monday Oct 19: depart Moxy 8:00 AM for Caen Memorial Museum, then Longues-sur-Mer Battery, Arromanches-les-Bains, and check in at 4 Rue Franche by 5:00 PM. Tuesday Oct 20: Mont Saint-Michel, then Bayeux. Wednesday Oct 21 is Objective Normandy — meet Elisa at 4 Rue Franche, 9:00 AM–5:00 PM. Thursday Oct 22: depart Bayeux 11:00 AM to drive to ORY, Hertz return 2:00 PM, then TP455 to Porto. Saturday Oct 24 is Best of Braga and Guimarães Day Trip from Porto, 7:50 AM start, full day, 2 adults (Viator booking reference 1455473045, confirmation 1837461523). Monday Oct 26: listed checkout 11:00 AM; the host agreed they can stay until 4:00 PM and leave for the airport then. The return TAP TP211 OPO→EWR is Oct 26, 7:30 PM–11:55 PM.",
+    "differentiators": "Three Airbnbs are on the books, plus Moxy Paris Clamart for the night of Oct 18 (confirmation 83193251): London HMFRRRZRTN at 53 Greek St; Bayeux HMKWYPDKBE at 4 Rue Franche; Porto HM549AK8C2 at Rua dos Mercadores 77, 3rd floor. London to Normandy is LHR→ORY (BA8137), then Moxy Paris Clamart, then Mon Oct 19 depart 8:00 AM for Caen Memorial Museum. The Bayeux Tapestry Museum remains closed for renovation through October 2027; the tapestry itself is on loan at the British Museum in London (10 Sep 2026 – Jul 2027) during these London days. Normandy driving is a Hertz rental (Renault Captur or similar; driver Jonathan Ripchick; booking FR967254790; Hertz confirmation L711EB98874), pickup Orly Sun Oct 18 at 5:30 PM, return Orly Thu Oct 22 at 2:00 PM. Excess insurance was not purchased."
   },
   "days": [
     {
@@ -660,7 +660,7 @@ export default {
     {
       "label": "Day 7 · Sun Oct 18 · Fly London → Paris Orly",
       "city": "London",
-      "headline": "Checkout 10:00 AM · bags may stay at 53 Greek St until 12:00 PM LHR departure · BA8137 · Moxy Paris Clamart booked",
+      "headline": "Checkout 10:00 AM · bags may stay at 53 Greek St until 12:00 PM LHR departure · BA8137 · Hertz pickup 5:30 PM · Moxy Paris Clamart booked",
       "weather": "High 57°F / low 46°F · mostly cloudy with 50% rain risk — bring layers & umbrella",
       "items": [
         {
@@ -732,6 +732,22 @@ export default {
             "aircraft": null,
             "confirmation_note": "From Jon’s 2026-09-14 email: BA8137 LHR 3:00 PM → ORY 5:35 PM. Operates as Vueling VY8961 (typically LHR T4 → ORY T3). BA booking locator ZL9UQZ. Vueling booking locator UQTTMH."
           },
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "17:30",
+          "end_time": null,
+          "text": "Hertz pickup — Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390. Renault Captur or similar (compact, automatic, A/C, 5 seats, 3 bags, 5 doors). Driver: Jonathan Ripchick. Booking reference FR967254790. Hertz confirmation L711EB98874. Booked through Car rentals with Airbnb (CarTrawler). BA8137 is scheduled to land at Orly at 5:35 PM, five minutes after this 5:30 PM pickup.",
+          "location": "Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390",
+          "why": "Bring the physical credit card in the driver's full name, the physical driver's license plus an International Driving Permit where applicable, a passport, and the digital rental confirmation. Online check-in, either reference: https://www.hertz.com/rentacar/onlinecheckin/index.jsp?targetPage=onlineCheckInView.jsp. Desk phone 0825 889 265. Excess insurance was not purchased. The Moxy Paris Clamart card stays timed at the 5:35 PM landing.",
+          "contact": {
+            "phone": "0825 889 265",
+            "website": "https://www.hertz.com/rentacar/onlinecheckin/index.jsp?targetPage=onlineCheckInView.jsp"
+          },
+          "flight": null,
           "hotel": null,
           "restaurant": null,
           "duration_min": null
@@ -1030,7 +1046,7 @@ export default {
     {
       "label": "Day 11 · Thu Oct 22 · Fly Orly → Porto",
       "city": "Porto",
-      "headline": "Depart Bayeux 11:00 AM → ORY · TP455 ORY→OPO 4:50 PM · Ribeira apartment 3rd floor",
+      "headline": "Depart Bayeux 11:00 AM → ORY · Hertz return 2:00 PM · TP455 ORY→OPO 4:50 PM · Ribeira apartment 3rd floor",
       "weather": "High 72°F / low 57°F · partly cloudy, chance of light evening rain",
       "items": [
         {
@@ -1056,11 +1072,27 @@ export default {
         {
           "type": "Transport",
           "time": "11:00",
-          "end_time": null,
+          "end_time": "14:00",
           "text": "Bayeux → Paris Orly (ORY) — depart 11:00 AM to drive to ORY for TP455 to OPO",
           "location": null,
-          "why": "Jon: depart Bayeux 11:00 AM Oct 22 to drive to ORY for the OPO flight. TP455 remains 4:50 PM. Driver and duration not specified.",
+          "why": "Jon: depart Bayeux 11:00 AM Oct 22 to drive to ORY for the OPO flight. TP455 remains 4:50 PM. Hertz return at the Orly desk is 2:00 PM.",
           "contact": null,
+          "flight": null,
+          "hotel": null,
+          "restaurant": null,
+          "duration_min": null
+        },
+        {
+          "type": "Transport",
+          "time": "14:00",
+          "end_time": null,
+          "text": "Hertz return — same Orly desk: Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390. Booking reference FR967254790. Hertz confirmation L711EB98874. Driver: Jonathan Ripchick.",
+          "location": "Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390",
+          "why": "Return Thu Oct 22, 2026 at 2:00 PM. Renault Captur or similar (compact, automatic, A/C, 5 seats, 3 bags, 5 doors). Desk phone 0825 889 265. Online check-in, either reference: https://www.hertz.com/rentacar/onlinecheckin/index.jsp?targetPage=onlineCheckInView.jsp. Excess insurance was not purchased. TAP TP455 departs Orly at 4:50 PM.",
+          "contact": {
+            "phone": "0825 889 265",
+            "website": "https://www.hertz.com/rentacar/onlinecheckin/index.jsp?targetPage=onlineCheckInView.jsp"
+          },
           "flight": null,
           "hotel": null,
           "restaurant": null,
