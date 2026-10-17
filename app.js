@@ -75,6 +75,8 @@
     { day: 4, test: /Kensington/i, status: 'confirm' },
     { day: 7, type: 'Flight', status: 'confirm' },
     { day: 7, test: /83193251|Moxy Paris Clamart/, status: 'confirm' },
+    { day: 7, test: /FR967254790|Hertz pickup/, status: 'confirm' },
+    { day: 11, test: /FR967254790|Hertz return/, status: 'confirm' },
     { day: 7, type: 'Hotel', status: 'needs' },
     { day: 8, type: 'Hotel', status: 'confirm' },
     { day: 10, test: /Objective Normandy|American Sector/i, status: 'confirm' },
@@ -603,6 +605,19 @@
       '<a href="https://maps.apple.com/?q=' + q + '" target="_blank" rel="noopener">🧭 Apple</a>' +
       '<a href="https://waze.com/ul?q=' + q + '&navigate=yes" target="_blank" rel="noopener">🚗 Waze</a>' +
       '</span>';
+  }
+
+  // day.city is the tab the day is filed under, not always where the stop
+  // is. Oct 18 is on the London tab and Oct 22 is on the Porto tab, but the
+  // Hertz desk is at Orly. Appending London or Porto to that address sends
+  // the maps link to the wrong country. A destination that already carries
+  // a postal code is used as written. Short names ("Caen Memorial Museum")
+  // still get the day city.
+  function mapQuery(dest, city) {
+    var place = dest || '';
+    if (!city) return place;
+    if (/,\s*\d{4,5}\b/.test(place)) return place;
+    return place + ', ' + city;
   }
 
   // Pulls a duration ("45 min", "2h30m", "40-50 min") out of a Transport
@@ -1588,8 +1603,8 @@
     var contactLinks = (item.contact && item.contact.phone && telHref(item.contact.phone) ? '<a' + hrefAttr('tel:' + item.contact.phone) + '>' + esc(item.contact.phone) + '</a>' : '') +
       (item.contact && item.contact.website && safeHref(item.contact.website) ? '<a' + hrefAttr(item.contact.website) + ' target="_blank" rel="noopener">Website</a>' : '');
     var navigateRow = item.type === 'Transport'
-      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>'
-      : '<div class="item-links">' + directionsLinksHTML(searchTarget + (day.city ? ', ' + day.city : '')) + contactLinks + '</div>';
+      ? '<div class="navigate-row"><span class="navigate-label">🧭 Navigate:</span>' + durationBadge + directionsLinksHTML(mapQuery(searchTarget, day && day.city)) + contactLinks + '</div>'
+      : '<div class="item-links">' + directionsLinksHTML(mapQuery(searchTarget, day && day.city)) + contactLinks + '</div>';
     // A Dinner/Lunch/Breakfast item's own restaurant details (hours, price,
     // backup pick, menu popup trigger) previously rendered ONLY in the
     // separate Meals & Reservations list, invisible to anyone reading the
@@ -2062,7 +2077,7 @@
       var navLine = '';
       if (item.type === 'Transport') {
         var dest = item.location || parseTransportDestination(item.text, row.day);
-        var query = (dest || item.text || '') + (row.day.city ? ', ' + row.day.city : '');
+        var query = mapQuery(dest || item.text || '', row.day.city);
         var refDuration = transportDurationBadgeOf(item);
         var refDurationBadge = refDuration ? '<span class="drive-duration">⏱ ' + esc(refDuration) + '</span>' : '';
         // Same fix as renderItemHTML's navigateRow - a Transport item's own
@@ -2103,6 +2118,7 @@
       ],
       Normandy: [
         'Rural and car-dependent — Bayeux and the D-Day beaches have limited public transit. Oct 19: depart Moxy Paris Clamart at 8:00 AM and travel to Caen Memorial Museum (Jon: the trip should be 2:30 hours). Oct 22: depart Bayeux 11:00 AM to drive to ORY for TP455 to OPO. Taxis exist in Bayeux but are sparse.',
+        'The car is Hertz, driver Jonathan Ripchick, booked through Car rentals with Airbnb (CarTrawler). Booking reference FR967254790. Hertz confirmation L711EB98874. Pickup Sun Oct 18 at 5:30 PM, Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390. Return Thu Oct 22 at 2:00 PM at the same desk. Renault Captur or similar: compact, automatic, A/C, 5 seats, 3 bags, 5 doors. Desk phone 0825 889 265. BA8137 is scheduled to land at 5:35 PM, five minutes after the pickup. Excess insurance was not purchased.',
         'Small-town shops (Bayeux included) commonly close for a long lunch, roughly 12:30–2pm, and many close entirely on Mondays.',
         'A simple "Bonjour" before asking anything in a shop or café isn\'t optional politeness here — skipping straight to a question reads as genuinely rude, even in tourist-heavy spots.',
         'Fuel up before a rural drive — small-town stations can be sparse, and many switch to card-only, unattended pumps overnight.'
@@ -2335,6 +2351,11 @@
         dayIdx: 6, kind: 'soon', status: 'confirm',
         title: 'Moxy Paris Clamart (Sun Oct 18–Mon Oct 19)',
         note: 'Booked. Confirmation no. 83193251. 1 night, 1 room, 2 guests. Moxy Sleeper, Guest room, 2 Twin. Total stay 162.00 EUR. Night’s lodging after BA8137 lands at ORY at 5:35 PM. Street address and check-in time were not on the confirmation.',
+      },
+      {
+        dayIdx: 6, kind: 'soon', status: 'confirm',
+        title: 'Hertz at Paris Orly (Sun Oct 18 5:30 PM – Thu Oct 22 2:00 PM)',
+        note: 'Booked. Driver Jonathan Ripchick. Booked through Car rentals with Airbnb (CarTrawler). Booking reference FR967254790. Hertz confirmation L711EB98874. Pickup Sun Oct 18, 5:30 PM, Paris Orly Airport, Terminal 2-3, Return Park P2 Rental Car, 94390. Return Thu Oct 22, 2:00 PM, same desk. Renault Captur or similar: compact, automatic, A/C, 5 seats, 3 bags, 5 doors. Desk phone 0825 889 265. Bring the physical credit card in the driver\'s full name, the physical driver\'s license plus an International Driving Permit where applicable, a passport, and the digital rental confirmation. Online check-in (either reference): https://www.hertz.com/rentacar/onlinecheckin/index.jsp?targetPage=onlineCheckInView.jsp. Excess insurance was not purchased. BA8137 is scheduled to land at Orly at 5:35 PM, five minutes after the 5:30 PM pickup; both times stay as booked.',
       },
       {
         dayIdx: 7, kind: 'soon', status: 'confirm',
