@@ -2300,7 +2300,7 @@
       {
         dayIdx: 1, kind: 'soon', status: 'confirm',
         title: 'London Airbnb — 53 Greek St (HMFRRRZRTN)',
-        note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Bags may remain at 53 Greek Street until departure for LHR at 12:00 PM on Oct 18. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
+        note: 'Booked Oct 12–18, check-in 3:00 PM / check-out 10:00 AM. Address from Jon 2026-09-14: 53 Greek Street. Bags may remain at 53 Greek Street until departure for LHR at 11:50 AM on Oct 18. Confirm key/access for the Oct 13 5:50 AM LHR arrival (official check-in started the afternoon before).',
       },
       {
         dayIdx: 2, kind: 'urgent', status: 'confirm',
